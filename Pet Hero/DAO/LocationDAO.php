@@ -12,18 +12,6 @@
         private $connection;
         private $tableName = 'location';
 
-        public function Add(Location $location){
-            $query = "CALL Location_Add(?,?,?,?,?)";
-            $parameters["adress"] = $location->getAdress();
-            $parameters["neighborhood"] = $location->getNeighborhood();
-            $parameters["city"] = $location->getCity();
-            $parameters["province"] = $location->getProvince();
-            $parameters["country"] = $location->getCountry();
-
-            $this->connection = Connection::GetInstance();
-            $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
-        }
-
         public function GetAll(){
             $locationList = array();
 
@@ -60,6 +48,18 @@
             return $location;
         }
 
+        public function Add(Location $location){
+            $query = "CALL Location_Add(?,?,?,?,?)";
+            $parameters["adress"] = $location->getAdress();
+            $parameters["neighborhood"] = $location->getNeighborhood();
+            $parameters["city"] = $location->getCity();
+            $parameters["province"] = $location->getProvince();
+            $parameters["country"] = $location->getCountry();
+
+            $this->connection = Connection::GetInstance();
+            $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
+        }
+            
         public function Delete($id){
             $query = "CALL Location_Delete(?)";
             $parameters["id"] = $id;
