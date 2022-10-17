@@ -39,9 +39,9 @@ CREATE TABLE IF NOT EXISTS PersonalData(
     surname VARCHAR(20),
     sex VARCHAR(1),
     dni VARCHAR(8) UNIQUE NOT NULL CHECK(dni regexp '[0-9]{8}'),
-    idLocation INT NOT NULL,
-    CONSTRAINT fk_DataLocation FOREIGN KEY (idLocation)
-        REFERENCES Location(idLocation)
+		idLocation INT NOT NULL,
+		CONSTRAINT fk_DataLocation FOREIGN KEY (idLocation)
+			REFERENCES Location(idLocation)
 );
 
 INSERT INTO PersonalData VALUES (0,"Santino","Escobedo","M","28418700",1);
@@ -56,9 +56,9 @@ CREATE TABLE IF NOT EXISTS User(
 	username VARCHAR(20),
     password VARCHAR(20),
     email VARCHAR(30),
-    idData INT,
-    CONSTRAINT fk_UserData FOREIGN KEY (idData)
-        REFERENCES PersonalData(idData)
+		idData INT,
+		CONSTRAINT fk_UserData FOREIGN KEY (idData)
+			REFERENCES PersonalData(idData)
 );
 
 INSERT INTO User(User.username,User.password,User.email) VALUES ("planetar","orylOSad","achternaga@wificon.eu");
@@ -70,9 +70,9 @@ INSERT INTO User(User.username,User.password,User.email) VALUES ("toystory","nSh
 /*********************************KEEPER*******************************************/
 CREATE TABLE IF NOT EXISTS Keeper(
 	idKeeper INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-    idUser INT,
-    CONSTRAINT fk_KeeperUser FOREIGN KEY (idUser)
-        REFERENCES User(idUser)
+		idUser INT,
+		CONSTRAINT fk_KeeperUser FOREIGN KEY (idUser)
+			REFERENCES User(idUser)
 );
 
 INSERT INTO Keeper VALUES (0,1);
@@ -84,9 +84,9 @@ INSERT INTO Keeper VALUES (0,5);
 /*********************************OWNER*******************************************/
 CREATE TABLE IF NOT EXISTS Owner(
 	idOwner INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-    idUser INT,
-    CONSTRAINT fk_OwnerUser FOREIGN KEY (idUser)
-        REFERENCES User(idUser)
+		idUser INT,
+		CONSTRAINT fk_OwnerUser FOREIGN KEY (idUser)
+			REFERENCES User(idUser)
 );
 
 INSERT INTO Owner VALUES (0,1);
@@ -126,15 +126,15 @@ CREATE TABLE IF NOT EXISTS Pet(
     breed VARCHAR(20),
 	vaccinationPlanIMG VARCHAR(60),
     observation VARCHAR(60),
-    idSize INT NOT NULL,
-    idPetType INT NOT NULL,
-    idOwner INT NOT NULL,
-    CONSTRAINT fk_PetSize FOREIGN KEY (idSize)
-        REFERENCES Size(idSize),
-	CONSTRAINT fk_PetType FOREIGN KEY (idPetType)
-        REFERENCES PetType(idType),
-    CONSTRAINT fk_PetOwner FOREIGN KEY (idOwner)
-        REFERENCES Owner(idOwner)
+		idSize INT NOT NULL,
+		idPetType INT NOT NULL,
+		idOwner INT NOT NULL,
+		CONSTRAINT fk_PetSize FOREIGN KEY (idSize)
+			REFERENCES Size(idSize),
+		CONSTRAINT fk_PetType FOREIGN KEY (idPetType)
+			REFERENCES PetType(idType),
+		CONSTRAINT fk_PetOwner FOREIGN KEY (idOwner)
+			REFERENCES Owner(idOwner)
 );
 
 INSERT INTO Pet VALUES (0,"Coco","Mestizo","C:\xampp\htdocs\Pet-Hero\Pet Hero\DogImg/dogCM-131020221731.jpg","Esta re duro",1,1,1);

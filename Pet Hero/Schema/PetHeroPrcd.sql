@@ -27,8 +27,7 @@ DELIMITER ;
 
 DROP PROCEDURE IF EXISTS `Location_Add`;
 DELIMITER $$
-CREATE PROCEDURE Location_Add(IN adress VARCHAR(40),IN neighborhood VARCHAR(20), 
-                              IN city VARCHAR(20),IN province VARCHAR(30),IN country VARCHAR(20))
+CREATE PROCEDURE Location_Add(IN adress VARCHAR(40),IN neighborhood VARCHAR(20),IN city VARCHAR(20),IN province VARCHAR(30),IN country VARCHAR(20))
 BEGIN
     INSERT INTO Location
         (Location.adress,Location.neighborhood,Location.city,Location.province,Location.country)
@@ -54,11 +53,11 @@ DELIMITER ;
 /*********************************TEST PROCEDURES*******************************************/
 CALL Location_GetAll();
 /*CALL Location_GetById(ID);*/
-CALL Location_GetById(13);
+CALL Location_GetById(7);
 /*CALL Location_Add(adress,neighborhood,city,province,country);*/
 CALL Location_Add("Mi calle","Mi Barrio","Mar del plata","Buenos Aires","Argentina");
 /*CALL Location_Delete(ID);*/
-CALL Location_Delete(12);
+CALL Location_Delete(7);
 	
 
 

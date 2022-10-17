@@ -13,13 +13,10 @@ use \Model\Location as Location;
             $this->locationDAO = new LocationDAO();
         }
 
-        
-
+    public function showListView(){
     }
 
+    
 
-
-
-
-
+    }
 ?>
