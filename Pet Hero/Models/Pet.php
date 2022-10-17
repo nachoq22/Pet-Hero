@@ -1,9 +1,10 @@
 <?php
-    namespace Modes;
+    namespace Models;
 
-    class Dog
+    class Pet
     {
         private $id;
+        private $name;
         private $profileIMG;
         private $breed;
         private $size;
@@ -19,6 +20,16 @@
         public function setId($id)
         {
             $this->id = $id;
+        }
+
+        public function getName()
+        {
+            return $this->name;
+        }
+
+        public function setName($name)
+        {
+            $this->name = $name;
         }
 
         public function getProfileIMG()
@@ -46,7 +57,7 @@
             return $this->size;
         }
 
-        public function setSize($size)
+        public function setSize(Size $size)
         {
             $this->size = $size;
         }

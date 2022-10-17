@@ -8,6 +8,7 @@
         private $surname;
         private $sex;
         private $dni;
+        private $location;
 
         public function getId()
         {
@@ -58,6 +59,8 @@
         {
             $this->dni = $dni;
         }
+
+
         
     }
 
