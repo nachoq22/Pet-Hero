@@ -1,12 +1,13 @@
 <?php
 namespace Inter;
 
-use Model\m as m;
+use \Model\Owner as Owner;
+use Model\User as User;
 
-interface inter{
-public function Add(/**/);
-    public function GetAll();
-    public function Get($id);
-    public function Delete($id);
-}
+    interface IOwnerDAO{
+        public function Add(Owner $owner);
+        public function GetAll();
+        public function Get($id);
+        public function Delete($id);
+    }
 ?>

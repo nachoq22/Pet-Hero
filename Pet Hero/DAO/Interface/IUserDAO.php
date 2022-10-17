@@ -1,12 +1,12 @@
 <?php
 namespace Inter;
 
-use Model\m as m;
+use \Model\User as User;
 
-interface inter{
-public function Add(/**/);
-    public function GetAll();
-    public function Get($id);
-    public function Delete($id);
-}
+    interface IUserDAO{
+        public function Add(User $user);
+        public function GetAll();
+        public function Get($id);
+        public function Delete($id);
+    }
 ?>

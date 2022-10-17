@@ -1,12 +1,12 @@
 <?php
 namespace Inter;
 
-use Model\m as m;
+use Model\PersonalData as PersonalData;
 
-interface inter{
-public function Add(/**/);
-    public function GetAll();
-    public function Get($id);
-    public function Delete($id);
-}
+    interface IPersonalData{
+        public function Add(PersonalData $data);
+        public function GetAll();
+        public function Get($id);
+        public function Delete($id);
+    }
 ?>

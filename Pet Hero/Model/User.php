@@ -4,21 +4,26 @@ use \Model\PersonalData as PersonalData;
 
     class User{
         private $idUser;
-        private $name;
-        private $surname;
-        private $sex;
-        private $dni;
+        private $username;
+        private $password;
+        private $email;
         private PersonalData $data;
 
 //CONSTRUCTORS
-        function __fromDB($idUser,PersonalData $data){
+        function __fromDB($idUser,$username,$password,$email,PersonalData $data){
             $this->idUser = $idUser;
+            $this->username = $username;
+            $this->password = $password;
+            $this->email = $email;
             $this->data = $data;
         } 
     
         function __construct(){} 
 
-        function __fromRequest(PersonalData $data){
+        function __fromRequest($username,$password,$email,PersonalData $data){
+            $this->username = $username;
+            $this->password = $password;
+            $this->email = $email;
             $this->data = $data;
         } 
     
@@ -30,39 +35,33 @@ use \Model\PersonalData as PersonalData;
             $this->idUser = $idUser;
         }
 
-        public function getName(){
-            return $this->name;
+        public function getUsername(){
+            return $this->username;
         }
-        public function setName($name){
-            $this->name = $name;
-        }
-
-        public function getSurname(){
-            return $this->surname;
-        }
-        public function setSurname($surname){
-            $this->surname = $surname;
+        public function setUsername($username){
+            $this->username = $username;
         }
 
-        public function getSex(){
-            return $this->sex;
+        public function getPassword(){
+            return $this->password;
         }
-        public function setSex($sex){
-            $this->sex = $sex;
+        public function setPassword($password){
+            $this->password = $password;
         }
 
-        public function getDni(){
-            return $this->dni;
+        public function getEmail(){
+            return $this->email;
         }
-        public function setDni($dni){
-            $this->dni = $dni;
+        public function setEmail($email){
+            $this->email = $email;
         }
 
         public function getData(): PersonalData{
             return $this->data;
         }
         public function setData(PersonalData $data){
-                $this->data = $data;
+            $this->data = $data;
         }
+
     }
 ?>

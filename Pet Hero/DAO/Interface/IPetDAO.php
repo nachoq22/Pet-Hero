@@ -1,10 +1,10 @@
 <?php
 namespace Inter;
 
-use Model\PetType as PetType;
+use Model\Pet as Pet;
 
-    interface IPetTypeDAO{
-        public function Add(PetType $type);
+    interface IPetDAO{
+        public function Add(Pet $pet);
         public function GetAll();
         public function Get($id);
         public function Delete($id);

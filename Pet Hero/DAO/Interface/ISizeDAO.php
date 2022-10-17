@@ -1,12 +1,12 @@
 <?php
 namespace Inter;
 
-use Model\m as m;
+use Model\Size as Size;
 
-interface inter{
-public function Add(/**/);
-    public function GetAll();
-    public function Get($id);
-    public function Delete($id);
-}
+    interface ISizeDAO{
+        public function Add(Size $size);
+        public function GetAll();
+        public function Get($id);
+        public function Delete($id);
+    }
 ?>

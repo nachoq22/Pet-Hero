@@ -1,7 +1,6 @@
 <?php
 namespace Model;
 
-use Locale;
 use \Model\Location as Location;
 
     class PersonalData{
@@ -13,8 +12,12 @@ use \Model\Location as Location;
         private Location $location;
 
 //CONSTRUCTORS
-        function __fromDB($idData,Location $location){
+        function __fromDB($idData,$name,$surname,$sex,$dni,Location $location){
             $this->idData = $idData;
+            $this->name = $name;
+            $this->surname = $surname;
+            $this->sex = $sex;
+            $this->dni = $dni;
             $this->location = $location;
         } 
     
