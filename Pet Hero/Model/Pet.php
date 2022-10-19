@@ -6,9 +6,9 @@ use \Model\Size as Size;
 
     class Pet{
         private $idPet;
-        private $profileIMG;
         private $name;
         private $breed;
+        private $profileIMG;
         private $vaccinationPlanIMG;
         private $observation;
         private PetType $type;
@@ -16,13 +16,13 @@ use \Model\Size as Size;
         private Owner $owner;
 
 //CONSTRUCTORS
-        function __fromDB($idPet,$profileIMG,$name,$breed,
+        function __fromDB($idPet,$name,$breed,$profileIMG,
                           $vaccinationPlanIMG,$observation,
                           PetType $type,Size $size,Owner $owner){
             $this->idPet = $idPet;
-            $this->profileIMG = $profileIMG;
             $this->name = $name;
             $this->breed = $breed;
+            $this->profileIMG = $profileIMG;
             $this->vaccinationPlanIMG = $vaccinationPlanIMG;
             $this->observation = $observation;
             $this->type = $type;
@@ -32,12 +32,12 @@ use \Model\Size as Size;
 
         function __construct(){} 
 
-        function __fromRequest($profileIMG,$name,$breed,
+        function __fromRequest($name,$breed,$profileIMG,
                                $vaccinationPlanIMG,$observation,
                                PetType $type,Size $size,Owner $owner){
-            $this->profileIMG = $profileIMG;
             $this->name = $name;
             $this->breed = $breed;
+            $this->profileIMG = $profileIMG;
             $this->vaccinationPlanIMG = $vaccinationPlanIMG;
             $this->observation = $observation;
             $this->type = $type;
@@ -53,13 +53,6 @@ use \Model\Size as Size;
             $this->idPet = $idPet;
         }
 
-        public function getProfileIMG(){
-            return $this->profileIMG;
-        }
-        public function setProfileIMG($profileIMG){
-            $this->profileIMG = $profileIMG;
-        }
-
         public function getName(){
             return $this->name;
         }
@@ -72,6 +65,14 @@ use \Model\Size as Size;
         }
         public function setBreed($breed){
             $this->breed = $breed;
+        }
+
+        
+        public function getProfileIMG(){
+            return $this->profileIMG;
+        }
+        public function setProfileIMG($profileIMG){
+            $this->profileIMG = $profileIMG;
         }
 
         public function getVaccinationPlanIMG(){

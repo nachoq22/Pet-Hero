@@ -72,7 +72,24 @@ use \Connection\QueryType as QueryType;
 
                 $this->pdoStatement->execute();
 
-                return $this->pdoStatement->rowCount();
+                return $this->pdoStatement->fetchColumn();
+            }
+            catch(Exception $e)
+            {
+                throw $e;
+            }        	    	
+        }
+
+        public function ExecuteLastQuery($query, $parameters = array(), $queryType = QueryType::Query){            
+            try
+            {
+                $this->Prepare($query);
+                
+                $this->BindParameters($parameters, $queryType);
+
+                $this->pdoStatement->execute();
+
+                return $this->pdo->lastInsertId();
             }
             catch(Exception $e)
             {
