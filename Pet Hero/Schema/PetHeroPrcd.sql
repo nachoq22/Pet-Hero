@@ -140,6 +140,19 @@ $$
 
 DELIMITER ;
 
+DROP PROCEDURE IF EXISTS `User_Register`;
+DELIMITER $$
+CREATE PROCEDURE User_Register(IN username VARCHAR(20),IN password VARCHAR(20),IN email VARCHAR(30))
+BEGIN
+    INSERT INTO User
+        (User.username,User.password,User.email)
+    VALUES
+        (username,password,email);
+END;
+$$
+
+DELIMITER ;
+
 DROP PROCEDURE IF EXISTS `User_Delete`;
 DELIMITER $$
 CREATE PROCEDURE User_Delete(IN idUser INT)
