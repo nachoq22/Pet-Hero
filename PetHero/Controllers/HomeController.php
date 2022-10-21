@@ -18,6 +18,11 @@
             require_once(VIEWS_PATH."register.php");
         }
 
+        public function ViewBeKeeper()
+        {
+            require_once(VIEWS_PATH."BeKeeper.php");
+        }
+
         /*public function Register($userName, $password)
         {
             
