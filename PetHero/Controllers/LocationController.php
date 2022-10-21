@@ -1,7 +1,7 @@
 <?php
 namespace Controllers;
 
-use \DAO\LocationDAO as LocationDAO;
+use \DAO\LocationDAO;
 use \Model\Location as Location;
 
     class LocationController

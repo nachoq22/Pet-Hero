@@ -8,9 +8,10 @@
 </head>
 <body>
     Bienvenido a pet hero, aqui podra buscar a un keeper adecuado para cuidar a su mascota asi como ofrecerse a cuidar otras mascotas!
-
+    <br>
     <a href="Home/ViewRegister">Registrate</a>
     <br>
+    <a href="Home/ViewBeKeeper">Be a Keeper!</a>
     <table style="text-align:center;">
     <thead>
         <tr>
