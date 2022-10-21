@@ -8,6 +8,11 @@
     class HomeController
     {
         private $userDAO;
+
+        public function __construct(){
+            $this->userDAO = new UserDAO();
+        }
+
         public function Index()
         {
             require_once(VIEWS_PATH."home.php");
@@ -44,10 +49,9 @@
             }*/
             $user = new User();
             $user->__fromRegister($userName,$password,$email);
-            var_dump($user);
-            $this->UserDAO->Register($user);
+/*            echo "AQUI ESTA EL USUARIO \n" . var_dump($user);*/
+            $this->userDAO->Register($user);
             require_once(VIEWS_PATH."Home.php");
         } 
     }
-
 ?>

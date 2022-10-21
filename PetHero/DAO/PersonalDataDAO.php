@@ -4,12 +4,12 @@
     use \DAO\Connection as Connection;
     use \DAO\QueryType as QueryType;
 
-    use \DAO\IPersonalData as IPersonalData;
+    use \DAO\IPersonalDataDAO as IPersonalDataDAO;
     use \Model\PersonalData as PersonalData;
     use \DAO\LocationDAO as LocationDAO;
     use \Model\Location as Location;
 
-    class PersonalDataDAO implements IPersonalData{
+    class PersonalDataDAO implements IPersonalDataDAO{
 
         private $connection;
         private $tableName = 'PersonalData';
