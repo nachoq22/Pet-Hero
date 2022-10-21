@@ -31,7 +31,7 @@
             foreach($resultBD as $row){
                 $user = new User();
 
-                $user->__fromDB($row["id"],$row["username"]
+                $user->__fromDB($row["idUser"],$row["username"]
                 ,$row["password"],$row["email"]
                 ,$this->dataDao->Get($row["idData"]));
 
@@ -44,7 +44,7 @@
             $user = null;
 
             $query = "CALL User_GetById(?)";
-            $parameters["id"] = $id;
+            $parameters["idUser"] = $id;
             $this->connection = Connection::GetInstance();
             $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
 
@@ -73,10 +73,33 @@
             
         public function Delete($id){
             $query = "CALL Location_Delete(?)";
-            $parameters["id"] = $id;
+            $parameters["idUser"] = $id;
 
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
+        }
+
+        public function Register(User $user){
+            $query = "CALL User_Register(?,?,?)";
+            $parameters["username"] = $user->getUsername();
+            $parameters["password"] = $user->getPassword();
+            $parameters["email"] = $user->getEmail();
+            $this->connection = Connection::GetInstance();
+            $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
+        }
+        
+public function Login($username,$password,$rta){
+            $query = "CALL User_GetById(?,?,?)";
+            $parameters["username"] = $username;
+            $parameters["password"] = $password;
+            $parameters["rta"] = $rta;
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+
+            foreach($resultBD as $row){
+                $rta = $row["rta"];
+            }
+            return $rta;
         }
     }
 ?>

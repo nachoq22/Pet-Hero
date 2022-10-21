@@ -1,10 +1,11 @@
 <?php
 namespace Controllers;
 
-use \DAO\LocationDAO;
+use \DAO\LocationDAO as LocationDAO;
 use \Model\Location as Location;
 
-    class LocationController{
+    class LocationController
+    {
         private $locationDAO;
 
         public function __construct(){
@@ -12,6 +13,7 @@ use \Model\Location as Location;
         }
 
         public function showListView(){
+            $locationList=$this->locationDAO->GetAll();
         }
 
         public function Add($adress, $neighborhood, $city, $province, $country)
@@ -27,7 +29,6 @@ use \Model\Location as Location;
             $location->setProvince($province);
             $location->setCountry($country);*/
             $this->locationDAO->Add($location);
-            //require_once(VIEWS_PATH."prueba.php");
             $locationList=$this->locationDAO->GetAll();
             require_once(VIEWS_PATH."Locationlist.php");
         } 

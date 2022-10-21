@@ -26,6 +26,12 @@ use \Model\PersonalData as PersonalData;
             $this->email = $email;
             $this->data = $data;
         } 
+
+        function __fromRegister($username,$password,$email){
+            $this->username = $username;
+            $this->password = $password;
+            $this->email = $email;
+        }
     
 //GETTER & SERTTER
         public function getId(){
