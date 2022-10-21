@@ -140,6 +140,15 @@ END;
 $$
 
 DELIMITER $$
+CREATE PROCEDURE User_GetByUsername(IN username VARCHAR(20))
+BEGIN
+    SELECT * 
+    FROM User
+    WHERE (User.username = username);
+END;
+$$
+
+DELIMITER $$
 CREATE PROCEDURE User_Add(IN username VARCHAR(20),IN password VARCHAR(20),IN email VARCHAR(30),IN idData INT)
 BEGIN
     INSERT INTO User
@@ -399,6 +408,7 @@ Call PersonalData_Add("Ramiro","Talangana","M","44886655",2);
 /*********************************TEST USER*******************************************/
 Call User_GetAll();
 Call User_GetById(2);
+Call User_GetByUsername("planetar");
 /*CALL User_Add(username,password,varResp);*/
 CALL User_Login("planetar","orylOSad",@rta);
 SELECT @rta;

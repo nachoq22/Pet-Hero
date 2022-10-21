@@ -51,7 +51,24 @@
             foreach($resultBD as $row){
                 $user = new User();
 
-                $user->__fromDB($row["id"],$row["username"],$row["password"],$row["email"]
+                $user->__fromDB($row["idUser"],$row["username"],$row["password"],$row["email"]
+                ,$this->dataDao->Get($row["idData"]));
+            }
+            return $user;
+        }
+
+        public function GetByUsername($username){
+            $user = null;
+
+            $query = "CALL User_GetByUsername(?)";
+            $parameters["username"] = $username;
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+
+            foreach($resultBD as $row){
+                $user = new User();
+
+                $user->__fromDB($row["idUser"],$row["username"],$row["password"],$row["email"]
                 ,$this->dataDao->Get($row["idData"]));
             }
             return $user;
