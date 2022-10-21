@@ -13,11 +13,8 @@
             require_once(VIEWS_PATH."register.php");
         }
 
-        public function Register($userName, $password)
-        {
+        public function Register($userName, $password){
+            require_once(VIEWS_PATH."agregarlocation.php");
         }
     }
-
-    
-
 ?>

@@ -10,8 +10,5 @@
     Bienvenido a pet hero, aqui podra buscar a un keeper adecuado para cuidar a su mascota asi como ofrecerse a cuidar otras mascotas!
 
     <a href="Home/ViewRegister">Registrate</a>
-
-
-
 </body>
 </html>
