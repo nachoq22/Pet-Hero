@@ -58,7 +58,7 @@
         }
 
         public function Login($username,$password,$rta){
-            $query = "CALL User_GetById(?,?,?)";
+            $query = "CALL User_Login(?,?,?)";
             $parameters["username"] = $username;
             $parameters["password"] = $password;
             $parameters["rta"] = $rta;
