@@ -1,10 +1,10 @@
 <?php
     namespace DAO;
 
-    use \Connection\Connection as Connection;
-    use \Connection\QueryType as QueryType;
+    use \DAO\Connection as Connection;
+    use \DAO\QueryType as QueryType;
 
-    use \Inter\IOwnerDAO as IOwnerDAO;
+    use \DAO\IOwnerDAO as IOwnerDAO;
     use \Model\Owner as Owner;
     use \DAO\UserDao as UserDao;
     

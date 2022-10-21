@@ -1,10 +1,10 @@
 <?php
     namespace DAO;
 
-    use \Connection\Connection as Connection;
-    use \Connection\QueryType as QueryType;
+    use \DAO\Connection as Connection;
+    use \DAO\QueryType as QueryType;
 
-    use \Inter\IUserDAO as IUserDAO;
+    use \DAO\IUserDAO as IUserDAO;
     use \Model\User as User;
     use \DAO\PersonalDataDAO as PersonalDataDAO;
     use \Model\PersonalData as PersonalData;

@@ -1,5 +1,5 @@
 <?php
-namespace Inter;
+namespace DAO;
 
 use \Model\Owner as Owner;
 use Model\User as User;

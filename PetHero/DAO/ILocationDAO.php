@@ -1,5 +1,5 @@
 <?php
-namespace Inter;
+namespace DAO;
 
 use Model\Location as Location;
 

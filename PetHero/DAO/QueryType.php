@@ -1,5 +1,5 @@
 <?php
-namespace Connection;
+namespace DAO;
 
     abstract class QueryType{
         const Query = 0;

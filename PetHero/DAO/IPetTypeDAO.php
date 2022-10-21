@@ -1,10 +1,10 @@
 <?php
-namespace Inter;
+namespace DAO;
 
-use \Model\User as User;
+use Model\PetType as PetType;
 
-    interface IUserDAO{
-        public function Add(User $user);
+    interface IPetTypeDAO{
+        public function Add(PetType $type);
         public function GetAll();
         public function Get($id);
         public function Delete($id);

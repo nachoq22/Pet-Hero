@@ -1,5 +1,5 @@
 <?php
-namespace Inter;
+namespace DAO;
 
 use Model\PersonalData as PersonalData;
 

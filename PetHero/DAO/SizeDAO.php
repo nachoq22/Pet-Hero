@@ -1,10 +1,10 @@
 <?php
     namespace DAO;
 
-    use \Connection\Connection as Connection;
-    use \Connection\QueryType as QueryType;
+    use \DAO\Connection as Connection;
+    use \DAO\QueryType as QueryType;
 
-    use \Inter\ISizeDAO as ISizeDAO;
+    use \DAO\ISizeDAO as ISizeDAO;
     use \Model\Size as Size;
 
     class SizeDao implements ISizeDAO{

@@ -1,10 +1,10 @@
 <?php
-namespace Inter;
+namespace DAO;
 
-use Model\Size as Size;
+use Model\Pet as Pet;
 
-    interface ISizeDAO{
-        public function Add(Size $size);
+    interface IPetDAO{
+        public function Add(Pet $pet);
         public function GetAll();
         public function Get($id);
         public function Delete($id);

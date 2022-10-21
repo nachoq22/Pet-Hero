@@ -1,10 +1,10 @@
 <?php
     namespace DAO;
 
-    use \Connection\Connection as Connection;
-    use \Connection\QueryType as QueryType;
+    use \DAO\Connection as Connection;
+    use \DAO\QueryType as QueryType;
 
-    use \Inter\IPersonalData as IPersonalData;
+    use \DAO\IPersonalData as IPersonalData;
     use \Model\PersonalData as PersonalData;
     use \DAO\LocationDAO as LocationDAO;
     use \Model\Location as Location;

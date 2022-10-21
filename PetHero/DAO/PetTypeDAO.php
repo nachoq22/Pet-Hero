@@ -1,10 +1,10 @@
 <?php
     namespace DAO;
 
-    use \Connection\Connection as Connection;
-    use \Connection\QueryType as QueryType;
-
-    use \Inter\IPetTypeDAO as IPetTypeDAO;
+    use \DAO\Connection as Connection;
+    use \DAO\QueryType as QueryType;
+    
+    use \DAO\IPetTypeDAO as IPetTypeDAO;
     use \Model\PetType as PetType;
 
     class PetTypeDAO implements IPetTypeDAO{

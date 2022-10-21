@@ -1,5 +1,5 @@
 <?php
-namespace Inter;
+namespace DAO;
 
 use Model\Keeper as Keeper;
 use Model\User as User;
