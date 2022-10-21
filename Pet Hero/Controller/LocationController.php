@@ -13,7 +13,8 @@ use \Model\Location as Location;
             $this->locationDAO = new LocationDAO();
         }
 
-    public function showListView(){
+    public function Register($username,$password){
+        require_once(VIEWS_PATH."home.php");
     }
 
     

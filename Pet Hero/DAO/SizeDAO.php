@@ -22,7 +22,7 @@
             foreach($resultBD as $row){
                 $size = new Size();
 
-                $size->__fromDB($row["id"],$row["name"]);
+                $size->__fromDB($row["idSize"],$row["name"]);
 
                  array_push($sizeList,$size);
             }
@@ -33,13 +33,13 @@
             $size = null;
 
             $query = "CALL Size_GetById(?)";
-            $parameters["id"] = $id;
+            $parameters["idSize"] = $id;
             $this->connection = Connection::GetInstance();
             $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
 
             foreach($resultBD as $row){
                 $size = new Size();
-                $size->__fromDB($row["id"],$row["name"]);
+                $size->__fromDB($row["idSize"],$row["name"]);
             }
             return $size;
         }
@@ -54,7 +54,7 @@
             
         public function Delete($id){
             $query = "CALL Size_Delete(?)";
-            $parameters["id"] = $id;
+            $parameters["idSize"] = $id;
 
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);

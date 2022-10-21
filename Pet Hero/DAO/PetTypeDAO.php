@@ -22,7 +22,7 @@
             foreach($resultBD as $row){
                 $type = new PetType();
 
-                $type->__fromDB($row["id"],$row["name"]);
+                $type->__fromDB($row["idType"],$row["name"]);
 
                  array_push($typeList,$type);
             }
@@ -33,13 +33,13 @@
             $type = null;
 
             $query = "CALL PetType_GetById(?)";
-            $parameters["id"] = $id;
+            $parameters["idType"] = $id;
             $this->connection = Connection::GetInstance();
             $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
 
             foreach($resultBD as $row){
                 $type = new PetType();
-                $type->__fromDB($row["id"],$row["name"]);
+                $type->__fromDB($row["idType"],$row["name"]);
             }
             return $type;
         }
@@ -54,7 +54,7 @@
             
         public function Delete($id){
             $query = "CALL PetType_Delete(?)";
-            $parameters["id"] = $id;
+            $parameters["idType"] = $id;
 
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);

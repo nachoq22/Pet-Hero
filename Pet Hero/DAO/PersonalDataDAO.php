@@ -44,14 +44,14 @@
             $data = null;
 
             $query = "CALL PersonalData_GetById(?)";
-            $parameters["id"] = $id;
+            $parameters["idData"] = $id;
             $this->connection = Connection::GetInstance();
             $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
 
             foreach($resultBD as $row){
                 $data = new PersonalData();
 
-                $data->__fromDB($row["id"],$row["name"]
+                $data->__fromDB($row["idData"],$row["name"]
                 ,$row["surname"],$row["sex"]
                 ,$row["dni"],$this->locationDAO->Get($row["idLocation"]));
             }
@@ -64,6 +64,7 @@
             $parameters["surname"] = $data->getSurname();
             $parameters["sex"] = $data->getSex();
             $parameters["dni"] = $data->getDni();
+            $parameters["idLocation"] = $data->getLocation()->getId();
             
             /*$idLocation = $this->locationDAO->Add($data->getLocation());*/
 

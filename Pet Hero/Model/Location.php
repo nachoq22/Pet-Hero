@@ -16,7 +16,7 @@ namespace Model;
                 $this->city = $city;
                 $this->province = $province;
                 $this->country = $country;
-            } 
+        } 
         
         function __construct(){} 
 
