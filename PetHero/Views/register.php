@@ -1,21 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Logear</title>
 </head>
 <body>
         <form action="<?php echo FRONT_ROOT."/Home/Register" ?>" method="post">
         User
         <input type="text" name="userName" >
+        <br>
         Contraseña
         <input type="password" name="password">
         <br>
-        <button type="submit">Enviar</button>
+        Email
+        <input type="email" name="email">
+        <br>
+        <input type="submit" class="btn" value="Agregar" style="background-color:#DC8E47;color:white;"/>
         <br>
         <button type="reset">Reset</button>
+        
         </form> 
 </body>
-</html>

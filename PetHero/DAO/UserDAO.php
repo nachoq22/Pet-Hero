@@ -1,10 +1,10 @@
 <?php
     namespace DAO;
 
-    use \DAO\Connection as Connection;
-    use \DAO\QueryType as QueryType;
+    use \Connection\Connection as Connection;
+    use \Connection\QueryType as QueryType;
 
-    use \DAO\IUserDAO as IUserDAO;
+    use \Inter\IUserDAO as IUserDAO;
     use \Model\User as User;
     use \DAO\PersonalDataDAO as PersonalDataDAO;
     use \Model\PersonalData as PersonalData;
@@ -57,26 +57,11 @@
             return $user;
         }
 
-        public function Login($username,$password,$rta){
-            $query = "CALL User_Login(?,?,?)";
-            $parameters["username"] = $username;
-            $parameters["password"] = $password;
-            $parameters["rta"] = $rta;
-            $this->connection = Connection::GetInstance();
-            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
-
-            foreach($resultBD as $row){
-                $rta = $row["rta"];
-            }
-            return $rta;
-        }
-
         public function Add(User $user){
-            $query = "CALL User_Add(?,?,?,?)";
+            $query = "CALL PersonalData_Add(?,?,?,?,?)";
             $parameters["username"] = $user->getUsername();
             $parameters["password"] = $user->getPassword();
             $parameters["email"] = $user->getEmail();
-            $parameters["idData"] = $user->getData()->getId();
             
             /*$idLocation = $this->dataDao->Add($user->getData());*/
 
@@ -84,6 +69,14 @@
 
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
+        }
+            
+        public function Delete($id){
+            $query = "CALL Location_Delete(?)";
+            $parameters["idUser"] = $id;
+
+            $this->connection = Connection::GetInstance();
+            $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
         }
 
         public function Register(User $user){
@@ -94,13 +87,19 @@
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
-            
-        public function Delete($id){
-            $query = "CALL User_Delete(?)";
-            $parameters["idUser"] = $id;
-
+        
+public function Login($username,$password,$rta){
+            $query = "CALL User_GetById(?,?,?)";
+            $parameters["username"] = $username;
+            $parameters["password"] = $password;
+            $parameters["rta"] = $rta;
             $this->connection = Connection::GetInstance();
-            $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+
+            foreach($resultBD as $row){
+                $rta = $row["rta"];
+            }
+            return $rta;
         }
     }
 ?>
