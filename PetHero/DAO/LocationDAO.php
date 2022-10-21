@@ -22,7 +22,7 @@
             foreach($resultBD as $row){
                 $location = new Location();
 
-                $location->__fromDB($row["id"],$row["adress"]
+                $location->__fromDB($row["idLocation"],$row["adress"]
                 ,$row["neighborhood"],$row["city"]
                 ,$row["province"],$row["country"]);
 
@@ -35,13 +35,13 @@
             $location = null;
 
             $query = "CALL Location_GetById(?)";
-            $parameters["id"] = $id;
+            $parameters["idLocation"] = $id;
             $this->connection = Connection::GetInstance();
             $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
 
             foreach($resultBD as $row){
                 $location = new Location();
-                $location->__fromDB($row["id"],$row["adress"]
+                $location->__fromDB($row["idLocation"],$row["adress"]
                 ,$row["neighborhood"],$row["city"]
                 ,$row["province"],$row["country"]);
             }
@@ -62,7 +62,7 @@
             
         public function Delete($id){
             $query = "CALL Location_Delete(?)";
-            $parameters["id"] = $id;
+            $parameters["idLocation"] = $id;
 
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
