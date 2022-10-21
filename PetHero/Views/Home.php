@@ -11,7 +11,10 @@
     <br>
     <a href="Home/ViewRegister">Registrate</a>
     <br>
+    <a href="Home/ViewLogin">inicia sesion</a>
+    <br>
     <a href="Home/ViewBeKeeper">Be a Keeper!</a>
+    <br>
     <table style="text-align:center;">
     <thead>
         <tr>

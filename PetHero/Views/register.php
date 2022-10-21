@@ -15,6 +15,12 @@
         <input type="submit" class="btn" value="Agregar" style="background-color:#DC8E47;color:white;"/>
         <br>
         <button type="reset">Reset</button>
-        
         </form> 
+        Eliminar usuario
+        <form action="<?php echo FRONT_ROOT."/Home/DeleteUser" ?>" method="post">
+        <input type="number" name="id">
+        <input type="submit" class="btn" value="Agregar" style="background-color:#DC8E47;color:white;"/>
+        </form>
+        
+        
 </body>

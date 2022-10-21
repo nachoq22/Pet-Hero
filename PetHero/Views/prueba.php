@@ -7,6 +7,6 @@
     <title>Document</title>
 </head>
 <body>
-        AÑADIDO CORRECTAMENTE!
+        HA INGRESADO CORRECTAMENTE!
 </body>
 </html>

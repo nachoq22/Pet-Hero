@@ -57,17 +57,17 @@
             return $user;
         }
 
-        public function Login($username,$password){
+        public function Login(User $user){
             $rta = 0;
             $query = "CALL User_Login(?,?,?)";
-            $parameters["username"] = $username;
-            $parameters["password"] = $password;
+            $parameters["username"] = $user->getUsername();
+            $parameters["password"] = $user->getPassword();
             $parameters["rta"] = $rta;
             $this->connection = Connection::GetInstance();
             $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
 
             foreach($resultBD as $row){
-                $rta = $row["rta"];
+                $rta = $row["@rta"];
             }
         return $rta;
         }
@@ -95,7 +95,7 @@
         }
             
         public function Delete($id){
-            $query = "CALL Location_Delete(?)";
+            $query = "CALL User_Delete(?)";
             $parameters["idUser"] = $id;
 
             $this->connection = Connection::GetInstance();

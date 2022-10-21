@@ -26,6 +26,11 @@
             require_once(VIEWS_PATH."register.php");
         }
 
+        public function ViewLogin()
+        {
+            require_once(VIEWS_PATH."Login.php");
+        }
+
         public function ViewBeKeeper()
         {
             require_once(VIEWS_PATH."BeKeeper.php");
@@ -36,6 +41,28 @@
             
             require_once(VIEWS_PATH."agregarlocation.php");
         }*/
+
+        public function Login($userName, $password)
+        {
+            /*
+            $user = new User();
+            $user->__fromLogin($userName,$password);
+            $rta = $this->UserDAO->Login($user);
+            if($rta=1){
+                session_start();
+                $loggedUser = new User();
+                $loggedUser->setUsername($userName);
+                $loggedUser->setPassword($password);
+                require_once(VIEWS_PATH."prueba.php");
+            }*/
+            require_once(VIEWS_PATH."prueba.php");
+        }
+
+        public function DeleteUser($id)
+        {
+            echo $id;
+            $this->userDAO->Delete($id);
+        }
 
         public function Register($userName, $password, $email)
         {
@@ -58,9 +85,9 @@
             $user = new User();
             $user->__fromRegister($userName,$password,$email);
             /*echo "AQUI ESTA EL USUARIO \n" . var_dump($user);*/
-            echo $user->getUsername();
+            /*echo $user->getUsername();
             echo $user->getPassword();
-            echo $user->getEmail();
+            echo $user->getEmail();*/
             $this->userDAO->Register($user);
             $this->Index();
             //require_once(VIEWS_PATH."home.php");

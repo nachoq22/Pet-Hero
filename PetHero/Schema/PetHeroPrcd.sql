@@ -166,6 +166,8 @@ BEGIN
     INTO rta
     FROM User
     WHERE User.username = username AND User.password = password;
+    
+    SELECT @rta;
 END;
 $$
 

@@ -32,6 +32,11 @@ use \Model\PersonalData as PersonalData;
             $this->password = $password;
             $this->email = $email;
         } 
+
+        function __fromLogin($username,$password){
+            $this->username = $username;
+            $this->password = $password;
+        } 
     
 //GETTER & SERTTER
         public function getId(){
