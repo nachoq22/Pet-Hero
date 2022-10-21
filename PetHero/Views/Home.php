@@ -9,7 +9,8 @@
 <body>
     Bienvenido a pet hero, aqui podra buscar a un keeper adecuado para cuidar a su mascota asi como ofrecerse a cuidar otras mascotas!
 
-    <a href="Login.php">Convertite en Owner!</a>
+    <a href="Home/ViewRegister">Registrate</a>
+
 
 
 </body>
