@@ -2,14 +2,23 @@
     namespace Controllers;
 
     use \DAO\UserDAO;
+    use \DAO\LocationDAO;
     use \Model\User as User;
     use \Model\PersonalData as PersonalData;
 
     class HomeController
     {
         private $userDAO;
+        private $locationDAO;
+
+        public function __construct(){
+            $this->userDAO = new UserDAO();
+            $this->locationDAO = new LocationDAO();
+        }
+
         public function Index()
         {
+            $locationList=$this->locationDAO->GetAll();
             require_once(VIEWS_PATH."home.php");
         }
 
@@ -49,10 +58,9 @@
             }*/
             $user = new User();
             $user->__fromRegister($userName,$password,$email);
-            var_dump($user);
-            $this->UserDAO->Register($user);
+/*            echo "AQUI ESTA EL USUARIO \n" . var_dump($user);*/
+            $this->userDAO->Register($user);
             require_once(VIEWS_PATH."Home.php");
         } 
     }
-
 ?>
