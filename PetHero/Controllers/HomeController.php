@@ -3,21 +3,32 @@
 
     use \DAO\UserDAO;
     use \DAO\LocationDAO;
+    use \DAO\SizeDAO;
+    use \DAO\PetTypeDAO;
     use \Model\User as User;
 
     class HomeController
     {
         private $userDAO;
         private $locationDAO;
+        private $sizeDAO;
+        private $typeDAO;
 
         public function __construct(){
             $this->userDAO = new UserDAO();
             $this->locationDAO = new LocationDAO();
+            $this->sizeDAO = new SizeDao();
+            $this->typeDAO = new PetTypeDAO();
         }
 
         public function Index()
         {
             $locationList=$this->locationDAO->GetAll();
+            $sizeList=$this->sizeDAO->GetAll();
+            $typeList=$this->typeDAO->GetAll();
+            $userList =$this->userDAO->GetAll();
+            $userIs=$this->userDAO->Get(2);
+
             require_once(VIEWS_PATH."home.php");
         }
 
@@ -54,7 +65,7 @@
             $user->__fromRegister($userName,$password,$email);
 /*            echo "AQUI ESTA EL USUARIO \n" . var_dump($user);*/
             $this->userDAO->Register($user);
-            require_once(VIEWS_PATH."home.php");
+            $this->Index();
         } 
     }
 ?>

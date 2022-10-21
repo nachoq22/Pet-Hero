@@ -10,7 +10,14 @@ use \Model\PersonalData as PersonalData;
         private PersonalData $data;
 
 //CONSTRUCTORS
-        function __fromDB($idUser,$username,$password,$email,PersonalData $data){
+        function __fromDB($idUser,$username,$password,$email){
+            $this->idUser = $idUser;
+            $this->username = $username;
+            $this->password = $password;
+            $this->email = $email;
+        } 
+
+        function __fromDBbyKeeper($idUser,$username,$password,$email,PersonalData $data){
             $this->idUser = $idUser;
             $this->username = $username;
             $this->password = $password;
