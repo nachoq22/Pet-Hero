@@ -4,7 +4,6 @@
     use \DAO\UserDAO;
     use \DAO\LocationDAO;
     use \Model\User as User;
-    use \Model\PersonalData as PersonalData;
 
     class HomeController
     {
@@ -38,7 +37,7 @@
             require_once(VIEWS_PATH."agregarlocation.php");
         }*/
 
-        public function Register($userName, $email, $password)
+        public function Register($userName, $password, $email)
         {
             /*$user = $this->userDAO->GetByUserName($userName);
 
@@ -58,9 +57,13 @@
             }*/
             $user = new User();
             $user->__fromRegister($userName,$password,$email);
-/*            echo "AQUI ESTA EL USUARIO \n" . var_dump($user);*/
+            /*echo "AQUI ESTA EL USUARIO \n" . var_dump($user);*/
+            echo $user->getUsername();
+            echo $user->getPassword();
+            echo $user->getEmail();
             $this->userDAO->Register($user);
-            require_once(VIEWS_PATH."Home.php");
+            $this->Index();
+            //require_once(VIEWS_PATH."home.php");
         } 
     }
 ?>
