@@ -17,14 +17,19 @@ use \Model\Location as Location;
         public function Add($adress, $neighborhood, $city, $province, $country)
         {
             //var_dump($adress);
+            
             $location = new Location();
-            $location->setAdress($adress);
+
+            $location->__fromRequest($adress, $neighborhood, $city, $province, $country);
+            /*$location->setAdress($adress);
             $location->setNeighborhood($neighborhood);
             $location->setCity($city);
             $location->setProvince($province);
-            $location->setCountry($country);
+            $location->setCountry($country);*/
             $this->locationDAO->Add($location);
             //require_once(VIEWS_PATH."prueba.php");
+            $locationList=$this->locationDAO->GetAll();
+            require_once(VIEWS_PATH."Locationlist.php");
         } 
     }
 ?>

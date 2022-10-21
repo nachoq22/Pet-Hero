@@ -15,6 +15,8 @@
 
         public function Register($userName, $password)
         {
+            
+            require_once(VIEWS_PATH."agregarlocation.php");
         }
     }
 
