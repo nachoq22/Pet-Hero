@@ -4,7 +4,6 @@
     use \DAO\UserDAO;
     use \DAO\LocationDAO;
     use \Model\User as User;
-    use \Model\PersonalData as PersonalData;
 
     class HomeController
     {
@@ -55,7 +54,7 @@
             $user->__fromRegister($userName,$password,$email);
 /*            echo "AQUI ESTA EL USUARIO \n" . var_dump($user);*/
             $this->userDAO->Register($user);
-            require_once(VIEWS_PATH."Home.php");
+            require_once(VIEWS_PATH."home.php");
         } 
     }
 ?>

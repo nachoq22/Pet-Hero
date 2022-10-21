@@ -140,6 +140,15 @@ END;
 $$
 
 DELIMITER $$
+CREATE PROCEDURE User_GetByUsername(IN username VARCHAR(20))
+BEGIN
+    SELECT * 
+    FROM User
+    WHERE (User.username = username);
+END;
+$$
+
+DELIMITER $$
 CREATE PROCEDURE User_Add(IN username VARCHAR(20),IN password VARCHAR(20),IN email VARCHAR(30),IN idData INT)
 BEGIN
     INSERT INTO User

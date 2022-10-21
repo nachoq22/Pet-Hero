@@ -31,7 +31,7 @@
             return $locationList;
         }
 
-        public function Get($id){
+        public function Get($id) : Location{
             $location = null;
 
             $query = "CALL Location_GetById(?)";
@@ -41,9 +41,16 @@
 
             foreach($resultBD as $row){
                 $location = new Location();
-                $location->__fromDB($row["idLocation"],$row["adress"]
+
+                /*$location->__fromDB($row["idLocation"],$row["adress"]
                 ,$row["neighborhood"],$row["city"]
-                ,$row["province"],$row["country"]);
+                ,$row["province"],$row["country"]);*/
+                $location->setId($row["idLocation"]);
+                $location->setAdress($row["adress"]);
+                $location->setNeighborhood($row["neighborhood"]);
+                $location->setCity($row["city"]);
+                $location->setProvince($row["province"]);
+                $location->setCountry($row["country"]);
             }
             return $location;
         }
