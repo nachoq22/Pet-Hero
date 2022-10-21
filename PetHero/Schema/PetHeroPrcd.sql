@@ -175,6 +175,8 @@ BEGIN
     INTO rta
     FROM User
     WHERE User.username = username AND User.password = password;
+    
+    SELECT @rta;
 END;
 $$
 
@@ -406,6 +408,7 @@ Call PersonalData_Add("Ramiro","Talangana","M","44886655",2);
 /*********************************TEST USER*******************************************/
 Call User_GetAll();
 Call User_GetById(2);
+Call User_GetByUsername("planetar");
 /*CALL User_Add(username,password,varResp);*/
 CALL User_Login("planetar","orylOSad",@rta);
 SELECT @rta;
