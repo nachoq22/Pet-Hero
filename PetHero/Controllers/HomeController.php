@@ -29,7 +29,7 @@
             $userList =$this->userDAO->GetAll();
             $userIs=$this->userDAO->Get(2);
 
-            require_once(VIEWS_PATH."home.php");
+            require_once(VIEWS_PATH."Home.php");
         }
 
         public function ViewRegister()
