@@ -57,6 +57,23 @@
             return $user;
         }
 
+        public function GetbyKeeper($id){
+            $user = null;
+
+            $query = "CALL User_GetById(?)";
+            $parameters["idUser"] = $id;
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+
+            foreach($resultBD as $row){
+                $user = new User();
+
+                $user->__fromDBbyKeeper($row["idUser"],$row["username"],$row["password"],$row["email"]
+                ,$this->dataDao->Get($row["idData"]));
+            }
+            return $user;
+        }
+
         public function GetByUsername($username){
             $user = null;
 
@@ -69,6 +86,23 @@
                 $user = new User();
 
                 $user->__fromDB($row["idUser"],$row["username"],$row["password"],$row["email"]
+                ,$this->dataDao->Get($row["idData"]));
+            }
+            return $user;
+        }
+
+        public function GetByUsernameByKeeper($username){
+            $user = null;
+
+            $query = "CALL User_GetByUsername(?)";
+            $parameters["username"] = $username;
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+
+            foreach($resultBD as $row){
+                $user = new User();
+
+                $user->__fromDBbyKeeper($row["idUser"],$row["username"],$row["password"],$row["email"]
                 ,$this->dataDao->Get($row["idData"]));
             }
             return $user;

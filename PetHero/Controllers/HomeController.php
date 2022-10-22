@@ -32,6 +32,42 @@
             require_once(VIEWS_PATH."agregarlocation.php");
         }*/
 
+        public function ViewLogin()
+        {
+            require_once(VIEWS_PATH."Login.php");
+        }
+
+        public function ViewLocation()
+        {
+            require_once(VIEWS_PATH."agregarlocation.php");
+        }
+
+        public function Login($userName, $password)
+        {
+            
+            $user = new User();
+            $user->__fromLogin($userName,$password);
+            //$rta = $this->UserDAO->Login($user);
+            $userLogin = $this->userDAO->GetByUsername($userName);
+            var_dump($userLogin);
+            //echo $userLogin->getUsername();
+            //echo $userLogin->getPassword();
+            /*if($rta=1){
+                session_start();
+                $loggedUser = new User();
+                $loggedUser->setUsername($userName);
+                $loggedUser->setPassword($password);
+                require_once(VIEWS_PATH."prueba.php");
+            }*/
+
+        }
+
+        public function DeleteUser($id)
+        {
+            echo $id;
+            $this->userDAO->Delete($id);
+        }
+
         public function Register($userName, $email, $password)
         {
             /*$user = $this->userDAO->GetByUserName($userName);
@@ -52,7 +88,6 @@
             }*/
             $user = new User();
             $user->__fromRegister($userName,$password,$email);
-/*            echo "AQUI ESTA EL USUARIO \n" . var_dump($user);*/
             $this->userDAO->Register($user);
             require_once(VIEWS_PATH."home.php");
         } 

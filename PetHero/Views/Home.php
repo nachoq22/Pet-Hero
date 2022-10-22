@@ -15,6 +15,8 @@
     <br>
     <a href="Home/ViewBeKeeper">Be a Keeper!</a>
     <br>
+    <a href="Home/ViewLocation">Add location</a>
+    <br>
     <table style="text-align:center;">
     <thead>
         <tr>
