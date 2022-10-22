@@ -18,10 +18,10 @@ namespace Model;
         } 
         
 //GETTER & SERTTER
-        public function getIdType(){
+        public function getId(){
             return $this->idType;
         }
-        public function setIdType($idType){
+        public function setId($idType){
             $this->idType = $idType;
         }
 

@@ -32,6 +32,23 @@
                 $user = new User();
 
                 $user->__fromDB($row["idUser"],$row["username"]
+                ,$row["password"],$row["email"]);
+                array_push($userList,$user);
+            }
+            return $userList;
+        }
+
+        public function GetAllByKeeper(){
+            $userList = array();
+
+            $query = "CALL User_GetAll()";
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,array(),QueryType::StoredProcedure);
+            
+            foreach($resultBD as $row){
+                $user = new User();
+
+                $user->__fromDBbyKeeper($row["idUser"],$row["username"]
                 ,$row["password"],$row["email"]
                 ,$this->dataDao->Get($row["idData"]));
 
@@ -51,8 +68,7 @@
             foreach($resultBD as $row){
                 $user = new User();
 
-                $user->__fromDB($row["idUser"],$row["username"],$row["password"],$row["email"]
-                ,$this->dataDao->Get($row["idData"]));
+                $user->__fromDB($row["idUser"],$row["username"],$row["password"],$row["email"]);
             }
             return $user;
         }
@@ -74,19 +90,19 @@
             return $user;
         }
 
-        public function GetByUsername($username){
+
+        public function GetByUsername($id){
             $user = null;
 
-            $query = "CALL User_GetByUsername(?)";
-            $parameters["username"] = $username;
+            $query = "CALL User_GetById(?)";
+            $parameters["idUser"] = $id;
             $this->connection = Connection::GetInstance();
             $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
 
             foreach($resultBD as $row){
                 $user = new User();
 
-                $user->__fromDB($row["idUser"],$row["username"],$row["password"],$row["email"]
-                ,$this->dataDao->Get($row["idData"]));
+                $user->__fromDB($row["idUser"],$row["username"],$row["password"],$row["email"]);
             }
             return $user;
         }
@@ -108,17 +124,17 @@
             return $user;
         }
 
-        public function Login(User $user){
+        public function Login($username,$password){
             $rta = 0;
             $query = "CALL User_Login(?,?,?)";
-            $parameters["username"] = $user->getUsername();
-            $parameters["password"] = $user->getPassword();
+            $parameters["username"] = $username;
+            $parameters["password"] = $password;
             $parameters["rta"] = $rta;
             $this->connection = Connection::GetInstance();
             $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
 
             foreach($resultBD as $row){
-                $rta = $row["@rta"];
+                $rta = $row["rta"];
             }
         return $rta;
         }
@@ -146,7 +162,7 @@
         }
             
         public function Delete($id){
-            $query = "CALL User_Delete(?)";
+            $query = "CALL Location_Delete(?)";
             $parameters["idUser"] = $id;
 
             $this->connection = Connection::GetInstance();

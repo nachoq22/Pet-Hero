@@ -3,22 +3,33 @@
 
     use \DAO\UserDAO;
     use \DAO\LocationDAO;
+    use \DAO\SizeDAO;
+    use \DAO\PetTypeDAO;
     use \Model\User as User;
 
     class HomeController
     {
         private $userDAO;
         private $locationDAO;
+        private $sizeDAO;
+        private $typeDAO;
 
         public function __construct(){
             $this->userDAO = new UserDAO();
             $this->locationDAO = new LocationDAO();
+            $this->sizeDAO = new SizeDao();
+            $this->typeDAO = new PetTypeDAO();
         }
 
         public function Index()
         {
             $locationList=$this->locationDAO->GetAll();
-            require_once(VIEWS_PATH."home.php");
+            $sizeList=$this->sizeDAO->GetAll();
+            $typeList=$this->typeDAO->GetAll();
+            $userList =$this->userDAO->GetAll();
+            $userIs=$this->userDAO->Get(2);
+
+            require_once(VIEWS_PATH."Home.php");
         }
 
         public function ViewRegister()
@@ -31,42 +42,6 @@
             
             require_once(VIEWS_PATH."agregarlocation.php");
         }*/
-
-        public function ViewLogin()
-        {
-            require_once(VIEWS_PATH."Login.php");
-        }
-
-        public function ViewLocation()
-        {
-            require_once(VIEWS_PATH."agregarlocation.php");
-        }
-
-        public function Login($userName, $password)
-        {
-            
-            $user = new User();
-            $user->__fromLogin($userName,$password);
-            //$rta = $this->UserDAO->Login($user);
-            $userLogin = $this->userDAO->GetByUsername($userName);
-            var_dump($userLogin);
-            //echo $userLogin->getUsername();
-            //echo $userLogin->getPassword();
-            /*if($rta=1){
-                session_start();
-                $loggedUser = new User();
-                $loggedUser->setUsername($userName);
-                $loggedUser->setPassword($password);
-                require_once(VIEWS_PATH."prueba.php");
-            }*/
-
-        }
-
-        public function DeleteUser($id)
-        {
-            echo $id;
-            $this->userDAO->Delete($id);
-        }
 
         public function Register($userName, $email, $password)
         {
@@ -88,8 +63,9 @@
             }*/
             $user = new User();
             $user->__fromRegister($userName,$password,$email);
+/*            echo "AQUI ESTA EL USUARIO \n" . var_dump($user);*/
             $this->userDAO->Register($user);
-            require_once(VIEWS_PATH."home.php");
+            $this->Index();
         } 
     }
 ?>
