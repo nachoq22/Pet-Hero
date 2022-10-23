@@ -90,15 +90,14 @@
             return $user;
         }
 
-
-        public function GetByUsername($id){
+        public function GetByUsername($username){
             $user = null;
 
-            $query = "CALL User_GetById(?)";
-            $parameters["idUser"] = $id;
+            $query = "CALL User_GetByUsername(?)";
+            $parameters["username"] = $username;
             $this->connection = Connection::GetInstance();
             $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
-
+            
             foreach($resultBD as $row){
                 $user = new User();
 
