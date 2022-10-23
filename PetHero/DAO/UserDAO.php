@@ -90,7 +90,6 @@
             return $user;
         }
 
-
         public function GetByUsername($username){
             $user = null;
 
@@ -98,7 +97,7 @@
             $parameters["username"] = $username;
             $this->connection = Connection::GetInstance();
             $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
-
+            
             foreach($resultBD as $row){
                 $user = new User();
 
