@@ -40,8 +40,8 @@
           </svg>
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#signup" data-bs-toggle="modal" data-bs-target=".bs-modal-sm">Sign Up</a></li>
-            <li><a class="dropdown-item" href="#">Login</a></li>
+            <li><a class="dropdown-item" href="#pills-login-tab" data-bs-toggle="modal" data-bs-target=".bs-modal-sm">Sign Up</a></li>
+            <li><a class="dropdown-item" href="#pills-login-tab" data-bs-toggle="modal" data-bs-target=".bs-modal-sm">Login</a></li>
           </ul>
         </li>
       </ul>
@@ -59,28 +59,60 @@
     <div class="modal-dialog modal-sm">
 
       <div class="modal-content">
-        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+
+        <ul class="nav nav-pills nav-justified" id="pills-tab" role="tablist">
           <li class="nav-item text-center">
             <a class="nav-link active" id="pills-login-tab" 
-                data-bs-toggle="pill" href="#login" role="tab" aria-controls="login" aria-selected="true">Login</a>
+                data-bs-toggle="pill" href="#pills-login" role="tab" 
+                aria-controls="login">Login</a>
           </li>
           <li class="nav-item text-center">
             <a class="nav-link" id="pills-signUp-tab" 
-                data-bs-toggle="pill" href="#signUp" role="tab" aria-controls="signUp" aria-selected="false">Sign Up</a>
+                data-bs-toggle="pill" href="#pills-signUp" role="tab" 
+                aria-controls="signUp" >Sign Up</a>
           </li>
         </ul>
 
         <div class="tab-content" id="pills-tabContent">
           <!--LOGIN TAB-->
-          <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="pills-login-tab">
-            <div class="form px-4 pt-5">
-              <input type="text" name="" class="form-control" placeholder="Username">
-              <input type="text" name="" class="form-control" placeholder="Password">
-              <button class="btn btn-dark btn-block">Login</button>
-            </div>
+          <div class="tab-pane fade" id="pills-login" role="tabpanel" aria-labelledby="pills-login-tab">
+            <form>
+              <!-- Email input -->
+              <div class="form-outline mb-4">
+                <input type="email" id="form1Example1" class="form-control" />
+                <label class="form-label" for="form1Example1">Email address</label>
+              </div>
+
+              <!-- Password input -->
+              <div class="form-outline mb-4">
+                <input type="password" id="form1Example2" class="form-control" />
+                <label class="form-label" for="form1Example2">Password</label>
+              </div>
+
+              <!-- 2 column grid layout for inline styling -->
+              <div class="row mb-4">
+                <div class="col d-flex justify-content-center">
+                  <!-- Checkbox -->
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="form1Example3" checked />
+                    <label class="form-check-label" for="form1Example3"> Remember me </label>
+                  </div>
+                </div>
+
+                <div class="col">
+                  <!-- Simple link -->
+                  <a href="#!">Forgot password?</a>
+                </div>
+              </div>
+
+              <!-- Submit button -->
+              <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+            </form> 
+
+
           </div>
           <!--SIGNIN TAB-->
-          <div class="tab-pane fade" id="pills-signin" role="tabpanel" aria-labelledby="pills-signUp-tab">
+          <div class="tab-pane fade" id="pills-signUp" role="tabpanel" aria-labelledby="pills-signUp-tab">
               <div class="form px-4 pt-5">
                 <input type="text" name="" class="form-control" placeholder="Username">
                 <input type="text" name="" class="form-control" placeholder="Email">
