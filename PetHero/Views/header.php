@@ -14,10 +14,10 @@
           <a class="nav-link active" aria-current="page" href="<?php echo  FRONT_ROOT."/Home/ViewRegister"?>">Register</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="Home/ViewRegister">Login</a>
+          <a class="nav-link active" aria-current="page" href="<?php echo  FRONT_ROOT."/Home/ViewLogin"?>">Login</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="Location/Add">Add Algo</a>
+          <a class="nav-link" href="<?php echo  FRONT_ROOT."/Home/ViewPersonalinfo"?>">Add Algo</a>
         </li>
         <li class="nav-item">
         <a class="btn btn-outline-success me-2" href="Home/ViewBeKeeper" type="button">Be a Keeper!</a>

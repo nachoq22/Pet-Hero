@@ -37,11 +37,15 @@
             require_once(VIEWS_PATH."register.php");
         }
 
-        /*public function Register($userName, $password)
+        public function ViewLogin()
         {
-            
-            require_once(VIEWS_PATH."agregarlocation.php");
-        }*/
+            require_once(VIEWS_PATH."login.php");
+        }
+
+        public function ViewPersonalInfo()
+        {
+            require_once(VIEWS_PATH."PersonalData.php");
+        }
 
         public function Register($userName, $email, $password)
         {
@@ -67,5 +71,28 @@
             $this->userDAO->Register($user);
             $this->Index();
         } 
+
+        public function Login($userName, $password)
+        {
+            
+            $user = new User();
+            $user->__fromLogin($userName,$password);
+            $rta = $this->UserDAO->Login($user);
+            if($rta=1){
+                session_start();
+                $loggedUser = new User();
+                $loggedUser->setUsername($userName);
+                $loggedUser->setPassword($password);
+                $_SESSION["loggedUser"]= $loggedUser;
+                $this->Index();
+                var_dump($_SESSION["loggedUser"]);
+            }
+        }
+
+        public function DeleteUser($id)
+        {
+            echo $id;
+            $this->userDAO->Delete($id);
+        }
     }
 ?>
