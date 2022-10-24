@@ -89,7 +89,7 @@ use \DAO\QueryType as QueryType;
 
                 $this->pdoStatement->execute();
 
-                return $this->pdo->lastInsertId();
+                return $this->pdo->lastInsertId("idLocation");
             }
             catch(Exception $e)
             {

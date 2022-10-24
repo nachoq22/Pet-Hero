@@ -10,6 +10,7 @@ include("Head.php");
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+<!--
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="<?php echo  FRONT_ROOT . "/Home/ViewRegister" ?>">Register</a>
           </li>
@@ -19,15 +20,17 @@ include("Head.php");
           <li class="nav-item">
             <a class="nav-link" href="Location/Add">Add Algo</a>
           </li>
+-->
           <li class="nav-item">
-            <a class="btn btn-outline-success me-2" href="Home/ViewBeKeeper" type="button">Be a Keeper!</a>
+            <a class="btn btn-outline-success me-2" href="<?php echo FRONT_ROOT."/Home/ViewBeKeeper"?>" type="button">Be a Keeper!</a>
           </li>
+
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               ADDS Registers
             </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Add Location</a></li>
+              <li><a class="dropdown-item" href="<?php echo FRONT_ROOT."/Home/ViewAddTemplates"?>">Add Location</a></li>
               <li><a class="dropdown-item" href="#">Add Size</a></li>
               <li><a class="dropdown-item" href="#">Add PetType</a></li>
             </ul>
@@ -61,9 +64,9 @@ include("Head.php");
 <!-- Modal -->
 <div class="modal fade bs-modal-sm" aria-hidden="true" id="modalLoginRegister">
   <div class="modal-dialog modal-sm">
-
     <div class="modal-content">
 
+      <!--NAV TABS-->
       <ul class="nav nav-pills nav-justified" id="pills-tab" role="tablist">
         <li class="nav-item text-center">
           <a class="nav-link" id="pills-login-tab" data-bs-toggle="pill" href="#pills-login" role="tab" aria-controls="login">Login</a>
@@ -73,80 +76,76 @@ include("Head.php");
         </li>
       </ul>
 
+
       <div class="tab-content" id="pills-tabContent">
-        <!--LOGIN TAB-->
-        <div class="tab-pane fade " id="pills-login" role="tabpanel" aria-labelledby="pills-login-tab">
-          <form>
-            <!-- Email input -->
-            <div class="form-outline mb-4">
-              <input type="email" id="form1Example1" class="form-control" />
-              <label class="form-label" for="form1Example1">Email address</label>
-            </div>
 
-            <!-- Password input -->
-            <div class="form-outline mb-4">
-              <input type="password" id="form1Example2" class="form-control" />
-              <label class="form-label" for="form1Example2">Password</label>
-            </div>
-
-            <!-- 2 column grid layout for inline styling -->
-            <div class="row mb-4">
-              <div class="col d-flex justify-content-center">
-                <!-- Checkbox -->
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="" id="form1Example3" checked />
-                  <label class="form-check-label" for="form1Example3"> Remember me </label>
-                </div>
-              </div>
-
-              <div class="col">
-                <!-- Simple link -->
-                <a href="#!">Forgot password?</a>
-              </div>
-            </div>
-
-            <!-- Submit button -->
-            <button type="submit" class="btn btn-primary btn-block">Sign in</button>
-          </form>
-
-
-        </div>
-
-        <!--SIGNIN TAB-->
+        <!--SIGNUP TAB-->
         <div class="tab-pane fade" id="pills-signUp" role="tabpanel" aria-labelledby="pills-signUp-tab">
-          <div class="form px-4 pt-5">
-            <input type="text" name="" class="form-control" placeholder="Username">
-            <input type="text" name="" class="form-control" placeholder="Email">
-            <input type="text" name="" class="form-control" placeholder="Password">
-            <button class="btn btn-dark btn-block">Sign Up</button>
-          </div>
+          <form action="<?php echo FRONT_ROOT."/Home/Register" ?>" method="post">
+            <div class="mb-3">
+              <label for="inputUsername" class="form-label">Username</label>
+              <input type="text" class="form-control" id="inputUsername" name="username">
+            </div>
+            <div class="mb-3">
+              <label for="inputEmail" class="form-label">Email</label>
+              <input type="email" class="form-control" id="inputEmail" name="email">
+            </div>
+            <div class="mb-3">
+              <label for="inputPassword" class="form-label">Password</label>
+              <input type="password" class="form-control" id="inputPassword" name="password">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="reset" class="btn btn-primary">Reset</button>
+          </form>
         </div>
+
+        <!--LOGIN TAB-->
+        <div class="tab-pane fade" id="pills-login" role="tabpanel" aria-labelledby="pills-login-tab">
+          <form action="<?php echo FRONT_ROOT."/Home/Login" ?>" method="post">
+            <div class="mb-3">
+              <label for="inputUsername" class="form-label">Username</label>
+              <input type="username" class="form-control" id="inputUsername" name="username">
+            </div>
+            <div class="mb-3">
+              <label for="inputPassword" class="form-label">Password</label>
+              <input type="password" class="form-control" id="inputPassword" name="password">
+            </div>
+
+            <!-- PARA PROBAR SI MANTIENE SESIONES VIEJAS
+            <div class="mb-3 form-check">
+              <input type="checkbox" class="form-check-input" id="exampleCheck1">
+              <label class="form-check-label" for="exampleCheck1">Check me out</label>
+            </div>-->
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+
+        
       </div>
     </div>
   </div>
-  <input type="hidden" id="currentTab" />
+ <!-- <input type="hidden" id="currentTab" />  NO SE QUE HACE,NO TOCAR-->
 </div>
 
 <script>
   const menu =  document.getElementById("menuProfile")
   let isLogged=false;
+  //Parte que sirve para cambio de dropwdown items en caso de estar logueado
   if(isLogged){
     const item1 =  `<li><a class="dropdown-item" id="signUpItem" data-bs-toggle="modal" data-bs-target=".bs-modal-sm">Profile</a></li>
-    <li><a class="dropdown-item" id="signUpItem" data-bs-toggle="modal" data-bs-target=".bs-modal-sm">Cerrar Session</a></li>
-    `
+    <li><a class="dropdown-item" id="signUpItem" data-bs-toggle="modal" data-bs-target=".bs-modal-sm">Cerrar Session</a></li>`
     menu.innerHTML = item1
   }else{
+  //En caso de no estarlo mantiene los originales en el HTML de arriba y dispara MODAL --NO TOCAR
     const signUpItem = document.getElementById("signUpItem")
-  signUpItem.addEventListener('click', (e) => {
+    signUpItem.addEventListener('click', (e) => {
     document.getElementById("pills-signUp-tab").click()
   })
-
-
 
   const loginItem = document.getElementById("loginItem")
   loginItem.addEventListener('click', (e) => {
     document.getElementById("pills-login-tab").click()
   })
   }
-  
 </script>

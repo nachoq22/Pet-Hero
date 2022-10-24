@@ -4,7 +4,7 @@ namespace Controllers;
 use \DAO\LocationDAO;
 use \Model\Location as Location;
 
-    class LocationController
+    class LocationController 
     {
         private $locationDAO;
 
@@ -29,8 +29,7 @@ use \Model\Location as Location;
             $location->setProvince($province);
             $location->setCountry($country);*/
             $this->locationDAO->Add($location);
-            $locationList=$this->locationDAO->GetAll();
-            require_once(VIEWS_PATH."Locationlist.php");
+            require_once(VIEWS_PATH."Home.php");
         } 
     }
 ?>

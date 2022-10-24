@@ -3,9 +3,10 @@
     use \DAO\PetDAO as PetDAO;
     use \DAO\SizeDAO as SizeDAO;
     use \DAO\PetTypeDAO as PetTypeDAO;
-    use \Models\Pet as Pet;
-    use \Models\Size as Size;
-    use \Models\PetType as PetType;
+    use \Model\Pet as Pet;
+    use \Model\Size as Size;
+    use \Model\PetType as PetType;
+    use \Model\Owner as Owner;
 
         class PetController
         {
@@ -15,14 +16,14 @@
 
         public function __construct()
         {
-            $this->PetDAO = new PetDAO();
+            //$this->PetDAO = new PetDAO();
             $this->SizeDAO = new SizeDAO();
-            $this->PetTypaDAO = new PetTypeDAO();
+            $this->PetTypeDAO = new PetTypeDAO();
         }
 
         public function showListView()
         {
-            $PetDAO=$this->PetDAO->GetAll();
+            $petDAO=$this->PetDAO->GetAll();
         }
 
         public function Add($name, $breed, $profileIMG, $vaccinationPlanIMG, $observation, $type, $size)
@@ -31,12 +32,12 @@
             $sizeOBJ->setName($size);
             $typeOBJ = new PetType();
             $typeOBJ->setName($type);
+            $owner = new Owner();
             $pet = new Pet();   
-            $pet->__fromRequest($name, $breed, $profileIMG, $vaccinationPlanIMG, $observation, $typeOBJ, $sizeOBJ);
-            $this->PetDAO->Add($pet);
-            $petList=$this->petDAO->GetAll();
+            $pet->__fromRequest($name, $breed, $profileIMG, $vaccinationPlanIMG, $observation, $typeOBJ, $sizeOBJ,$owner);
+            //$this->petDAO->Add($pet);
+            //$petList=$this->petDAO->GetAll();
             require_once(VIEWS_PATH."Pets.php");
         } 
-        }
-
+    }
 ?>
