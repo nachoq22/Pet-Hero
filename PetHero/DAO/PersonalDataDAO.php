@@ -59,12 +59,13 @@
         }
 
         public function Add(PersonalData $data){
+            $idLocation = rand(1, 10);
             $query = "CALL PersonalData_Add(?,?,?,?,?)";
             $parameters["name"] = $data->getName();
             $parameters["surname"] = $data->getSurname();
             $parameters["sex"] = $data->getSex();
             $parameters["dni"] = $data->getDni();
-            $parameters["idLocation"] = $data->getLocation()->getId();
+            $parameters["idLocation"] = $idLocation; //$data->getLocation()->getId();
             
             /*$idLocation = $this->locationDAO->Add($data->getLocation());*/
 
