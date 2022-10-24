@@ -1,16 +1,14 @@
 <?php
-    namespace DAO;
+namespace DAO;
 
-    use \DAO\Connection as Connection;
-    use \DAO\QueryType as QueryType;
+use \DAO\Connection as Connection;
+use \DAO\QueryType as QueryType;
 
-    use \DAO\IPersonalDataDAO as IPersonalDataDAO;
-    use \Model\PersonalData as PersonalData;
-    use \DAO\LocationDAO as LocationDAO;
-    use \Model\Location as Location;
+use \DAO\IPersonalDataDAO as IPersonalDataDAO;
+use \DAO\LocationDAO as LocationDAO;
+use \Model\PersonalData as PersonalData;
 
     class PersonalDataDAO implements IPersonalDataDAO{
-
         private $connection;
         private $tableName = 'PersonalData';
 
@@ -19,7 +17,6 @@
         public function __construct(){
             $this->locationDAO = new LocationDAO();
         }
-
 
         public function GetAll(){
             $dataList = array();
@@ -30,12 +27,11 @@
             
             foreach($resultBD as $row){
                 $data = new PersonalData();
-
                 $data->__fromDB($row["id"],$row["name"]
-                ,$row["surname"],$row["sex"]
-                ,$row["dni"],$this->locationDAO->Get($row["idLocation"]));
-
-                 array_push($dataList,$data);
+                               ,$row["surname"],$row["sex"]
+                               ,$row["dni"]
+                               ,$this->locationDAO->Get($row["idLocation"]));
+                array_push($dataList,$data);
             }
             return $dataList;
         }

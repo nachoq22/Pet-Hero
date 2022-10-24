@@ -27,12 +27,12 @@
             var_dump($this->personalDataDAO->Get(7));
         }
 
-        public function AddKeeper()
+        /*public function AddKeeper()
         {
             $keeper = new Keeper();
             $keeper->
             $this->KeeperDAO->Add($keeper);
-        }
+        }*/
 
     }
 

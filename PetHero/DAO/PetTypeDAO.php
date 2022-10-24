@@ -1,14 +1,12 @@
 <?php
-    namespace DAO;
-
-    use \DAO\Connection as Connection;
-    use \DAO\QueryType as QueryType;
+namespace DAO;
+use \DAO\Connection as Connection;
+use \DAO\QueryType as QueryType;
     
-    use \DAO\IPetTypeDAO as IPetTypeDAO;
-    use \Model\PetType as PetType;
+use \DAO\IPetTypeDAO as IPetTypeDAO;
+use \Model\PetType as PetType;
 
     class PetTypeDAO implements IPetTypeDAO{
-
         private $connection;
         private $tableName = 'PetType';
 
@@ -21,10 +19,8 @@
             
             foreach($resultBD as $row){
                 $type = new PetType();
-
                 $type->__fromDB($row["idType"],$row["name"]);
-
-                 array_push($typeList,$type);
+                array_push($typeList,$type);
             }
             return $typeList;
         }

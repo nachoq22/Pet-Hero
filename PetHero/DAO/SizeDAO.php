@@ -1,11 +1,10 @@
 <?php
-    namespace DAO;
+namespace DAO;
+use \DAO\Connection as Connection;
+use \DAO\QueryType as QueryType;
 
-    use \DAO\Connection as Connection;
-    use \DAO\QueryType as QueryType;
-
-    use \DAO\ISizeDAO as ISizeDAO;
-    use \Model\Size as Size;
+use \DAO\ISizeDAO as ISizeDAO;
+use \Model\Size as Size;
 
     class SizeDao implements ISizeDAO{
 
@@ -21,10 +20,8 @@
             
             foreach($resultBD as $row){
                 $size = new Size();
-
                 $size->__fromDB($row["idSize"],$row["name"]);
-
-                 array_push($sizeList,$size);
+                array_push($sizeList,$size);
             }
             return $sizeList;
         }

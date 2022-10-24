@@ -66,6 +66,18 @@
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
+
+        public function AddRetId(Location $location){
+            $query = "CALL Location_Add(?,?,?,?,?)";
+            $parameters["adress"] = $location->getAdress();
+            $parameters["neighborhood"] = $location->getNeighborhood();
+            $parameters["city"] = $location->getCity();
+            $parameters["province"] = $location->getProvince();
+            $parameters["country"] = $location->getCountry();
+
+            $this->connection = Connection::GetInstance();
+            return $this->connection->ExecuteLastQuery($query,$parameters,QueryType::StoredProcedure);
+        }
             
         public function Delete($id){
             $query = "CALL Location_Delete(?)";
