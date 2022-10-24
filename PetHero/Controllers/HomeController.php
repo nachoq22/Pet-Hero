@@ -32,14 +32,13 @@
             require_once(VIEWS_PATH."Home.php");
         }
 
-        public function ViewRegister()
-        {
-            require_once(VIEWS_PATH."register.php");
-        }
-
         public function ViewLogin()
         {
             require_once(VIEWS_PATH."login.php");
+        }
+        public function ViewAddTemplates()
+        {
+            require_once(VIEWS_PATH."AddForms.php");
         }
 
         public function ViewPersonalInfo()
@@ -47,7 +46,7 @@
             require_once(VIEWS_PATH."PersonalData.php");
         }
 
-        public function Register($userName, $email, $password)
+        public function Register($username, $email, $password)
         {
             /*$user = $this->userDAO->GetByUserName($userName);
 
@@ -66,22 +65,21 @@
                 //El usuario ya esta en uso
             }*/
             $user = new User();
-            $user->__fromRegister($userName,$password,$email);
+            $user->__fromRegister($username,$password,$email);
 /*            echo "AQUI ESTA EL USUARIO \n" . var_dump($user);*/
             $this->userDAO->Register($user);
             $this->Index();
         } 
 
-        public function Login($userName, $password)
-        {
-            
+        public function Login($username, $password)
+        {            
             $user = new User();
-            $user->__fromLogin($userName,$password);
-            $rta = $this->UserDAO->Login($user);
+            $user->__fromLogin($username,$password);
+            $rta = $this->userDAO->Login($user);
             if($rta=1){
                 session_start();
                 $loggedUser = new User();
-                $loggedUser->setUsername($userName);
+                $loggedUser->setUsername($username);
                 $loggedUser->setPassword($password);
                 $_SESSION["loggedUser"]= $loggedUser;
                 $this->Index();

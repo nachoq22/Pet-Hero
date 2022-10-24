@@ -30,7 +30,7 @@ include("Head.php");
               ADDS Registers
             </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Add Location</a></li>
+              <li><a class="dropdown-item" href="<?php echo FRONT_ROOT."/Home/ViewAddTemplates"?>">Add Location</a></li>
               <li><a class="dropdown-item" href="#">Add Size</a></li>
               <li><a class="dropdown-item" href="#">Add PetType</a></li>
             </ul>
@@ -79,35 +79,36 @@ include("Head.php");
 
       <div class="tab-content" id="pills-tabContent">
 
-        <!--SIGNIN TAB-->
+        <!--SIGNUP TAB-->
         <div class="tab-pane fade" id="pills-signUp" role="tabpanel" aria-labelledby="pills-signUp-tab">
-          <form action="">
+          <form action="<?php echo FRONT_ROOT."/Home/Register" ?>" method="post">
             <div class="mb-3">
               <label for="inputUsername" class="form-label">Username</label>
-              <input type="text" class="form-control" id="inputUsername">
-            </div>
-            <div class="mb-3">
-              <label for="inputPassword" class="form-label">Password</label>
-              <input type="password" class="form-control" id="inputPassword">
+              <input type="text" class="form-control" id="inputUsername" name="username">
             </div>
             <div class="mb-3">
               <label for="inputEmail" class="form-label">Email</label>
-              <input type="email" class="form-control" id="inputEmail">
+              <input type="email" class="form-control" id="inputEmail" name="email">
+            </div>
+            <div class="mb-3">
+              <label for="inputPassword" class="form-label">Password</label>
+              <input type="password" class="form-control" id="inputPassword" name="password">
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="reset" class="btn btn-primary">Reset</button>
           </form>
         </div>
 
         <!--LOGIN TAB-->
         <div class="tab-pane fade" id="pills-login" role="tabpanel" aria-labelledby="pills-login-tab">
-          <form>
+          <form action="<?php echo FRONT_ROOT."/Home/Login" ?>" method="post">
             <div class="mb-3">
               <label for="inputUsername" class="form-label">Username</label>
-              <input type="username" class="form-control" id="inputUsername">
+              <input type="username" class="form-control" id="inputUsername" name="username">
             </div>
             <div class="mb-3">
               <label for="inputPassword" class="form-label">Password</label>
-              <input type="password" class="form-control" id="inputPassword">
+              <input type="password" class="form-control" id="inputPassword" name="password">
             </div>
 
             <!-- PARA PROBAR SI MANTIENE SESIONES VIEJAS
@@ -142,12 +143,9 @@ include("Head.php");
     document.getElementById("pills-signUp-tab").click()
   })
 
-
-
   const loginItem = document.getElementById("loginItem")
   loginItem.addEventListener('click', (e) => {
     document.getElementById("pills-login-tab").click()
   })
   }
-  
 </script>

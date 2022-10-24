@@ -123,11 +123,11 @@
             return $user;
         }
 
-        public function Login($username,$password){
+        public function Login($user){
             $rta = 0;
             $query = "CALL User_Login(?,?,?)";
-            $parameters["username"] = $username;
-            $parameters["password"] = $password;
+            $parameters["username"] = $user->getUsername;
+            $parameters["password"] = $user->getPassword;
             $parameters["rta"] = $rta;
             $this->connection = Connection::GetInstance();
             $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
