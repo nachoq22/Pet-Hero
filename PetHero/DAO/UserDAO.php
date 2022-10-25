@@ -13,10 +13,12 @@ use \Model\User as User;
 
         private $dataDAO;
 
+//DAO INJECTION
         public function __construct(){
             $this->dataDAO = new PersonalDataDAO();
         }
 
+//SELECT METHODS
         public function GetAll(){
             $userList = array();
 
@@ -32,7 +34,7 @@ use \Model\User as User;
                                ,$this->dataDAO->Get($row["idData"]));
 */
                 $user->__fromDBnoKeeper($row["idUser"],$row["username"]
-                               ,$row["password"],$row["email"]);
+                                       ,$row["password"],$row["email"]);
 
                 array_push($userList,$user);
             }
@@ -56,6 +58,29 @@ use \Model\User as User;
             }
             return $userList;
         }
+
+/*
+    public function definitiveGetAll(){
+        $userList = array();
+
+        $query = "CALL User_GetAll()";
+        $this->connection = Connection::GetInstance();
+        $resultBD = $this->connection->Execute($query,array(),QueryType::StoredProcedure);
+
+        foreach($resultBD as $row){
+            $user = new User();
+            if($row["idData"]){
+                $user->__fromDBisKeeper($row["idUser"],$row["username"]
+                                       ,$row["password"],$row["email"]
+                                       ,$this->dataDAO->Get($row["idData"]));
+            }
+            $user->__fromDBnoKeeper($row["idUser"],$row["username"]
+                                   ,$row["password"],$row["email"]);
+            array_push($userList,$user);
+        }
+        return $userList;
+    }
+*/
 
         public function Get($id){
             $user = null;
@@ -95,6 +120,29 @@ use \Model\User as User;
             return $user;
         }
 
+/*
+        public function definitiveGet($id){
+            $user = null;
+
+            $query = "CALL User_GetById(?)";
+            $parameters["idUser"] = $id;
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+
+            foreach($resultBD as $row){
+                $user = new User();
+                if($row["idData"]){
+                    $user->__fromDBisKeeper($row["idUser"],$row["username"]
+                                            ,$row["password"],$row["email"]
+                                            ,this->dataDAO->Get($row["idData"]));
+                }
+                $user->__fromDBnoKeeper($row["idUser"],$row["username"]
+                    ,$row["password"],$row["email"]);
+            }
+            return $user;
+        }
+*/
+
         public function GetByUsername($username){
             $user = null;
 
@@ -121,13 +169,35 @@ use \Model\User as User;
 
             foreach($resultBD as $row){
                 $user = new User();
-
                 $user->__fromDBisKeeper($row["idUser"],$row["username"]
                                        ,$row["password"],$row["email"]
                                        ,$this->dataDAO->Get($row["idData"]));
             }
             return $user;
         }
+/*
+        public function definitiveGetByUsername($username){
+            $user = null;
+    
+            $query = "CALL User_GetByUsername(?)";
+            $parameters["username"] = $username;
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+    
+            foreach($resultBD as $row){
+                $user = new User();
+                if($row["idData"]){
+                    $user->__fromDBisKeeper($row["idUser"],$row["username"]
+                                           ,$row["password"],$row["email"]
+                                           ,$this->dataDAO->Get($row["idData"]));
+                }
+                $user->__fromDBnoKeeper($row["idUser"],$row["username"]
+                    ,$row["password"],$row["email"]);
+            }
+            return $user;
+        }
+*/
+        
 //EN REVISION
         public function Login($user){
             $rta = 0;
@@ -143,15 +213,13 @@ use \Model\User as User;
         return $rta;
         }
 
+//INSERT METHODS
         public function Add(User $user){
             $query = "CALL PersonalData_Add(?,?,?,?,?)";
             $parameters["username"] = $user->getUsername();
             $parameters["password"] = $user->getPassword();
             $parameters["email"] = $user->getEmail();
             $parameters["idData"] = $user->getData()->getId();
-            /*$idLocation = $this->dataDao->Add($user->getData());*/
-
-            /*$parameters["idLocation"] = $idLocatrion; */
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
@@ -164,7 +232,24 @@ use \Model\User as User;
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
-            
+
+/*
+        //LATES POSIBLE REGISTER
+        public function definitiveRegister(User $user){
+            $query = "CALL User_Register(?,?,?)";
+            $parameters["username"] = $user->getUsername();
+            $parameters["password"] = $user->getPassword();
+            $parameters["email"] = $user->getEmail();
+            $this->connection = Connection::GetInstance();
+            $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
+
+            $iIDUser = $this->connection->ExecuteLastQuery($query,$parameters,QueryType::StoredProcedure);
+            $user->setId($iIDUser);
+        return $user;
+        }
+*/
+
+//DELETE METHODS
         public function Delete($id){
             $query = "CALL Location_Delete(?)";
             $parameters["idUser"] = $id;

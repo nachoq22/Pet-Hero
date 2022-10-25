@@ -5,5 +5,4 @@ namespace DAO;
         const Query = 0;
         const StoredProcedure = 1;
     }
-
 ?>

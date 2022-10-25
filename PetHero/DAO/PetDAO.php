@@ -13,16 +13,19 @@ use \Model\Pet as Pet;
     class PetDAO implements IPetDAO{
         private $connection;
         private $tableName = 'Pet';
+
         private $typeDAO;
         private $sizeDAO;
         private $ownerDAO;
 
+//DAO INJECTION
         public function __construct(){
             $this->typeDAO = new PetTypeDAO();
             $this->sizeDAO = new SizeDao();
             $this->ownerDAO = new OwnerDAO();
         }
 
+//SELECT METHODS
         public function GetAll(){
             $petList = array();
 
@@ -78,6 +81,7 @@ use \Model\Pet as Pet;
             return $pet;
         }
 
+//INSERT METHODS
         public function Add(Pet $pet){
             $query = "CALL Pet_Add(?,?,?,?,?,?,?,?)";
             $parameters["name"] = $pet->getName();
@@ -93,6 +97,7 @@ use \Model\Pet as Pet;
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
 
+//DELETE METHODS
         public function Delete($id){
             $query = "CALL Pet_Delete(?)";
             $parameters["idPet"] = $id;

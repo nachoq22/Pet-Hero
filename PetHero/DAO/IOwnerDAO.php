@@ -2,7 +2,6 @@
 namespace DAO;
 
 use \Model\Owner as Owner;
-use Model\User as User;
 
     interface IOwnerDAO{
         public function Add(Owner $owner);

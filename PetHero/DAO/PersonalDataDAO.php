@@ -14,10 +14,12 @@ use \Model\PersonalData as PersonalData;
 
         private $locationDAO;
 
+//DAO INJECTION
         public function __construct(){
             $this->locationDAO = new LocationDAO();
         }
 
+//SELECT METHODS
         public function GetAll(){
             $dataList = array();
 
@@ -48,29 +50,26 @@ use \Model\PersonalData as PersonalData;
                 $data = new PersonalData();
 
                 $data->__fromDB($row["idData"],$row["name"]
-                ,$row["surname"],$row["sex"]
-                ,$row["dni"],$this->locationDAO->Get($row["idLocation"]));
+                               ,$row["surname"],$row["sex"]
+                               ,$row["dni"],$this->locationDAO->Get($row["idLocation"]));
             }
             return $data;
         }
 
+//INSERT METHODS
         public function Add(PersonalData $data){
-            $idLocation = rand(1, 10);
             $query = "CALL PersonalData_Add(?,?,?,?,?)";
             $parameters["name"] = $data->getName();
             $parameters["surname"] = $data->getSurname();
             $parameters["sex"] = $data->getSex();
             $parameters["dni"] = $data->getDni();
-            $parameters["idLocation"] = $idLocation; //$data->getLocation()->getId();
-            
-            /*$idLocation = $this->locationDAO->Add($data->getLocation());*/
-
-            /*$parameters["idLocation"] = $idLocatrion; */
+            $parameters["idLocation"] = rand(1, 10);
 
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
-            
+
+//INSERT METHODS
         public function Delete($id){
             $query = "CALL Location_Delete(?)";
             $parameters["id"] = $id;

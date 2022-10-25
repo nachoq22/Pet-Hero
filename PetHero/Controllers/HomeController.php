@@ -1,11 +1,12 @@
 <?php
-    namespace Controllers;
+namespace Controllers;
 
-    use \DAO\UserDAO;
-    use \DAO\LocationDAO;
-    use \DAO\SizeDAO;
-    use \DAO\PetTypeDAO;
-    use \Model\User as User;
+use \DAO\UserDAO as UserDAO;
+use \DAO\LocationDAO as LocationDAO;
+use \DAO\SizeDAO as SizeDAO;
+use \DAO\PetTypeDAO as PetTypeDAO;
+use \Model\User as User;
+use \Model\PetType as PetType;
 
     class HomeController
     {
@@ -91,6 +92,14 @@
         {
             echo $id;
             $this->userDAO->Delete($id);
+        }
+
+        public function AddPetType($name){
+            $petType = new PetType();
+            $petType->setName($name);
+            $this->typeDAO->Add($petType);
+            $typelist =$this->typeDAO->GetAll();
+            require_once(VIEWS_PATH."Home.php");
         }
     }
 ?>

@@ -1,8 +1,8 @@
 <?php
 namespace DAO;
 use \PDO as PDO;
-use \Exception as Exception;
 use \DAO\QueryType as QueryType;
+use \Exception as Exception;
 
     class Connection{
         private $pdo = null;
@@ -47,25 +47,21 @@ use \DAO\QueryType as QueryType;
         }
 
         public function Execute($query, $parameters = array(), $queryType = QueryType::Query){
-            try
-            {
+            try{
                 $this->Prepare($query);
-                
+
                 $this->BindParameters($parameters, $queryType);
-                
+
                 $this->pdoStatement->execute();
 
                 return $this->pdoStatement->fetchAll();
-            }
-            catch(Exception $e)
-            {
+            }catch(Exception $e){
                 throw $e;
             }
         }
         
         public function ExecuteNonQuery($query, $parameters = array(), $queryType = QueryType::Query){            
-            try
-            {
+            try{
                 $this->Prepare($query);
                 
                 $this->BindParameters($parameters, $queryType);
@@ -74,25 +70,22 @@ use \DAO\QueryType as QueryType;
 
                 return $this->pdoStatement->fetchColumn();
             }
-            catch(Exception $e)
-            {
+            catch(Exception $e){
                 throw $e;
             }        	    	
         }
 
         public function ExecuteLastQuery($query, $parameters = array(), $queryType = QueryType::Query){            
-            try
-            {
+            try{
                 $this->Prepare($query);
                 
                 $this->BindParameters($parameters, $queryType);
 
                 $this->pdoStatement->execute();
 
-                return $this->instance->pdo->lastInsertId();
+                return $this->pdo->lastInsertId();
             }
-            catch(Exception $e)
-            {
+            catch(Exception $e){
                 throw $e;
             }        	    	
         }

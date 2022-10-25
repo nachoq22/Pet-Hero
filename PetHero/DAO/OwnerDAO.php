@@ -1,25 +1,25 @@
 <?php
-    namespace DAO;
+namespace DAO;
 
-    use \DAO\Connection as Connection;
-    use \DAO\QueryType as QueryType;
+use \DAO\Connection as Connection;
+use \DAO\QueryType as QueryType;
 
-    use \DAO\IOwnerDAO as IOwnerDAO;
-    use \Model\Owner as Owner;
-    use \DAO\UserDao as UserDao;
-    
+use \DAO\IOwnerDAO as IOwnerDAO;
+use \DAO\UserDao as UserDao;
+use \Model\Owner as Owner;
 
     class OwnerDAO implements IOwnerDAO{
-
         private $connection;
         private $tableName = 'Owner';
 
         private $userDAO;
 
+//DAO INJECTION
         public function __construct(){
             $this->userDAO = new UserDAO();
         }
 
+//SELECT METHODS
         public function GetAll(){
             $ownerList = array();
 
@@ -29,10 +29,8 @@
             
             foreach($resultBD as $row){
                 $owner = new Owner();
-
-                $owner->__fromDB($row["id"],$this->userDAO->Get($row["idUser"]));
-
-                 array_push($ownerList,$owner);
+                $owner->__fromDB($row["idOwner"],$this->userDAO->Get($row["idUser"]));
+                array_push($ownerList,$owner);
             }
             return $ownerList;
         }
@@ -41,27 +39,44 @@
             $owner = null;
 
             $query = "CALL Owner_GetById(?)";
-            $parameters["id"] = $id;
+            $parameters["idOwner"] = $id;
             $this->connection = Connection::GetInstance();
             $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
 
             foreach($resultBD as $row){
                 $owner = new Owner();
-                $owner->__fromDB($row["id"],$this->userDAO->Get($row["idUser"]));
+                $owner->__fromDB($row["idOwner"],$this->userDAO->Get($row["idUser"]));
             }
             return $owner;
         }
 
+//INSERT METHODS
         public function Add(Owner $owner){
             $query = "CALL Owner_Add(?)";
             $parameters["idUser"] = $owner->getUser()->getId();
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
-            
+
+/*
+        public function definitiveAdd(Owner $owner){
+            $query = "CALL Owner_Add(?)";
+            $parameters["idUser"] = $owner->getUser()->getId();
+            $this->connection = Connection::GetInstance();
+            $owner->setId($this->connection->ExecuteLastQuery($query,$parameters,QueryType::StoredProcedure));
+            return $owner;
+        }
+
+        public function Register(Owner $owner){
+            $owner->setUser($this->userDAO->definitiveRegister($owner->getUser()));
+            return $this->definitiveAdd($owner);
+        }
+*/
+
+//DELETE METHODS
         public function Delete($id){
             $query = "CALL Owner_Delete(?)";
-            $parameters["id"] = $id;
+            $parameters["idOwner"] = $id;
 
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);

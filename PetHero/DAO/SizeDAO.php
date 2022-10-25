@@ -7,10 +7,10 @@ use \DAO\ISizeDAO as ISizeDAO;
 use \Model\Size as Size;
 
     class SizeDao implements ISizeDAO{
-
         private $connection;
         private $tableName = 'Size';
 
+//SELECT METHODS
         public function GetAll(){
             $sizeList = array();
 
@@ -41,6 +41,7 @@ use \Model\Size as Size;
             return $size;
         }
 
+//INSERT METHODS
         public function Add(Size $size){
             $query = "CALL Size_Add(?)";
             $parameters["name"] = $size->getName();
@@ -48,7 +49,8 @@ use \Model\Size as Size;
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
-            
+
+//DELETE METHODS
         public function Delete($id){
             $query = "CALL Size_Delete(?)";
             $parameters["idSize"] = $id;

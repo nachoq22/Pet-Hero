@@ -10,6 +10,7 @@ use \Model\PetType as PetType;
         private $connection;
         private $tableName = 'PetType';
 
+//SELECT METHODS
         public function GetAll(){
             $typeList = array();
 
@@ -40,6 +41,7 @@ use \Model\PetType as PetType;
             return $type;
         }
 
+//INSERT METHODS
         public function Add(PetType $type){
             $query = "CALL PetType_Add(?)";
             $parameters["name"] = $type->getName();
@@ -47,7 +49,8 @@ use \Model\PetType as PetType;
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
-            
+
+//DELETE METHODS
         public function Delete($id){
             $query = "CALL PetType_Delete(?)";
             $parameters["idType"] = $id;
