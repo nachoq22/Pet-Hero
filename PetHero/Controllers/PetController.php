@@ -37,7 +37,18 @@
             $pet->__fromRequest($name, $breed, $profileIMG, $vaccinationPlanIMG, $observation, $typeOBJ, $sizeOBJ,$owner);
             //$this->petDAO->Add($pet);
             //$petList=$this->petDAO->GetAll();
-            require_once(VIEWS_PATH."Pets.php");
+            //require_once(VIEWS_PATH."Pets.php");
         } 
+
+        public function AddPetType($name)
+        {
+            $petType = new PetType();
+            $petType->setName($name);
+            $this->petTypeDAO->Add($petType);
+            $typelist=$this->petTypeDAO->GetAll();
+            require_once(VIEWS_PATH."home.php");
+
+        }
+
     }
 ?>

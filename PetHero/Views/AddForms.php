@@ -58,7 +58,7 @@
         </div>
   </div>
 
-    <form action="<?php echo FRONT_ROOT."/PetType/Add" ?>" method="post">
+    <form action="<?php echo FRONT_ROOT."/Pet/AddPetType" ?>" method="post">
         <div class="mb-3">
             <label for="inputTypeName" class="form-label">Name</label>
             <input type="text" class="form-control" id="inputTypeName" name="name">

@@ -30,7 +30,7 @@ use \Model\Size as Size;
             $location->setCountry($country);*/
             $this->sizeDAO->Add($size);
             $sizeList=$this->sizeDAO->GetAll();
-            require_once(VIEWS_PATH."SizeList.php");
+            require_once(VIEWS_PATH."home.php");
         } 
     }
 ?>
