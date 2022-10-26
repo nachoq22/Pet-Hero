@@ -1,17 +1,16 @@
 <?php
-    namespace DAO;
-
-    use \DAO\Connection as Connection;
-    use \DAO\QueryType as QueryType;
+namespace DAO;
+use \DAO\Connection as Connection;
+use \DAO\QueryType as QueryType;
     
-    use \DAO\IPetTypeDAO as IPetTypeDAO;
-    use \Model\PetType as PetType;
+use \DAO\IPetTypeDAO as IPetTypeDAO;
+use \Model\PetType as PetType;
 
     class PetTypeDAO implements IPetTypeDAO{
-
         private $connection;
         private $tableName = 'PetType';
 
+//SELECT METHODS
         public function GetAll(){
             $typeList = array();
 
@@ -21,10 +20,8 @@
             
             foreach($resultBD as $row){
                 $type = new PetType();
-
                 $type->__fromDB($row["idType"],$row["name"]);
-
-                 array_push($typeList,$type);
+                array_push($typeList,$type);
             }
             return $typeList;
         }
@@ -44,6 +41,7 @@
             return $type;
         }
 
+//INSERT METHODS
         public function Add(PetType $type){
             $query = "CALL PetType_Add(?)";
             $parameters["name"] = $type->getName();
@@ -51,7 +49,8 @@
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
-            
+
+//DELETE METHODS
         public function Delete($id){
             $query = "CALL PetType_Delete(?)";
             $parameters["idType"] = $id;

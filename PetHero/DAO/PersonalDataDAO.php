@@ -1,26 +1,25 @@
 <?php
-    namespace DAO;
+namespace DAO;
 
-    use \DAO\Connection as Connection;
-    use \DAO\QueryType as QueryType;
+use \DAO\Connection as Connection;
+use \DAO\QueryType as QueryType;
 
-    use \DAO\IPersonalDataDAO as IPersonalDataDAO;
-    use \Model\PersonalData as PersonalData;
-    use \DAO\LocationDAO as LocationDAO;
-    use \Model\Location as Location;
+use \DAO\IPersonalDataDAO as IPersonalDataDAO;
+use \DAO\LocationDAO as LocationDAO;
+use \Model\PersonalData as PersonalData;
 
     class PersonalDataDAO implements IPersonalDataDAO{
-
         private $connection;
         private $tableName = 'PersonalData';
 
         private $locationDAO;
 
+//DAO INJECTION
         public function __construct(){
             $this->locationDAO = new LocationDAO();
         }
 
-
+//SELECT METHODS
         public function GetAll(){
             $dataList = array();
 
@@ -30,12 +29,11 @@
             
             foreach($resultBD as $row){
                 $data = new PersonalData();
-
                 $data->__fromDB($row["id"],$row["name"]
-                ,$row["surname"],$row["sex"]
-                ,$row["dni"],$this->locationDAO->Get($row["idLocation"]));
-
-                 array_push($dataList,$data);
+                               ,$row["surname"],$row["sex"]
+                               ,$row["dni"]
+                               ,$this->locationDAO->Get($row["idLocation"]));
+                array_push($dataList,$data);
             }
             return $dataList;
         }
@@ -52,29 +50,26 @@
                 $data = new PersonalData();
 
                 $data->__fromDB($row["idData"],$row["name"]
-                ,$row["surname"],$row["sex"]
-                ,$row["dni"],$this->locationDAO->Get($row["idLocation"]));
+                               ,$row["surname"],$row["sex"]
+                               ,$row["dni"],$this->locationDAO->Get($row["idLocation"]));
             }
             return $data;
         }
 
+//INSERT METHODS
         public function Add(PersonalData $data){
-            $idLocation = rand(1, 10);
             $query = "CALL PersonalData_Add(?,?,?,?,?)";
             $parameters["name"] = $data->getName();
             $parameters["surname"] = $data->getSurname();
             $parameters["sex"] = $data->getSex();
             $parameters["dni"] = $data->getDni();
-            $parameters["idLocation"] = $idLocation; //$data->getLocation()->getId();
-            
-            /*$idLocation = $this->locationDAO->Add($data->getLocation());*/
-
-            /*$parameters["idLocation"] = $idLocatrion; */
+            $parameters["idLocation"] = rand(1, 10);
 
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
-            
+
+//INSERT METHODS
         public function Delete($id){
             $query = "CALL Location_Delete(?)";
             $parameters["id"] = $id;

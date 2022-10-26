@@ -67,7 +67,6 @@ use \Model\Size as Size;
             $this->breed = $breed;
         }
 
-        
         public function getProfileIMG(){
             return $this->profileIMG;
         }

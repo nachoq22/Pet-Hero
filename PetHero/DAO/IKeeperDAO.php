@@ -1,8 +1,7 @@
 <?php
 namespace DAO;
 
-use Model\Keeper as Keeper;
-use Model\User as User;
+use \Model\Keeper as Keeper;
 
   interface IKeeperDAO{
       public function Add(Keeper $keeper);

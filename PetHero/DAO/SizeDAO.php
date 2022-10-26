@@ -1,17 +1,16 @@
 <?php
-    namespace DAO;
+namespace DAO;
+use \DAO\Connection as Connection;
+use \DAO\QueryType as QueryType;
 
-    use \DAO\Connection as Connection;
-    use \DAO\QueryType as QueryType;
-
-    use \DAO\ISizeDAO as ISizeDAO;
-    use \Model\Size as Size;
+use \DAO\ISizeDAO as ISizeDAO;
+use \Model\Size as Size;
 
     class SizeDao implements ISizeDAO{
-
         private $connection;
         private $tableName = 'Size';
 
+//SELECT METHODS
         public function GetAll(){
             $sizeList = array();
 
@@ -21,10 +20,8 @@
             
             foreach($resultBD as $row){
                 $size = new Size();
-
                 $size->__fromDB($row["idSize"],$row["name"]);
-
-                 array_push($sizeList,$size);
+                array_push($sizeList,$size);
             }
             return $sizeList;
         }
@@ -44,6 +41,7 @@
             return $size;
         }
 
+//INSERT METHODS
         public function Add(Size $size){
             $query = "CALL Size_Add(?)";
             $parameters["name"] = $size->getName();
@@ -51,7 +49,8 @@
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
-            
+
+//DELETE METHODS
         public function Delete($id){
             $query = "CALL Size_Delete(?)";
             $parameters["idSize"] = $id;

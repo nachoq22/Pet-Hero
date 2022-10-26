@@ -1,24 +1,30 @@
 <?php
-    namespace DAO;
+namespace DAO;
+use \DAO\Connection as Connection;
+use \DAO\QueryType as QueryType;
 
-    use \DAO\Connection as Connection;
-    use \DAO\QueryType as QueryType;
-
-    use \DAO\IKeeperDAO as IKeeperDAO;
-    use \Model\Keeper as Keeper;
-    use \DAO\UserDao as UserDAO;
+use \DAO\IKeeperDAO as IKeeperDAO;
+use \DAO\UserDao as UserDAO;
+use \DAO\PersonalDataDAO as PersonalDataDAO;
+use \DAO\LocationDAO as LocationDAO;
+use \Model\Keeper as Keeper;
 
     class KeeperDAO implements IKeeperDAO{
-
         private $connection;
         private $tableName = 'Keeper';
 
         private $userDAO;
+        private $dataDAO;
+        private $locationDAO;
 
+//DAO INJECTION
         public function __construct(){
             $this->userDAO = new UserDAO();
+            $this->dataDAO = new PersonalDataDAO();
+            $this->locationDAO = new LocationDAO();
         }
 
+//SELECT METHODS
         public function GetAll(){
             $keeperList = array();
 
@@ -29,7 +35,7 @@
             foreach($resultBD as $row){
                 $keeper = new Keeper();
 
-                $keeper->__fromDB($row["id"],$this->userDAO->Get($row["idUser"]));
+                $keeper->__fromDB($row["idKeeper"],$this->userDAO->Get($row["idUser"]));
 
                  array_push($keeperList,$keeper);
             }
@@ -40,27 +46,45 @@
             $keeper = null;
 
             $query = "CALL Keeper_GetById(?)";
-            $parameters["id"] = $id;
+            $parameters["idKeeper"] = $id;
             $this->connection = Connection::GetInstance();
             $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
 
             foreach($resultBD as $row){
                 $keeper = new Keeper();
-                $keeper->__fromDB($row["id"],$this->userDAO->Get($row["idUser"]));
+                $keeper->__fromDB($row["idKeeper"],$this->userDAO->Get($row["idUser"]));
             }
             return $keeper;
         }
 
+//INSERT METHODS
         public function Add(Keeper $keeper){
             $query = "CALL Keeper_Add(?)";
             $parameters["idUser"] = $keeper->getUser()->getId();
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
-            
+
+/*
+        public function definitiveAdd(Keeper $keeper){
+            $query = "CALL Keeper_Add(?)";
+            $parameters["idUser"] = $keeper->getUser()->getId();
+            $this->connection = Connection::GetInstance();
+            $keeper->setId($this->connection->ExecuteLastQuery($query,$parameters,QueryType::StoredProcedure));
+        return $keeper;
+        }
+        public function definitiveBeKeeper(Keeper $keeper){
+          $keeper->getUser()->getData()->setLocation($this->locationDAO->definitiveAdd($keeper->getUser()->getData()->getLocation()));
+          $keeper->getUser()->setData($this->dataDAO->definitiveAdd($keeper->getUser()->getData()));
+          $keeperdefi = $this->definitiveAdd($keeper);
+          return $keeperdefi;
+        }
+*/
+
+//DELETE METHODS
         public function Delete($id){
             $query = "CALL Keeper_Delete(?)";
-            $parameters["id"] = $id;
+            $parameters["idKeeper"] = $id;
 
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);

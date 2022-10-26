@@ -1,17 +1,17 @@
 <?php
-    namespace DAO;
+namespace DAO;
 
-    use \DAO\Connection as Connection;
-    use \DAO\QueryType as QueryType;
+use \DAO\Connection as Connection;
+use \DAO\QueryType as QueryType;
 
-    use \DAO\ILocationDAO as ILocationDAO;
-    use \Model\Location as Location;
+use \DAO\ILocationDAO as ILocationDAO;
+use \Model\Location as Location;
 
     class LocationDAO implements ILocationDAO{
-
         private $connection;
-        private $tableName = 'location';
+        private $tableName = 'Location';
 
+//SELECT METHODS
         public function GetAll(){
             $locationList = array();
 
@@ -41,10 +41,11 @@
 
             foreach($resultBD as $row){
                 $location = new Location();
-
-                /*$location->__fromDB($row["idLocation"],$row["adress"]
-                ,$row["neighborhood"],$row["city"]
-                ,$row["province"],$row["country"]);*/
+/*
+                $location->__fromDB($row["idLocation"],$row["adress"]
+                                   ,$row["neighborhood"],$row["city"]
+                                   ,$row["province"],$row["country"]);
+*/
                 $location->setId($row["idLocation"]);
                 $location->setAdress($row["adress"]);
                 $location->setNeighborhood($row["neighborhood"]);
@@ -55,6 +56,7 @@
             return $location;
         }
 
+//INSERT METHODS
         public function Add(Location $location){
             $query = "CALL Location_Add(?,?,?,?,?)";
             $parameters["adress"] = $location->getAdress();
@@ -66,7 +68,20 @@
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
-            
+
+        public function AddRetId(Location $location){
+            $query = "CALL Location_Add(?,?,?,?,?)";
+            $parameters["adress"] = $location->getAdress();
+            $parameters["neighborhood"] = $location->getNeighborhood();
+            $parameters["city"] = $location->getCity();
+            $parameters["province"] = $location->getProvince();
+            $parameters["country"] = $location->getCountry();
+
+            $this->connection = Connection::GetInstance();
+            return $this->connection->ExecuteLastQuery($query,$parameters,QueryType::StoredProcedure);
+        }
+
+//DELETE METHODS
         public function Delete($id){
             $query = "CALL Location_Delete(?)";
             $parameters["idLocation"] = $id;
