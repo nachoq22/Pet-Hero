@@ -29,7 +29,7 @@ use \Model\PetType as PetType;
             $typeList=$this->typeDAO->GetAll();
             $userList =$this->userDAO->GetAll();
             $userIs=$this->userDAO->Get(2);
-            require_once(VIEWS_PATH."PetList.php");
+            require_once(VIEWS_PATH."PetProfile.php");
             //require_once(VIEWS_PATH."Home.php");
             
 

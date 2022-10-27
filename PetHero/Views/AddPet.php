@@ -8,12 +8,12 @@
       <div class="mb-3">
           <label for="inputPetType" class="form-label">Pet Type</label>
           <select name="petType" class="form-control" id="inputpetType" name="petType">
-            <option value="">Dog</option>
-            <option value="">Cat</option>
-            <option value="">Hedgehog</option>
-            <option value="">Groundhog</option>
-            <option value="">Meerkat</option>
-            <option value="">Cacatuos</option>
+            <option value="dog">Dog</option>
+            <option value="cat">Cat</option>
+            <option value="hedgehog">Hedgehog</option>
+            <option value="groundhog">Groundhog</option>
+            <option value="meerkat">Meerkat</option>
+            <option value="cacatuos">Cacatuos</option>
             </select>
       </div>
 
@@ -25,12 +25,12 @@
       <div class="mb-3">
           <label for="inputSize" class="form-label">Size</label>
           <select name="size" class="form-control" id="inputsize" name="size">
-            <option value="">Little</option>
-            <option value="">Little medium</option>
-            <option value="">Medium</option>
-            <option value="">Big medium</option>
-            <option value="">Big</option>
-            <option value="">Extra Big</option>
+            <option value="little">Little</option>
+            <option value="littleMedium">Little medium</option>
+            <option value="Medium">Medium</option>
+            <option value="BigMedium">Big medium</option>
+            <option value="Big">Big</option>
+            <option value="ExtraBig">Extra Big</option>
             </select>
       </div>
 
