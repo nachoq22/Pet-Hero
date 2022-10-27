@@ -9,6 +9,10 @@ use \DAO\PetTypeDAO as PetTypeDAO;
 use \DAO\SizeDao as SizeDAO;
 use \DAO\OwnerDAO as OwnerDAO;
 use \Model\Pet as Pet;
+use \Model\PetType as PetType;
+use \Model\Size as Size;
+use \Model\Owner as Owner;
+
 
     class PetDAO implements IPetDAO{
         private $connection;
@@ -24,6 +28,20 @@ use \Model\Pet as Pet;
             $this->sizeDAO = new SizeDao();
             $this->ownerDAO = new OwnerDAO();
         }
+//TOOLS
+        private function imgPPProcess($nameFile,$file,$petName){
+        $pathDB= "Views/Img/IMGPet/Profile".$nameFile.$petName.date("YmdHis"); 
+        $path =  "../".$pathDB;  
+        move_uploaded_file($file,$path);
+        return $pathDB;
+        }    
+        private function imgPVPProcess($nameFile,$file,$petName){
+            $pathDB= "Views/Img/IMGPet/VaccinationPlan".$nameFile.$petName.date("YmdHis"); 
+            $path =  "../".$pathDB;  
+            move_uploaded_file($file,$path);
+            return $pathDB;
+        }       
+
 
 //SELECT METHODS
         public function GetAll(){
@@ -82,7 +100,10 @@ use \Model\Pet as Pet;
         }
 
 //INSERT METHODS
-        public function Add(Pet $pet){
+        public function Add(Pet $pet,$file,$fileName){
+            $pet->setProfileIMG($this->imgPPProcess($fileName,$file,$pet->getName()));
+            $pet->setVaccinationPlanIMG($this->imgPVPProcess($fileName,$file,$pet->getName()));
+
             $query = "CALL Pet_Add(?,?,?,?,?,?,?,?)";
             $parameters["name"] = $pet->getName();
             $parameters["breed"] = $pet->getBreed();
@@ -96,6 +117,8 @@ use \Model\Pet as Pet;
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
+
+
 
 //DELETE METHODS
         public function Delete($id){

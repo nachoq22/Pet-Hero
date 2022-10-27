@@ -29,8 +29,10 @@ use \Model\PetType as PetType;
             $typeList=$this->typeDAO->GetAll();
             $userList =$this->userDAO->GetAll();
             $userIs=$this->userDAO->Get(2);
+            require_once(VIEWS_PATH."PetProfile.php");
+            //require_once(VIEWS_PATH."Home.php");
+            
 
-            require_once(VIEWS_PATH."Home.php");
         }
 
         public function ViewLogin()
@@ -45,6 +47,11 @@ use \Model\PetType as PetType;
         public function ViewPersonalInfo()
         {
             require_once(VIEWS_PATH."PersonalData.php");
+        }
+
+        public function ViewAddPet()
+        {
+            require_once(VIEWS_PATH."AddPet.php");
         }
 
         public function Register($username, $email, $password)

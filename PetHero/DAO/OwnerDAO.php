@@ -50,6 +50,22 @@ use \Model\Owner as Owner;
             return $owner;
         }
 
+        public function GetbyUser($username){
+            $owner = null;
+            $user = $this->userDAO->GetByUsername($username);
+
+            $query = "CALL Owner_GetByIdUser(?)";
+            $parameters["idUser"] = $user->getId();
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+
+            foreach($resultBD as $row){
+                $owner = new Owner();
+                $owner->__fromDB($row["idOwner"],$user/*$this->userDAO->Get($row["idUser"])*/);
+            }
+            return $owner;
+        }
+
 //INSERT METHODS
         public function Add(Owner $owner){
             $query = "CALL Owner_Add(?)";

@@ -7,9 +7,10 @@ use \Model\Location as Location;
     class LocationController 
     {
         private $locationDAO;
-
+        private $homeController;
         public function __construct(){
             $this->locationDAO = new LocationDAO();
+            $this->homeController = new HomeController();
         }
 
         public function showListView(){
@@ -29,7 +30,7 @@ use \Model\Location as Location;
             $location->setProvince($province);
             $location->setCountry($country);*/
             $this->locationDAO->Add($location);
-            require_once(VIEWS_PATH."Home.php");
+            $this->homeController->Index();
         } 
     }
 ?>

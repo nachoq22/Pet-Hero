@@ -3,6 +3,7 @@
     use \DAO\PetDAO as PetDAO;
     use \DAO\SizeDAO as SizeDAO;
     use \DAO\PetTypeDAO as PetTypeDAO;
+    use \DAO\OwnerDAO as OwnerDAO;
     use \Model\Pet as Pet;
     use \Model\Size as Size;
     use \Model\PetType as PetType;
@@ -32,12 +33,24 @@
             $sizeOBJ->setName($size);
             $typeOBJ = new PetType();
             $typeOBJ->setName($type);
-            $owner = new Owner();
+            $owner = $this->ownerDAO->Get(rand(1,6));
+            
             $pet = new Pet();   
             $pet->__fromRequest($name, $breed, $profileIMG, $vaccinationPlanIMG, $observation, $typeOBJ, $sizeOBJ,$owner);
-            //$this->petDAO->Add($pet);
+            $this->petDAO->Add($pet);
             //$petList=$this->petDAO->GetAll();
-            require_once(VIEWS_PATH."Pets.php");
+            //require_once(VIEWS_PATH."Pets.php");
         } 
+
+        public function AddPetType($name)
+        {
+            $petType = new PetType();
+            $petType->setName($name);
+            $this->petTypeDAO->Add($petType);
+            $typelist=$this->petTypeDAO->GetAll();
+            require_once(VIEWS_PATH."home.php");
+
+        }
+
     }
 ?>
