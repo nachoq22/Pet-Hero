@@ -245,6 +245,15 @@ END;
 $$
 
 DELIMITER $$
+CREATE PROCEDURE Owner_GetByIdUser(IN idUser INT)
+BEGIN
+    SELECT * 
+    FROM Owner
+    WHERE (Owner.idUser = idUser);
+END;
+$$
+
+DELIMITER $$
 CREATE PROCEDURE Owner_Add(IN idUser INT)
 BEGIN
     INSERT INTO Owner
