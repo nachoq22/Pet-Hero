@@ -41,6 +41,21 @@ use \Model\PetType as PetType;
             return $type;
         }
 
+        public function GetbyName($name){
+            $type = null;
+
+            $query = "CALL PetType_GetByName(?)";
+            $parameters["name"] = $name;
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+
+            foreach($resultBD as $row){
+                $type = new PetType();
+                $type->__fromDB($row["idType"],$row["name"]);
+            }
+            return $type;
+        }
+
 //INSERT METHODS
         public function Add(PetType $type){
             $query = "CALL PetType_Add(?)";

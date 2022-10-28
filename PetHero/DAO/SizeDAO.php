@@ -41,6 +41,21 @@ use \Model\Size as Size;
             return $size;
         }
 
+        public function GetbyName($name){
+            $size = null;
+
+            $query = "CALL Size_GetByName(?)";
+            $parameters["name"] = $name;
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+
+            foreach($resultBD as $row){
+                $size = new Size();
+                $size->__fromDB($row["idSize"],$row["name"]);
+            }
+            return $size;
+        }
+
 //INSERT METHODS
         public function Add(Size $size){
             $query = "CALL Size_Add(?)";
