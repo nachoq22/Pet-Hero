@@ -5,17 +5,21 @@ use \DAO\QueryType as QueryType;
 
 use \DAO\IUserDAO as IUserDAO;
 use \DAO\PersonalDataDAO as PersonalDataDAO;
+use \DAO\OwnerDAO as OwnerDAO;
 use \Model\User as User;
+use \Model\Owner as Owner;
 
     class UserDao implements IUserDAO{
         private $connection;
         private $tableName = 'User';
 
         private $dataDAO;
+        private $ownerDAO;
 
 //DAO INJECTION
         public function __construct(){
             $this->dataDAO = new PersonalDataDAO();
+            $this->ownerDAO = new OwnerDAO();
         }
 
 //SELECT METHODS
@@ -214,23 +218,21 @@ use \Model\User as User;
         }
 
 //INSERT METHODS
-        public function Add(User $user){
-            $query = "CALL PersonalData_Add(?,?,?,?,?)";
+        private function Add(User $user){
+            $query = "CALL User_Add(?,?,?,?,?)";
             $parameters["username"] = $user->getUsername();
             $parameters["password"] = $user->getPassword();
             $parameters["email"] = $user->getEmail();
-            $parameters["idData"] = $user->getData()->getId();
             $this->connection = Connection::GetInstance();
-            $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
+            $idUser= $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
+        return $idUser;    
         }
 
         public function Register(User $user){
-            $query = "CALL User_Register(?,?,?)";
-            $parameters["username"] = $user->getUsername();
-            $parameters["password"] = $user->getPassword();
-            $parameters["email"] = $user->getEmail();
-            $this->connection = Connection::GetInstance();
-            $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
+            $user->setId($this->Add($user));
+            $owner = new Owner();
+            $owner->setUser($user);
+            $this->ownerDAO->Add($owner);
         }
 
 /*

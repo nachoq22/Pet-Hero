@@ -159,6 +159,15 @@ END;
 $$
 
 DELIMITER $$
+CREATE PROCEDURE User_UpdateToKeeper(IN idUser INT,IN idData INT)
+BEGIN
+    UPDATE User
+	SET User.idData = idData
+	WHERE User.idUser = idUser;
+END;
+$$
+
+DELIMITER $$
 CREATE PROCEDURE User_Register(IN username VARCHAR(20),IN password VARCHAR(20),IN email VARCHAR(30))
 BEGIN
     INSERT INTO User
@@ -169,14 +178,11 @@ END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE User_Login(IN username VARCHAR(20),IN password VARCHAR(20),OUT rta INT)
+CREATE PROCEDURE User_Login(IN username VARCHAR(20),IN password VARCHAR(20))
 BEGIN
-    SELECT COUNT(idUser) 
-    INTO rta
+    SELECT COUNT(idUser) as rta
     FROM User
     WHERE User.username = username AND User.password = password;
-    
-    SELECT @rta;
 END;
 $$
 
@@ -416,15 +422,16 @@ Call PersonalData_Add("Ramiro","Talangana","M","44886655",2);
 
 /*********************************TEST USER*******************************************/
 Call User_GetAll();
-Call User_GetById(2);
+Call User_GetById(7);
 Call User_GetByUsername("planetar");
 /*CALL User_Add(username,password,varResp);*/
-CALL User_Login("planetar","orylOSad",@rta);
-SELECT @rta;
+CALL User_Login("planetar","orylOSad");
 /*CALL User_Add(username,password,email,idData);*/
 Call User_Add("pablitoClavito","ClavitoCrack","pablitoElCrack@gmail.com",5);
-/*CALL User_Add(username,password,email);*/
+/*CALL User_Register(username,password,email);*/
 Call User_Register("pablitoClavito","ClavitoCrack","pablitoElCrack@gmail.com");
+/*Call User_UpdateToKeeper(idUser,idData);*/
+Call User_UpdateToKeeper(2,4);
 /*Call User_Delete(6);*/
 
 /*********************************TEST KEEPER*******************************************/
