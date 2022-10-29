@@ -41,23 +41,36 @@ use \Model\Location as Location;
 
             foreach($resultBD as $row){
                 $location = new Location();
-/*
                 $location->__fromDB($row["idLocation"],$row["adress"]
                                    ,$row["neighborhood"],$row["city"]
                                    ,$row["province"],$row["country"]);
-*/
-                $location->setId($row["idLocation"]);
-                $location->setAdress($row["adress"]);
-                $location->setNeighborhood($row["neighborhood"]);
-                $location->setCity($row["city"]);
-                $location->setProvince($row["province"]);
-                $location->setCountry($row["country"]);
             }
             return $location;
         }
 
+        public function GetbyAll(Location $location) : Location{
+            $locationN = null;
+
+            $query = "CALL Location_GetByAll(?,?,?,?,?)";
+            $parameters["adress"] = $location->getAdress();
+            $parameters["neighborhood"] = $location->getNeighborhood();
+            $parameters["city"] = $location->getCity();
+            $parameters["province"] = $location->getProvince();
+            $parameters["country"] = $location->getCountry();
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+
+            foreach($resultBD as $row){
+                $locationN = new Location();
+                $locationN->__fromDB($row["idLocation"],$row["adress"]
+                                   ,$row["neighborhood"],$row["city"]
+                                   ,$row["province"],$row["country"]);
+            }
+            return $locationN;
+        }
+
 //INSERT METHODS
-        public function Add(Location $location){
+        private function Add(Location $location){
             $query = "CALL Location_Add(?,?,?,?,?)";
             $parameters["adress"] = $location->getAdress();
             $parameters["neighborhood"] = $location->getNeighborhood();
@@ -69,6 +82,12 @@ use \Model\Location as Location;
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
 
+        public function AddRet(Location $location){
+            $this->Add($location);
+            $location = $this->getByAll($location);
+        return $location;    
+        }
+/*
         public function AddRetId(Location $location){
             $query = "CALL Location_Add(?,?,?,?,?)";
             $parameters["adress"] = $location->getAdress();
@@ -80,6 +99,7 @@ use \Model\Location as Location;
             $this->connection = Connection::GetInstance();
             return $this->connection->ExecuteLastQuery($query,$parameters,QueryType::StoredProcedure);
         }
+*/
 
 //DELETE METHODS
         public function Delete($id){

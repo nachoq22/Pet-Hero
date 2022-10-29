@@ -5,21 +5,17 @@ use \DAO\QueryType as QueryType;
 
 use \DAO\IUserDAO as IUserDAO;
 use \DAO\PersonalDataDAO as PersonalDataDAO;
-use \DAO\OwnerDAO as OwnerDAO;
 use \Model\User as User;
-use \Model\Owner as Owner;
 
     class UserDao implements IUserDAO{
         private $connection;
         private $tableName = 'User';
 
         private $dataDAO;
-        private $ownerDAO;
 
 //DAO INJECTION
         public function __construct(){
             $this->dataDAO = new PersonalDataDAO();
-            $this->ownerDAO = new OwnerDAO();
         }
 
 //SELECT METHODS
@@ -203,11 +199,11 @@ use \Model\Owner as Owner;
 */
         
 //EN REVISION
-        public function Login($user){
+        public function Login(User $user){
             $rta = 0;
             $query = "CALL User_Login(?,?)";
-            $parameters["username"] = $user->getUsername;
-            $parameters["password"] = $user->getPassword;
+            $parameters["username"] = $user->getUsername();
+            $parameters["password"] = $user->getPassword();
             $this->connection = Connection::GetInstance();
             $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
 
@@ -219,20 +215,28 @@ use \Model\Owner as Owner;
 
 //INSERT METHODS
         private function Add(User $user){
-            $query = "CALL User_Add(?,?,?,?,?)";
+            $query = "CALL User_Add(?,?,?)";
             $parameters["username"] = $user->getUsername();
             $parameters["password"] = $user->getPassword();
             $parameters["email"] = $user->getEmail();
             $this->connection = Connection::GetInstance();
-            $idUser= $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
-        return $idUser;    
+            $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
 
-        public function Register(User $user){
-            $user->setId($this->Add($user));
-            $owner = new Owner();
-            $owner->setUser($user);
-            $this->ownerDAO->Add($owner);
+        public function AddRet(User $user){
+            $this->Add($user);
+            $userN = $this->GetByUsername($user->getUsername());
+        return $userN;
+        }
+
+        public function UpdateToKeeper(User $user){
+            $query = "CALL User_UpdateToKeeper(?,?)";
+            $parameters["idUser"] = $user->getId();
+            $parameters["idData"] = $user->getData()->getId();
+            $this->connection = Connection::GetInstance();
+            $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
+            $user = $this->GetByUsernameisKeeper($user->getUsername());
+        return $user;
         }
 
 /*

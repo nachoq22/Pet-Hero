@@ -5,6 +5,8 @@ use \DAO\Connection as Connection;
 use \DAO\QueryType as QueryType;
 
 use \DAO\IOwnerDAO as IOwnerDAO;
+use \DAO\LocationDAO as LocationDAO;
+use \DAO\PersonalDataDAO as PersonalDataDAO;
 use \DAO\UserDao as UserDao;
 use \Model\Owner as Owner;
 
@@ -67,27 +69,18 @@ use \Model\Owner as Owner;
         }
 
 //INSERT METHODS
-        public function Add(Owner $owner){
+        private function Add(Owner $owner){
             $query = "CALL Owner_Add(?)";
             $parameters["idUser"] = $owner->getUser()->getId();
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
 
-/*
-        public function definitiveAdd(Owner $owner){
-            $query = "CALL Owner_Add(?)";
-            $parameters["idUser"] = $owner->getUser()->getId();
-            $this->connection = Connection::GetInstance();
-            $owner->setId($this->connection->ExecuteLastQuery($query,$parameters,QueryType::StoredProcedure));
-            return $owner;
-        }
-
         public function Register(Owner $owner){
-            $owner->setUser($this->userDAO->definitiveRegister($owner->getUser()));
-            return $this->definitiveAdd($owner);
+            $user = $this->userDAO->AddRet($owner->getUser());
+            $owner->setUser($user);
+            $this->Add($owner);
         }
-*/
 
 //DELETE METHODS
         public function Delete($id){

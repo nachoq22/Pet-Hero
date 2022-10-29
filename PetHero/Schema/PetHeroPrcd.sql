@@ -64,6 +64,20 @@ END;
 $$
 
 DELIMITER $$
+CREATE PROCEDURE Location_GetByAll(IN adress VARCHAR(40),IN neighborhood VARCHAR(20)
+                                  ,IN city VARCHAR(20),IN province VARCHAR(30),IN country VARCHAR(20))
+BEGIN
+    SELECT * 
+    FROM Location
+    WHERE (Location.adress = adress) 
+      AND (Location.neighborhood = neighborhood ) 
+      AND (Location.city = city ) 
+      AND (Location.province = province )
+      AND (Location.country = country );
+END;
+$$
+
+DELIMITER $$
 CREATE PROCEDURE Location_Add(IN adress VARCHAR(40),IN neighborhood VARCHAR(20),IN city VARCHAR(20),
                               IN province VARCHAR(30),IN country VARCHAR(20))
 BEGIN
@@ -98,6 +112,15 @@ BEGIN
     SELECT * 
     FROM PersonalData
     WHERE (PersonalData.idData = idData);
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE PersonalData_GetByDni(IN dni VARCHAR(8))
+BEGIN
+    SELECT * 
+    FROM PersonalData
+    WHERE (PersonalData.dni = dni);
 END;
 $$
 
@@ -149,26 +172,16 @@ END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE User_Add(IN username VARCHAR(20),IN password VARCHAR(20),IN email VARCHAR(30),IN idData INT)
+CREATE PROCEDURE User_Login(IN username VARCHAR(20),IN password VARCHAR(20))
 BEGIN
-    INSERT INTO User
-        (User.username,User.password,User.email,User.idData)
-    VALUES
-        (username,password,email,idData);
+    SELECT COUNT(idUser) as rta
+    FROM User
+    WHERE User.username = username AND User.password = password;
 END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE User_UpdateToKeeper(IN idUser INT,IN idData INT)
-BEGIN
-    UPDATE User
-	SET User.idData = idData
-	WHERE User.idUser = idUser;
-END;
-$$
-
-DELIMITER $$
-CREATE PROCEDURE User_Register(IN username VARCHAR(20),IN password VARCHAR(20),IN email VARCHAR(30))
+CREATE PROCEDURE User_Add(IN username VARCHAR(20),IN password VARCHAR(20),IN email VARCHAR(30))
 BEGIN
     INSERT INTO User
         (User.username,User.password,User.email)
@@ -178,11 +191,11 @@ END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE User_Login(IN username VARCHAR(20),IN password VARCHAR(20))
+CREATE PROCEDURE User_UpdateToKeeper(IN idUser INT,IN idData INT)
 BEGIN
-    SELECT COUNT(idUser) as rta
-    FROM User
-    WHERE User.username = username AND User.password = password;
+    UPDATE User
+	SET User.idData = idData
+	WHERE User.idUser = idUser;
 END;
 $$
 
@@ -210,6 +223,15 @@ BEGIN
     SELECT * 
     FROM Keeper
     WHERE (Keeper.idKeeper = idKeeper);
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE Keeper_GetByIdUser(IN idUser INT)
+BEGIN
+    SELECT * 
+    FROM Keeper
+    WHERE (Keeper.idUser = idUser);
 END;
 $$
 
@@ -408,6 +430,7 @@ $$
 CALL Location_GetAll();
 /*CALL Location_GetById(ID);*/
 CALL Location_GetById(2);
+Call Location_GetByAll("Cerrito 20","Alba Azul","Rosario","Santa Fe","Argentina");
 /*CALL Location_Add(adress,neighborhood,city,province,country);*/
 CALL Location_Add("Mi calle","Mi Barrio","Mar del plata","Buenos Aires","Argentina");
 /*CALL Location_Delete(ID);*/
@@ -422,14 +445,12 @@ Call PersonalData_Add("Ramiro","Talangana","M","44886655",2);
 
 /*********************************TEST USER*******************************************/
 Call User_GetAll();
-Call User_GetById(7);
+Call User_GetById(2);
 Call User_GetByUsername("planetar");
 /*CALL User_Add(username,password,varResp);*/
 CALL User_Login("planetar","orylOSad");
 /*CALL User_Add(username,password,email,idData);*/
-Call User_Add("pablitoClavito","ClavitoCrack","pablitoElCrack@gmail.com",5);
-/*CALL User_Register(username,password,email);*/
-Call User_Register("pablitoClavito","ClavitoCrack","pablitoElCrack@gmail.com");
+Call User_Add("pablitoClavito","ClavitoCrack","pablitoElCrack@gmail.com");
 /*Call User_UpdateToKeeper(idUser,idData);*/
 Call User_UpdateToKeeper(2,4);
 /*Call User_Delete(6);*/
@@ -437,15 +458,17 @@ Call User_UpdateToKeeper(2,4);
 /*********************************TEST KEEPER*******************************************/
 Call Keeper_GetAll();
 Call Keeper_GetById(2);
+Call Keeper_GetByIdUser(2);
 /*CALL Keeper_Add(idUser);*/
-Call Keeper_Add(2);
+Call Keeper_Add(6);
 /*Call Keeper_Delete(6);*/
 
 /*********************************TEST OWNER*******************************************/
 Call Owner_GetAll();
 Call Owner_GetById(2);
+Call Owner_GetByIdUser(2);
 /*CALL Owner_Add(idUser);*/
-Call Owner_Add(2);
+Call Owner_Add(6);
 /*Call Owner_Delete(6);*/
 
 /*********************************TEST SIZE*******************************************/
@@ -471,6 +494,8 @@ Call Pet_Add("Salchichon","Suricatta","C:\xampp\htdocs\Pet-Hero\Pet Hero\PetImg/
 						,"C:\xampp\htdocs\Pet-Hero\Pet Hero\VacImg/SurS-181020222211.jpg"
 						,"Tiene 6 dedos",1,5,3);
 /*Call Pet_Delete(6);*/
+
+
 
 
 	
