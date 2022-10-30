@@ -118,6 +118,12 @@ use \Model\Owner as Owner;
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
 
+        public function registerPet(Pet $pet,$file,$fileName){
+            $pet->setType($this->typeDAO->GetbyName($pet->getType()->getId()));
+            $pet->setSize($this->sizeDAO->GetbyName($pet->getSize()->getId()));
+            //$pet->setOwner($this->ownerDAO);
+            $this->Add($pet,$file,$fileName);
+        }         
 
 
 //DELETE METHODS

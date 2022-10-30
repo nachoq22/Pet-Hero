@@ -4,7 +4,7 @@
 <div class="row justify-content-around">
   <div class="col-2">
     <div class="card h-100" style="height: 244px;">
-    <a href="Home/ViewAddPet">
+    <a href="../Home/ViewAddPet">
       <div class="card-body justify-content-center" style="display:flex; justify-content: center;" >
       <svg xmlns="http://www.w3.org/2000/svg" width="150" height="240" fill="currentColor" class="bi bi-plus-square; opacity-50" viewBox="0 0 16 16">
      <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
@@ -19,6 +19,7 @@
     <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Labrador_Retriever_%281210559%29.jpg" class="card-img-top" style="width: 100%; height: 10vw; object-fit: cover;" alt="...">
       <div class="card-body d-flex justify-content-center" style="height: 70px;">
       <h5 class="card-title">Lucky</h5>  
+      <a href="../Home/ViewPetProfile" class="stretched-link"></a>
     </div>
     </div>
   </div>
