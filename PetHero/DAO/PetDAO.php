@@ -100,9 +100,9 @@ use \Model\Owner as Owner;
         }
 
 //INSERT METHODS
-        public function Add(Pet $pet,$file,$fileName){
-            $pet->setProfileIMG($this->imgPPProcess($fileName,$file,$pet->getName()));
-            $pet->setVaccinationPlanIMG($this->imgPVPProcess($fileName,$file,$pet->getName()));
+        private function Add(Pet $pet,$fileP,$fileNameP,$fileV,$fileNameV){
+            $pet->setProfileIMG($this->imgPPProcess($fileNameP,$fileP,$pet->getName()));
+            $pet->setVaccinationPlanIMG($this->imgPVPProcess($fileNameV,$fileV,$pet->getName()));
 
             $query = "CALL Pet_Add(?,?,?,?,?,?,?,?)";
             $parameters["name"] = $pet->getName();
@@ -118,13 +118,12 @@ use \Model\Owner as Owner;
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
 
-        public function registerPet(Pet $pet,$file,$fileName){
-            $pet->setType($this->typeDAO->GetbyName($pet->getType()->getId()));
-            $pet->setSize($this->sizeDAO->GetbyName($pet->getSize()->getId()));
-            //$pet->setOwner($this->ownerDAO);
-            $this->Add($pet,$file,$fileName);
-        }         
-
+        public function RegisterPet(Pet $pet,$fileP,$fileNameP,$fileV,$fileNameV){
+            $pet->setType($this->typeDAO->GetByName($pet->getType()->getName()));
+            $pet->setSize($this->sizeDAO->GetByName($pet->getSize()->getName()));
+            $pet->setOwner($this->ownerDAO->GetbyUser($pet->getOwner()->getUser()->getUsername()));
+            $this->Add($pet,$fileP,$fileNameP,$fileV,$fileNameV);
+        }
 
 //DELETE METHODS
         public function Delete($id){

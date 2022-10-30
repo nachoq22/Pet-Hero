@@ -199,11 +199,11 @@ use \Model\User as User;
 */
         
 //EN REVISION
-        public function Login($user){
+        public function Login(User $user){
             $rta = 0;
             $query = "CALL User_Login(?,?)";
-            $parameters["username"] = $user->getUsername;
-            $parameters["password"] = $user->getPassword;
+            $parameters["username"] = $user->getUsername();
+            $parameters["password"] = $user->getPassword();
             $this->connection = Connection::GetInstance();
             $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
 
@@ -214,23 +214,29 @@ use \Model\User as User;
         }
 
 //INSERT METHODS
-        public function Add(User $user){
-            $query = "CALL PersonalData_Add(?,?,?,?,?)";
+        private function Add(User $user){
+            $query = "CALL User_Add(?,?,?)";
             $parameters["username"] = $user->getUsername();
             $parameters["password"] = $user->getPassword();
             $parameters["email"] = $user->getEmail();
-            $parameters["idData"] = $user->getData()->getId();
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
 
-        public function Register(User $user){
-            $query = "CALL User_Register(?,?,?)";
-            $parameters["username"] = $user->getUsername();
-            $parameters["password"] = $user->getPassword();
-            $parameters["email"] = $user->getEmail();
+        public function AddRet(User $user){
+            $this->Add($user);
+            $userN = $this->GetByUsername($user->getUsername());
+        return $userN;
+        }
+
+        public function UpdateToKeeper(User $user){
+            $query = "CALL User_UpdateToKeeper(?,?)";
+            $parameters["idUser"] = $user->getId();
+            $parameters["idData"] = $user->getData()->getId();
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
+            $user = $this->GetByUsernameisKeeper($user->getUsername());
+        return $user;
         }
 
 /*

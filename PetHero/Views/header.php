@@ -36,6 +36,7 @@ include("Head.php");
             </ul>
           </li>
 
+<!-- DROPDOWN -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
@@ -44,12 +45,13 @@ include("Head.php");
               </svg>
             </a>
 
-            <!-- DROPDOWN -->
+            
             <ul class="dropdown-menu" id="menuProfile">
               <li><a class="dropdown-item" id="signUpItem" data-bs-toggle="modal" data-bs-target=".bs-modal-sm">Sign Up</a></li>
               <li><a class="dropdown-item" id="loginItem" data-bs-toggle="modal" data-bs-target=".bs-modal-sm">Login</a></li>
             </ul>
           </li>
+          
         </ul>
 
         <form class="d-flex" role="search">

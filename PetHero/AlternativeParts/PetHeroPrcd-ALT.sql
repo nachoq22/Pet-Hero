@@ -1,49 +1,3 @@
-/*
-DROP PROCEDURE IF EXISTS `Location_GetAll`;
-DROP PROCEDURE IF EXISTS `Location_GetById`;
-DROP PROCEDURE IF EXISTS `Location_Add`;
-DROP PROCEDURE IF EXISTS `Location_Delete`;
-
-DROP PROCEDURE IF EXISTS `PersonalData_GetAll`;
-DROP PROCEDURE IF EXISTS `PersonalData_GetById`;
-DROP PROCEDURE IF EXISTS `PersonalData_Add`;
-DROP PROCEDURE IF EXISTS `PersonalData_Delete`;
-
-DROP PROCEDURE IF EXISTS `User_GetAll`;
-DROP PROCEDURE IF EXISTS `User_GetById`;
-DROP PROCEDURE IF EXISTS `User_Add`;
-DROP PROCEDURE IF EXISTS `User_Register`;
-DROP PROCEDURE IF EXISTS `User_Login`;
-DROP PROCEDURE IF EXISTS `User_Delete`;
-
-DROP PROCEDURE IF EXISTS `Keeper_GetAll`;
-DROP PROCEDURE IF EXISTS `Keeper_GetById`;
-DROP PROCEDURE IF EXISTS `Keeper_Delete`;
-DROP PROCEDURE IF EXISTS `Keeper_Add`;
-
-
-DROP PROCEDURE IF EXISTS `Owner_GetAll`;
-DROP PROCEDURE IF EXISTS `Owner_GetById`;
-DROP PROCEDURE IF EXISTS `Owner_Add`;
-DROP PROCEDURE IF EXISTS `Owner_Delete`;
-
-DROP PROCEDURE IF EXISTS `Size_GetAll`;
-DROP PROCEDURE IF EXISTS `Size_GetById`;
-DROP PROCEDURE IF EXISTS `Size_Add`;
-DROP PROCEDURE IF EXISTS `Size_Delete`;
-
-DROP PROCEDURE IF EXISTS `PetType_GetAll`;
-DROP PROCEDURE IF EXISTS `PetType_GetById`;
-DROP PROCEDURE IF EXISTS `PetType_Add`;
-DROP PROCEDURE IF EXISTS `PetType_Delete`;
-
-DROP PROCEDURE IF EXISTS `Pet_GetAll`;
-DROP PROCEDURE IF EXISTS `Pet_GetById`;
-DROP PROCEDURE IF EXISTS `Pet_GetByUser`;
-DROP PROCEDURE IF EXISTS `Pet_Add`;
-DROP PROCEDURE IF EXISTS `Pet_Delete`;
-*/
-
 USE petHero;
 /*********************************PROCEDURES LOCATION*******************************************/
 DELIMITER $$
@@ -60,20 +14,6 @@ BEGIN
     SELECT * 
     FROM Location
     WHERE (Location.idLocation = idLocation);
-END;
-$$
-
-DELIMITER $$
-CREATE PROCEDURE Location_GetByAll(IN adress VARCHAR(40),IN neighborhood VARCHAR(20)
-                                  ,IN city VARCHAR(20),IN province VARCHAR(30),IN country VARCHAR(20))
-BEGIN
-    SELECT * 
-    FROM Location
-    WHERE (Location.adress = adress) 
-      AND (Location.neighborhood = neighborhood ) 
-      AND (Location.city = city ) 
-      AND (Location.province = province )
-      AND (Location.country = country );
 END;
 $$
 
@@ -112,15 +52,6 @@ BEGIN
     SELECT * 
     FROM PersonalData
     WHERE (PersonalData.idData = idData);
-END;
-$$
-
-DELIMITER $$
-CREATE PROCEDURE PersonalData_GetByDni(IN dni VARCHAR(8))
-BEGIN
-    SELECT * 
-    FROM PersonalData
-    WHERE (PersonalData.dni = dni);
 END;
 $$
 
@@ -172,16 +103,17 @@ END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE User_Login(IN username VARCHAR(20),IN password VARCHAR(20))
+CREATE PROCEDURE User_Add(IN username VARCHAR(20),IN password VARCHAR(20),IN email VARCHAR(30),IN idData INT)
 BEGIN
-    SELECT COUNT(idUser) as rta
-    FROM User
-    WHERE User.username = username AND User.password = password;
+    INSERT INTO User
+        (User.username,User.password,User.email,User.idData)
+    VALUES
+        (username,password,email,idData);
 END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE User_Add(IN username VARCHAR(20),IN password VARCHAR(20),IN email VARCHAR(30))
+CREATE PROCEDURE User_Register(IN username VARCHAR(20),IN password VARCHAR(20),IN email VARCHAR(30))
 BEGIN
     INSERT INTO User
         (User.username,User.password,User.email)
@@ -191,11 +123,14 @@ END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE User_UpdateToKeeper(IN idUser INT,IN idData INT)
+CREATE PROCEDURE User_Login(IN username VARCHAR(20),IN password VARCHAR(20),OUT rta INT)
 BEGIN
-    UPDATE User
-	SET User.idData = idData
-	WHERE User.idUser = idUser;
+    SELECT COUNT(idUser) 
+    INTO rta
+    FROM User
+    WHERE User.username = username AND User.password = password;
+    
+    SELECT @rta;
 END;
 $$
 
@@ -208,95 +143,49 @@ BEGIN
 END;
 $$
 
-/*********************************PROCEDURES KEEPER*******************************************/
+/*********************************PROCEDURE USERROLE*******************************************/
 DELIMITER $$
-CREATE PROCEDURE Keeper_GetAll()
+CREATE PROCEDURE URole_GetAll()
 BEGIN
     SELECT * 
-    FROM Keeper;
+    FROM UserRole;
 END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE Keeper_GetById(IN idKeeper INT)
+CREATE PROCEDURE URole_GetById(IN idUR INT)
 BEGIN
     SELECT * 
-    FROM Keeper
-    WHERE (Keeper.idKeeper = idKeeper);
+    FROM UserRole
+    WHERE (UserRole.idUR = idUR);
 END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE Keeper_GetByIdUser(IN idUser INT)
+CREATE PROCEDURE URole_GetByIdRole(IN idUser INT)
 BEGIN
     SELECT * 
-    FROM Keeper
-    WHERE (Keeper.idUser = idUser);
+    FROM UserRole
+    WHERE (UserRole.idUser = idUser) AND (UserRole.idRole = idRole);
 END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE Keeper_Add(IN idUser INT)
+CREATE PROCEDURE URole_Add(IN idUser INT,IN idRole INT)
 BEGIN
-    INSERT INTO Keeper
-        (Keeper.idUser)
+    INSERT INTO UserRole
+        (UserRole.idUser,UserRole.idRole)
     VALUES
-        (idUser);
+        (idUser,idRole);
 END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE Keeper_Delete(IN idKeeper INT)
+CREATE PROCEDURE URole_Delete(IN idUR INT)
 BEGIN
     DELETE 
-    FROM Keeper
-    WHERE (Keeper.idKeeper = idKeeper);
-END;
-$$
-
-/*********************************PROCEDURES OWNER*******************************************/
-DELIMITER $$
-CREATE PROCEDURE Owner_GetAll()
-BEGIN
-    SELECT * 
-    FROM Owner;
-END;
-$$
-
-DELIMITER $$
-CREATE PROCEDURE Owner_GetById(IN idOwner INT)
-BEGIN
-    SELECT * 
-    FROM Owner
-    WHERE (Owner.idOwner = idOwner);
-END;
-$$
-
-DELIMITER $$
-CREATE PROCEDURE Owner_GetByIdUser(IN idUser INT)
-BEGIN
-    SELECT * 
-    FROM Owner
-    WHERE (Owner.idUser = idUser);
-END;
-$$
-
-DELIMITER $$
-CREATE PROCEDURE Owner_Add(IN idUser INT)
-BEGIN
-    INSERT INTO Owner
-        (Owner.idUser)
-    VALUES
-        (idUser);
-END;
-$$
-
-DELIMITER $$
-CREATE PROCEDURE Owner_Delete(IN idOwner INT)
-BEGIN
-    DELETE 
-    FROM Owner
-    WHERE (Owner.idOwner = idOwner);
+    FROM UserRole
+    WHERE (UserRole.idUR = idUR);
 END;
 $$
 
@@ -394,24 +283,24 @@ $$
 
 
 DELIMITER $$
-CREATE PROCEDURE Pet_GetByOwner(IN idOwner INT)
+CREATE PROCEDURE Pet_GetByUser(IN idUser INT)
 BEGIN
     SELECT * 
     FROM Pet
-    WHERE (Pet.idOwner = idOwner);
+    WHERE (Pet.idUser = idUser);
 END;
 $$
 
 DELIMITER $$
 CREATE PROCEDURE Pet_Add(IN name VARCHAR(20), IN breed VARCHAR(20), IN profileIMG VARCHAR(60),
                          IN vaccinationPlanIMG VARCHAR(60), IN observation VARCHAR(60), IN idSize INT,
-	                     IN idPetType INT, IN idOwner INT)
+	                     IN idPetType INT, IN idUser INT)
 BEGIN
     INSERT INTO Pet
         (Pet.name,Pet.breed,Pet.profileIMG,Pet.vaccinationPlanIMG,Pet.observation,Pet.idSize
-        ,Pet.idPetType,Pet.idOwner)
+        ,Pet.idPetType,Pet.idUser)
     VALUES
-        (name,breed,profileIMG,vaccinationPlanIMG,observation,idSize,idPetType,idOwner);
+        (name,breed,profileIMG,vaccinationPlanIMG,observation,idSize,idPetType,idUser);
 END;
 $$
 
@@ -430,7 +319,6 @@ $$
 CALL Location_GetAll();
 /*CALL Location_GetById(ID);*/
 CALL Location_GetById(2);
-Call Location_GetByAll("Cerrito 20","Alba Azul","Rosario","Santa Fe","Argentina");
 /*CALL Location_Add(adress,neighborhood,city,province,country);*/
 CALL Location_Add("Mi calle","Mi Barrio","Mar del plata","Buenos Aires","Argentina");
 /*CALL Location_Delete(ID);*/
@@ -448,27 +336,20 @@ Call User_GetAll();
 Call User_GetById(2);
 Call User_GetByUsername("planetar");
 /*CALL User_Add(username,password,varResp);*/
-CALL User_Login("planetar","orylOSad");
+CALL User_Login("planetar","orylOSad",@rta);
+SELECT @rta;
 /*CALL User_Add(username,password,email,idData);*/
-Call User_Add("pablitoClavito","ClavitoCrack","pablitoElCrack@gmail.com");
-/*Call User_UpdateToKeeper(idUser,idData);*/
-Call User_UpdateToKeeper(2,4);
+Call User_Add("pablitoClavito","ClavitoCrack","pablitoElCrack@gmail.com",5);
+/*CALL User_Add(username,password,email);*/
+Call User_Register("pablitoClavito","ClavitoCrack","pablitoElCrack@gmail.com");
 /*Call User_Delete(6);*/
 
-/*********************************TEST KEEPER*******************************************/
-Call Keeper_GetAll();
-Call Keeper_GetById(2);
-Call Keeper_GetByIdUser(2);
-/*CALL Keeper_Add(idUser);*/
-Call Keeper_Add(6);
-/*Call Keeper_Delete(6);*/
 
-/*********************************TEST OWNER*******************************************/
-Call Owner_GetAll();
-Call Owner_GetById(2);
-Call Owner_GetByIdUser(2);
-/*CALL Owner_Add(idUser);*/
-Call Owner_Add(6);
+/*********************************TEST USERROLE*******************************************/
+Call URole_GetAll();
+Call URole_GetById(2);
+/*CALL Owner_Add(idUser,idRole);*/
+Call URole_Add(1,2);
 /*Call Owner_Delete(6);*/
 
 /*********************************TEST SIZE*******************************************/
@@ -494,8 +375,6 @@ Call Pet_Add("Salchichon","Suricatta","C:\xampp\htdocs\Pet-Hero\Pet Hero\PetImg/
 						,"C:\xampp\htdocs\Pet-Hero\Pet Hero\VacImg/SurS-181020222211.jpg"
 						,"Tiene 6 dedos",1,5,3);
 /*Call Pet_Delete(6);*/
-
-
 
 
 	

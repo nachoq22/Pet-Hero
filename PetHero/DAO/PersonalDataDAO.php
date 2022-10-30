@@ -56,17 +56,41 @@ use \Model\PersonalData as PersonalData;
             return $data;
         }
 
+        private function GetbyDni($dni){
+            $data = null;
+
+            $query = "CALL PersonalData_GetByDni(?)";
+            $parameters["dni"] = $dni;
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+
+            foreach($resultBD as $row){
+                $data = new PersonalData();
+
+                $data->__fromDB($row["idData"],$row["name"]
+                               ,$row["surname"],$row["sex"]
+                               ,$row["dni"],$this->locationDAO->Get($row["idLocation"]));
+            }
+            return $data;
+        }
+
 //INSERT METHODS
-        public function Add(PersonalData $data){
+        private function Add(PersonalData $data){
             $query = "CALL PersonalData_Add(?,?,?,?,?)";
             $parameters["name"] = $data->getName();
             $parameters["surname"] = $data->getSurname();
             $parameters["sex"] = $data->getSex();
             $parameters["dni"] = $data->getDni();
-            $parameters["idLocation"] = rand(1, 10);
+            $parameters["idLocation"] = $data->getLocation()->getId();
 
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
+        }
+
+        public function AddRet(PersonalData $data){
+            $this->Add($data);
+            $dataN = $this->GetbyDni($data->dni);
+        return $dataN; 
         }
 
 //INSERT METHODS
