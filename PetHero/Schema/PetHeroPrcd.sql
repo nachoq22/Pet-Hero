@@ -319,6 +319,15 @@ END;
 $$
 
 DELIMITER $$
+CREATE PROCEDURE Size_GetByName(IN name VARCHAR(30))
+BEGIN
+    SELECT * 
+    FROM Size
+    WHERE (Size.name = name);
+END;
+$$
+
+DELIMITER $$
 CREATE PROCEDURE Size_Add(IN name VARCHAR(30))
 BEGIN
     INSERT INTO Size
@@ -352,6 +361,15 @@ BEGIN
     SELECT * 
     FROM PetType
     WHERE (PetType.idType = idType);
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE PetType_GetByName(IN name VARCHAR(30))
+BEGIN
+    SELECT * 
+    FROM PetType
+    WHERE (PetType.name = name);
 END;
 $$
 
@@ -392,7 +410,6 @@ BEGIN
 END;
 $$
 
-
 DELIMITER $$
 CREATE PROCEDURE Pet_GetByOwner(IN idOwner INT)
 BEGIN
@@ -403,8 +420,8 @@ END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE Pet_Add(IN name VARCHAR(20), IN breed VARCHAR(20), IN profileIMG VARCHAR(60),
-                         IN vaccinationPlanIMG VARCHAR(60), IN observation VARCHAR(60), IN idSize INT,
+CREATE PROCEDURE Pet_Add(IN name VARCHAR(20), IN breed VARCHAR(20), IN profileIMG VARCHAR(250),
+                         IN vaccinationPlanIMG VARCHAR(250), IN observation VARCHAR(60), IN idSize INT,
 	                     IN idPetType INT, IN idOwner INT)
 BEGIN
     INSERT INTO Pet

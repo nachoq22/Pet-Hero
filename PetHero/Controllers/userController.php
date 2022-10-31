@@ -1,13 +1,20 @@
 <?php
+    namespace Controllers;
     use \DAO\UserDAO as UserDAO;
+    use \DAO\OwnerDAO as OwnerDAO;
     use \Model\User as User;
+    use \Model\Owner as Owner;
 
     class UserController
     {
         private $userDAO;
+        private $homeController;
+        private $ownerDAO;
 
         public function __construct(){
             $this->userDAO = new UserDAO();
+            $this->homeController = new HomeController();
+            $this->ownerDAO = new OwnerDAO();
         }
 
         public function Register($username, $email, $password)
@@ -30,9 +37,11 @@
             }*/
             $user = new User();
             $user->__fromRegister($username,$password,$email);
-/*            echo "AQUI ESTA EL USUARIO \n" . var_dump($user);*/
-            $this->userDAO->Register($user);
-            $this->Index();
+            $owner = new Owner();
+            $owner->__fromRequest($user);
+           //echo "AQUI ESTA EL USUARIO \n" . var_dump($Owner);
+            $this->ownerDAO->Register($owner);
+            $this->homeController->Index();
         } 
 
         public function Login($username, $password)
@@ -40,14 +49,17 @@
             $user = new User();
             $user->__fromLogin($username,$password);
             $rta = $this->userDAO->Login($user);
-            if($rta=1){
-                session_start();
+            var_dump($rta);
+            if($rta!=0){
+                /*session_start();
                 $loggedUser = new User();
                 $loggedUser->setUsername($username);
                 $loggedUser->setPassword($password);
-                $_SESSION["loggedUser"]= $loggedUser;
-                $this->Index();
-                var_dump($_SESSION["loggedUser"]);
+                $_SESSION["loggedUser"]= $loggedUser;*/
+                //var_dump($user);
+                //$this->Index();
+                //var_dump($_SESSION["loggedUser"]);
+                $this->homeController->Index();
             }
         }
 

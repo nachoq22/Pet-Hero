@@ -55,10 +55,7 @@ use \Model\PetType as PetType;
             require_once(VIEWS_PATH."PetList.php");
         }
 
-        public function ViewPetProfile()
-        {
-            require_once(VIEWS_PATH."PetProfile.php");
-        }
+        
 
         
     }

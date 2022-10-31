@@ -54,7 +54,7 @@ INSERT INTO PersonalData VALUES (0,"Alan","Rojas","M","40737343",5);
 /*********************************USER*******************************************/
 CREATE TABLE IF NOT EXISTS User(
 	idUser INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-	username VARCHAR(20),
+	username VARCHAR(20) UNIQUE,
     password VARCHAR(20),
     email VARCHAR(30),
 		idData INT,
@@ -125,8 +125,8 @@ CREATE TABLE IF NOT EXISTS Pet(
 	idPet INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(20),
     breed VARCHAR(20),
-	profileIMG VARCHAR(60),
-	vaccinationPlanIMG VARCHAR(60),
+	profileIMG VARCHAR(250),
+	vaccinationPlanIMG VARCHAR(250),
     observation VARCHAR(60),
 		idSize INT NOT NULL,
 		idPetType INT NOT NULL,

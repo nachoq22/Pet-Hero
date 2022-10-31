@@ -32,13 +32,10 @@ use \Model\Size as Size;
 
         function __construct(){} 
 
-        function __fromRequest($name,$breed,$profileIMG,
-                               $vaccinationPlanIMG,$observation,
+        function __fromRequest($name,$breed,$observation,
                                PetType $type,Size $size,Owner $owner){
             $this->name = $name;
             $this->breed = $breed;
-            $this->profileIMG = $profileIMG;
-            $this->vaccinationPlanIMG = $vaccinationPlanIMG;
             $this->observation = $observation;
             $this->type = $type;
             $this->size = $size;

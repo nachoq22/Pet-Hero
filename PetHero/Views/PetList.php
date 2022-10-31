@@ -19,11 +19,14 @@
     <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Labrador_Retriever_%281210559%29.jpg" class="card-img-top" style="width: 100%; height: 10vw; object-fit: cover;" alt="...">
       <div class="card-body d-flex justify-content-center" style="height: 70px;">
       <h5 class="card-title">Lucky</h5>  
-      <a href="../Home/ViewPetProfile" class="stretched-link"></a>
+      <a href="../Pet/ViewPetProfile" class="stretched-link"></a>
     </div>
     </div>
   </div>
-  <div class="col-2">
+
+
+  
+  <!--<div class="col-2">
     <div class="card h-100">
     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Stray_calico_cat_near_Sagami_River-01.jpg/640px-Stray_calico_cat_near_Sagami_River-01.jpg" class="card-img-top" style="width: 100%; height: 10vw; object-fit: cover;" alt="...">
       <div class="card-body d-flex justify-content-center" style="height: 70px;">
@@ -55,7 +58,7 @@
       <h5 class="card-title">Rick</h5>  
     </div>
     </div>
-  </div>
+  </div> -->
   
 </div> <!-- /.card-content -->
 </div> <!-- /.card-content -->

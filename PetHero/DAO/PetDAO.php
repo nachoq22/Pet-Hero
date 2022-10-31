@@ -30,14 +30,14 @@ use \Model\Owner as Owner;
         }
 //TOOLS
         private function imgPPProcess($nameFile,$file,$petName){
-        $pathDB= "Views/Img/IMGPet/Profile".$nameFile.$petName.date("YmdHis"); 
-        $path =  "../".$pathDB;  
+        $path= "Views\Img\IMGPet\Profile\\".$petName.date("YmdHis").$nameFile; 
+        $pathDB =  "..\\".$path;  
         move_uploaded_file($file,$path);
         return $pathDB;
         }    
         private function imgPVPProcess($nameFile,$file,$petName){
-            $pathDB= "Views/Img/IMGPet/VaccinationPlan".$nameFile.$petName.date("YmdHis"); 
-            $path =  "../".$pathDB;  
+            $path= "Views\Img\IMGPet\VaccinationPlan\\".$petName.date("YmdHis").$nameFile; 
+            $pathDB =  "..\\".$path;  
             move_uploaded_file($file,$path);
             return $pathDB;
         }       
