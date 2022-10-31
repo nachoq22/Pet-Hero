@@ -210,6 +210,7 @@ use \Model\User as User;
             foreach($resultBD as $row){
                 $rta = $row["rta"];
             }
+            
         return $rta;
         }
 

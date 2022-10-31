@@ -54,9 +54,9 @@ INSERT INTO PersonalData VALUES (0,"Alan","Rojas","M","40737343",5);
 /*********************************USER*******************************************/
 CREATE TABLE IF NOT EXISTS User(
 	idUser INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-	username VARCHAR(20),
+	username VARCHAR(20) UNIQUE,
     password VARCHAR(20),
-    email VARCHAR(30),
+    email VARCHAR(30) UNIQUE,
 		idData INT,
 		CONSTRAINT fk_UserData FOREIGN KEY (idData)
 			REFERENCES PersonalData(idData)
@@ -154,3 +154,99 @@ INSERT INTO Pet VALUES (0,"Laila","Ariray","C:\xampp\htdocs\Pet-Hero\Pet Hero\Pe
 INSERT INTO Pet VALUES (0,"Willow","Suricatta","C:\xampp\htdocs\Pet-Hero\Pet Hero\PetImg/SurW-131020221734.jpg"
 						,"C:\xampp\htdocs\Pet-Hero\Pet Hero\VacImg/SurW-131020221731.jpg"
 						,"Se escapa constantemente",5,5,5);
+
+
+
+/*SEGUNDA PARTE, ADMINISTRACION DE PUBLICACIONES, RESERVAS Y RESENIAS*/
+
+/*********************************PUBLICATION*******************************************/
+		/*AGREGA LOS CHECK PELOTUDO*/
+CREATE TABLE IF NOT EXISTS Publication(
+	idPublic INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+	openD DATE,
+	closeD DATE,
+	title VARCHAR(50),
+	description VARCHAR(200),
+	popularity DEC(2,1),
+	remuneration DEC(10,2),
+		idKeeper INT NOT NULL,
+		CONSTRAINT fk_publicKeeper FOREIGN KEY(idKeeper)
+			REFERENCES Keeper(idKeeper)
+);
+
+INSERT INTO Publication VALUES (0,"2022-10-30","2022-11-02"
+							     ,"De Gran comodidad"
+								 ,"Casa doble planta con patio trasero, casucha con acolchado para mascotas grandes que lo requieran"
+								 ,4.8,3500.10,1)
+/*								 
+INSERT INTO Publication VALUES (0,"","","","",0.0,0.0,2)
+INSERT INTO Publication VALUES (0,"","","","",0.0,0.0,3)
+INSERT INTO Publication VALUES (0,"","","","",0.0,0.0,4)
+INSERT INTO Publication VALUES (0,"","","","",0.0,0.0,5)
+*/
+
+/*********************************PUBLICATION IMAGES*******************************************/
+CREATE TABLE IF NOT EXISTS ImgPublic(
+	idImg INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+	uri VARCHAR(60) NOT NULL UNIQUE,
+		idPublic INT NOT NULL,
+		CONSTRAINT fk_imgPublic FOREIGN KEY(idPublic)
+			REFERENCES Publication(idPublic)
+);
+
+INSERT INTO ImgPublic VALUES (0,"IMG/Public/30102022153601.jpg",1);
+INSERT INTO ImgPublic VALUES (0,"IMG/Public/30102022153602.jpg",1);
+INSERT INTO ImgPublic VALUES (0,"IMG/Public/30102022153604.jpg",1);
+
+/*********************************BOOKING*******************************************/
+CREATE TABLE IF NOT EXISTS Booking(
+	idBook INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+	openD DATE,
+	closeD DATE,
+	payState VARCHAR(20),
+	payCode VARCHAR(14), /*HACER CHECK DE QUE TENGA 4 LETRAS Y DEMAS NUMS*/
+		idPublic INT NOT NULL,
+		idOwner INT NOT NULL,
+		idPet INT NOT NULL,
+			CONSTRAINT fk_bookPublic FOREIGN KEY(idPublic)
+				REFERENCES Publication(idPublic),
+			CONSTRAINT fk_bookOwner FOREIGN KEY(idOwner)
+				REFERENCES Owner(idOwner),
+			CONSTRAINT fk_bookPet FOREIGN KEY(idPet)
+				REFERENCES Pet(idPet)
+);
+
+INSERT INTO Booking VALUES (0,"2022-10-30","2022-11-30"
+							     ,"PAID"
+								 ,"AT1048235672BY"
+								 ,1,3,4)
+
+/*********************************CHECKER*******************************************/
+
+CREATE TABLE IF NOT EXISTS Checker(
+	idChecker INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+	emisionD DATE,
+	closeD DATE,
+	finalPrice DEC(10,2),
+		idBook INT NOT NULL,
+			CONSTRAINT fk_checkerBook FOREIGN KEY(idBook)
+				REFERENCES Booking(idBook)
+);
+
+INSERT INTO Checker VALUES (0,"2022-10-30","2022-11-30",13500.30,1);
+
+/*********************************REVIEW*******************************************/
+CREATE TABLE IF NOT EXISTS Review(
+	idReview INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+	createD DATE,
+	commentary VARCHAR(200),
+	stars DEC(2,1),
+		idPublic INT NOT NULL,
+		idOwner INT NOT NULL,
+			CONSTRAINT fk_reeviewPublic FOREIGN KEY(idPublic)
+				REFERENCES Publication(idPublic),
+			CONSTRAINT fk_reviewOwner FOREIGN KEY(idOwner)
+				REFERENCES Owner(idOwner),
+);
+
+
