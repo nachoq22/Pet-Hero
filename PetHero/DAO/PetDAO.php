@@ -6,7 +6,7 @@ use \DAO\QueryType as QueryType;
 
 use \DAO\IPetDAO as IPetDAO;
 use \DAO\PetTypeDAO as PetTypeDAO;
-use \DAO\SizeDao as SizeDAO;
+use \DAO\SizeDAO as SizeDAO;
 use \DAO\UserDAO as UserDAO;
 use \Model\Pet as Pet;
 
@@ -22,22 +22,27 @@ use \Model\Pet as Pet;
 //DAO INJECTION
         public function __construct(){
             $this->typeDAO = new PetTypeDAO();
-            $this->sizeDAO = new SizeDao();
+            $this->sizeDAO = new SizeDAO();
             $this->userDAO = new UserDAO();
         }
+
 //TOOLS
-        private function imgPPProcess($nameFile,$file,$petName){
-        $pathDB= "Views/Img/IMGPet/Profile".$nameFile.$petName.date("YmdHis"); 
-        $path =  "../".$pathDB;  
-        move_uploaded_file($file,$path);
-        return $pathDB;
-        }    
-        private function imgPVPProcess($nameFile,$file,$petName){
-            $pathDB= "Views/Img/IMGPet/VaccinationPlan".$nameFile.$petName.date("YmdHis"); 
-            $path =  "../".$pathDB;  
-            move_uploaded_file($file,$path);
-            return $pathDB;
-        }       
+private function imgPPProcess($nameFile,$file,$petName){
+    $path= "Views\Img\IMGPet\Profile\\".$petName.date("YmdHis").".jpg"; 
+    $path = str_replace(' ', '-', $path); 
+    $pathDB =  "..\\".$path; 
+    move_uploaded_file($file,$path);
+    return $pathDB;
+}    
+
+private function imgPVPProcess($nameFile,$file,$petName){
+    $path= "Views\Img\IMGPet\VaccinationPlan\\".$petName.date("YmdHis").".jpg"; 
+    $path = str_replace(' ', '-', $path); 
+    $pathDB =  "..\\".$path;  
+    
+    move_uploaded_file($file,$path);
+    return $pathDB;
+}       
 
 
 //SELECT METHODS
@@ -64,6 +69,28 @@ use \Model\Pet as Pet;
                 $pet->setProfileIMG($row["profileIMG"]);
                 $pet->setVaccinationPlanIMG($row["vaccinationPlanIMG"]);
                 $pet->setObservation($row["observation"]);
+                array_push($petList,$pet);
+            }
+            return $petList;
+        }
+
+        public function GetAllByUser($idUser){
+            $petList = array();
+
+            $query = "CALL Pet_GetByUser(?)";
+            $parameters["idUser"] = $idUser;
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+
+            foreach($resultBD as $row){
+                $pet = new Pet();
+
+                $pet->__fromDB($row["idPet"],$row["name"]
+                ,$row["breed"],$row["profileIMG"]
+                ,$row["vaccinationPlanIMG"],$row["observation"]
+                ,$this->typeDAO->Get($row["idType"])
+                ,$this->sizeDAO->Get($row["idSize"])
+                ,$this->userDAO->Get($row["idUser"]));
                 array_push($petList,$pet);
             }
             return $petList;

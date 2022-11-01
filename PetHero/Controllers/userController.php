@@ -1,7 +1,7 @@
 <?php
     namespace Controllers;
     use \DAO\UserDAO as UserDAO;
-    use \DAO\URDAO as URDAO;
+    use \DAO\URoleDAO as URoleDAO;
     use \Model\User as User;
     use \Model\UserRole as UserRole;
     
@@ -10,12 +10,12 @@
     {
         private $userDAO;
         private $homeController;
-        private $urDAO;
+        private $uRoleDAO;
 
         public function __construct(){
             $this->userDAO = new UserDAO();
             $this->homeController = new HomeController();
-            $this->urDAO = new URDAO();
+            $this->uRoleDAO = new URoleDAO();
         }
 
         public function Register($username, $email, $password)
@@ -37,14 +37,10 @@
                 //El usuario ya esta en uso
             }*/
             $user = new User();
-            
             $user->__fromRegister($username,$password,$email);
-            //$user = $this->userDAO->AddRet($user);
-            //var_dump($user);
-            $ur= new UserRole();
-            $ur->setUser($user);
-            //var_dump($ur);
-            $this->urDAO->Register($user);
+            $uRole= new UserRole();
+            $uRole->setUser($user);
+            $this->uRoleDAO->Register($uRole);
             $this->homeController->Index();
         } 
 

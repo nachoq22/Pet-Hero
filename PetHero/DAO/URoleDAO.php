@@ -12,7 +12,7 @@ use \DAO\RoleDAO as RoleDAO;
 use \Model\UserRole as UserRole;
 use \Model\User as User;
 
-    class URDAO implements IURDAO{
+    class URoleDAO implements IURoleDAO{
         private $connection;
         private $tableName = 'UserRole';
 
@@ -23,10 +23,10 @@ use \Model\User as User;
 
 //DAO INJECTION
         public function __construct(){
-            $locationDAO = new LocationDAO();
-            $dataDAO = new PersonalDataDAO();
-            $userDAO = new UserDAO();
-            $roleDAO = new RoleDAO();
+            $this->locationDAO = new LocationDAO();
+            $this->dataDAO = new PersonalDataDAO();
+            $this->userDAO = new UserDAO();
+            $this->roleDAO = new RoleDAO();
         }
 
 //SELECT METHODS
@@ -98,16 +98,12 @@ use \Model\User as User;
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
 
-        public function Register(User $ur){
-            var_dump($ur);
-            var_dump($this->userDAO->AddRet($ur));
-            $user = $this->userDAO->AddRet($ur);
-            var_dump($user);
-            /*
+        public function Register(UserRole $ur){
+            $user = $this->userDAO->AddRet($ur->getUser());
             $ur->setUser($user);
             $ur->setRole($this->roleDAO->Get(1));
             $this->Add($ur);
-            */
+            
         }
 
         public function UtoKeeper(UserRole $ur){

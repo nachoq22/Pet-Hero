@@ -3,30 +3,30 @@
     use \DAO\PetDAO as PetDAO;
     use \DAO\SizeDAO as SizeDAO;
     use \DAO\PetTypeDAO as PetTypeDAO;
-    use \DAO\OwnerDAO as OwnerDAO;
+    use \DAO\UserDAO as UserDAO;
     use \Model\Pet as Pet;
     use \Model\Size as Size;
     use \Model\PetType as PetType;
-    use \Model\Owner as Owner;
+    use \Model\User as User;
 
         class PetController
         {
             private $petDAO;
             private $sizeDAO;
             private $petTypeDAO;
-            private $ownerDAO;
+            private $userDAO;
 
         public function __construct()
         {
             $this->petDAO = new PetDAO();
             $this->sizeDAO = new SizeDAO();
             $this->petTypeDAO = new PetTypeDAO();
-            $this->ownerDAO = new OwnerDAO();
+            $this->userDAO = new UserDAO();
         }
 
         public function ViewPetList()
         {
-            $petList = $this->petDAO->GetAllByOwner(1);
+            $petList = $this->petDAO->GetAllByUser(1);
             require_once(VIEWS_PATH."PetList.php");
         }
 
@@ -50,10 +50,10 @@
             $sizeOBJ->setName($size);
             $typeOBJ = new PetType();
             $typeOBJ->setName($type);
-            $owner = new Owner();
-            $owner = $this->ownerDAO->Get(1);
+            $user = new User();
+            $user = $this->userDAO->Get(1);
             $pet = new Pet();
-            $pet->__fromRequest($name, $breed, $observation, $typeOBJ, $sizeOBJ, $owner);   
+            $pet->__fromRequest($name, $breed, $observation, $typeOBJ, $sizeOBJ, $user);   
             var_dump($pet);
             $fileNameP = $_FILES['ImagenP']['name'];
             $fileP = $_FILES['ImagenP']['tmp_name'];
