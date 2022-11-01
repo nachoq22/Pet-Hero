@@ -7,11 +7,8 @@ use \DAO\QueryType as QueryType;
 use \DAO\IPetDAO as IPetDAO;
 use \DAO\PetTypeDAO as PetTypeDAO;
 use \DAO\SizeDao as SizeDAO;
-use \DAO\OwnerDAO as OwnerDAO;
+use \DAO\UserDAO as UserDAO;
 use \Model\Pet as Pet;
-use \Model\PetType as PetType;
-use \Model\Size as Size;
-use \Model\Owner as Owner;
 
 
     class PetDAO implements IPetDAO{
@@ -20,28 +17,24 @@ use \Model\Owner as Owner;
 
         private $typeDAO;
         private $sizeDAO;
-        private $ownerDAO;
+        private $userDAO;
 
 //DAO INJECTION
         public function __construct(){
             $this->typeDAO = new PetTypeDAO();
             $this->sizeDAO = new SizeDao();
-            $this->ownerDAO = new OwnerDAO();
+            $this->userDAO = new UserDAO();
         }
 //TOOLS
         private function imgPPProcess($nameFile,$file,$petName){
-            $path= "Views\Img\IMGPet\Profile\\".$petName.date("YmdHis").".jpg"; 
-            $path = str_replace(' ', '-', $path); 
-            $pathDB =  "..\\".$path; 
-            move_uploaded_file($file,$path);
-            return $pathDB;
+        $pathDB= "Views/Img/IMGPet/Profile".$nameFile.$petName.date("YmdHis"); 
+        $path =  "../".$pathDB;  
+        move_uploaded_file($file,$path);
+        return $pathDB;
         }    
-
         private function imgPVPProcess($nameFile,$file,$petName){
-            $path= "Views\Img\IMGPet\VaccinationPlan\\".$petName.date("YmdHis").".jpg"; 
-            $path = str_replace(' ', '-', $path); 
-            $pathDB =  "..\\".$path;  
-            
+            $pathDB= "Views/Img/IMGPet/VaccinationPlan".$nameFile.$petName.date("YmdHis"); 
+            $path =  "../".$pathDB;  
             move_uploaded_file($file,$path);
             return $pathDB;
         }       
@@ -89,41 +82,12 @@ use \Model\Owner as Owner;
                 $pet->__fromDB($row["idPet"],$row["name"]
                 ,$row["breed"],$row["profileIMG"]
                 ,$row["vaccinationPlanIMG"],$row["observation"]
-                ,$this->typeDAO->Get($row["idPetType"])
+                ,$this->typeDAO->Get($row["idType"])
                 ,$this->sizeDAO->Get($row["idSize"])
-                ,$this->ownerDAO->Get($row["idOwner"]));
+                ,$this->userDAO->Get($row["idUser"]));
 
-/*
-                $pet->setId($row["idPet"]);
-                $pet->setName($row["name"]);
-                $pet->setBreed($row["breed"]);
-                $pet->setProfileIMG($row["profileIMG"]);
-                $pet->setVaccinationPlanIMG($row["vaccinationPlanIMG"]);
-                $pet->setObservation($row["observation"]);
-*/
             }
             return $pet;
-        }
-
-        public function GetAllByOwner($idOwner){
-            $petList = array();
-            $query = "CALL Pet_GetByOwner(?)";
-            $parameters["idOwner"] = $idOwner;
-            $this->connection = Connection::GetInstance();
-            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
-
-            foreach($resultBD as $row){
-                $pet = new Pet();
-
-                $pet->__fromDB($row["idPet"],$row["name"]
-                ,$row["breed"],$row["profileIMG"]
-                ,$row["vaccinationPlanIMG"],$row["observation"]
-                ,$this->typeDAO->Get($row["idPetType"])
-                ,$this->sizeDAO->Get($row["idSize"])
-                ,$this->ownerDAO->Get($row["idOwner"]));
-                array_push($petList,$pet);
-            }
-            return $petList;
         }
 
 //INSERT METHODS
@@ -139,7 +103,7 @@ use \Model\Owner as Owner;
             $parameters["observation"] = $pet->getObservation();
             $parameters["idType"] = $pet->getType()->getId();
             $parameters["idSize"] = $pet->getSize()->getId();
-            $parameters["idOwner"] = $pet->getOwner()->getId();
+            $parameters["idUser"] = $pet->getUser()->getId();
 
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
@@ -148,7 +112,7 @@ use \Model\Owner as Owner;
         public function RegisterPet(Pet $pet,$fileP,$fileNameP,$fileV,$fileNameV){
             $pet->setType($this->typeDAO->GetByName($pet->getType()->getName()));
             $pet->setSize($this->sizeDAO->GetByName($pet->getSize()->getName()));
-            $pet->setOwner($this->ownerDAO->GetbyUser($pet->getOwner()->getUser()->getUsername()));
+            $pet->setUser($this->userDAO->GetByUsername($pet->getUser()->getUsername()));
             $this->Add($pet,$fileP,$fileNameP,$fileV,$fileNameV);
         }
 

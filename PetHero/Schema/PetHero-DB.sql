@@ -1,4 +1,3 @@
--- SQLBook: Code
 /*
 drop database if exists petHero;
 drop table if exists Location;
@@ -16,11 +15,11 @@ USE petHero;
 /*********************************LOCATION*******************************************/
 CREATE TABLE IF NOT EXISTS Location(
 	idLocation INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-    adress VARCHAR(40) NOT NULL,
-    neighborhood VARCHAR(20) NOT NULL,
-    city VARCHAR(40) NOT NULL,
-    province VARCHAR(30) NOT NULL,
-    country VARCHAR(20) NOT NULL
+    adress VARCHAR(50) NOT NULL,
+    neighborhood VARCHAR(50) NOT NULL,
+    city VARCHAR(50) NOT NULL,
+    province VARCHAR(50) NOT NULL,
+    country VARCHAR(50) NOT NULL
 );
 
 INSERT INTO Location VALUES (0,"Rondeau 616","Piedras del sol","Cordoba","Cordoba","Argentina");
@@ -37,8 +36,8 @@ INSERT INTO Location VALUES (0,"Pigue 1996","Pompeya","Mar del Plata","Buenos Ai
 /*********************************PERSONAL DATA*******************************************/
 CREATE TABLE IF NOT EXISTS PersonalData(
 	idData INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-	name VARCHAR(20) NOT NULL,
-    surname VARCHAR(20) NOT NULL,
+	name VARCHAR(50) NOT NULL,
+    surname VARCHAR(50) NOT NULL,
     sex VARCHAR(1) NOT NULL,
     dni VARCHAR(8) UNIQUE NOT NULL CHECK(dni regexp '[0-9]{8}'),
 		idLocation INT NOT NULL,
@@ -55,10 +54,10 @@ INSERT INTO PersonalData VALUES (0,"Alan","Rojas","M","40737343",5);
 /*********************************USER*******************************************/
 CREATE TABLE IF NOT EXISTS User(
 	idUser INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-	username VARCHAR(20) NOT NULL UNIQUE,
-    password VARCHAR(20) NOT NULL,
-    email VARCHAR(30) NOT NULL UNIQUE,
-		idData INT NOT NULL UNIQUE,
+	username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(30) NOT NULL,
+    email VARCHAR(50) NOT NULL UNIQUE,
+		idData INT UNIQUE,
 		CONSTRAINT fk_UserData FOREIGN KEY (idData)
 			REFERENCES PersonalData(idData)
 );
@@ -69,33 +68,42 @@ INSERT INTO User VALUES (0,"venus","MuncENsu","medennikovadasha@boranora.com",3)
 INSERT INTO User VALUES (0,"sculpordwarf","cIShAphe","saschre@hs-gilching.de",4);
 INSERT INTO User VALUES (0,"toystory","nShaREDO","ovnoya@emvil.com",5);
 
-/*********************************KEEPER*******************************************/
-CREATE TABLE IF NOT EXISTS Keeper(
-	idKeeper INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-		idUser INT NOT NULL UNIQUE,
-		CONSTRAINT fk_KeeperUser FOREIGN KEY (idUser)
-			REFERENCES User(idUser)
+/*********************************ROLE*******************************************/
+CREATE TABLE IF NOT EXISTS Role(
+	idRole INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+	name VARCHAR(30) UNIQUE,
+	description VARCHAR(250)
 );
 
-INSERT INTO Keeper VALUES (0,1);
-INSERT INTO Keeper VALUES (0,2);
-INSERT INTO Keeper VALUES (0,3);
-INSERT INTO Keeper VALUES (0,4);
-INSERT INTO Keeper VALUES (0,5);
+INSERT INTO Role VALUES (0,"Owner","The owner has permissions to add their corresponding pets, 
+									as well as to edit their profile and delete their account. 
+									To finish, there is the functionality of making a reservation 
+									and loading the corresponding payment receipt.");
+INSERT INTO Role VALUES (0,"Keeper","The keeper has permissions to add publications with which the owner 
+									can interact. Along with this, the possibility of responding to 
+									reservations, consulting them, etc.");
 
-/*********************************OWNER*******************************************/
-CREATE TABLE IF NOT EXISTS Owner(
-	idOwner INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-		idUser INT NOT NULL UNIQUE,
-		CONSTRAINT fk_OwnerUser FOREIGN KEY (idUser)
-			REFERENCES User(idUser)
+/*********************************USERROLE*******************************************/
+CREATE TABLE IF NOT EXISTS UserRole(
+	idUR INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+		idUser INT,
+		idRole INT,
+		CONSTRAINT fk_UserRole FOREIGN KEY (idUser)
+			REFERENCES User(idUser),
+		CONSTRAINT fk_Role FOREIGN KEY (idRole)
+			REFERENCES Role(idRole)	
 );
 
-INSERT INTO Owner VALUES (0,1);
-INSERT INTO Owner VALUES (0,2);
-INSERT INTO Owner VALUES (0,3);
-INSERT INTO Owner VALUES (0,4);
-INSERT INTO Owner VALUES (0,5);
+INSERT INTO UserRole VALUES(0,1,1);
+INSERT INTO UserRole VALUES(0,1,2);
+INSERT INTO UserRole VALUES(0,2,1);
+INSERT INTO UserRole VALUES(0,2,2);
+INSERT INTO UserRole VALUES(0,3,1);
+INSERT INTO UserRole VALUES(0,3,2);
+INSERT INTO UserRole VALUES(0,4,1);
+INSERT INTO UserRole VALUES(0,4,2);
+INSERT INTO UserRole VALUES(0,5,1);
+INSERT INTO UserRole VALUES(0,5,2);
 
 /*********************************SIZE*******************************************/
 CREATE TABLE IF NOT EXISTS Size(
@@ -112,7 +120,7 @@ INSERT INTO Size VALUES (0,"Big");
 /*********************************PET TYPE*******************************************/
 CREATE TABLE IF NOT EXISTS PetType(
 	idType INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(30) NOT NULL UNIQUE
+    name VARCHAR(50) NOT NULL UNIQUE
 );
 
 INSERT INTO PetType VALUES (0,"Dog");
@@ -124,20 +132,20 @@ INSERT INTO PetType VALUES (0,"Meerkat");
 /*********************************PET*******************************************/
 CREATE TABLE IF NOT EXISTS Pet(
 	idPet INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(20) NOT NULL,
-    breed VARCHAR(20) NOT NULL,
+    name VARCHAR(50) NOT NULL,
+    breed VARCHAR(50) NOT NULL,
 	profileIMG VARCHAR(250) NOT NULL UNIQUE,
 	vaccinationPlanIMG VARCHAR(250) NOT NULL UNIQUE,
     observation VARCHAR(200) NOT NULL,
 		idSize INT NOT NULL,
-		idPetType INT NOT NULL,
-		idOwner INT NOT NULL,
+		idType INT NOT NULL,
+		idUser INT NOT NULL,
 		CONSTRAINT fk_PetSize FOREIGN KEY (idSize)
 			REFERENCES Size(idSize),
-		CONSTRAINT fk_PetType FOREIGN KEY (idPetType)
+		CONSTRAINT fk_PetType FOREIGN KEY (idType)
 			REFERENCES PetType(idType),
-		CONSTRAINT fk_PetOwner FOREIGN KEY (idOwner)
-			REFERENCES Owner(idOwner)
+		CONSTRAINT fk_PetUser FOREIGN KEY (idUser)
+			REFERENCES User(idUser)
 );
 
 INSERT INTO Pet VALUES (0,"Coco","Mestizo","C:\xampp\htdocs\Pet-Hero\Pet Hero\PetImg/MezC-131020221731.jpg"
@@ -156,3 +164,108 @@ INSERT INTO Pet VALUES (0,"Willow","Suricatta","C:\xampp\htdocs\Pet-Hero\Pet Her
 						,"C:\xampp\htdocs\Pet-Hero\Pet Hero\VacImg/SurW-131020221731.jpg"
 						,"Se escapa constantemente",5,5,5);
 
+
+
+/*SEGUNDA PARTE, ADMINISTRACION DE PUBLICACIONES, RESERVAS Y RESENIAS*/
+
+/*********************************PUBLICATION*******************************************/
+		/*AGREGA LOS CHECK PELOTUDO*/
+CREATE TABLE IF NOT EXISTS Publication(
+	idPublic INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+	openD DATE NOT NULL,
+	closeD DATE NOT NULL CHECK (closeD > openD),
+	title VARCHAR(50) NOT NULL,
+	description VARCHAR(200) NOT NULL,
+	popularity DEC(2,1) NOT NULL CHECK (popularity >= 0 AND popularity <=5),
+	remuneration DEC(10,2) NOT NULL,
+		idUser INT NOT NULL,
+		CONSTRAINT fk_publicUser FOREIGN KEY(idUser)
+			REFERENCES User(idUser)
+);
+
+INSERT INTO Publication 
+	VALUES (0,"2022-10-30","2022-11-02","De Gran comodidad"
+			 ,"Casa doble planta con patio trasero, casucha con acolchado para mascotas grandes que lo requieran"
+			 ,4.8,3500.10,1);
+/*								 
+INSERT INTO Publication VALUES (0,"","","","",0.0,0.0,2)
+INSERT INTO Publication VALUES (0,"","","","",0.0,0.0,3)
+INSERT INTO Publication VALUES (0,"","","","",0.0,0.0,4)
+INSERT INTO Publication VALUES (0,"","","","",0.0,0.0,5)
+*/
+
+/*********************************PUBLICATION IMAGES*******************************************/
+CREATE TABLE IF NOT EXISTS ImgPublic(
+	idImg INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+	uri VARCHAR(60) NOT NULL UNIQUE,
+		idPublic INT NOT NULL,
+		CONSTRAINT fk_imgPublication FOREIGN KEY(idPublic)
+			REFERENCES Publication(idPublic)
+);
+
+INSERT INTO ImgPublic VALUES (0,"IMG/Public/30102022153601.jpg",1);
+INSERT INTO ImgPublic VALUES (0,"IMG/Public/30102022153602.jpg",1);
+INSERT INTO ImgPublic VALUES (0,"IMG/Public/30102022153604.jpg",1);
+
+/*********************************BOOKING*******************************************/
+CREATE TABLE IF NOT EXISTS Booking(
+	idBook INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+	openD DATE NOT NULL,
+	closeD DATE NOT NULL CHECK (closeD > openD),
+	bookState VARCHAR(50) NOT NULL, /*CHECK(bookState = "Awaiting Reply")*/
+	payCode VARCHAR(14), /*HACER CHECK DE QUE TENGA 4 LETRAS Y DEMAS NUMS*/
+		idPublic INT NOT NULL,
+		idUser INT NOT NULL,
+			CONSTRAINT fk_bookPublic FOREIGN KEY(idPublic)
+				REFERENCES Publication(idPublic),
+			CONSTRAINT fk_bookUser FOREIGN KEY(idUser)
+				REFERENCES User(idUser)
+);
+
+
+INSERT INTO Booking VALUES (0,DATE(NOW()),
+								  DATE_ADD(DATE(NOW()),INTERVAL 15 DAY)
+							     ,"PAID"
+								 ,"AT1048235672BY"
+								 ,1,4);
+
+/*********************************BOOKING*******************************************/
+CREATE TABLE IF NOT EXISTS BookingPet(
+	idBP INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+		idBook INT NOT NULL,
+		idPet INT NOT NULL,
+		CONSTRAINT fk_bpBook FOREIGN KEY(idBook)
+				REFERENCES Booking(idBook),
+		CONSTRAINT fk_bpPet FOREIGN KEY(idPet)
+				REFERENCES Pet(idPet) 
+		
+);
+
+/*********************************CHECKER*******************************************/
+CREATE TABLE IF NOT EXISTS Checker(
+	idChecker INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+	emisionD DATE NOT NULL,
+	closeD DATE NOT NULL CHECK (closeD > emisionD),
+	finalPrice DEC(10,2) NOT NULL,
+		idBook INT NOT NULL,
+			CONSTRAINT fk_checkerBook FOREIGN KEY(idBook)
+				REFERENCES Booking(idBook)
+);
+
+INSERT INTO Checker VALUES (0,DATE(NOW()),DATE_ADD(DATE(NOW()),INTERVAL 15 DAY),13500.30,1);
+
+/*********************************REVIEW*******************************************/
+CREATE TABLE IF NOT EXISTS Review(
+	idReview INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+	createD DATE NOT NULL,
+	commentary VARCHAR(200) NOT NULL,
+	stars DEC(2,1) NOT NULL CHECK (stars >= 0 AND stars <=5),
+		idPublic INT NOT NULL,
+		idUser INT NOT NULL,
+			CONSTRAINT fk_reviewPublic FOREIGN KEY(idPublic)
+				REFERENCES Publication(idPublic),
+			CONSTRAINT fk_reviewUser FOREIGN KEY(idUser)
+				REFERENCES User(idUser)
+);
+
+INSERT INTO Review VALUES(0,DATE(NOW()),"Muy buen servicio, satisfecho en su totalidad.",4.7,1,5);

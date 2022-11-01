@@ -1,10 +1,10 @@
 <?php
 namespace Model;
-use \Model\User as User;
+use \Model\Owner as Owner;
 use \Model\PetType as PetType;
 use \Model\Size as Size;
 
-    class PetAlt{
+    class PetALT{
         private $idPet;
         private $name;
         private $breed;
@@ -13,12 +13,12 @@ use \Model\Size as Size;
         private $observation;
         private PetType $type;
         private Size $size;
-        private User $user;
+        private Owner $owner;
 
 //CONSTRUCTORS
         function __fromDB($idPet,$name,$breed,$profileIMG,
                           $vaccinationPlanIMG,$observation,
-                          PetType $type,Size $size,User $user){
+                          PetType $type,Size $size,Owner $owner){
             $this->idPet = $idPet;
             $this->name = $name;
             $this->breed = $breed;
@@ -27,14 +27,14 @@ use \Model\Size as Size;
             $this->observation = $observation;
             $this->type = $type;
             $this->size = $size;
-            $this->user = $user;
+            $this->owner = $owner;
         } 
 
         function __construct(){} 
 
         function __fromRequest($name,$breed,$profileIMG,
                                $vaccinationPlanIMG,$observation,
-                               PetType $type,Size $size,User $user){
+                               PetType $type,Size $size,Owner $owner){
             $this->name = $name;
             $this->breed = $breed;
             $this->profileIMG = $profileIMG;
@@ -42,7 +42,7 @@ use \Model\Size as Size;
             $this->observation = $observation;
             $this->type = $type;
             $this->size = $size;
-            $this->user = $user;
+            $this->owner = $owner;
         } 
 
 //GETTER & SERTTER
@@ -102,13 +102,11 @@ use \Model\Size as Size;
                 $this->size = $size;
         }
 
-        public function getUser(): User{
-            return $this->user;
+        public function getOwner(): Owner{
+            return $this->owner;
         }
-        public function setUser(User $user){
-                $this->user = $user;
+        public function setOwner(Owner $owner){
+                $this->owner = $owner;
         }
     }
-
-
 ?>
