@@ -86,7 +86,7 @@ use \Model\Keeper as Keeper;
                 $keeper->getUser()->getData()->setLocation($location);
             $data = $this->dataDAO->AddRet($keeper->getUser()->getData());
                 $keeper->getUser()->setData($data);
-            $user = $this->userDAO->UpdateToKeeper($keeper->getUser());
+            $user = $this->userDAO->HookData($keeper->getUser());
                 $keeper->setUser($user);
             $this->Add($keeper);    
         }

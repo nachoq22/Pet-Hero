@@ -19,10 +19,10 @@ namespace Model;
         }
 
 //GETTERS & SETTERS
-        public function getIdRole(){
+        public function getId(){
             return $this->idRole;
         }
-        public function setIdRole($idRole){
+        public function setId($idRole){
             $this->idRole = $idRole;
         }
 

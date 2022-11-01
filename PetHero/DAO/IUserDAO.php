@@ -8,7 +8,7 @@ use \Model\User as User;
         public function Get($id);
         public function Login(User $user);
         public function AddRet(User $user);
-        public function updateToKeeper(User $user);
+        public function HookData(User $user);
         public function Delete($id);
     }
 ?>

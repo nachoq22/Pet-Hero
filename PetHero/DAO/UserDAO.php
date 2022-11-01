@@ -7,7 +7,7 @@ use \DAO\IUserDAO as IUserDAO;
 use \DAO\PersonalDataDAO as PersonalDataDAO;
 use \Model\User as User;
 
-    class UserDao implements IUserDAO{
+    class UserDAO implements IUserDAO{
         private $connection;
         private $tableName = 'User';
 
@@ -175,8 +175,8 @@ use \Model\User as User;
             }
             return $user;
         }
-/*
-        public function definitiveGetByUsername($username){
+
+        public function DGetByUsername($username){
             $user = null;
     
             $query = "CALL User_GetByUsername(?)";
@@ -186,7 +186,7 @@ use \Model\User as User;
     
             foreach($resultBD as $row){
                 $user = new User();
-                if($row["idData"]){
+                if($row["idData"] != NULL){
                     $user->__fromDBisKeeper($row["idUser"],$row["username"]
                                            ,$row["password"],$row["email"]
                                            ,$this->dataDAO->Get($row["idData"]));
@@ -196,9 +196,7 @@ use \Model\User as User;
             }
             return $user;
         }
-*/
         
-//EN REVISION
         public function Login(User $user){
             $rta = 0;
             $query = "CALL User_Login(?,?)";
@@ -230,32 +228,17 @@ use \Model\User as User;
         return $userN;
         }
 
-        public function UpdateToKeeper(User $user){
-            $query = "CALL User_UpdateToKeeper(?,?)";
+        public function HookData(User $user){
+            $query = "CALL User_HookData(?,?)";
             $parameters["idUser"] = $user->getId();
             $parameters["idData"] = $user->getData()->getId();
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
-            $user = $this->GetByUsernameisKeeper($user->getUsername());
+            //$user = $this->GetByUsernameisKeeper($user->getUsername());
+            $user = $this->DGetByUsername($user->getUsername()); 
         return $user;
         }
-
-/*
-        //LATES POSIBLE REGISTER
-        public function definitiveRegister(User $user){
-            $query = "CALL User_Register(?,?,?)";
-            $parameters["username"] = $user->getUsername();
-            $parameters["password"] = $user->getPassword();
-            $parameters["email"] = $user->getEmail();
-            $this->connection = Connection::GetInstance();
-            $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
-
-            $iIDUser = $this->connection->ExecuteLastQuery($query,$parameters,QueryType::StoredProcedure);
-            $user->setId($iIDUser);
-        return $user;
-        }
-*/
-
+        
 //DELETE METHODS
         public function Delete($id){
             $query = "CALL Location_Delete(?)";

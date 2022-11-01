@@ -1,6 +1,6 @@
 <?php
 namespace Model;
-use \Model\Owner as Owner;
+use \Model\User as User;
 use \Model\PetType as PetType;
 use \Model\Size as Size;
 
@@ -13,12 +13,12 @@ use \Model\Size as Size;
         private $observation;
         private PetType $type;
         private Size $size;
-        private Owner $owner;
+        private User $user;
 
 //CONSTRUCTORS
         function __fromDB($idPet,$name,$breed,$profileIMG,
                           $vaccinationPlanIMG,$observation,
-                          PetType $type,Size $size,Owner $owner){
+                          PetType $type,Size $size,User $user){
             $this->idPet = $idPet;
             $this->name = $name;
             $this->breed = $breed;
@@ -27,14 +27,14 @@ use \Model\Size as Size;
             $this->observation = $observation;
             $this->type = $type;
             $this->size = $size;
-            $this->owner = $owner;
+            $this->user = $user;
         } 
 
         function __construct(){} 
 
         function __fromRequest($name,$breed,$profileIMG,
                                $vaccinationPlanIMG,$observation,
-                               PetType $type,Size $size,Owner $owner){
+                               PetType $type,Size $size,User $user){
             $this->name = $name;
             $this->breed = $breed;
             $this->profileIMG = $profileIMG;
@@ -42,7 +42,7 @@ use \Model\Size as Size;
             $this->observation = $observation;
             $this->type = $type;
             $this->size = $size;
-            $this->owner = $owner;
+            $this->user = $user;
         } 
 
 //GETTER & SERTTER
@@ -102,11 +102,13 @@ use \Model\Size as Size;
                 $this->size = $size;
         }
 
-        public function getOwner(): Owner{
-            return $this->owner;
+        public function getUser(): User{
+            return $this->user;
         }
-        public function setOwner(Owner $owner){
-                $this->owner = $owner;
+        public function setUser(User $user){
+                $this->user = $user;
         }
     }
+
+
 ?>

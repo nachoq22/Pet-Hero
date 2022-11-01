@@ -222,12 +222,12 @@ END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE Role_Add(IN idRole INT,name VARCHAR(30),description VARCHAR(250))
+CREATE PROCEDURE Role_Add(name VARCHAR(30),description VARCHAR(250))
 BEGIN
     INSERT INTO Role
-        (Role.idRole,Role.name,Role.description)
+        (Role.name,Role.description)
     VALUES
-        (idUser,idRole);
+        (name,description);
 END;
 $$
 
@@ -263,7 +263,7 @@ $$
 DELIMITER $$
 CREATE PROCEDURE UR_IsKeeper(IN idUser INT)
 BEGIN
-    SELECT COUNT(idUser) 
+    SELECT COUNT(idUser) as rta 
     FROM UserRole
     WHERE (UserRole.idUser = idUser) AND (UserRole.idRole = 2);
 END;
@@ -276,6 +276,16 @@ BEGIN
         (UserRole.idUser,UserRole.idRole)
     VALUES
         (idUser,idRole);
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE UR_UserToOwner(IN idUser INT)
+BEGIN
+    INSERT INTO UserRole
+        (UserRole.idUser,UserRole.idRole)
+    VALUES
+        (idUser,1);
 END;
 $$
 
@@ -457,6 +467,7 @@ Call UR_GetAll();
 Call UR_GetById(2);
 /*CALL Owner_Add(idUser,idRole);*/
 /*Call URole_Add(6,2);*/
+Call UR_IsKeeper(3);
 Call UR_UserToKeeper(6);
 /*Call Owner_Delete(6);*/
 
