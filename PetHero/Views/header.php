@@ -83,7 +83,7 @@ include("Head.php");
 
         <!--SIGNUP TAB-->
         <div class="tab-pane fade" id="pills-signUp" role="tabpanel" aria-labelledby="pills-signUp-tab">
-          <form action="<?php echo FRONT_ROOT."/Home/Register" ?>" method="post">
+          <form action="<?php echo FRONT_ROOT."/user/Register" ?>" method="post">
             <div class="mb-3">
               <label for="inputUsername" class="form-label">Username</label>
               <input type="text" class="form-control" id="inputUsername" name="username">
@@ -103,7 +103,7 @@ include("Head.php");
 
         <!--LOGIN TAB-->
         <div class="tab-pane fade" id="pills-login" role="tabpanel" aria-labelledby="pills-login-tab">
-          <form action="<?php echo FRONT_ROOT."/Home/Login" ?>" method="post">
+          <form action="<?php echo FRONT_ROOT."/User/Login" ?>" method="post">
             <div class="mb-3">
               <label for="inputUsername" class="form-label">Username</label>
               <input type="username" class="form-control" id="inputUsername" name="username">

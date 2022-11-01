@@ -152,9 +152,9 @@ DELIMITER $$
 CREATE PROCEDURE User_Add(IN username VARCHAR(50),IN password VARCHAR(30),IN email VARCHAR(50))
 BEGIN
     INSERT INTO User
-        (User.username,User.password,User.email,User.idData)
+        (User.username,User.password,User.email)
     VALUES
-        (username,password,email,idData);
+        (username,password,email);
 END;
 $$
 
@@ -432,8 +432,34 @@ BEGIN
 END;
 $$
 
+/*********************************PROCEDURES PUBLICATION*******************************************/
 
-					/*********************************TEST PROCEDURES*******************************************/
+DELIMITER $$
+
+CREATE PROCEDURE Publication_GetAll()
+BEGIN
+    SELECT *
+    FROM Publication;
+END;
+
+$$
+
+DELIMITER $$ 
+
+CREATE PROCEDURE Publication_GetById(IN idPublication INT)
+BEGIN
+    SELECT * 
+    FROM Publication
+    WHERE (Publication.idPublication = idPublication);
+END;
+
+$$
+
+
+
+
+
+/*********************************TEST PROCEDURES*******************************************/
 /*********************************TEST LOCATION*******************************************/
 CALL Location_GetAll();
 /*CALL Location_GetById(ID);*/
@@ -457,7 +483,7 @@ Call User_GetByUsername("planetar");
 /*CALL User_Add(username,password,varResp);*/
 CALL User_Login("planetar","orylOSad");
 /*CALL User_Add(username,password,email,idData);*/
-Call User_Add("pablitoClavito","ClavitoCrack","pablitoElCrack@gmail.com",6);
+Call User_Add("pablitoClavito","ClavitoCrack","pablitoElCrack@gmail.com");
 /*CALL User_Add(username,password,email);*/
 Call User_Register("Elcucarachin","Carlos1245","elcuca@gmail.com");
 /*Call User_Delete(6);*/

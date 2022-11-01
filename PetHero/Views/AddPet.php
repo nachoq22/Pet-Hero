@@ -1,13 +1,13 @@
 <body>
-<form action="<?php echo FRONT_ROOT."/Pet/Add" ?>" method="post">
+<form action="<?php echo FRONT_ROOT."/Pet/Add" ?>" method="post" enctype="multipart/form-data">
       <div class="mb-3">
           <label for="inputName" class="form-label">Pet´s name</label>
-          <input type="text" class="form-control" id="inputAdress" name="name">
+          <input type="text" class="form-control" id="inputName" name="name">
       </div>
 
       <div class="mb-3">
           <label for="inputPetType" class="form-label">Pet Type</label>
-          <select name="petType" class="form-control" id="inputpetType" name="petType">
+          <select name="petType" class="form-control" id="inputPetType" name="petType">
             <option value="dog">Dog</option>
             <option value="cat">Cat</option>
             <option value="hedgehog">Hedgehog</option>
@@ -35,23 +35,24 @@
       </div>
 
       <div class="mb-3">
-        <label for="inputCity" class="form-label">{Imagen de perfil}</label>
-        <input type="file" id="avatar" name="profileIMG" accept="image/png, image/jpeg">
-    </div>
-
-      
-        <br><br>
-      <div class="mb-3">
-        <label for="inputProvince" class="form-label">Plan de vacunacion</label>
-        <input type="file" id="avatar" name="vaccinationPlanIMG" accept="image/png, image/jpeg">
-    </div>
-
-      
-        <br><br>
-      <div class="mb-3">
-        <label for="inputCountry" class="form-label">Observacion (Contanos mas sobre tu mascota, o comentanos algun cuidado especial que requiera)</label>
-        <input type="text" class="form-control" id="inputCountry" name="observation">
+        <label for="inputObservation" class="form-label">Observacion (Contanos mas sobre tu mascota, o comentanos algun cuidado especial que requiera)</label>
+        <input type="text" class="form-control" id="inputObservation" name="observation">
       </div>
+      
+      <div class="mb-3">
+        <label for="ImagenP" class="form-label">Imagen de perfil</label>
+        <input type="file" name="ImagenP" accept="image/png, image/jpeg">
+    </div>
+
+      
+        <br><br>
+      <div class="mb-3">
+        <label for="ImagenV" class="form-label">Plan de vacunacion</label>
+        <input type="file" name="ImagenV" accept="image/png, image/jpeg">
+    </div>
+
+        <br><br>
+      
       <button type="reset" class="btn btn-primary">Reset</button>
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>

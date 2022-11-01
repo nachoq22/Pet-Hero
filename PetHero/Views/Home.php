@@ -4,6 +4,14 @@
         <h1>Bienvenido a pet hero, aqui podra buscar a un keeper adecuado para cuidar a su mascota asi como ofrecerse a cuidar otras mascotas!</h1> 
         </div>
     </div>
+
+    <h3>No esperes mas! Registra a tu mascota para encontrar a la persona ideal</h3>
+    <a class="btn btn-primary" href="Pet/ViewPetList" role="button">Pets!</a>
+
+    <h3>Ya sos Keeper? Crea tu publicacion para mostrarte al mundo</h3>
+    <a class="btn btn-primary" href="" role="button">Tu publicacion</a>
+    <br><br>
+
     <div class="card border-info mb-3" style="max-width: 18rem;" style="width: 18rem;">
   <img src="https://static.tokkobroker.com/pictures/34932906127141585208188762234073879326298067045523632263203776275920444811073.jpg" class="card-img-top" alt="...">
   <div class="card-body">

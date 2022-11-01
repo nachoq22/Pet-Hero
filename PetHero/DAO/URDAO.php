@@ -10,6 +10,7 @@ use \DAO\UserDAO as UserDAO;
 use \DAO\RoleDAO as RoleDAO;
 
 use \Model\UserRole as UserRole;
+use \Model\User as User;
 
     class URDAO implements IURDAO{
         private $connection;
@@ -97,11 +98,16 @@ use \Model\UserRole as UserRole;
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
 
-        public function Register(UserRole $ur){
-                $user = $this->userDAO->AddRet($ur->getUser());
+        public function Register(User $ur){
+            var_dump($ur);
+            var_dump($this->userDAO->AddRet($ur));
+            $user = $this->userDAO->AddRet($ur);
+            var_dump($user);
+            /*
             $ur->setUser($user);
             $ur->setRole($this->roleDAO->Get(1));
             $this->Add($ur);
+            */
         }
 
         public function UtoKeeper(UserRole $ur){
