@@ -15,11 +15,11 @@ USE petHero;
 /*********************************LOCATION*******************************************/
 CREATE TABLE IF NOT EXISTS Location(
 	idLocation INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-    adress VARCHAR(40),
-    neighborhood VARCHAR(20),
-    city VARCHAR(40),
-    province VARCHAR(30),
-    country VARCHAR(20)
+    adress VARCHAR(50) NOT NULL,
+    neighborhood VARCHAR(50) NOT NULL,
+    city VARCHAR(50) NOT NULL,
+    province VARCHAR(50) NOT NULL,
+    country VARCHAR(50) NOT NULL
 );
 
 INSERT INTO Location VALUES (0,"Rondeau 616","Piedras del sol","Cordoba","Cordoba","Argentina");
@@ -36,9 +36,9 @@ INSERT INTO Location VALUES (0,"Pigue 1996","Pompeya","Mar del Plata","Buenos Ai
 /*********************************PERSONAL DATA*******************************************/
 CREATE TABLE IF NOT EXISTS PersonalData(
 	idData INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-	name VARCHAR(20),
-    surname VARCHAR(20),
-    sex VARCHAR(1),
+	name VARCHAR(50) NOT NULL,
+    surname VARCHAR(50) NOT NULL,
+    sex VARCHAR(1) NOT NULL,
     dni VARCHAR(8) UNIQUE NOT NULL CHECK(dni regexp '[0-9]{8}'),
 		idLocation INT NOT NULL,
 		CONSTRAINT fk_DataLocation FOREIGN KEY (idLocation)
@@ -54,24 +54,24 @@ INSERT INTO PersonalData VALUES (0,"Alan","Rojas","M","40737343",5);
 /*********************************USER*******************************************/
 CREATE TABLE IF NOT EXISTS User(
 	idUser INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-	username VARCHAR(20) UNIQUE,
-    password VARCHAR(20),
-    email VARCHAR(30) UNIQUE,
-		idData INT,
+	username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(20) NOT NULL,
+    email VARCHAR(50) NOT NULL UNIQUE,
+		idData INT UNIQUE,
 		CONSTRAINT fk_UserData FOREIGN KEY (idData)
 			REFERENCES PersonalData(idData)
 );
 /*PARA PRUEBA SE LES LINKEO ID, EN GENERAL NO VA XK EL REGISTRO QUEDA EXCENTO,HABILITA LUEGO DE QUERERER SER KEEPER*/
-INSERT INTO User(User.username,User.password,User.email,User.idData) VALUES ("planetar","orylOSad","achternaga@wificon.eu",1);
-INSERT INTO User(User.username,User.password,User.email,User.idData) VALUES ("marsexpress","eIrCHips","djlucadj@lifestyleunrated.com",2);
-INSERT INTO User(User.username,User.password,User.email,User.idData) VALUES ("venus","MuncENsu","medennikovadasha@boranora.com",3);
-INSERT INTO User(User.username,User.password,User.email,User.idData) VALUES ("sculpordwarf","cIShAphe","saschre@hs-gilching.de",4);
-INSERT INTO User(User.username,User.password,User.email,User.idData) VALUES ("toystory","nShaREDO","ovnoya@emvil.com",5);
+INSERT INTO User VALUES (0,"planetar","orylOSad","achternaga@wificon.eu",1);
+INSERT INTO User VALUES (0,"marsexpress","eIrCHips","djlucadj@lifestyleunrated.com",2);
+INSERT INTO User VALUES (0,"venus","MuncENsu","medennikovadasha@boranora.com",3);
+INSERT INTO User VALUES (0,"sculpordwarf","cIShAphe","saschre@hs-gilching.de",4);
+INSERT INTO User VALUES (0,"toystory","nShaREDO","ovnoya@emvil.com",5);
 
 /*********************************KEEPER*******************************************/
 CREATE TABLE IF NOT EXISTS Keeper(
 	idKeeper INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-		idUser INT,
+		idUser INT NOT NULL UNIQUE,
 		CONSTRAINT fk_KeeperUser FOREIGN KEY (idUser)
 			REFERENCES User(idUser)
 );
@@ -85,7 +85,7 @@ INSERT INTO Keeper VALUES (0,5);
 /*********************************OWNER*******************************************/
 CREATE TABLE IF NOT EXISTS Owner(
 	idOwner INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-		idUser INT,
+		idUser INT NOT NULL UNIQUE,
 		CONSTRAINT fk_OwnerUser FOREIGN KEY (idUser)
 			REFERENCES User(idUser)
 );
@@ -99,7 +99,7 @@ INSERT INTO Owner VALUES (0,5);
 /*********************************SIZE*******************************************/
 CREATE TABLE IF NOT EXISTS Size(
 	idSize INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(30)
+    name VARCHAR(30) NOT NULL UNIQUE
 );
 
 INSERT INTO Size VALUES (0,"Little");
@@ -111,7 +111,7 @@ INSERT INTO Size VALUES (0,"Big");
 /*********************************PET TYPE*******************************************/
 CREATE TABLE IF NOT EXISTS PetType(
 	idType INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(30)
+    name VARCHAR(50) NOT NULL UNIQUE
 );
 
 INSERT INTO PetType VALUES (0,"Dog");
@@ -123,17 +123,17 @@ INSERT INTO PetType VALUES (0,"Meerkat");
 /*********************************PET*******************************************/
 CREATE TABLE IF NOT EXISTS Pet(
 	idPet INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(20),
-    breed VARCHAR(20),
-	profileIMG VARCHAR(60),
-	vaccinationPlanIMG VARCHAR(60),
-    observation VARCHAR(60),
+    name VARCHAR(50) NOT NULL,
+    breed VARCHAR(50) NOT NULL,
+	profileIMG VARCHAR(250) NOT NULL UNIQUE,
+	vaccinationPlanIMG VARCHAR(250) NOT NULL UNIQUE,
+    observation VARCHAR(200) NOT NULL,
 		idSize INT NOT NULL,
-		idPetType INT NOT NULL,
+		idType INT NOT NULL,
 		idOwner INT NOT NULL,
 		CONSTRAINT fk_PetSize FOREIGN KEY (idSize)
 			REFERENCES Size(idSize),
-		CONSTRAINT fk_PetType FOREIGN KEY (idPetType)
+		CONSTRAINT fk_PetType FOREIGN KEY (idType)
 			REFERENCES PetType(idType),
 		CONSTRAINT fk_PetOwner FOREIGN KEY (idOwner)
 			REFERENCES Owner(idOwner)
@@ -163,21 +163,21 @@ INSERT INTO Pet VALUES (0,"Willow","Suricatta","C:\xampp\htdocs\Pet-Hero\Pet Her
 		/*AGREGA LOS CHECK PELOTUDO*/
 CREATE TABLE IF NOT EXISTS Publication(
 	idPublic INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-	openD DATE,
-	closeD DATE,
-	title VARCHAR(50),
-	description VARCHAR(200),
-	popularity DEC(2,1),
-	remuneration DEC(10,2),
+	openD DATE NOT NULL,
+	closeD DATE NOT NULL CHECK (closeD > openD),
+	title VARCHAR(50) NOT NULL,
+	description VARCHAR(200) NOT NULL,
+	popularity DEC(2,1) NOT NULL CHECK (popularity >= 0 AND popularity <=5),
+	remuneration DEC(10,2) NOT NULL,
 		idKeeper INT NOT NULL,
 		CONSTRAINT fk_publicKeeper FOREIGN KEY(idKeeper)
 			REFERENCES Keeper(idKeeper)
 );
 
-INSERT INTO Publication VALUES (0,"2022-10-30","2022-11-02"
-							     ,"De Gran comodidad"
-								 ,"Casa doble planta con patio trasero, casucha con acolchado para mascotas grandes que lo requieran"
-								 ,4.8,3500.10,1)
+INSERT INTO Publication 
+	VALUES (0,"2022-10-30","2022-11-02","De Gran comodidad"
+			 ,"Casa doble planta con patio trasero, casucha con acolchado para mascotas grandes que lo requieran"
+			 ,4.8,3500.10,1);
 /*								 
 INSERT INTO Publication VALUES (0,"","","","",0.0,0.0,2)
 INSERT INTO Publication VALUES (0,"","","","",0.0,0.0,3)
@@ -190,7 +190,7 @@ CREATE TABLE IF NOT EXISTS ImgPublic(
 	idImg INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
 	uri VARCHAR(60) NOT NULL UNIQUE,
 		idPublic INT NOT NULL,
-		CONSTRAINT fk_imgPublic FOREIGN KEY(idPublic)
+		CONSTRAINT fk_imgPublication FOREIGN KEY(idPublic)
 			REFERENCES Publication(idPublic)
 );
 
@@ -201,9 +201,9 @@ INSERT INTO ImgPublic VALUES (0,"IMG/Public/30102022153604.jpg",1);
 /*********************************BOOKING*******************************************/
 CREATE TABLE IF NOT EXISTS Booking(
 	idBook INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-	openD DATE,
-	closeD DATE,
-	payState VARCHAR(20),
+	openD DATE NOT NULL,
+	closeD DATE NOT NULL CHECK (closeD > openD),
+	bookState VARCHAR(50) NOT NULL, /*CHECK(bookState = "Awaiting Reply")*/
 	payCode VARCHAR(14), /*HACER CHECK DE QUE TENGA 4 LETRAS Y DEMAS NUMS*/
 		idPublic INT NOT NULL,
 		idOwner INT NOT NULL,
@@ -216,37 +216,40 @@ CREATE TABLE IF NOT EXISTS Booking(
 				REFERENCES Pet(idPet)
 );
 
-INSERT INTO Booking VALUES (0,"2022-10-30","2022-11-30"
+
+INSERT INTO Booking VALUES (0,DATE(NOW()),
+								  DATE_ADD(DATE(NOW()),INTERVAL 15 DAY)
 							     ,"PAID"
 								 ,"AT1048235672BY"
-								 ,1,3,4)
+								 ,1,3,4);
 
 /*********************************CHECKER*******************************************/
-
 CREATE TABLE IF NOT EXISTS Checker(
 	idChecker INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-	emisionD DATE,
-	closeD DATE,
-	finalPrice DEC(10,2),
+	emisionD DATE NOT NULL,
+	closeD DATE NOT NULL CHECK (closeD > emisionD),
+	finalPrice DEC(10,2) NOT NULL,
 		idBook INT NOT NULL,
 			CONSTRAINT fk_checkerBook FOREIGN KEY(idBook)
 				REFERENCES Booking(idBook)
 );
 
-INSERT INTO Checker VALUES (0,"2022-10-30","2022-11-30",13500.30,1);
+INSERT INTO Checker VALUES (0,DATE(NOW()),DATE_ADD(DATE(NOW()),INTERVAL 15 DAY),13500.30,1);
 
 /*********************************REVIEW*******************************************/
 CREATE TABLE IF NOT EXISTS Review(
 	idReview INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-	createD DATE,
-	commentary VARCHAR(200),
-	stars DEC(2,1),
+	createD DATE NOT NULL,
+	commentary VARCHAR(200) NOT NULL,
+	stars DEC(2,1) NOT NULL CHECK (stars >= 0 AND stars <=5),
 		idPublic INT NOT NULL,
 		idOwner INT NOT NULL,
-			CONSTRAINT fk_reeviewPublic FOREIGN KEY(idPublic)
+			CONSTRAINT fk_reviewPublic FOREIGN KEY(idPublic)
 				REFERENCES Publication(idPublic),
 			CONSTRAINT fk_reviewOwner FOREIGN KEY(idOwner)
-				REFERENCES Owner(idOwner),
+				REFERENCES Owner(idOwner)
 );
+
+INSERT INTO Review VALUES(0,DATE(NOW()),"Muy buen servicio, satisfecho en su totalidad.",4.7,1,5);
 
 
