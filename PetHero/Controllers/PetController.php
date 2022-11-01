@@ -30,10 +30,10 @@
             require_once(VIEWS_PATH."PetList.php");
         }
 
-        public function ViewPetProfile()
+        public function ViewPetProfile($idPet)
         {
-            $petaux = $this->petDAO->Get(8);
-            
+            //var_dump($idPet);
+            $petaux = $this->petDAO->Get($idPet);
             require_once(VIEWS_PATH."PetProfile.php");
         }
 

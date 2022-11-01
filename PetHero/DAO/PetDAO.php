@@ -85,20 +85,22 @@ use \Model\Owner as Owner;
 
             foreach($resultBD as $row){
                 $pet = new Pet();
-/*
+
                 $pet->__fromDB($row["idPet"],$row["name"]
                 ,$row["breed"],$row["profileIMG"]
                 ,$row["vaccinationPlanIMG"],$row["observation"]
-                ,this->typeDAO->Get($row["idType"])
-                ,this->sizeDAO->Get($row["idSize"])
-                ,this->ownerDAO->Get($row["idOwner"]));
-*/
+                ,$this->typeDAO->Get($row["idPetType"])
+                ,$this->sizeDAO->Get($row["idSize"])
+                ,$this->ownerDAO->Get($row["idOwner"]));
+
+/*
                 $pet->setId($row["idPet"]);
                 $pet->setName($row["name"]);
                 $pet->setBreed($row["breed"]);
                 $pet->setProfileIMG($row["profileIMG"]);
                 $pet->setVaccinationPlanIMG($row["vaccinationPlanIMG"]);
                 $pet->setObservation($row["observation"]);
+*/
             }
             return $pet;
         }
