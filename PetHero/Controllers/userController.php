@@ -1,20 +1,21 @@
 <?php
     namespace Controllers;
     use \DAO\UserDAO as UserDAO;
-    use \DAO\OwnerDAO as OwnerDAO;
+    use \DAO\URDAO as URDAO;
     use \Model\User as User;
-    use \Model\Owner as Owner;
+    use \Model\UserRole as UserRole;
+    
 
     class UserController
     {
         private $userDAO;
         private $homeController;
-        private $ownerDAO;
+        private $urDAO;
 
         public function __construct(){
             $this->userDAO = new UserDAO();
             $this->homeController = new HomeController();
-            $this->ownerDAO = new OwnerDAO();
+            $this->urDAO = new URDAO();
         }
 
         public function Register($username, $email, $password)
@@ -36,11 +37,14 @@
                 //El usuario ya esta en uso
             }*/
             $user = new User();
+            
             $user->__fromRegister($username,$password,$email);
-            $owner = new Owner();
-            $owner->__fromRequest($user);
-           //echo "AQUI ESTA EL USUARIO \n" . var_dump($Owner);
-            $this->ownerDAO->Register($owner);
+            //$user = $this->userDAO->AddRet($user);
+            //var_dump($user);
+            $ur= new UserRole();
+            $ur->setUser($user);
+            //var_dump($ur);
+            $this->urDAO->Register($user);
             $this->homeController->Index();
         } 
 
@@ -49,7 +53,7 @@
             $user = new User();
             $user->__fromLogin($username,$password);
             $rta = $this->userDAO->Login($user);
-            var_dump($rta);
+            //var_dump($rta);
             if($rta!=0){
                 /*session_start();
                 $loggedUser = new User();
