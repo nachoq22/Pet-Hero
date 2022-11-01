@@ -2,26 +2,26 @@
 namespace Controllers;
 use \DAO\PetDAO as PetDAO;
 use \DAO\PetTypeDAO as PetTypeDAO;
-use \Models\Pet as Pet;
-use \Models\PetType as PetType;
+use \Model\Pet as Pet;
+use \Model\PetType as PetType;
 
 class PetTypeController
 {
     private $PetDAO;
-    private $PetTypeDAO;
+    private $typeDAO;
 
     public function __construct()
     {
         $this->PetDAO = new petDAO();
-        $this->PetTypeDAO = new petTypeDAO();
+        $this->typeDAO = new petTypeDAO();
     }
 
     public function AddPetType($name)
         {
             $petType = new PetType();
             $petType->setName($name);
-            $this->petTypeDAO->Add($petType);
-            $typelist=$this->petTypeDAO->GetAll();
+            $this->typeDAO->Add($petType);
+            $typelist=$this->typeDAO->GetAll();
             require_once(VIEWS_PATH."home.php");
 
         }

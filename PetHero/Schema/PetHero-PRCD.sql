@@ -327,6 +327,16 @@ END;
 $$
 
 DELIMITER $$
+CREATE PROCEDURE Size_GetByName(IN name VARCHAR(30))
+BEGIN
+    SELECT * 
+    FROM Size
+    WHERE (Size.name = name);
+END;
+$$
+
+
+DELIMITER $$
 CREATE PROCEDURE Size_Add(IN name VARCHAR(30))
 BEGIN
     INSERT INTO Size
@@ -360,6 +370,15 @@ BEGIN
     SELECT * 
     FROM PetType
     WHERE (PetType.idType = idType);
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE PetType_GetByName(IN name VARCHAR(30))
+BEGIN
+    SELECT * 
+    FROM PetType
+    WHERE (PetType.name = name);
 END;
 $$
 

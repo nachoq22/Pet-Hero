@@ -69,6 +69,28 @@ use \Model\Pet as Pet;
             return $petList;
         }
 
+        public function GetAllByUser($idUser){
+            $petList = array();
+
+            $query = "CALL Pet_GetByUser(?)";
+            $parameters["idUser"] = $idUser;
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+
+            foreach($resultBD as $row){
+                $pet = new Pet();
+
+                $pet->__fromDB($row["idPet"],$row["name"]
+                ,$row["breed"],$row["profileIMG"]
+                ,$row["vaccinationPlanIMG"],$row["observation"]
+                ,$this->typeDAO->Get($row["idType"])
+                ,$this->sizeDAO->Get($row["idSize"])
+                ,$this->userDAO->Get($row["idUser"]));
+                array_push($petList,$pet);
+            }
+            return $petList;
+        }
+
         public function Get($id){
             $pet = null;
             $query = "CALL Pet_GetById(?)";
