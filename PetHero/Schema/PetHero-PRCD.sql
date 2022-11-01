@@ -149,7 +149,7 @@ END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE User_Add(IN username VARCHAR(50),IN password VARCHAR(30),IN email VARCHAR(50),IN idData INT)
+CREATE PROCEDURE User_Add(IN username VARCHAR(50),IN password VARCHAR(30),IN email VARCHAR(50))
 BEGIN
     INSERT INTO User
         (User.username,User.password,User.email,User.idData)

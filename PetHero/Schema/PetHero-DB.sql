@@ -72,7 +72,7 @@ INSERT INTO User VALUES (0,"toystory","nShaREDO","ovnoya@emvil.com",5);
 CREATE TABLE IF NOT EXISTS Role(
 	idRole INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
 	name VARCHAR(30) UNIQUE,
-	description VARCHAR(250)
+	description VARCHAR(300)
 );
 
 INSERT INTO Role VALUES (0,"Owner","The owner has permissions to add their corresponding pets, 
