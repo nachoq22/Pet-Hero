@@ -335,7 +335,6 @@ BEGIN
 END;
 $$
 
-
 DELIMITER $$
 CREATE PROCEDURE Size_Add(IN name VARCHAR(30))
 BEGIN
@@ -430,8 +429,8 @@ END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE Pet_Add(IN name VARCHAR(20), IN breed VARCHAR(20), IN profileIMG VARCHAR(60),
-                         IN vaccinationPlanIMG VARCHAR(60), IN observation VARCHAR(60), IN idSize INT,
+CREATE PROCEDURE Pet_Add(IN name VARCHAR(50), IN breed VARCHAR(50), IN profileIMG VARCHAR(250),
+                         IN vaccinationPlanIMG VARCHAR(250), IN observation VARCHAR(200), IN idSize INT,
 	                     IN idType INT, IN idUser INT)
 BEGIN
     INSERT INTO Pet

@@ -3,7 +3,7 @@ namespace DAO;
 use \DAO\Connection as Connection;
 use \DAO\QueryType as QueryType;
 
-use \DAO\IURoleDAO as IURoleDAO;
+use \DAO\IURDAO as IURDAO;
 use \DAO\LocationDAO as LocationDAO;
 use \DAO\PersonalDataDAO as PersonalDataDAO;
 use \DAO\UserDAO as UserDAO;
@@ -99,10 +99,11 @@ use \Model\User as User;
         }
 
         public function Register(UserRole $ur){
-                $user = $this->userDAO->AddRet($ur->getUser());
+            $user = $this->userDAO->AddRet($ur->getUser());
             $ur->setUser($user);
             $ur->setRole($this->roleDAO->Get(1));
             $this->Add($ur);
+            
         }
 
         public function UtoKeeper(UserRole $ur){

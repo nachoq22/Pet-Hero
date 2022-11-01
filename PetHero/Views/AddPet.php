@@ -25,10 +25,10 @@
       <div class="mb-3">
           <label for="inputSize" class="form-label">Size</label>
           <select name="size" class="form-control" id="inputsize" name="size">
-            <option value="little">Little</option>
-            <option value="littleMedium">Little medium</option>
+            <option value="Little">Little</option>
+            <option value="Little-Medium">Little medium</option>
             <option value="Medium">Medium</option>
-            <option value="BigMedium">Big medium</option>
+            <option value="Medium-Big">Medium Big</option>
             <option value="Big">Big</option>
             <option value="ExtraBig">Extra Big</option>
             </select>

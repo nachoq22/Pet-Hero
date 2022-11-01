@@ -6,7 +6,7 @@ use \DAO\QueryType as QueryType;
 use \DAO\ISizeDAO as ISizeDAO;
 use \Model\Size as Size;
 
-    class SizeDao implements ISizeDAO{
+    class SizeDAO implements ISizeDAO{
         private $connection;
         private $tableName = 'Size';
 

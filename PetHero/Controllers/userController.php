@@ -1,10 +1,9 @@
 <?php
-namespace Controllers;
-use \DAO\UserDAO as UserDAO;
-use \DAO\URoleDAO as URoleDAO;
-    
-use \Model\User as User;
-use \Model\UserRole as UserRole;
+    namespace Controllers;
+    use \DAO\UserDAO as UserDAO;
+    use \DAO\URoleDAO as URoleDAO;
+    use \Model\User as User;
+    use \Model\UserRole as UserRole;
     
 
     class UserController
@@ -19,7 +18,8 @@ use \Model\UserRole as UserRole;
             $this->uRoleDAO = new URoleDAO();
         }
 
-        public function Register($username, $email, $password){
+        public function Register($username, $email, $password)
+        {
             /*$user = $this->userDAO->GetByUserName($userName);
 
             if($user == null){
@@ -68,5 +68,15 @@ use \Model\UserRole as UserRole;
             echo $id;
             $this->userDAO->Delete($id);
         }
+
+        public function AddPetType($name){
+            $petType = new PetType();
+            $petType->setName($name);
+            $this->typeDAO->Add($petType);
+            $typelist =$this->typeDAO->GetAll();
+            require_once(VIEWS_PATH."Home.php");
+        }
     }
+
+
 ?>
