@@ -1,7 +1,22 @@
 <body>
   <br>
 <div class="container-fluid content-row">
-<div class="row justify-content-around">
+<div class="row-fluid">
+  <?php
+    foreach ($petList as $pet) { ?> 
+  <div class="col-2" >
+    <div class="card h-100">
+    <img src="<?php $pet->getProfileIMG()?>" class="card-img-top" style="width: 100%; height: 10vw; object-fit: cover;" alt="...">
+      <div class="card-body d-flex justify-content-center" style="height: 70px;">
+      <h5 class="card-title"><?php echo $pet->getName() ?></h5>  
+      <a href="../Pet/ViewPetProfile" class="stretched-link"></a>
+    </div>
+    </div>
+    </div>
+    <?php } ?>
+    
+
+  <!--
   <div class="col-2">
     <div class="card h-100" style="height: 244px;">
     <a href="../Home/ViewAddPet">
@@ -23,10 +38,45 @@
     </div>
     </div>
   </div>
+-->
+  <!--
+  
 
+                    <div class="table-responsive ">
+                        <table class="table border-primary ">
+                            <thead>
+                                <tr>
+                                <th scope="col">Id</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">breed</th>
+                                    <th scope="col">size</th>
+                                    <th scope="col">observation</th>
+                                    <th scope="col">profileIMG</th>
+                                    <th scope="col">VacunationIMG</th>
+                                </tr>
+                            </thead>
+                            <tbody> <?php /* foreach($petList as $pet){ ?>
+                                <tr>
+                                    <th scope="row"><?php echo $pet->getId() ?></th>
+                                    <td><?php echo $pet->getName() ?></td>
+                                    <td><?php echo $pet->getBreed() ?></td>
+                                    <td><?php echo $pet->getSize()->getName() ?></td>
+                                    <td><?php echo $pet->getObservation() ?></td>
+                                    <td><img src="<?php echo $pet->getProfileIMG() ?>"> </td>
+                                    <td><img src="<?php echo $pet->getVaccinationPlanIMG() ?> "></td>
+                                </tr><?php } */ ?>     
+                            </tbody>
+                        </table>
+                    </div>
+                              -->
 
   
-  <!--<div class="col-2">
+    
+    
+
+
+  <!--
+  <div class="col-2">
     <div class="card h-100">
     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Stray_calico_cat_near_Sagami_River-01.jpg/640px-Stray_calico_cat_near_Sagami_River-01.jpg" class="card-img-top" style="width: 100%; height: 10vw; object-fit: cover;" alt="...">
       <div class="card-body d-flex justify-content-center" style="height: 70px;">
@@ -58,7 +108,8 @@
       <h5 class="card-title">Rick</h5>  
     </div>
     </div>
-  </div> -->
+  </div> 
+  -->
   
 </div> <!-- /.card-content -->
 </div> <!-- /.card-content -->

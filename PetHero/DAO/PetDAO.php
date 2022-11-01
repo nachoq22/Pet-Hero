@@ -30,14 +30,18 @@ use \Model\Owner as Owner;
         }
 //TOOLS
         private function imgPPProcess($nameFile,$file,$petName){
-        $path= "Views\Img\IMGPet\Profile\\".$petName.date("YmdHis").$nameFile; 
-        $pathDB =  "..\\".$path;  
-        move_uploaded_file($file,$path);
-        return $pathDB;
+            $path= "Views\Img\IMGPet\Profile\\".$petName.date("YmdHis").".jpg"; 
+            $path = str_replace(' ', '-', $path); 
+            $pathDB =  "..\\".$path; 
+            move_uploaded_file($file,$path);
+            return $pathDB;
         }    
+
         private function imgPVPProcess($nameFile,$file,$petName){
-            $path= "Views\Img\IMGPet\VaccinationPlan\\".$petName.date("YmdHis").$nameFile; 
+            $path= "Views\Img\IMGPet\VaccinationPlan\\".$petName.date("YmdHis").".jpg"; 
+            $path = str_replace(' ', '-', $path); 
             $pathDB =  "..\\".$path;  
+            
             move_uploaded_file($file,$path);
             return $pathDB;
         }       
@@ -97,6 +101,27 @@ use \Model\Owner as Owner;
                 $pet->setObservation($row["observation"]);
             }
             return $pet;
+        }
+
+        public function GetAllByOwner($idOwner){
+            $petList = array();
+            $query = "CALL Pet_GetByOwner(?)";
+            $parameters["idOwner"] = $idOwner;
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+
+            foreach($resultBD as $row){
+                $pet = new Pet();
+
+                $pet->__fromDB($row["idPet"],$row["name"]
+                ,$row["breed"],$row["profileIMG"]
+                ,$row["vaccinationPlanIMG"],$row["observation"]
+                ,$this->typeDAO->Get($row["idPetType"])
+                ,$this->sizeDAO->Get($row["idSize"])
+                ,$this->ownerDAO->Get($row["idOwner"]));
+                array_push($petList,$pet);
+            }
+            return $petList;
         }
 
 //INSERT METHODS

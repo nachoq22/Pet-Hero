@@ -24,9 +24,16 @@
             $this->ownerDAO = new OwnerDAO();
         }
 
+        public function ViewPetList()
+        {
+            $petList = $this->petDAO->GetAllByOwner(1);
+            require_once(VIEWS_PATH."PetList.php");
+        }
+
         public function ViewPetProfile()
         {
-            $pet = $this->petDAO->Get(8);
+            $petaux = $this->petDAO->Get(8);
+            
             require_once(VIEWS_PATH."PetProfile.php");
         }
 

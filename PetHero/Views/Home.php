@@ -6,7 +6,7 @@
     </div>
 
     <h3>No esperes mas! Registra a tu mascota para encontrar a la persona ideal</h3>
-    <a class="btn btn-primary" href="Home/ViewPetList" role="button">Pets!</a>
+    <a class="btn btn-primary" href="Pet/ViewPetList" role="button">Pets!</a>
 
     <h3>Ya sos Keeper? Crea tu publicacion para mostrarte al mundo</h3>
     <a class="btn btn-primary" href="" role="button">Tu publicacion</a>

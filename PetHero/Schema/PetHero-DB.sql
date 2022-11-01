@@ -1,3 +1,4 @@
+-- SQLBook: Code
 /*
 drop database if exists petHero;
 drop table if exists Location;
@@ -15,11 +16,11 @@ USE petHero;
 /*********************************LOCATION*******************************************/
 CREATE TABLE IF NOT EXISTS Location(
 	idLocation INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-    adress VARCHAR(40),
-    neighborhood VARCHAR(20),
-    city VARCHAR(40),
-    province VARCHAR(30),
-    country VARCHAR(20)
+    adress VARCHAR(40) NOT NULL,
+    neighborhood VARCHAR(20) NOT NULL,
+    city VARCHAR(40) NOT NULL,
+    province VARCHAR(30) NOT NULL,
+    country VARCHAR(20) NOT NULL
 );
 
 INSERT INTO Location VALUES (0,"Rondeau 616","Piedras del sol","Cordoba","Cordoba","Argentina");
@@ -36,9 +37,9 @@ INSERT INTO Location VALUES (0,"Pigue 1996","Pompeya","Mar del Plata","Buenos Ai
 /*********************************PERSONAL DATA*******************************************/
 CREATE TABLE IF NOT EXISTS PersonalData(
 	idData INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-	name VARCHAR(20),
-    surname VARCHAR(20),
-    sex VARCHAR(1),
+	name VARCHAR(20) NOT NULL,
+    surname VARCHAR(20) NOT NULL,
+    sex VARCHAR(1) NOT NULL,
     dni VARCHAR(8) UNIQUE NOT NULL CHECK(dni regexp '[0-9]{8}'),
 		idLocation INT NOT NULL,
 		CONSTRAINT fk_DataLocation FOREIGN KEY (idLocation)
@@ -54,24 +55,24 @@ INSERT INTO PersonalData VALUES (0,"Alan","Rojas","M","40737343",5);
 /*********************************USER*******************************************/
 CREATE TABLE IF NOT EXISTS User(
 	idUser INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-	username VARCHAR(20) UNIQUE,
-    password VARCHAR(20),
-    email VARCHAR(30),
-		idData INT,
+	username VARCHAR(20) NOT NULL UNIQUE,
+    password VARCHAR(20) NOT NULL,
+    email VARCHAR(30) NOT NULL UNIQUE,
+		idData INT NOT NULL UNIQUE,
 		CONSTRAINT fk_UserData FOREIGN KEY (idData)
 			REFERENCES PersonalData(idData)
 );
 /*PARA PRUEBA SE LES LINKEO ID, EN GENERAL NO VA XK EL REGISTRO QUEDA EXCENTO,HABILITA LUEGO DE QUERERER SER KEEPER*/
-INSERT INTO User(User.username,User.password,User.email,User.idData) VALUES ("planetar","orylOSad","achternaga@wificon.eu",1);
-INSERT INTO User(User.username,User.password,User.email,User.idData) VALUES ("marsexpress","eIrCHips","djlucadj@lifestyleunrated.com",2);
-INSERT INTO User(User.username,User.password,User.email,User.idData) VALUES ("venus","MuncENsu","medennikovadasha@boranora.com",3);
-INSERT INTO User(User.username,User.password,User.email,User.idData) VALUES ("sculpordwarf","cIShAphe","saschre@hs-gilching.de",4);
-INSERT INTO User(User.username,User.password,User.email,User.idData) VALUES ("toystory","nShaREDO","ovnoya@emvil.com",5);
+INSERT INTO User VALUES (0,"planetar","orylOSad","achternaga@wificon.eu",1);
+INSERT INTO User VALUES (0,"marsexpress","eIrCHips","djlucadj@lifestyleunrated.com",2);
+INSERT INTO User VALUES (0,"venus","MuncENsu","medennikovadasha@boranora.com",3);
+INSERT INTO User VALUES (0,"sculpordwarf","cIShAphe","saschre@hs-gilching.de",4);
+INSERT INTO User VALUES (0,"toystory","nShaREDO","ovnoya@emvil.com",5);
 
 /*********************************KEEPER*******************************************/
 CREATE TABLE IF NOT EXISTS Keeper(
 	idKeeper INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-		idUser INT,
+		idUser INT NOT NULL UNIQUE,
 		CONSTRAINT fk_KeeperUser FOREIGN KEY (idUser)
 			REFERENCES User(idUser)
 );
@@ -85,7 +86,7 @@ INSERT INTO Keeper VALUES (0,5);
 /*********************************OWNER*******************************************/
 CREATE TABLE IF NOT EXISTS Owner(
 	idOwner INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-		idUser INT,
+		idUser INT NOT NULL UNIQUE,
 		CONSTRAINT fk_OwnerUser FOREIGN KEY (idUser)
 			REFERENCES User(idUser)
 );
@@ -99,7 +100,7 @@ INSERT INTO Owner VALUES (0,5);
 /*********************************SIZE*******************************************/
 CREATE TABLE IF NOT EXISTS Size(
 	idSize INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(30)
+    name VARCHAR(30) NOT NULL UNIQUE
 );
 
 INSERT INTO Size VALUES (0,"Little");
@@ -111,7 +112,7 @@ INSERT INTO Size VALUES (0,"Big");
 /*********************************PET TYPE*******************************************/
 CREATE TABLE IF NOT EXISTS PetType(
 	idType INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(30)
+    name VARCHAR(30) NOT NULL UNIQUE
 );
 
 INSERT INTO PetType VALUES (0,"Dog");
@@ -123,11 +124,11 @@ INSERT INTO PetType VALUES (0,"Meerkat");
 /*********************************PET*******************************************/
 CREATE TABLE IF NOT EXISTS Pet(
 	idPet INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(20),
-    breed VARCHAR(20),
-	profileIMG VARCHAR(250),
-	vaccinationPlanIMG VARCHAR(250),
-    observation VARCHAR(60),
+    name VARCHAR(20) NOT NULL,
+    breed VARCHAR(20) NOT NULL,
+	profileIMG VARCHAR(250) NOT NULL UNIQUE,
+	vaccinationPlanIMG VARCHAR(250) NOT NULL UNIQUE,
+    observation VARCHAR(200) NOT NULL,
 		idSize INT NOT NULL,
 		idPetType INT NOT NULL,
 		idOwner INT NOT NULL,
@@ -154,3 +155,4 @@ INSERT INTO Pet VALUES (0,"Laila","Ariray","C:\xampp\htdocs\Pet-Hero\Pet Hero\Pe
 INSERT INTO Pet VALUES (0,"Willow","Suricatta","C:\xampp\htdocs\Pet-Hero\Pet Hero\PetImg/SurW-131020221734.jpg"
 						,"C:\xampp\htdocs\Pet-Hero\Pet Hero\VacImg/SurW-131020221731.jpg"
 						,"Se escapa constantemente",5,5,5);
+
