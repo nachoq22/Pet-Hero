@@ -1,3 +1,49 @@
+/*
+DROP PROCEDURE IF EXISTS `Location_GetAll`;
+DROP PROCEDURE IF EXISTS `Location_GetById`;
+DROP PROCEDURE IF EXISTS `Location_Add`;
+DROP PROCEDURE IF EXISTS `Location_Delete`;
+
+DROP PROCEDURE IF EXISTS `PersonalData_GetAll`;
+DROP PROCEDURE IF EXISTS `PersonalData_GetById`;
+DROP PROCEDURE IF EXISTS `PersonalData_Add`;
+DROP PROCEDURE IF EXISTS `PersonalData_Delete`;
+
+DROP PROCEDURE IF EXISTS `User_GetAll`;
+DROP PROCEDURE IF EXISTS `User_GetById`;
+DROP PROCEDURE IF EXISTS `User_Add`;
+DROP PROCEDURE IF EXISTS `User_Register`;
+DROP PROCEDURE IF EXISTS `User_Login`;
+DROP PROCEDURE IF EXISTS `User_Delete`;
+
+DROP PROCEDURE IF EXISTS `Keeper_GetAll`;
+DROP PROCEDURE IF EXISTS `Keeper_GetById`;
+DROP PROCEDURE IF EXISTS `Keeper_Delete`;
+DROP PROCEDURE IF EXISTS `Keeper_Add`;
+
+
+DROP PROCEDURE IF EXISTS `Owner_GetAll`;
+DROP PROCEDURE IF EXISTS `Owner_GetById`;
+DROP PROCEDURE IF EXISTS `Owner_Add`;
+DROP PROCEDURE IF EXISTS `Owner_Delete`;
+
+DROP PROCEDURE IF EXISTS `Size_GetAll`;
+DROP PROCEDURE IF EXISTS `Size_GetById`;
+DROP PROCEDURE IF EXISTS `Size_Add`;
+DROP PROCEDURE IF EXISTS `Size_Delete`;
+
+DROP PROCEDURE IF EXISTS `PetType_GetAll`;
+DROP PROCEDURE IF EXISTS `PetType_GetById`;
+DROP PROCEDURE IF EXISTS `PetType_Add`;
+DROP PROCEDURE IF EXISTS `PetType_Delete`;
+
+DROP PROCEDURE IF EXISTS `Pet_GetAll`;
+DROP PROCEDURE IF EXISTS `Pet_GetById`;
+DROP PROCEDURE IF EXISTS `Pet_GetByUser`;
+DROP PROCEDURE IF EXISTS `Pet_Add`;
+DROP PROCEDURE IF EXISTS `Pet_Delete`;
+*/
+
 USE petHero;
 /*********************************PROCEDURES LOCATION*******************************************/
 DELIMITER $$
@@ -18,8 +64,8 @@ END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE Location_Add(IN adress VARCHAR(40),IN neighborhood VARCHAR(20),IN city VARCHAR(20),
-                              IN province VARCHAR(30),IN country VARCHAR(20))
+CREATE PROCEDURE Location_Add(IN adress VARCHAR(50),IN neighborhood VARCHAR(50),IN city VARCHAR(50),
+                              IN province VARCHAR(50),IN country VARCHAR(50))
 BEGIN
     INSERT INTO Location
         (Location.adress,Location.neighborhood,Location.city,Location.province,Location.country)
@@ -56,7 +102,7 @@ END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE PersonalData_Add(IN name VARCHAR(20),IN surname VARCHAR(20),IN sex VARCHAR(1),
+CREATE PROCEDURE PersonalData_Add(IN name VARCHAR(50),IN surname VARCHAR(50),IN sex VARCHAR(1),
                                     IN dni VARCHAR(8),IN idLocation INT)
 BEGIN
     INSERT INTO PersonalData
@@ -94,7 +140,7 @@ END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE User_GetByUsername(IN username VARCHAR(20))
+CREATE PROCEDURE User_GetByUsername(IN username VARCHAR(50))
 BEGIN
     SELECT * 
     FROM User
@@ -103,7 +149,7 @@ END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE User_Add(IN username VARCHAR(20),IN password VARCHAR(20),IN email VARCHAR(30),IN idData INT)
+CREATE PROCEDURE User_Add(IN username VARCHAR(50),IN password VARCHAR(30),IN email VARCHAR(50),IN idData INT)
 BEGIN
     INSERT INTO User
         (User.username,User.password,User.email,User.idData)
@@ -113,7 +159,16 @@ END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE User_Register(IN username VARCHAR(20),IN password VARCHAR(20),IN email VARCHAR(30))
+CREATE PROCEDURE User_HookData(IN idUser INT,IN idData INT)
+BEGIN
+    UPDATE User
+	SET User.idData = idData
+	WHERE User.idUser = idUser;
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE User_Register(IN username VARCHAR(50),IN password VARCHAR(30),IN email VARCHAR(50))
 BEGIN
     INSERT INTO User
         (User.username,User.password,User.email)
@@ -123,14 +178,11 @@ END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE User_Login(IN username VARCHAR(20),IN password VARCHAR(20),OUT rta INT)
+CREATE PROCEDURE User_Login(IN username VARCHAR(20),IN password VARCHAR(20))
 BEGIN
-    SELECT COUNT(idUser) 
-    INTO rta
+    SELECT COUNT(idUser) as rta
     FROM User
     WHERE User.username = username AND User.password = password;
-    
-    SELECT @rta;
 END;
 $$
 
@@ -142,10 +194,55 @@ BEGIN
     WHERE (User.idUser = idUser);
 END;
 $$
+/*********************************PROCEDURE ROLE*******************************************/
+DELIMITER $$
+CREATE PROCEDURE Role_GetAll()
+BEGIN
+    SELECT * 
+    FROM Role;
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE Role_GetById(IN idRole INT)
+BEGIN
+    SELECT * 
+    FROM Role
+    WHERE (Role.idRole = idRole);
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE Role_GetByName(IN name VARCHAR(30))
+BEGIN
+    SELECT * 
+    FROM Role
+    WHERE (Role.name = name);
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE Role_Add(IN idRole INT,name VARCHAR(30),description VARCHAR(250))
+BEGIN
+    INSERT INTO Role
+        (Role.idRole,Role.name,Role.description)
+    VALUES
+        (idUser,idRole);
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE Role_Delete(IN idRole INT)
+BEGIN
+    DELETE 
+    FROM Role
+    WHERE (Role.idRole = idRole);
+END;
+$$
 
 /*********************************PROCEDURE USERROLE*******************************************/
 DELIMITER $$
-CREATE PROCEDURE URole_GetAll()
+CREATE PROCEDURE UR_GetAll()
 BEGIN
     SELECT * 
     FROM UserRole;
@@ -153,7 +250,7 @@ END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE URole_GetById(IN idUR INT)
+CREATE PROCEDURE UR_GetById(IN idUR INT)
 BEGIN
     SELECT * 
     FROM UserRole
@@ -161,17 +258,19 @@ BEGIN
 END;
 $$
 
+
+
 DELIMITER $$
-CREATE PROCEDURE URole_GetByIdRole(IN idUser INT)
+CREATE PROCEDURE UR_IsKeeper(IN idUser INT)
 BEGIN
-    SELECT * 
+    SELECT COUNT(idUser) 
     FROM UserRole
-    WHERE (UserRole.idUser = idUser) AND (UserRole.idRole = idRole);
+    WHERE (UserRole.idUser = idUser) AND (UserRole.idRole = 2);
 END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE URole_Add(IN idUser INT,IN idRole INT)
+CREATE PROCEDURE UR_Add(IN idUser INT,IN idRole INT)
 BEGIN
     INSERT INTO UserRole
         (UserRole.idUser,UserRole.idRole)
@@ -181,7 +280,17 @@ END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE URole_Delete(IN idUR INT)
+CREATE PROCEDURE UR_UserToKeeper(IN idUser INT)
+BEGIN
+    INSERT INTO UserRole
+        (UserRole.idUser,UserRole.idRole)
+    VALUES
+        (idUser,2);
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE UR_Delete(IN idUR INT)
 BEGIN
     DELETE 
     FROM UserRole
@@ -294,13 +403,13 @@ $$
 DELIMITER $$
 CREATE PROCEDURE Pet_Add(IN name VARCHAR(20), IN breed VARCHAR(20), IN profileIMG VARCHAR(60),
                          IN vaccinationPlanIMG VARCHAR(60), IN observation VARCHAR(60), IN idSize INT,
-	                     IN idPetType INT, IN idUser INT)
+	                     IN idType INT, IN idUser INT)
 BEGIN
     INSERT INTO Pet
         (Pet.name,Pet.breed,Pet.profileIMG,Pet.vaccinationPlanIMG,Pet.observation,Pet.idSize
-        ,Pet.idPetType,Pet.idUser)
+        ,Pet.idType,Pet.idUser)
     VALUES
-        (name,breed,profileIMG,vaccinationPlanIMG,observation,idSize,idPetType,idUser);
+        (name,breed,profileIMG,vaccinationPlanIMG,observation,idSize,idType,idUser);
 END;
 $$
 
@@ -336,20 +445,19 @@ Call User_GetAll();
 Call User_GetById(2);
 Call User_GetByUsername("planetar");
 /*CALL User_Add(username,password,varResp);*/
-CALL User_Login("planetar","orylOSad",@rta);
-SELECT @rta;
+CALL User_Login("planetar","orylOSad");
 /*CALL User_Add(username,password,email,idData);*/
-Call User_Add("pablitoClavito","ClavitoCrack","pablitoElCrack@gmail.com",5);
+Call User_Add("pablitoClavito","ClavitoCrack","pablitoElCrack@gmail.com",6);
 /*CALL User_Add(username,password,email);*/
-Call User_Register("pablitoClavito","ClavitoCrack","pablitoElCrack@gmail.com");
+Call User_Register("Elcucarachin","Carlos1245","elcuca@gmail.com");
 /*Call User_Delete(6);*/
 
-
 /*********************************TEST USERROLE*******************************************/
-Call URole_GetAll();
-Call URole_GetById(2);
+Call UR_GetAll();
+Call UR_GetById(2);
 /*CALL Owner_Add(idUser,idRole);*/
-Call URole_Add(1,2);
+/*Call URole_Add(6,2);*/
+Call UR_UserToKeeper(6);
 /*Call Owner_Delete(6);*/
 
 /*********************************TEST SIZE*******************************************/
@@ -369,7 +477,7 @@ Call PetType_Add("Cacatuos");
 /*********************************TEST PET*******************************************/
 Call Pet_GetAll();
 Call Pet_GetById(2);
-Call Pet_GetByOwner(2);
+Call Pet_GetByUser(2);
 /*CALL Size_Add(name,breed,profileIMG,vaccinationPlanIMG,observation,idSize,idPetType,idOwner);*/
 Call Pet_Add("Salchichon","Suricatta","C:\xampp\htdocs\Pet-Hero\Pet Hero\PetImg/SurS-181020222211.jpg"
 						,"C:\xampp\htdocs\Pet-Hero\Pet Hero\VacImg/SurS-181020222211.jpg"

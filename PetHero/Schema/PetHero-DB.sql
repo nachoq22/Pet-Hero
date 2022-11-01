@@ -55,7 +55,7 @@ INSERT INTO PersonalData VALUES (0,"Alan","Rojas","M","40737343",5);
 CREATE TABLE IF NOT EXISTS User(
 	idUser INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
 	username VARCHAR(50) NOT NULL UNIQUE,
-    password VARCHAR(20) NOT NULL,
+    password VARCHAR(30) NOT NULL,
     email VARCHAR(50) NOT NULL UNIQUE,
 		idData INT UNIQUE,
 		CONSTRAINT fk_UserData FOREIGN KEY (idData)
@@ -68,33 +68,42 @@ INSERT INTO User VALUES (0,"venus","MuncENsu","medennikovadasha@boranora.com",3)
 INSERT INTO User VALUES (0,"sculpordwarf","cIShAphe","saschre@hs-gilching.de",4);
 INSERT INTO User VALUES (0,"toystory","nShaREDO","ovnoya@emvil.com",5);
 
-/*********************************KEEPER*******************************************/
-CREATE TABLE IF NOT EXISTS Keeper(
-	idKeeper INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-		idUser INT NOT NULL UNIQUE,
-		CONSTRAINT fk_KeeperUser FOREIGN KEY (idUser)
-			REFERENCES User(idUser)
+/*********************************ROLE*******************************************/
+CREATE TABLE IF NOT EXISTS Role(
+	idRole INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+	name VARCHAR(30) UNIQUE,
+	description VARCHAR(250)
 );
 
-INSERT INTO Keeper VALUES (0,1);
-INSERT INTO Keeper VALUES (0,2);
-INSERT INTO Keeper VALUES (0,3);
-INSERT INTO Keeper VALUES (0,4);
-INSERT INTO Keeper VALUES (0,5);
+INSERT INTO Role VALUES (0,"Owner","The owner has permissions to add their corresponding pets, 
+									as well as to edit their profile and delete their account. 
+									To finish, there is the functionality of making a reservation 
+									and loading the corresponding payment receipt.");
+INSERT INTO Role VALUES (0,"Keeper","The keeper has permissions to add publications with which the owner 
+									can interact. Along with this, the possibility of responding to 
+									reservations, consulting them, etc.");
 
-/*********************************OWNER*******************************************/
-CREATE TABLE IF NOT EXISTS Owner(
-	idOwner INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-		idUser INT NOT NULL UNIQUE,
-		CONSTRAINT fk_OwnerUser FOREIGN KEY (idUser)
-			REFERENCES User(idUser)
+/*********************************USERROLE*******************************************/
+CREATE TABLE IF NOT EXISTS UserRole(
+	idUR INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+		idUser INT,
+		idRole INT,
+		CONSTRAINT fk_UserRole FOREIGN KEY (idUser)
+			REFERENCES User(idUser),
+		CONSTRAINT fk_Role FOREIGN KEY (idRole)
+			REFERENCES Role(idRole)	
 );
 
-INSERT INTO Owner VALUES (0,1);
-INSERT INTO Owner VALUES (0,2);
-INSERT INTO Owner VALUES (0,3);
-INSERT INTO Owner VALUES (0,4);
-INSERT INTO Owner VALUES (0,5);
+INSERT INTO UserRole VALUES(0,1,1);
+INSERT INTO UserRole VALUES(0,1,2);
+INSERT INTO UserRole VALUES(0,2,1);
+INSERT INTO UserRole VALUES(0,2,2);
+INSERT INTO UserRole VALUES(0,3,1);
+INSERT INTO UserRole VALUES(0,3,2);
+INSERT INTO UserRole VALUES(0,4,1);
+INSERT INTO UserRole VALUES(0,4,2);
+INSERT INTO UserRole VALUES(0,5,1);
+INSERT INTO UserRole VALUES(0,5,2);
 
 /*********************************SIZE*******************************************/
 CREATE TABLE IF NOT EXISTS Size(
@@ -130,13 +139,13 @@ CREATE TABLE IF NOT EXISTS Pet(
     observation VARCHAR(200) NOT NULL,
 		idSize INT NOT NULL,
 		idType INT NOT NULL,
-		idOwner INT NOT NULL,
+		idUser INT NOT NULL,
 		CONSTRAINT fk_PetSize FOREIGN KEY (idSize)
 			REFERENCES Size(idSize),
 		CONSTRAINT fk_PetType FOREIGN KEY (idType)
 			REFERENCES PetType(idType),
-		CONSTRAINT fk_PetOwner FOREIGN KEY (idOwner)
-			REFERENCES Owner(idOwner)
+		CONSTRAINT fk_PetUser FOREIGN KEY (idUser)
+			REFERENCES User(idUser)
 );
 
 INSERT INTO Pet VALUES (0,"Coco","Mestizo","C:\xampp\htdocs\Pet-Hero\Pet Hero\PetImg/MezC-131020221731.jpg"
@@ -169,9 +178,9 @@ CREATE TABLE IF NOT EXISTS Publication(
 	description VARCHAR(200) NOT NULL,
 	popularity DEC(2,1) NOT NULL CHECK (popularity >= 0 AND popularity <=5),
 	remuneration DEC(10,2) NOT NULL,
-		idKeeper INT NOT NULL,
-		CONSTRAINT fk_publicKeeper FOREIGN KEY(idKeeper)
-			REFERENCES Keeper(idKeeper)
+		idUser INT NOT NULL,
+		CONSTRAINT fk_publicUser FOREIGN KEY(idUser)
+			REFERENCES User(idUser)
 );
 
 INSERT INTO Publication 
@@ -206,14 +215,11 @@ CREATE TABLE IF NOT EXISTS Booking(
 	bookState VARCHAR(50) NOT NULL, /*CHECK(bookState = "Awaiting Reply")*/
 	payCode VARCHAR(14), /*HACER CHECK DE QUE TENGA 4 LETRAS Y DEMAS NUMS*/
 		idPublic INT NOT NULL,
-		idOwner INT NOT NULL,
-		idPet INT NOT NULL,
+		idUser INT NOT NULL,
 			CONSTRAINT fk_bookPublic FOREIGN KEY(idPublic)
 				REFERENCES Publication(idPublic),
-			CONSTRAINT fk_bookOwner FOREIGN KEY(idOwner)
-				REFERENCES Owner(idOwner),
-			CONSTRAINT fk_bookPet FOREIGN KEY(idPet)
-				REFERENCES Pet(idPet)
+			CONSTRAINT fk_bookUser FOREIGN KEY(idUser)
+				REFERENCES User(idUser)
 );
 
 
@@ -221,7 +227,19 @@ INSERT INTO Booking VALUES (0,DATE(NOW()),
 								  DATE_ADD(DATE(NOW()),INTERVAL 15 DAY)
 							     ,"PAID"
 								 ,"AT1048235672BY"
-								 ,1,3,4);
+								 ,1,4);
+
+/*********************************BOOKING*******************************************/
+CREATE TABLE IF NOT EXISTS BookingPet(
+	idBP INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+		idBook INT NOT NULL,
+		idPet INT NOT NULL,
+		CONSTRAINT fk_bpBook FOREIGN KEY(idBook)
+				REFERENCES Booking(idBook),
+		CONSTRAINT fk_bpPet FOREIGN KEY(idPet)
+				REFERENCES Pet(idPet) 
+		
+);
 
 /*********************************CHECKER*******************************************/
 CREATE TABLE IF NOT EXISTS Checker(
@@ -243,13 +261,11 @@ CREATE TABLE IF NOT EXISTS Review(
 	commentary VARCHAR(200) NOT NULL,
 	stars DEC(2,1) NOT NULL CHECK (stars >= 0 AND stars <=5),
 		idPublic INT NOT NULL,
-		idOwner INT NOT NULL,
+		idUser INT NOT NULL,
 			CONSTRAINT fk_reviewPublic FOREIGN KEY(idPublic)
 				REFERENCES Publication(idPublic),
-			CONSTRAINT fk_reviewOwner FOREIGN KEY(idOwner)
-				REFERENCES Owner(idOwner)
+			CONSTRAINT fk_reviewUser FOREIGN KEY(idUser)
+				REFERENCES User(idUser)
 );
 
 INSERT INTO Review VALUES(0,DATE(NOW()),"Muy buen servicio, satisfecho en su totalidad.",4.7,1,5);
-
-
