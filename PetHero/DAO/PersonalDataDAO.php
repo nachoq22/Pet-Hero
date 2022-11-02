@@ -89,7 +89,7 @@ use \Model\PersonalData as PersonalData;
 
         public function AddRet(PersonalData $data){
             $this->Add($data);
-            $dataN = $this->GetbyDni($data->dni);
+            $dataN = $this->GetbyDni($data->getDni());
         return $dataN; 
         }
 

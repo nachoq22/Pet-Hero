@@ -64,6 +64,17 @@ END;
 $$
 
 DELIMITER $$
+CREATE PROCEDURE Location_GetByAll(IN adress VARCHAR(50),IN neighborhood VARCHAR(50),IN city VARCHAR(50),
+                              IN province VARCHAR(50),IN country VARCHAR(50))
+BEGIN
+    SELECT * 
+    FROM Location
+    WHERE (Location.adress = adress AND Location.neighborhood = neighborhood AND Location.city = city 
+		   AND Location.province = province AND Location.country = country);
+END;
+$$
+
+DELIMITER $$
 CREATE PROCEDURE Location_Add(IN adress VARCHAR(50),IN neighborhood VARCHAR(50),IN city VARCHAR(50),
                               IN province VARCHAR(50),IN country VARCHAR(50))
 BEGIN
@@ -98,6 +109,15 @@ BEGIN
     SELECT * 
     FROM PersonalData
     WHERE (PersonalData.idData = idData);
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE PersonalData_GetByDni(IN dni VARCHAR(8))
+BEGIN
+    SELECT * 
+    FROM PersonalData
+    WHERE (PersonalData.dni = dni);
 END;
 $$
 

@@ -2,12 +2,14 @@
     namespace Controllers;
     use \DAO\UserDAO as UserDAO;
     use \DAO\URoleDAO as URoleDAO;
+    
     use \Model\User as User;
     use \Model\UserRole as UserRole;
+    use \Model\Location as Location;
+    use \Model\PersonalData as PersonalData;
     
 
-    class UserController
-    {
+    class UserController{
         private $userDAO;
         private $homeController;
         private $uRoleDAO;
@@ -18,8 +20,7 @@
             $this->uRoleDAO = new URoleDAO();
         }
 
-        public function Register($username, $email, $password)
-        {
+        public function Register($username, $email, $password){
             /*$user = $this->userDAO->GetByUserName($userName);
 
             if($user == null){
@@ -44,8 +45,7 @@
             $this->homeController->Index();
         } 
 
-        public function Login($username, $password)
-        {            
+        public function Login($username, $password){            
             $user = new User();
             $user->__fromLogin($username,$password);
             $rta = $this->userDAO->Login($user);
@@ -63,20 +63,26 @@
             }
         }
 
-        public function DeleteUser($id)
-        {
+        public function BeKeeper($adress, $neighborhood, $city, $province, $country,
+                                 $name,$surname,$sex,$dni){
+            $location = new Location();
+                $location->__fromRequest($adress, $neighborhood, $city, $province,$country);
+            $data = new PersonalData();
+                $data->__fromRequest($name,$surname,$sex,$dni,$location);
+            
+            /*SETTING DE DATOS A UNA INSTANCIA USER DESDE LA SESSION*/
+            $user = new User();
+                $user->__fromRequest("Elcucarachin","Carlos1245","elcuca@gmail.com",$data);
+            $uRole = new UserRole();
+                $uRole->setUser($user);
+            //var_dump($uRole);    
+            $this->uRoleDAO->UtoKeeper($uRole);
+            $this->homeController->Index();
+        }
+
+        public function DeleteUser($id){
             echo $id;
             $this->userDAO->Delete($id);
         }
-
-        public function AddPetType($name){
-            $petType = new PetType();
-            $petType->setName($name);
-            $this->typeDAO->Add($petType);
-            $typelist =$this->typeDAO->GetAll();
-            require_once(VIEWS_PATH."Home.php");
-        }
     }
-
-
 ?>

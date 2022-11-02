@@ -3,14 +3,11 @@ namespace DAO;
 use \DAO\Connection as Connection;
 use \DAO\QueryType as QueryType;
 
-use \DAO\IURDAO as IURDAO;
 use \DAO\LocationDAO as LocationDAO;
 use \DAO\PersonalDataDAO as PersonalDataDAO;
 use \DAO\UserDAO as UserDAO;
 use \DAO\RoleDAO as RoleDAO;
-
 use \Model\UserRole as UserRole;
-use \Model\User as User;
 
     class URoleDAO implements IURoleDAO{
         private $connection;

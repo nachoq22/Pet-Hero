@@ -23,12 +23,12 @@ use \Model\Location as Location;
     
         function __construct(){} 
 
-        function __fromRequest($name,$surname,$sex,$dni){
-
+        function __fromRequest($name,$surname,$sex,$dni,Location $location){
             $this->name = $name;
             $this->surname = $surname;
             $this->sex = $sex;
             $this->dni = $dni;
+            $this->location = $location;
         } 
 
 //GETTER & SERTTER

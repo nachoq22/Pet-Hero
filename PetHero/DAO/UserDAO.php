@@ -228,17 +228,22 @@ use \Model\User as User;
         return $userN;
         }
 
-        public function HookData(User $user){
+        private function AddHookData(User $user){
             $query = "CALL User_HookData(?,?)";
             $parameters["idUser"] = $user->getId();
             $parameters["idData"] = $user->getData()->getId();
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
-            //$user = $this->GetByUsernameisKeeper($user->getUsername());
-            $user = $this->DGetByUsername($user->getUsername()); 
-        return $user;
         }
-        
+
+        public function HookData(User $user){
+                $userA = $this->GetByUsername($user->getUsername());
+                $user->setId($userA->getId());
+            $this->AddHookData($user);
+            $userN = $this->GetByUsernameisKeeper($user->getUsername());   
+        return $userN;
+        }
+   
 //DELETE METHODS
         public function Delete($id){
             $query = "CALL Location_Delete(?)";

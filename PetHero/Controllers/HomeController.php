@@ -5,19 +5,20 @@ namespace Controllers;
 use \DAO\LocationDAO as LocationDAO;
 use \DAO\SizeDAO as SizeDAO;
 use \DAO\PetTypeDAO as PetTypeDAO;
-use \Model\PetType as PetType;
+use \DAO\UserDAO as UserDAO;
 
     class HomeController
     {
         private $locationDAO;
         private $sizeDAO;
         private $typeDAO;
+        private $userDAO;
 
         public function __construct(){
-
             $this->locationDAO = new LocationDAO();
             $this->sizeDAO = new SizeDao();
             $this->typeDAO = new PetTypeDAO();
+            $this->userDAO = new UserDAO();
         }
 
         public function Index()
@@ -25,7 +26,7 @@ use \Model\PetType as PetType;
             $locationList=$this->locationDAO->GetAll();
             $sizeList=$this->sizeDAO->GetAll();
             $typeList=$this->typeDAO->GetAll();
-            //$userList =$this->userDAO->GetAll();
+            $userList =$this->userDAO->GetAll();
             //$userIs=$this->userDAO->Get(2);
             //require_once(VIEWS_PATH."PetList.php");
             require_once(VIEWS_PATH."Home.php");
@@ -50,13 +51,13 @@ use \Model\PetType as PetType;
             require_once(VIEWS_PATH."AddPet.php");
         }
 
-        public function ViewPetList()
-        {
+        public function ViewPetList(){
+
             require_once(VIEWS_PATH."PetList.php");
         }
 
-        
-
-        
+        public function ViewBeKeeper(){
+            require_once(VIEWS_PATH."BeKeeper.php");
+        }
     }
 ?>
