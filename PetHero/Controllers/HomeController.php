@@ -59,5 +59,13 @@ use \DAO\UserDAO as UserDAO;
         public function ViewBeKeeper(){
             require_once(VIEWS_PATH."BeKeeper.php");
         }
+
+        public function ViewAddPublication(){
+            require_once(VIEWS_PATH."AddPublication.php");
+        }
+
+        public function ViewRequestReservation(){
+            require_once(VIEWS_PATH."ReqReservation.php");
+        }
     }
 ?>

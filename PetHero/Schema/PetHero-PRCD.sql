@@ -553,9 +553,9 @@ Call PetType_Add("Cacatuos");
 Call Pet_GetAll();
 Call Pet_GetById(2);
 Call Pet_GetByUser(2);
-/*CALL Size_Add(name,breed,profileIMG,vaccinationPlanIMG,observation,idSize,idPetType,idOwner);*/
-Call Pet_Add("Salchichon","Suricatta","C:\xampp\htdocs\Pet-Hero\Pet Hero\PetImg/SurS-181020222211.jpg"
-						,"C:\xampp\htdocs\Pet-Hero\Pet Hero\VacImg/SurS-181020222211.jpg"
+/*CALL Size_Add(name,breed,profileIMG,vaccinationPlanIMG,observation,idSize,idPetType,idUser);*/
+Call Pet_Add("Salchichon","Suricatta",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Salchichon",(NOW() + 0),".jpg")
+						,CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Salchichon",(NOW() + 0),".jpg")
 						,"Tiene 6 dedos",1,5,3);
 /*Call Pet_Delete(6);*/
 

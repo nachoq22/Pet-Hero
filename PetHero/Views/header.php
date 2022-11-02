@@ -4,27 +4,23 @@ include("Head.php");
 <header>
   <nav class="navbar navbar-expand-lg bg-light">
     <div class="container-fluid">
-      <a class="navbar-brand" href="<?php echo  FRONT_ROOT ?>">Home</a>
+      <a class="navbar-brand" href="<?php echo  FRONT_ROOT ?>"><i class="bi bi-house-door"></i></a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-<!--
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="<?php echo  FRONT_ROOT . "/Home/ViewRegister" ?>">Register</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="Home/ViewRegister">Login</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="Location/Add">Add Algo</a>
-          </li>
--->
-          <li class="nav-item">
-            <a class="btn btn-outline-success me-2" href="<?php echo FRONT_ROOT."/Home/ViewBeKeeper"?>" type="button">Be a Keeper!</a>
+
+          <li class="nav-link">
+            <a class="btn btn-outline-success me-2" href="<?php echo FRONT_ROOT."/Home/ViewBeKeeper"?>"><i class="bi bi-person-badge"></i></a>
           </li>
 
+          <li class="nav-link">
+            <a class="btn btn-outline-warning me-2" href="<?php echo FRONT_ROOT."/Home/ViewAddPublication"?>" type="button"><i class="bi bi-file-earmark-easel"></i></a>
+          </li>
+          <li class="nav-link">
+            <a class="btn btn-outline-warning me-2" href="<?php echo FRONT_ROOT."/Pet/GetPetsByReservation"?>" type="button"><i class="bi bi-pencil-square"></i></i></a>
+          </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               ADDS Registers

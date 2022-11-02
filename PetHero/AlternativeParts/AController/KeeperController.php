@@ -22,7 +22,7 @@
             /*$location = new Location();
             $location->__fromRequest($adress, $neighborhood, $city, $province, $country);*/
             $personalData = new PersonalData();
-            $personalData-> __fromRequest($name,$surname,$sex,$dni);
+            //$personalData-> __fromRequest($name,$surname,$sex,$dni);
             $this->personalDataDAO->Add($personalData);
             var_dump($this->personalDataDAO->Get(7));
         }

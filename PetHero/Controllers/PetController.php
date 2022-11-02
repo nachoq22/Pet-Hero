@@ -4,17 +4,21 @@
     use \DAO\SizeDAO as SizeDAO;
     use \DAO\PetTypeDAO as PetTypeDAO;
     use \DAO\UserDAO as UserDAO;
+
     use \Model\Pet as Pet;
     use \Model\Size as Size;
     use \Model\PetType as PetType;
     use \Model\User as User;
 
-        class PetController
-        {
+    use \Controllers\HomeController as HomeController;
+
+        class PetController{
             private $petDAO;
             private $sizeDAO;
             private $petTypeDAO;
             private $userDAO;
+
+            private $homeController;
 
         public function __construct()
         {
@@ -22,6 +26,7 @@
             $this->sizeDAO = new SizeDAO();
             $this->petTypeDAO = new PetTypeDAO();
             $this->userDAO = new UserDAO();
+            $this->homeController = new HomeController();
         }
 
         public function ViewPetList()
@@ -37,8 +42,7 @@
             require_once(VIEWS_PATH."PetProfile.php");
         }
 
-        public function showListView()
-        {
+        public function showListView(){
             $petDAO=$this->petDAO->GetAll();
         }
 
@@ -66,9 +70,10 @@
             //require_once(VIEWS_PATH."Pets.php");
         } 
 
-        //(Pet $pet,$fileP,$fileNameP,$fileV,$fileNameV)
-
-        
-
+        public function GetPetsByReservation(){
+            //$petList = $this->petDAO->GetAllByUser(1);
+            $petList = $this->petDAO->GetAll();
+            require_once(VIEWS_PATH."ReqReservation.php");
+        }
     }
 ?>

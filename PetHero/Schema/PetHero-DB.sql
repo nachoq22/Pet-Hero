@@ -148,22 +148,21 @@ CREATE TABLE IF NOT EXISTS Pet(
 			REFERENCES User(idUser)
 );
 
-INSERT INTO Pet VALUES (0,"Coco","Mestizo","C:\xampp\htdocs\Pet-Hero\Pet Hero\PetImg/MezC-131020221731.jpg"
-						,"C:\xampp\htdocs\Pet-Hero\Pet Hero\VacImg/MezCM-131020221731.jpg"
+INSERT INTO Pet VALUES (0,"Coco","Mestizo",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Coco",(NOW() + 0),".jpg")
+						,CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Coco",(NOW() + 0),".jpg")
 						,"Esta re duro",1,1,1);
-INSERT INTO Pet VALUES (0,"Thor","Lykoi","C:\xampp\htdocs\Pet-Hero\Pet Hero\PetImg/LykT-131020221732.jpg"
-						,"C:\xampp\htdocs\Pet-Hero\Pet Hero\VacImg/LykT-131020221731.jpg"
+INSERT INTO Pet VALUES (0,"Thor","Lykoi",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Thor",(NOW() + 0),".jpg")
+						,CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Thor",(NOW() + 0),".jpg")
 						,"Rompe todo",2,2,2);
-INSERT INTO Pet VALUES (0,"Faraon","Pigmeo africano","C:\xampp\htdocs\Pet-Hero\Pet Hero\PetImg/PigF-131020221732.jpg"
-						,"C:\xampp\htdocs\Pet-Hero\Pet Hero\VacImg/PigF-131020221731.jpg"
+INSERT INTO Pet VALUES (0,"Faraon","Pigmeo africano",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Faraon",(NOW() + 0),".jpg")
+						,CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Faraon",(NOW() + 0),".jpg")
 						,"Come mucho",3,3,3);
-INSERT INTO Pet VALUES (0,"Laila","Ariray","C:\xampp\htdocs\Pet-Hero\Pet Hero\PetImg/AriL-131020221733.jpg"
-						,"C:\xampp\htdocs\Pet-Hero\Pet Hero\VacImg/AriL-131020221731.jpg"
+INSERT INTO Pet VALUES (0,"Laila","Ariray",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Laila",(NOW() + 0),".jpg")
+						,CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Laila",(NOW() + 0),".jpg")
 						,"No tiene baño propio",4,4,4);
-INSERT INTO Pet VALUES (0,"Willow","Suricatta","C:\xampp\htdocs\Pet-Hero\Pet Hero\PetImg/SurW-131020221734.jpg"
-						,"C:\xampp\htdocs\Pet-Hero\Pet Hero\VacImg/SurW-131020221731.jpg"
+INSERT INTO Pet VALUES (0,"Willow","Suricatta",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Willow",(NOW() + 0),".jpg")
+						,CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Willow",(NOW() + 0),".jpg")
 						,"Se escapa constantemente",5,5,5);
-
 
 
 /*SEGUNDA PARTE, ADMINISTRACION DE PUBLICACIONES, RESERVAS Y RESENIAS*/
@@ -210,8 +209,8 @@ INSERT INTO ImgPublic VALUES (0,"IMG/Public/30102022153604.jpg",1);
 /*********************************BOOKING*******************************************/
 CREATE TABLE IF NOT EXISTS Booking(
 	idBook INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-	openD DATE NOT NULL,
-	closeD DATE NOT NULL CHECK (closeD > openD),
+	startD DATE NOT NULL,
+	finishD DATE NOT NULL CHECK (finishD > startD),
 	bookState VARCHAR(50) NOT NULL, /*CHECK(bookState = "Awaiting Reply")*/
 	payCode VARCHAR(14), /*HACER CHECK DE QUE TENGA 4 LETRAS Y DEMAS NUMS*/
 		idPublic INT NOT NULL,
@@ -237,8 +236,7 @@ CREATE TABLE IF NOT EXISTS BookingPet(
 		CONSTRAINT fk_bpBook FOREIGN KEY(idBook)
 				REFERENCES Booking(idBook),
 		CONSTRAINT fk_bpPet FOREIGN KEY(idPet)
-				REFERENCES Pet(idPet) 
-		
+				REFERENCES Pet(idPet)		
 );
 
 /*********************************CHECKER*******************************************/
