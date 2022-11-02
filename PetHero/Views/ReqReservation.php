@@ -1,5 +1,5 @@
 <body>
-<form action="<?php echo FRONT_ROOT."/User/AddPublication" ?>" method="post" enctype="multipart/form-data" class="was-validated">
+<form action="<?php echo FRONT_ROOT."/Reservation/Add" ?>" method="post" enctype="multipart/form-data" class="was-validated">
     <div class="row g-3">
 
         <div class="col-12">
@@ -34,8 +34,7 @@
                 <?php   foreach ($petList as $pet) { ?>
                     <div class="col-4 mt-3">
                             <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" 
-                                        id="flexSwitchCheckChecked" value=<?php echo $pet->getId()?> checked>
+                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" name="petsId[]" value=<?php echo $pet->getId()?> checked>
                                 <label class="form-check-label" for="flexSwitchCheckChecked"></label>
                             </div>
                         <img class="bd-placeholder-img rounded-circle" src="<?php echo $pet->getProfileIMG()?>" width="140" height="140" 

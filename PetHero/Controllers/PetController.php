@@ -46,8 +46,7 @@
             $petDAO=$this->petDAO->GetAll();
         }
 
-        public function Add($name, $type, $breed, $size, $observation, $ImagenP, $ImagenV)
-        {
+        public function Add($name, $type, $breed, $size, $observation){
             //var_dump($this->ownerDAO->Get(1));
             //var_dump($observation);
             $sizeOBJ = new Size();

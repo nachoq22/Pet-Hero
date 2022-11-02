@@ -59,8 +59,8 @@ use \Model\User as User;
             return $userList;
         }
 
-/*
-    public function definitiveGetAll(){
+
+    public function DefGetAll(){
         $userList = array();
 
         $query = "CALL User_GetAll()";
@@ -80,7 +80,7 @@ use \Model\User as User;
         }
         return $userList;
     }
-*/
+
 
         public function Get($id){
             $user = null;
@@ -134,7 +134,7 @@ use \Model\User as User;
                 if($row["idData"]){
                     $user->__fromDBisKeeper($row["idUser"],$row["username"]
                                             ,$row["password"],$row["email"]
-                                            ,this->dataDAO->Get($row["idData"]));
+                                            ,$this->dataDAO->Get($row["idData"]));
                 }
                 $user->__fromDBnoKeeper($row["idUser"],$row["username"]
                     ,$row["password"],$row["email"]);

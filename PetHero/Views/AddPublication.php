@@ -1,5 +1,5 @@
 <body>
-<form action="<?php echo FRONT_ROOT."/User/AddPublication" ?>" method="post" enctype="multipart/form-data" class="was-validated">
+<form action="<?php echo FRONT_ROOT."/Publication/Add" ?>" method="post" enctype="multipart/form-data" class="was-validated">
     <div class="row g-3">
 
         <div class="col-6">
@@ -35,8 +35,9 @@
                     </div>
             </div>
 
+
             <div class="input-group mb-3">
-                <input type="file" class="form-control" id="inputGroupFile02" required>
+                <input type="file" class="form-control" id="inputGroupFile02" name="images" required multiple>
                 <label class="input-group-text" for="inputGroupFile02"><i class="bi bi-images"></i></label>
                     <div class="invalid-feedback">
                         Please enter images for Publication.

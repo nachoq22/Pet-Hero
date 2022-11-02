@@ -25,7 +25,9 @@ use \Model\PersonalData as PersonalData;
             $this->data = $data;
         } 
     
-        function __construct(){} 
+        function __construct(){
+            $this->data =  new PersonalData();
+        } 
 
         function __fromRequest($username,$password,$email,PersonalData $data){
             $this->username = $username;

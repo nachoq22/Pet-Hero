@@ -26,7 +26,7 @@ use \DAO\UserDAO as UserDAO;
             $locationList=$this->locationDAO->GetAll();
             $sizeList=$this->sizeDAO->GetAll();
             $typeList=$this->typeDAO->GetAll();
-            $userList =$this->userDAO->GetAll();
+            $userList =$this->userDAO->DefGetAll();
             //$userIs=$this->userDAO->Get(2);
             //require_once(VIEWS_PATH."PetList.php");
             require_once(VIEWS_PATH."Home.php");

@@ -66,6 +66,15 @@
                                     <th scope="col">Username</th>
                                     <th scope="col">Email</th>
                                     <th scope="col">Password</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Surname</th>
+                                    <th scope="col">Sex</th>
+                                    <th scope="col">Dni</th>
+                                    <th scope="col">Adress</th>
+                                    <th scope="col">Neighborhood</th>
+                                    <th scope="col">City</th>
+                                    <th scope="col">Province</th>
+                                    <th scope="col">Country</th>
                                 </tr>
                             </thead>
                             <tbody> <?php foreach($userList as $user){ ?>
@@ -74,6 +83,18 @@
                                     <td><?php echo $user->getUsername() ?></td>
                                     <td><?php echo $user->getEmail() ?></td>
                                     <td><?php echo $user->getPassword() ?></td>
+                                    <?php if($user->getData() != NULL){ ?>
+                                    <td><?php echo $user->getData()->getName() ?></td>
+                                    <td><?php echo $user->getData()->getSurname() ?></td>
+                                    <td><?php echo $user->getData()->getSex()?></td>
+                                    <td><?php echo $user->getData()->getDni()?></td>
+
+                                    <td><?php echo $user->getData()->getLocation()->getAdress()?></td>
+                                    <td><?php echo $user->getData()->getLocation()->getNeighborhood()?></td>
+                                    <td><?php echo $user->getData()->getLocation()->getCity()?></td>
+                                    <td><?php echo $user->getData()->getLocation()->getProvince()?></td>
+                                    <td><?php echo $user->getData()->getLocation()->getCountry()?></td>
+                                    <?php }?>
                                 </tr><?php }?>     
                             </tbody>
                         </table>
