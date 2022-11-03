@@ -46,7 +46,7 @@
             $petDAO=$this->petDAO->GetAll();
         }
 
-        public function Add($name, $type, $breed, $size, $observation){
+        public function Add($name, $breed, $type, $size, $observation,$ImagenP,$ImagenV){
             //var_dump($this->ownerDAO->Get(1));
             //var_dump($observation);
             $sizeOBJ = new Size();
@@ -57,8 +57,16 @@
             $user = $this->userDAO->Get(1);
             $pet = new Pet();
             $pet->__fromRequest($name, $breed, $observation, $typeOBJ, $sizeOBJ, $user);   
+            echo "<br>";
+            echo "<br>";
             var_dump($pet);
-            $fileNameP = $_FILES['ImagenP']['name'];
+            echo "<br>";
+            echo "<br>";
+            var_dump($_FILES['ImagenP']);
+            echo "<br>";
+            echo "<br>";
+            var_dump($_FILES['ImagenV']);
+            /*$fileNameP = $_FILES['ImagenP']['name'];
             $fileP = $_FILES['ImagenP']['tmp_name'];
             $fileNameV = $_FILES['ImagenV']['name'];
             $fileV = $_FILES['ImagenV']['tmp_name'];
@@ -66,8 +74,8 @@
             
             $this->petDAO->RegisterPet($pet, $fileP, $fileNameP, $fileV, $fileNameV);
             //$petList=$this->petDAO->GetAll();
-            //require_once(VIEWS_PATH."Pets.php");
-        } 
+            //require_once(VIEWS_PATH."Home.php");
+        */} 
 
         public function GetPetsByReservation(){
             //$petList = $this->petDAO->GetAllByUser(1);
