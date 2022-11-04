@@ -120,8 +120,8 @@ use \Model\User as User;
             return $user;
         }
 
-/*
-        public function definitiveGet($id){
+
+        public function DGet($id){
             $user = null;
 
             $query = "CALL User_GetById(?)";
@@ -141,7 +141,7 @@ use \Model\User as User;
             }
             return $user;
         }
-*/
+
 
         public function GetByUsername($username){
             $user = null;

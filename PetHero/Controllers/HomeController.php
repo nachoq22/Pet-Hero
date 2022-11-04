@@ -6,6 +6,7 @@ use \DAO\LocationDAO as LocationDAO;
 use \DAO\SizeDAO as SizeDAO;
 use \DAO\PetTypeDAO as PetTypeDAO;
 use \DAO\UserDAO as UserDAO;
+use \DAO\PetDAO as PetDAO;
 
     class HomeController
     {
@@ -13,12 +14,14 @@ use \DAO\UserDAO as UserDAO;
         private $sizeDAO;
         private $typeDAO;
         private $userDAO;
+        private $petDAO;
 
         public function __construct(){
             $this->locationDAO = new LocationDAO();
             $this->sizeDAO = new SizeDao();
             $this->typeDAO = new PetTypeDAO();
             $this->userDAO = new UserDAO();
+            $this->petDAO = new PetDAO();
         }
 
         public function Index()
@@ -67,5 +70,13 @@ use \DAO\UserDAO as UserDAO;
         public function ViewRequestReservation(){
             require_once(VIEWS_PATH."ReqReservation.php");
         }
+
+        public function ViewOwnerPanel(){
+            $petList = $this->petDAO->GetAll();
+            $owner = $this->userDAO->DGet(2);
+            require_once(VIEWS_PATH."OwnerPanel.php");
+        }
+
+        
     }
 ?>

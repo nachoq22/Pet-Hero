@@ -32,7 +32,7 @@
             <!-- Three columns of text below the carousel -->
                 <div class="row">
                 <?php   foreach ($petList as $pet) { ?>
-                    <div class="col-4 mt-3">
+                    <div class="col-3 mt-3">
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" name="petsId[]" value=<?php echo $pet->getId()?> checked>
                                 <label class="form-check-label" for="flexSwitchCheckChecked"></label>
@@ -46,13 +46,10 @@
                 </div><!-- /.row -->
             </div>
         </div>
-
-        <div class="col-12">
-            <div class="align-item-center">
-                <button type="reset" class="btn btn-primary">Reset</button>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-        </div>
+    </div>
+    <div class="row g-3">
+        <button type="reset" class="btn btn-primary">Reset</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
     </div>
 </form>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>

@@ -2,7 +2,7 @@
 <form action="<?php echo FRONT_ROOT."/User/BeKeeper" ?>" method="post" enctype="multipart/form-data" class="was-validated">
     <div class="row g-3">
 
-        <div class="col-6">
+        <div class="col">
             <div class="row g-3">
                 <div class="col">
                     <div class="form-floating mb-3">
@@ -51,7 +51,7 @@
             </div>
         </div>
 
-        <div class="col-6">
+        <div class="col">
             <div class="row g-3">
                 <div class="col">
                     <div class="form-floating mb-3">
@@ -95,10 +95,10 @@
                     </div>
             </div>
         </div>
-        <div class="col-12">
-            <button type="reset" class="btn btn-primary">Reset</button>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
+    </div>
+    <div class="row g-3">
+        <button type="reset" class="btn btn-primary">Reset</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
     </div>
 </form>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>

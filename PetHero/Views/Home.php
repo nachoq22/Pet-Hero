@@ -6,14 +6,18 @@
     </div>
 
     <div class="card border-info mb-3" style="max-width: 18rem;" style="width: 18rem;">
-  <img src="https://static.tokkobroker.com/pictures/34932906127141585208188762234073879326298067045523632263203776275920444811073.jpg" class="card-img-top" alt="...">
-  <div class="card-body">
-    <div class="div-flex"><h5 class="card-title">Juan Carlos</h5>
-    <p class="card-text" style="font-size: small"><strong>★ 4,9</strong></p></div>
-    <p class="card-text">Amante de los perros, ubicado en Playa grande, casa amplia con patio </p>
-    <p class="card-text"><strong>$1500</strong> por noche</p>
-  </div>
-</div>
+        <img src="https://static.tokkobroker.com/pictures/34932906127141585208188762234073879326298067045523632263203776275920444811073.jpg" 
+        class="card-img-top" alt="...">
+        <div class="card-body">
+            <div class="div-flex">
+                <h5 class="card-title">Juan Carlos</h5>
+                <p class="card-text" style="font-size: small"><strong>★ 4,9</strong></p>
+            </div>
+            <p class="card-text">Amante de los perros, ubicado en Playa grande, casa amplia con patio </p>
+            <p class="card-text"><strong>$1500</strong> por noche</p>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-2">
             <div id="list-example" class="list-group">
