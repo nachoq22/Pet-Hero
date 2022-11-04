@@ -32,6 +32,11 @@ include("Head.php");
             </ul>
           </li>
 
+          <li class="nav-link">
+            <a class="btn btn-outline-warning me-2" href="<?php echo FRONT_ROOT."/Pet/ViewPetList"?>" type="button"><i class="bi bi-bug-fill"></i></a>
+          </li>
+
+
 <!-- DROPDOWN -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
