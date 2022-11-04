@@ -1,8 +1,10 @@
 <?php
-    namespace Model;
+namespace Model;
+use \Model\Booking as Booking;
+use \Model\Pet as Pet;
 
-    class BookingPet {
-        private $idBookingPet;
+    class BookingPet{
+        private $idBP;
         private Booking $booking;
         private Pet $pet;
 
@@ -13,15 +15,15 @@
             $this->pet = $pet;
         }
 
-        public function __fromBD($id, Booking $booking,  Pet $pet){
-            $this->id = $id;
+        public function __fromDB($idBP, Booking $booking,  Pet $pet){
+            $this->idBP = $idBP;
             $this->booking = $booking;
             $this->pet = $pet;
         }
 
-        //SETTERS
-        public function setId($id){
-            $this->id = $id;
+//SETTERS
+        public function setId($idBP){
+            $this->idBP = $idBP;
         }
         public function setBooking($booking){
             $this->booking = $booking;
@@ -29,9 +31,10 @@
         public function setPet($pet){
             $this->pet = $pet;
         }
-        //GETTERS
+        
+//GETTERS
         public function getId(){
-            return $this->id;
+            return $this->idBP;
         }
         public function getBooking(){
             return $this->booking;

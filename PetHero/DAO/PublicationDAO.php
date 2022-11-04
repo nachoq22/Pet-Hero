@@ -1,16 +1,22 @@
 <?php
-    namespace DAO;
+namespace DAO;
 
-    use \DAO\Connection as Connection;
-    use \DAO\QueryType as QueryType;
+use \DAO\Connection as Connection;
+use \DAO\QueryType as QueryType;
 
-    use \DAO\IPublicationDAO as IPublicationDAO;
-    use \Model\Publication as Publication;
+use \DAO\IPublicationDAO as IPublicationDAO;
+use \DAO\UserDAO as UserDAO;
+use \Model\Publication as Publication;
 
-    class PublicationDAO implements IPublicationDAO
-    {
+    class PublicationDAO implements IPublicationDAO{
         private $connection;
         private $tableName = 'Publication';
+
+        private $userDAO;
+
+        public function __construct(){
+            $this->userDAO = new UserDAO();
+        }
 
         private function imgPPProcess($nameFile,$file,$publicationName){
             $path= "Views\Img\IMGpublication\Profile\\".$publicationName.date("YmdHis").".jpg"; 
@@ -20,61 +26,63 @@
             return $pathDB;
         } 
 
-        public function Add(Publication $publication)
-            {
-                $query = "CALL publication_Add(?,?,?,?,?,?)";
-                $parameters["openDate"] = $publication->getOpenDate();
-                $parameters["closeDate"] = $publication->getCloseDate();
-                $parameters["title"] = $publication->getTitle();
-                $parameters["description"] = $publication->getDescription();
-                $parameters["popularity"] = $publication->getPopularity();
-                $parameters["remuneration"] = $publication->getRemuneration();
-                $parameters["image"] = $publication->getImage();
+        public function Add(Publication $public){
+            $query = "CALL publication_Add(?,?,?,?,?,?)";
+            $parameters["openD"] = $public->getOpenDate();
+            $parameters["closeD"] = $public->getCloseDate();
+            $parameters["title"] = $public->getTitle();
+            $parameters["description"] = $public->getDescription();
+            $parameters["popularity"] = $public->getPopularity();
+            $parameters["remuneration"] = $public->getRemuneration();
+            $parameters["idUser"] = $public->getUser()->getId();
     
-                $this->connection = Connection::GetInstance();
-                $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
-            }
-            public function Get($id){
-                $publication = null;
-                $query = "CALL publication_GetById(?)";
-                $parameters["idPublication"] = $id;
-                $this->connection = Connection::GetInstance();
-                $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
-    
-                foreach($resultBD as $row){
-                    $publication = new Publication();
-    
-                    $publication->__fromDB($row["idPublication"],$row["openDate"]
-                    ,$row["closeDate"],$row["title"]
-                    ,$row["description"],$row["popularity"]
-                    ,$this->typeDAO->Get($row["remuneration"])
-                    ,$this->sizeDAO->Get($row["image"]));
-    
-                }
-                return $publication;
-            }
-        public function GetAll()
-        {
-            $publicationList = array();    
+            $this->connection = Connection::GetInstance();
+            $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
+        }
 
-            $query = "CALL publication_GetAll()";
+        public function Get($idPublic){
+            $public = null;
+            $query = "CALL Publication_GetById(?)";
+            $parameters["idPublic"] = $idPublic;
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+    
+            foreach($resultBD as $row){
+                $public = new Publication();
+    
+                $public->__fromDB($row["idPublic"],$row["openD"]
+                                        ,$row["closeD"],$row["title"]
+                                        ,$row["description"],$row["popularity"]
+                                        ,$row["remuneration"]
+                                        ,$this->userDAO->Get($row["idUser"]));
+                }
+            return $public;
+        }
+
+        public function GetAll(){
+            $publicList = array();    
+
+            $query = "CALL Publication_GetAll()";
             $this->connection = Connection::GetInstance();
             $resultBD = $this->connection->Execute($query,array(),QueryType::StoredProcedure);
 
             foreach($resultBD as $row){
-                $publication = new Publication();
-                $publication->__fromDB($row["idPublication"],$row["openDate"]
-                ,$row["closeDate"],$row["title"],$row["description"]
-                ,$row["popularity"],$row["remuneration"],$row["image"]);
+                $public = new Publication();
+                $public->__fromDB($row["idPublic"],$row["openD"]
+                                        ,$row["closeD"],$row["title"]
+                                        ,$row["description"],$row["popularity"]
+                                        ,$row["remuneration"]
+                                        ,$this->userDAO->Get($row["idUser"]));
 
-                array_push($publicationList,$publication);
+                array_push($publicList,$public);
             }
-            return $publicationList;
+            return $publicList;
 
         }
-        public function Delete($idPublication){
+
+        public function Delete($idPublic){
             $query = "CALL Publication_Delete(?)";
-            $parameters["idPublication"] = $idPublication;
+            $parameters["idPublic"] = $idPublic;
 
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);

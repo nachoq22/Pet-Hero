@@ -1,16 +1,12 @@
 <?php
-    namespace DAO;
+namespace DAO;
 
-    use \Model\Publication as Publication;
+use \Model\Publication as Publication;
 
-    interface IPublicationDAO
-    {
-        public function Add(Publication $publication);
+    interface IPublicationDAO{
+        public function Add(Publication $public);
         public function GetAll();
-        public function Get($id);
-        public function Delete($id);
+        public function Get($idPublic);
+        public function Delete($idPublic);
     }
-        
-
-
 ?>

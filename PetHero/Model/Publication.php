@@ -1,51 +1,51 @@
 <?php
-    namespace Model;
+namespace Model;
+use \Model\User as User;
 
     class Publication {
-        public $idPublication;
-        public $openDate;
-        public $closeDate;
-        public $title;
-        public $description;
-        public $popularity;
-        public $remuneration;
-        public PublicIMG $image;
+        private $idPublic;
+        private $openD;
+        private $closeD;
+        private $title;
+        private $description;
+        private $popularity;
+        private $remuneration;
+        private User $user;
 
         //CONSTRUCTORS
         public function __construct() {}
 
-        public function __fromRequest($openDate, $closeDate, $title, $description, $popularity, $remuneration,PublicIMG $image) {
-            $this->openDate = $openDate;
-            $this->closeDate = $closeDate;
+        public function __fromRequest($openD, $closeD, $title, $description, $popularity, $remuneration,User $user) {
+            $this->openD = $openD;
+            $this->closeD = $closeD;
             $this->title = $title;
             $this->description = $description;
             $this->popularity = $popularity;
             $this->remuneration = $remuneration;
-            $this->image = $image;
+            $this->user = $user;
         }
 
-        public function __fromDB(){
-            $this->idPublication = $idPublication;
-            $this->openDate = $openDate;
-            $this->closeDate = $closeDate;
+        public function __fromDB($idPublic,$openD, $closeD, $title, $description, $popularity, $remuneration,User $user){
+            $this->idPublic = $idPublic;
+            $this->openD = $openD;
+            $this->closeD = $closeD;
             $this->title = $title;
             $this->description = $description;
             $this->popularity = $popularity;
             $this->remuneration = $remuneration;
-            $this->image = $image;
-
+            $this->user = $user;
         }
 
         //GETTER & SERTTER
 
-        public function getidPublication() {
-            return $this->idPublication;
+        public function getid() {
+            return $this->idPublic;
         }
         public function getOpenDate() {
-            return $this->openDate;
+            return $this->openD;
         }
         public function getCloseDate() {
-            return $this->closeDate;
+            return $this->closeD;
         }
         public function getTitle() {
             return $this->title;
@@ -59,50 +59,35 @@
         public function getRemuneration() {
             return $this->remuneration;
         }
-        public function getImage() {
-            return $this->image;
+
+        public function getUser(): User{
+            return $this->user;
         }
 
         //SETTERS
-        public function setidPublication($idPublication) {
-            $this->idPublication = $idPublication;
-            return $this;
+        public function setid($idPublic) {
+            $this->idPublic = $idPublic;
         }
         public function setOpenDate($openDate) {
-            $this->openDate = $openDate;
-            return $this;
+            $this->openD = $openDate;
         }
-        public function setCloseDate($closeDate) {
-            $this->closeDate = $closeDate;
-            return $this;
+        public function setCloseDate($closeD) {
+            $this->closeD = $closeD;
         }
         public function setTitle($title) {
             $this->title = $title;
-            return $this;
         }
         public function setDescription($description) {
             $this->description = $description;
-            return $this;
         }
         public function setPopularity($popularity) {
             $this->popularity = $popularity;
-            return $this;
         }
         public function setRemuneration($remuneration) {
             $this->remuneration = $remuneration;
-            return $this;
         }
-        public function setImage($image) {
-            $this->image = $image;
-            return $this;   
+        public function setUser(User $user){
+                $this->user = $user;
         }
-
-
-
-
-
-
-
-}
-
+    }
 ?>
