@@ -3,70 +3,75 @@
 
     class Review {
         private $idReview;
-        private $date;
+        private $createD;
         private $commentary;
         private $stars;
-        private User $user;
         private Publication $publication;
+        private User $user;
 
-        
-        //CONSTRUCTORS
+//CONSTRUCTORS
         public function __construct() {
         }
 
-        public function __fromRequest($date, $commentary, $stars, User $user, Publication $publication) {
-            $this->date = $date;
+        public function __fromRequest($createD, $commentary, $stars,Publication $publication ,User $user) {
+            $this->createD = $createD;
             $this->commentary = $commentary;
             $this->stars = $stars;
-            $this->user = $user;
             $this->publication = $publication;
+            $this->user = $user;
         }
-        public function __fromDB($id, $date, $commentary, $stars, User $user, Publication $publication){
-            $this->id = $id;
-            $this->date = $date;
+        public function __fromDB($idReview, $createD, $commentary, $stars,Publication $publication ,User $user){
+            $this->idReview = $idReview;
+            $this->createD = $createD;
             $this->commentary = $commentary;
             $this->stars = $stars;
-            $this->user = $user;
             $this->publication = $publication;
+            $this->user = $user;
         }
 
-        //GETTER & SERTTER
-        public function getId() {
-            return $this->id;
+//GETTER & SETTERS
+        public function getId(){
+                return $this->idReview;
         }
-        public function getDate() {
-            return $this->date;
-        }
-        public function getcommentary() {
-            return $this->commentary;
-        }
-        public function getStars() {
-            return $this->stars;
-        }
-        public function getUser() {
-            return $this->user;
-        }
-        public function getPublication() {
-            return $this->publication;
-        }
-        public function setId() {
-            return $this->id;
-        }
-        public function setDate() {
-            return $this->date;
-        }
-        public function setcommentary() {
-            return $this->commentary;
-        }
-        public function setStars() {
-            return $this->stars;   
-        }
-        public function setUser() {
-            return $this->user;
-        }
-        public function setPublication() {
-            return $this->publication;
+        public function setId($idReview){
+                $this->idReview = $idReview;
+
+                return $this;
         }
 
+        public function getCreateD(){
+                return $this->createD;
+        }
+        public function setCreateD($createD){
+                $this->createD = $createD;
+        }
+
+        public function getCommentary(){
+                return $this->commentary;
+        }
+        public function setCommentary($commentary){
+                $this->commentary = $commentary;
+        }
+
+        public function getStars(){
+                return $this->stars;
+        }
+        public function setStars($stars){
+                $this->stars = $stars;
+        }
+
+        public function getPublication(): Publication{
+                return $this->publication;
+        }
+        public function setPublication(Publication $publication){
+                $this->publication = $publication;
+        }
+
+        public function getUser(): User {
+                return $this->user;
+        }
+        public function setUser(User $user){
+            $this->user = $user;
+        }
     }
 ?>

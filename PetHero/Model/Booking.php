@@ -1,11 +1,14 @@
 <?php
-    namespace Model;
+namespace Model;
+
+use \Model\Publication as Publication;
+use \Model\User as User;
 
     class Booking {
-        private $idBooking;
-        private $openDate;
-        private $closeDate;
-        private $payState;
+        private $idBook;
+        private $startD;
+        private $finishD;
+        private $bookState;
         private $payCode;
         private Publication $publication;
         private User $user;
@@ -14,58 +17,74 @@
         //CONSTRUCTORS
         public function __construct(){}
 
-        public function __fromRequest($openDate, $closeDate, $payState, $payCode, Publication $publication, User $user){
-            $this->openDate = $openDate;
-            $this->closeDate = $closeDate;
-            $this->payState = $payState;
+        public function __fromRequest($startD, $finishD, $bookState, $payCode, Publication $publication, User $user){
+            $this->startD = $startD;
+            $this->finishD = $finishD;
+            $this->bookState = $bookState;
             $this->payCode = $payCode;
             $this->publication = $publication;
             $this->user = $user;
         }
 
-        public function __fromBD($idBooking, $openDate, $closeDate, $payState, $payCode, Publication $publication, User $user)
-        {
-            $this->idBooking = $idBooking;
-            $this->openDate = $openDate;
-            $this->closeDate = $closeDate;
-            $this->payState = $payState;
+        public function __fromBD($idBook, $startD, $finishD, $bookState, $payCode, Publication $publication, User $user){
+            $this->idBook = $idBook;
+            $this->startD = $startD;
+            $this->finishD = $finishD;
+            $this->bookState = $bookState;
             $this->payCode = $payCode;
             $this->publication = $publication;
             $this->user = $user;
         }
-    
 
+//GETTERS & SETTERS
+        public function getId(){
+            return $this->idBook;
+        }
+        public function setId($idBook){
+                $this->idBook = $idBook;
+        }
 
-        //GETTER & SERTTER
-        public function getidBooking()
-        {
-            return $this->idBooking;
+        public function getStartD(){
+            return $this->startD;
         }
-        public function getOpenDate()
-        {
-            return $this->openDate;
+        public function setStartD($startD){
+                $this->startD = $startD;
         }
-        public function getCloseDate()
-        {
-            return $this->closeDate;
+
+        public function getFinishD(){
+            return $this->finishD;
         }
-        public function getPayState()
-        {
-            return $this->payState;
+        public function setFinishD($finishD){
+                $this->finishD = $finishD;
         }
-        public function getPayCode()
-        {
+
+        public function getBookState(){
+            return $this->bookState;
+        }
+        public function setBookState($bookState){
+                $this->bookState = $bookState;
+        }
+
+        public function getPayCode(){
             return $this->payCode;
         }
-        public function getPublication()
-        {
+
+        public function setPayCode($payCode){
+                $this->payCode = $payCode;
+        }
+
+        public function getPublication(): Publication{
             return $this->publication;
         }
-        public function getUser()
-        {
-            return $this->user;
+        public function setPublication(Publication $publication){
+                $this->publication = $publication;
         }
 
+        public function getUser(): User{
+            return $this->user;
+        }
+        public function setUser(User $user){
+                $this->user = $user;
+        }
     }
-
 ?>

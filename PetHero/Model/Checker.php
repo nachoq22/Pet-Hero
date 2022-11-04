@@ -1,77 +1,65 @@
 <?php
-    namespace Model;
+namespace Model;
+use \Model\Booking as Booking;
 
     class Checker{
-        private $id;
-        private $emisionDate;
-        private $finishDate;
+        private $idChecker;
+        private $emisionD;
+        private $closeD;
         private $finalPrice;
         private Booking $booking;
 
         //CONSTRUCTORS
         public function __construct(){}
 
-        public function __fromRequest($emisionDate, $finishDate, $finalPrice, Booking $booking)
+        public function __fromRequest($emisionD, $closeD, $finalPrice, Booking $booking)
         {
-            $this->emisionDate = $emisionDate;
-            $this->finishDate = $finishDate;
+            $this->emisionD = $emisionD;
+            $this->closeD = $closeD;
             $this->finalPrice = $finalPrice;
             $this->booking = $booking;
         }
-        public function __fromDB($id, $emisionDate, $finishDate, $finalPrice, Booking $booking)
+        public function __fromDB($idChecker, $emisionD, $closeD, $finalPrice, Booking $booking)
         {
-            $this->id = $id;
-            $this->emisionDate = $emisionDate;
-            $this->finishDate = $finishDate;
+            $this->idChecker = $idChecker;
+            $this->emisionD = $emisionD;
+            $this->closeD = $closeD;
             $this->finalPrice = $finalPrice;
+            $this->booking = $booking;
         }
 
         //GETTERS
-        public function getId()
-        {
-            return $this->id;
+        public function getId(){
+            return $this->idChecker;
         }   
-        public function getEmissionDate()
-        {
-            return $this->emisionDate;
+        public function getEmissionDate(){
+            return $this->emisionD;
         }
-        public function getFinishDate()
-        {
-            return $this->finishDate;
+        public function getCloseDate(){
+            return $this->closeD;
         }
-        public function getFinalPrice()
-        {
+        public function getFinalPrice(){
             return $this->finalPrice;
         }
-        public function getBooking()
-        {
+        public function getBooking(){
             return $this->booking;
         }
 
         //SETTERS
-        public function setId($id)
-        {
-            $this->id = $id;
+        public function setId($idChecker){
+            $this->idChecker = $idChecker;
         }
-        public function setEmissionDate($emisionDate)
-        {
-            $this->emisionDate = $emisionDate;
+        public function setEmissionDate($emisionD){
+            $this->emisionD = $emisionD;
         }
-        public function setFinishDate($finishDate)
-        {  
-            $this->finishDate = $finishDate;
+        public function setCloseDate($closeD){  
+            $this->closeD = $closeD;
         }
-        public function setFinalPrice($finalPrice)
-        {
-            $this->finalprice = $finalPrice;
+        public function setFinalPrice($finalPrice){
+            $this->finalPrice = $finalPrice;
         }
-        public function setBooking($booking)
-        {
+        public function setBooking($booking){
             $this->booking = $booking;
         }
-    
-
-
     }
-
 ?>
