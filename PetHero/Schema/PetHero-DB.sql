@@ -228,7 +228,7 @@ INSERT INTO Booking VALUES (0,DATE(NOW()),
 								 ,"AT1048235672BY"
 								 ,1,4);
 
-/*********************************BOOKING*******************************************/
+/*********************************BOOKING PET*******************************************/
 CREATE TABLE IF NOT EXISTS BookingPet(
 	idBP INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
 		idBook INT NOT NULL,

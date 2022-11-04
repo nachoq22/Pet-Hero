@@ -488,16 +488,245 @@ CREATE PROCEDURE Publication_GetById(IN idPublication INT)
 BEGIN
     SELECT * 
     FROM Publication
-    WHERE (Publication.idPublication = idPublication);
+    WHERE (Publication.idPublic = idPublication);
 END;
 
 $$
 
+DELIMITER $$
+CREATE PROCEDURE Publication_Add(IN openD DATE, IN closeD DATE, IN title VARCHAR(50),
+                         IN description VARCHAR(1000), IN popularity VARCHAR(1), IN remuneration INT,
+	                     IN idUser INT)
+BEGIN
+    INSERT INTO Publication
+        (Publication.openD,Publication.closeD,Publication.title,Publication.description,Publication.popularity,Publication.remuneration
+        ,Publication.idUser)
+    VALUES
+        (openD,closeD,title,description,popularity,remuneration,idUser);
+END;
+$$ 
 
+DELIMITER $$
+CREATE PROCEDURE Publication_Delete(IN idPublication INT)
+BEGIN
+    DELETE 
+    FROM Publication
+    WHERE (Publication.idPublic = idPublic);
+END;
+$$
+
+/*********************************PROCEDURES IMAGES*******************************************/
+
+DELIMITER $$
+
+CREATE PROCEDURE PublicIMG_GetAll()
+BEGIN
+    SELECT *
+    FROM PublicIMG;
+END;
+
+$$
+
+DELIMITER $$ 
+
+CREATE PROCEDURE PublicIMG_GetById(IN idPublicIMG INT)
+BEGIN
+    SELECT * 
+    FROM PublicIMG
+    WHERE (PublicIMG.idPublicIMG = idPublicIMG);
+END;
+
+$$
+
+DELIMITER $$
+CREATE PROCEDURE PublicIMG_Add(IN url varchar(250), IN idPublication INT)
+BEGIN
+    INSERT INTO PublicIMG
+        (PublicIMG.url,PublicIMG.idPublication)
+    VALUES
+        (url,idPublication);
+END;
+$$ 
+
+DELIMITER $$
+CREATE PROCEDURE PublicIMG_Delete(IN idPublication INT)
+BEGIN
+    DELETE 
+    FROM Publication
+    WHERE (Publication.idPublication = idPublication);
+END;
+$$
+
+
+/*********************************PROCEDURES BOOKING*******************************************/
+
+
+DELIMITER $$
+CREATE PROCEDURE Booking_GetAll()
+BEGIN
+    SELECT * 
+    FROM Booking;
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE Booking_GetById(IN idBooking INT)
+BEGIN
+    SELECT * 
+    FROM Booking
+    WHERE (Booking.idBooking = idBooking);
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE Booking_Add(IN openDate DATE, IN closeDate DATE, IN payState VARCHAR(25), IN payCode VARCHAR(10),
+                         IN idPublication INT, IN idUser INT)
+BEGIN
+    INSERT INTO Booking
+        (Booking.openDate, Booking.closeDate, Booking.payState, Booking.payCode, Booking.idPublication, Booking.idUser)
+    VALUES
+        (openDate, closeDate, payState, payCode, idPublication, idUser);
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE Booking_Delete(IN idBooking INT)
+BEGIN
+    DELETE 
+    FROM Booking
+    WHERE (Booking.idBooking = idBooking);
+END;
+$$
+
+
+/*********************************PROCEDURES BOOKING PET*******************************************/
+
+DELIMITER $$
+CREATE PROCEDURE BookingPet_GetAll()
+BEGIN
+    SELECT * 
+    FROM BookingPet;
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE BookingPet_GetById(IN idBooking INT)
+BEGIN
+    SELECT * 
+    FROM BookingPet
+    WHERE (BookingPet.idBookingPet = idBookingPet);
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE BookingPet_Add(IN idBooking INT, IN idPet INT)
+BEGIN
+    INSERT INTO BookingPet
+        (BookingPet.idBooking, BookingPet.idPet)
+    VALUES
+        (idBooking, idPet);
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE BookingPet_Delete(IN idBookingPet INT)
+BEGIN
+    DELETE 
+    FROM BookingPet
+    WHERE (BookingPet.idBookingPet = idBookingPet);
+END;
+$$
+
+/*********************************PROCEDURES CHECKER*******************************************/
+
+DELIMITER $$
+CREATE PROCEDURE Checker_GetAll()
+BEGIN
+    SELECT * 
+    FROM Checker;
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE Checker_GetById(IN idChecker INT)
+BEGIN
+    SELECT * 
+    FROM Checker
+    WHERE (Checker.idChecker= idChecker);
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE Checker_Add(IN idBooking INT, IN idPet INT)
+BEGIN
+    INSERT INTO BookingPet
+        (Checker.idBooking, Checker.idPet)
+    VALUES
+        (idBooking, idPet);
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE Checker_Delete(IN Checker INT)
+BEGIN
+    DELETE 
+    FROM Checker
+    WHERE (Checker.idBookingPet = idBookingPet);
+END;
+$$
+
+/*********************************PROCEDURES REVIEW*******************************************/
+DELIMITER $$
+CREATE PROCEDURE Review_GetAll()
+BEGIN
+    SELECT * 
+    FROM Review;
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE Review_GetById(IN idReview INT)
+BEGIN
+    SELECT * 
+    FROM Review
+    WHERE (Review.idReview = idReview);
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE Review_Add(IN dateR DATE, IN commentary VARCHAR(500), IN stars INT,
+                            IN idUser INT, IN idPublication INT)
+BEGIN
+    INSERT INTO Review
+        (Review.dateR, Review.commentary, Review.stars, Review.idUser,Review.idPublication)
+    VALUES
+        (dateR, commentary, stars, idUser, idPublication);
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE Review_Delete(IN idReview INT)
+BEGIN
+    DELETE 
+    FROM Review
+    WHERE (Review.idReview = idReview);
+END;
+$$
 
 
 
 /*********************************TEST PROCEDURES*******************************************/
+
+
+/*********************************TEST PUBLICATION*******************************************/
+
+CALL Publication_GetAll();
+CALL Publication_GetById(1);
+/*CALL Publication_Add(openD,closeD,title,description,popularity,remuneration,idUser);*/
+CALL Publication_Add("2022-10-30","2022-11-8", "El mejor cuidador de toda Mar Del Plata","Soy un cuidador 
+de perros de 24 años que le gusta salir a correr todos los dias, por lo que su perro estará bien ejercitado", "5","4000","2");
+CALL Publication_Delete(2);
+
 /*********************************TEST LOCATION*******************************************/
 CALL Location_GetAll();
 /*CALL Location_GetById(ID);*/

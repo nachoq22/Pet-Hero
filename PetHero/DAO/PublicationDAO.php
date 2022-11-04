@@ -20,7 +20,7 @@
             return $pathDB;
         } 
 
-        private function Add(Publication $publication)
+        public function Add(Publication $publication)
             {
                 $query = "CALL publication_Add(?,?,?,?,?,?)";
                 $parameters["openDate"] = $publication->getOpenDate();
@@ -53,7 +53,7 @@
                 }
                 return $publication;
             }
-        private function GetAll()
+        public function GetAll()
         {
             $publicationList = array();    
 

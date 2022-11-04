@@ -9,14 +9,14 @@
     use \Model\User as User;
     use \Model\Publication as Publication;
 
-    class BookingDAO extends IBookingDAO
+    class BookingDAO implements IBookingDAO
     {
         private $connection;
         private $tableName = 'booking';
 
 
 
-        private function Add(Booking $booking)
+        public function Add(Booking $booking)
         {
             $query = "CALL booking_Add(?,?,?,?,?,?)";
             $parameters["openDate"] = $booking->getOpenDate();
@@ -29,7 +29,7 @@
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
-        private function GetAll()
+        public function GetAll()
         {
             $bookingList = array();    
 

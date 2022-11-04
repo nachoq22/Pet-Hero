@@ -5,18 +5,18 @@
     use \DAO\QueryType as QueryType;
 
     use \DAO\IBookingbookingPetDAO;
-    use \Model\BookingbookingPet as BookingbookingPet;
+    use \Model\BookingPet as BookingPet;
     use \Model\Booking as Booking;
     use \Model\Pet as Pet;
 
-    class BookingbookingPetDAO extends IBookingbookingPetDAO
+    class BookingPetDAO implements IBookingPetDAO
     {
         private $connection;
         private $tableName = 'bookingbookingPet';
 
 
 
-        private function Add(bookingbookingPet $bookingbookingPet)
+        public function Add(bookingbookingPet $bookingbookingPet)
         {
             $query = "CALL bookingbookingPet_Add(?,?)";
             $parameters["booking"] = $bookingbookingPet->getBooking();
@@ -41,7 +41,7 @@
             }
             return $bookingPet;
         }
-        private function GetAll()
+        public function GetAll()
         {
             $bookingbookingPetList = array();    
 

@@ -8,7 +8,7 @@
     use \Model\PublicIMG as PublicIMG;
     use \Model\Publication as Publication;
 
-    class PublicIMGDAO extends IPublicIMGDAO
+    class PublicIMGDAO implements IPublicIMGDAO
     {
         private $connection;
         private $tableName = 'PublicIMG';

@@ -19,7 +19,7 @@
         private $finalPrice;
         private Booking $booking;
 
-        private function Add(Checker $Checker)
+        public function Add(Checker $Checker)
         {
             $query = "CALL Checker_Add(?,?,?,?)";
             $parameters["emisionDate"] = $Checker->getEmissionDate();
@@ -47,7 +47,7 @@
             }
             return $checker;
         }
-        private function GetAll()
+        public function GetAll()
         {
             $CheckerList = array();    
 

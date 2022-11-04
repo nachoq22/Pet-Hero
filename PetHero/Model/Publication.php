@@ -9,12 +9,12 @@
         public $description;
         public $popularity;
         public $remuneration;
-        public $image;
+        public PublicIMG $image;
 
         //CONSTRUCTORS
         public function __construct() {}
 
-        public function __fromRequest($openDate, $closeDate, $title, $description, $popularity, $remuneration, $image) {
+        public function __fromRequest($openDate, $closeDate, $title, $description, $popularity, $remuneration,PublicIMG $image) {
             $this->openDate = $openDate;
             $this->closeDate = $closeDate;
             $this->title = $title;
