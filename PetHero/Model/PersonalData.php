@@ -21,7 +21,9 @@ use \Model\Location as Location;
             $this->location = $location;
         } 
     
-        function __construct(){} 
+        function __construct(){
+            $this->location = new Location();
+        } 
 
         function __fromRequest($name,$surname,$sex,$dni,Location $location){
             $this->name = $name;

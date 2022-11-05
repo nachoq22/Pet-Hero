@@ -87,20 +87,7 @@ use \Model\Location as Location;
             $location = $this->getByAll($location);
         return $location;    
         }
-/*
-        public function AddRetId(Location $location){
-            $query = "CALL Location_Add(?,?,?,?,?)";
-            $parameters["adress"] = $location->getAdress();
-            $parameters["neighborhood"] = $location->getNeighborhood();
-            $parameters["city"] = $location->getCity();
-            $parameters["province"] = $location->getProvince();
-            $parameters["country"] = $location->getCountry();
-
-            $this->connection = Connection::GetInstance();
-            return $this->connection->ExecuteLastQuery($query,$parameters,QueryType::StoredProcedure);
-        }
-*/
-
+        
 //DELETE METHODS
         public function Delete($id){
             $query = "CALL Location_Delete(?)";

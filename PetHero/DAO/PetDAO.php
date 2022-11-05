@@ -27,22 +27,22 @@ use \Model\Pet as Pet;
         }
 
 //TOOLS
-private function imgPPProcess($nameFile,$file,$petName){
-    $path= "Views\Img\IMGPet\Profile\\".$petName.date("YmdHis").".jpg"; 
-    $path = str_replace(' ', '-', $path); 
-    $pathDB =  "..\\".$path; 
-    move_uploaded_file($file,$path);
-    return $pathDB;
-}    
+    private function imgPPProcess($nameFile,$file,$petName){
+        $path= "Views\Img\IMGPet\Profile\\".$petName.date("YmdHis").".jpg"; 
+        $path = str_replace(' ', '-', $path); 
+        $pathDB =  "..\\".$path; 
+        move_uploaded_file($file,$path);
+        return $pathDB;
+    }    
 
-private function imgPVPProcess($nameFile,$file,$petName){
-    $path= "Views\Img\IMGPet\VaccinationPlan\\".$petName.date("YmdHis").".jpg"; 
-    $path = str_replace(' ', '-', $path); 
-    $pathDB =  "..\\".$path;  
-    
-    move_uploaded_file($file,$path);
-    return $pathDB;
-}       
+    private function imgPVPProcess($nameFile,$file,$petName){
+        $path= "Views\Img\IMGPet\VaccinationPlan\\".$petName.date("YmdHis").".jpg"; 
+        $path = str_replace(' ', '-', $path); 
+        $pathDB =  "..\\".$path;  
+        
+        move_uploaded_file($file,$path);
+        return $pathDB;
+    }       
 
 
 //SELECT METHODS
