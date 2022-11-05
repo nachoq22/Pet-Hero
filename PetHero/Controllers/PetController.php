@@ -1,8 +1,6 @@
 <?php
     namespace Controllers;
     use \DAO\PetDAO as PetDAO;
-    use \DAO\SizeDAO as SizeDAO;
-    use \DAO\PetTypeDAO as PetTypeDAO;
     use \DAO\UserDAO as UserDAO;
 
     use \Model\Pet as Pet;
@@ -14,29 +12,21 @@
 
         class PetController{
             private $petDAO;
-            private $sizeDAO;
-            private $petTypeDAO;
             private $userDAO;
-
             private $homeController;
 
-        public function __construct()
-        {
+        public function __construct(){
             $this->petDAO = new PetDAO();
-            $this->sizeDAO = new SizeDAO();
-            $this->petTypeDAO = new PetTypeDAO();
             $this->userDAO = new UserDAO();
             $this->homeController = new HomeController();
         }
 
-        public function ViewPetList()
-        {
+        public function ViewPetList(){
             $petList = $this->petDAO->GetAllByUser(1);
             require_once(VIEWS_PATH."PetList.php");
         }
 
-        public function ViewPetProfile($idPet)
-        {
+        public function ViewPetProfile($idPet){
             //var_dump($idPet);
             $petaux = $this->petDAO->Get($idPet);
             require_once(VIEWS_PATH."PetProfile.php");

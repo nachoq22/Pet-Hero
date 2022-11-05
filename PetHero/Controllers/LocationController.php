@@ -29,7 +29,7 @@ use \Model\Location as Location;
             $location->setCity($city);
             $location->setProvince($province);
             $location->setCountry($country);*/
-            $this->locationDAO->Add($location);
+            $this->locationDAO->AddRet($location);
             $this->homeController->Index();
         } 
     }

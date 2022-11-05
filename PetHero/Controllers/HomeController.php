@@ -8,8 +8,7 @@ use \DAO\PetTypeDAO as PetTypeDAO;
 use \DAO\UserDAO as UserDAO;
 use \DAO\PetDAO as PetDAO;
 
-    class HomeController
-    {
+    class HomeController{
         private $locationDAO;
         private $sizeDAO;
         private $typeDAO;
@@ -24,8 +23,7 @@ use \DAO\PetDAO as PetDAO;
             $this->petDAO = new PetDAO();
         }
 
-        public function Index()
-        {
+        public function Index(){
             $locationList=$this->locationDAO->GetAll();
             $sizeList=$this->sizeDAO->GetAll();
             $typeList=$this->typeDAO->GetAll();
@@ -35,22 +33,18 @@ use \DAO\PetDAO as PetDAO;
             require_once(VIEWS_PATH."Home.php");
         }
 
-        public function ViewLogin()
-        {
+        public function ViewLogin(){
             require_once(VIEWS_PATH."login.php");
         }
-        public function ViewAddTemplates()
-        {
+        public function ViewAddTemplates(){
             require_once(VIEWS_PATH."AddForms.php");
         }
 
-        public function ViewPersonalInfo()
-        {
+        public function ViewPersonalInfo(){
             require_once(VIEWS_PATH."PersonalData.php");
         }
 
-        public function ViewAddPet()
-        {
+        public function ViewAddPet(){
             require_once(VIEWS_PATH."AddPet.php");
         }
 
@@ -75,8 +69,6 @@ use \DAO\PetDAO as PetDAO;
             $petList = $this->petDAO->GetAll();
             $owner = $this->userDAO->DGet(2);
             require_once(VIEWS_PATH."OwnerPanel.php");
-        }
-
-        
+        }        
     }
 ?>
