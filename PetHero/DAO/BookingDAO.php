@@ -44,7 +44,7 @@ use \Model\Booking as Booking;
 
             foreach($resultBD as $row){
                 $booking = new Booking();
-                $booking->__fromBD($row["idBooking"],$row["openDate"]
+                $booking->__fromDB($row["idBooking"],$row["openDate"]
                                   ,$row["closeDate"],$row["payState"],$row["payCode"]
                                   ,$this->publicDAO->Get($row["idPublic"])
                                   ,$this->userDAO->Get($row["user"]));
@@ -62,11 +62,11 @@ use \Model\Booking as Booking;
             $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
 
             $book = new Booking();
-            $book->__fromDB($row["idBook"],$row["startD"]
-            ,$row["finishD"],$row["bookState"]
-            ,$row["payCode"]
-            ,$this->typeDAO->Get($row["idPublic"])
-            ,$this->sizeDAO->Get($row["idUser"]));
+            $book->__fromDB($resultBD["idBook"],$resultBD["startD"]
+            ,$resultBD["finishD"],$resultBD["bookState"]
+            ,$resultBD["payCode"]
+            ,$this->publicDAO->Get($resultBD["idPublic"])
+            ,$this->userDAO->Get($resultBD["idUser"]));
             return $book;
         }
 
@@ -80,7 +80,7 @@ use \Model\Booking as Booking;
             foreach($resultBD as $row){
                 $booking = new Booking();
 
-                $booking->__fromBD($row["idBooking"],$row["openDate"]
+                $booking->__fromDB($row["idBooking"],$row["openDate"]
                                   ,$row["closeDate"],$row["payState"],$row["payCode"]
                                   ,$this->publicDAO->Get($row["idPublic"])
                                   ,$this->userDAO->Get($row["user"]));

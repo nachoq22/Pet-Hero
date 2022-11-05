@@ -470,6 +470,68 @@ BEGIN
 END;
 $$
 
+/*********************************TEST LOCATION*******************************************/
+CALL Location_GetAll();
+/*CALL Location_GetById(ID);*/
+CALL Location_GetById(2);
+/*CALL Location_Add(adress,neighborhood,city,province,country);*/
+CALL Location_Add("Mi calle","Mi Barrio","Mar del plata","Buenos Aires","Argentina");
+/*CALL Location_Delete(ID);*/
+/*CALL Location_Delete(6);*/
+
+/*********************************TEST PERSONAL DATA*******************************************/
+CALL PersonalData_GetAll();
+CALL PersonalData_GetById(2);
+/*CALL PersonalData_Add(name,surname,sex,dni,idLocation);*/
+Call PersonalData_Add("Ramiro","Talangana","M","44886655",2);
+/*Call PersonalData_Delete(6);*/
+
+/*********************************TEST USER*******************************************/
+Call User_GetAll();
+Call User_GetById(2);
+Call User_GetByUsername("planetar");
+/*CALL User_Add(username,password,varResp);*/
+CALL User_Login("planetar","orylOSad");
+/*CALL User_Add(username,password,email,idData);*/
+Call User_Add("pablitoClavito","ClavitoCrack","pablitoElCrack@gmail.com");
+/*CALL User_Add(username,password,email);*/
+Call User_Register("Elcucarachin","Carlos1245","elcuca@gmail.com");
+/*Call User_Delete(6);*/
+
+/*********************************TEST USERROLE*******************************************/
+Call UR_GetAll();
+Call UR_GetById(2);
+/*CALL Owner_Add(idUser,idRole);*/
+/*Call URole_Add(6,2);*/
+Call UR_IsKeeper(3);
+Call UR_UserToKeeper(6);
+/*Call Owner_Delete(6);*/
+
+/*********************************TEST SIZE*******************************************/
+Call Size_GetAll();
+Call Size_GetById(2);
+/*CALL Size_Add(name);*/
+Call Size_Add("ExtraBig");
+/*Call Size_Delete(6);*/
+
+/*********************************TEST PETTYPE*******************************************/
+Call PetType_GetAll();
+Call PetType_GetById(2);
+/*CALL PetType_Add(name);*/
+Call PetType_Add("Cacatuos");
+/*Call PetType_Delete(6);*/
+
+/*********************************TEST PET*******************************************/
+Call Pet_GetAll();
+Call Pet_GetById(2);
+Call Pet_GetByUser(2);
+/*CALL Size_Add(name,breed,profileIMG,vaccinationPlanIMG,observation,idSize,idPetType,idUser);*/
+Call Pet_Add("Salchichon","Suricatta",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Salchichon",(NOW() + 0),".jpg")
+						,CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Salchichon",(NOW() + 0),".jpg")
+						,"Tiene 6 dedos",1,5,3);
+/*Call Pet_Delete(6);*/
+
+
 /*********************************PROCEDURES PUBLICATION*******************************************/
 
 DELIMITER $$
@@ -749,42 +811,8 @@ $$
 
 
 /*********************************TEST PROCEDURES*******************************************/
-/*********************************TEST REVIEW*******************************************/
-CALL Review_GetAll();
-CALL Review_GetById(1);
-CALL Review_GetByPublic(1);
-/*CALL Review_Add(IN createD DATE, IN commentary VARCHAR(500), IN stars INT,
-                            IN idUser INT, IN idPublication INT)*/
-CALL Review_Add("2022-11-01", "Muy bueno, excelente servicio", 5, 4, 4);
-/*CALL Review_Delete(1);*/
-/*********************************TEST CHECKER*******************************************/
-CALL Checker_GetAll();
-CALL Checker_GetById(1);
-CALL Checker_GetByBooking(IN idBook INT)
-/*CALL Checker_AddChecker_Add(IN emisionD DATE, IN closeD DATE, IN finalPrice INT, IN idBook INT);*/
-CALL Checker_Add("2022-11-05", "2022-12-05", 2000, 1);
-/*CALL Checker_Delete(1);*/
-
-/*********************************TEST BOOKING PET*******************************************/
-CALL BookingPet_GetAll();
-CALL BookingPet_GetById(1);
-/*CALL BookingPet_Add(IN idBooking INT, IN idPet INT);*/
-CALL BookingPet_Add(1,1);
-/*CALL BookingPet_Delete(1);*/
-
-/*********************************TEST BOOKING*******************************************/
-CALL Booking_GetAll();
-CALL Booking_GetById(1);
-CALL Booking_GetByUser(4);
-/*CALL Booking_Add(IN openDate DATE, IN closeDate DATE, IN payState VARCHAR(25), IN payCode VARCHAR(10),
-                         IN idPublication INT, IN idUser INT)*/
-CALL Booking_Add("2022-11-01","2022-11-15","Pagado","123B45", 1, 1);
-
-/*CALL Booking_Delete(2);*/
-
 
 /*********************************TEST PUBLICATION*******************************************/
-
 CALL Publication_GetAll();
 CALL Publication_GetById(1);
 CALL Publication_GetByUser(1);
@@ -800,66 +828,39 @@ CALL ImgPublic_GetById(1);
 CALL ImgPublic_Add("www.holaSoyUnaURL.com", 1);
 /*CALL ImgPublic_Delete(1);*/
 
-/*********************************TEST LOCATION*******************************************/
-CALL Location_GetAll();
-/*CALL Location_GetById(ID);*/
-CALL Location_GetById(2);
-/*CALL Location_Add(adress,neighborhood,city,province,country);*/
-CALL Location_Add("Mi calle","Mi Barrio","Mar del plata","Buenos Aires","Argentina");
-/*CALL Location_Delete(ID);*/
-/*CALL Location_Delete(6);*/
+/*********************************TEST BOOKING*******************************************/
+CALL Booking_GetAll();
+CALL Booking_GetById(1);
+CALL Booking_GetByUser(4);
+/*CALL Booking_Add(IN openDate DATE, IN closeDate DATE, IN payState VARCHAR(25), IN payCode VARCHAR(10),
+                         IN idPublication INT, IN idUser INT)*/
+CALL Booking_Add("2022-11-01","2022-11-15","Pagado","123B45", 1, 1);
 
-/*********************************TEST PERSONAL DATA*******************************************/
-CALL PersonalData_GetAll();
-CALL PersonalData_GetById(2);
-/*CALL PersonalData_Add(name,surname,sex,dni,idLocation);*/
-Call PersonalData_Add("Ramiro","Talangana","M","44886655",2);
-/*Call PersonalData_Delete(6);*/
+/*CALL Booking_Delete(2);*/
 
-/*********************************TEST USER*******************************************/
-Call User_GetAll();
-Call User_GetById(2);
-Call User_GetByUsername("planetar");
-/*CALL User_Add(username,password,varResp);*/
-CALL User_Login("planetar","orylOSad");
-/*CALL User_Add(username,password,email,idData);*/
-Call User_Add("pablitoClavito","ClavitoCrack","pablitoElCrack@gmail.com");
-/*CALL User_Add(username,password,email);*/
-Call User_Register("Elcucarachin","Carlos1245","elcuca@gmail.com");
-/*Call User_Delete(6);*/
+/*********************************TEST BOOKING PET*******************************************/
+CALL BookingPet_GetAll();
+CALL BookingPet_GetById(1);
+/*CALL BookingPet_Add(IN idBooking INT, IN idPet INT);*/
+CALL BookingPet_Add(1,1);
+/*CALL BookingPet_Delete(1);*/
 
-/*********************************TEST USERROLE*******************************************/
-Call UR_GetAll();
-Call UR_GetById(2);
-/*CALL Owner_Add(idUser,idRole);*/
-/*Call URole_Add(6,2);*/
-Call UR_IsKeeper(3);
-Call UR_UserToKeeper(6);
-/*Call Owner_Delete(6);*/
+/*********************************TEST CHECKER*******************************************/
+CALL Checker_GetAll();
+CALL Checker_GetById(1);
+CALL Checker_GetByBooking(1);
+/*CALL Checker_AddChecker_Add(IN emisionD DATE, IN closeD DATE, IN finalPrice INT, IN idBook INT);*/
+CALL Checker_Add("2022-11-05", "2022-12-05", 2000, 1);
+/*CALL Checker_Delete(1);*/
 
-/*********************************TEST SIZE*******************************************/
-Call Size_GetAll();
-Call Size_GetById(2);
-/*CALL Size_Add(name);*/
-Call Size_Add("ExtraBig");
-/*Call Size_Delete(6);*/
-
-/*********************************TEST PETTYPE*******************************************/
-Call PetType_GetAll();
-Call PetType_GetById(2);
-/*CALL PetType_Add(name);*/
-Call PetType_Add("Cacatuos");
-/*Call PetType_Delete(6);*/
-
-/*********************************TEST PET*******************************************/
-Call Pet_GetAll();
-Call Pet_GetById(2);
-Call Pet_GetByUser(2);
-/*CALL Size_Add(name,breed,profileIMG,vaccinationPlanIMG,observation,idSize,idPetType,idUser);*/
-Call Pet_Add("Salchichon","Suricatta",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Salchichon",(NOW() + 0),".jpg")
-						,CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Salchichon",(NOW() + 0),".jpg")
-						,"Tiene 6 dedos",1,5,3);
-/*Call Pet_Delete(6);*/
+/*********************************TEST REVIEW*******************************************/
+CALL Review_GetAll();
+CALL Review_GetById(1);
+CALL Review_GetByPublic(1);
+/*CALL Review_Add(IN createD DATE, IN commentary VARCHAR(500), IN stars INT,
+                            IN idUser INT, IN idPublication INT)*/
+CALL Review_Add("2022-11-01", "Muy bueno, excelente servicio", 5, 4, 2);
+/*CALL Review_Delete(1);*/
 
 
 	

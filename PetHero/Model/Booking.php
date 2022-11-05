@@ -26,7 +26,7 @@ use \Model\User as User;
             $this->user = $user;
         }
 
-        public function __fromBD($idBook, $startD, $finishD, $bookState, $payCode, Publication $publication, User $user){
+        public function __fromDB($idBook, $startD, $finishD, $bookState, $payCode, Publication $publication, User $user){
             $this->idBook = $idBook;
             $this->startD = $startD;
             $this->finishD = $finishD;

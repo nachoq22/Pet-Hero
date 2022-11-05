@@ -63,8 +63,8 @@ use \Model\Review as Review;
 
                 $review->__fromDB($row["idReview"],$row["createD"]
                 ,$row["commentary"],$row["stars"]
-                ,$this->userDAO->Get($row["idUser"])
-                ,$this->publicDAO->Get($row["idPublic"]));
+                ,$this->publicDAO->Get($row["idPublic"])
+                ,$this->userDAO->Get($row["idUser"]));
                 array_push($reviewList,$review);
             }
             return $reviewList;
