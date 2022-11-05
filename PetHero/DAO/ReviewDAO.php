@@ -49,6 +49,26 @@ use \Model\Review as Review;
             }
             return $reviewList;
         }
+
+        public function GetAllByPublic($idPublic){
+            $reviewList = array();
+
+            $query = "CALL Review_GetByPublic(?)";
+            $parameters["idPublic"] = $idPublic;
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+
+            foreach($resultBD as $row){
+                $review = new Review();
+
+                $review->__fromDB($row["idReview"],$row["createD"]
+                ,$row["commentary"],$row["stars"]
+                ,$this->userDAO->Get($row["idUser"])
+                ,$this->publicDAO->Get($row["idPublic"]));
+                array_push($reviewList,$review);
+            }
+            return $reviewList;
+        }
         
         public function Get($idReview){
             $review = null;

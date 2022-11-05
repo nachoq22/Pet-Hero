@@ -46,6 +46,25 @@ use \Model\Checker as Checker;
             return $checker;
         }
 
+        public function GetByBook($idBook){
+            $query = "CALL Checker_GetByBooking(?)";
+            $parameters["idPublic"] = $idPublic;
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+
+                $checker = new Checker();
+                $checker->__fromDB($row["idChecker"],$row["emisionD"]
+                ,$row["closeD"],$row["finalPrice"]
+                ,$this->bookDAO->Get($row["idBook"]));
+            return $checker;
+        }
+
+        private $idChecker;
+        private $emisionD;
+        private $closeD;
+        private $finalPrice;
+        private Booking $booking;
+
         public function GetAll(){
             $checkerList = array();    
 

@@ -6,6 +6,7 @@ namespace DAO;
     interface IReviewDAO{
         public function Add(Review $review);
         public function Get($idReview);
+        public function GetAllByPublic($idPublic);
         public function GetAll();
         public function Delete($idReview);
     }

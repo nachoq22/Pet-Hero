@@ -473,24 +473,29 @@ $$
 /*********************************PROCEDURES PUBLICATION*******************************************/
 
 DELIMITER $$
-
 CREATE PROCEDURE Publication_GetAll()
 BEGIN
     SELECT *
     FROM Publication;
 END;
-
 $$
 
 DELIMITER $$ 
-
 CREATE PROCEDURE Publication_GetById(IN idPublication INT)
 BEGIN
     SELECT * 
     FROM Publication
     WHERE (Publication.idPublic = idPublication);
 END;
+$$
 
+DELIMITER $$
+CREATE PROCEDURE Publication_GetByUser(IN idUser INT)
+BEGIN
+    SELECT * 
+    FROM publication
+    WHERE (publication.idUser = idUser);
+END;
 $$
 
 DELIMITER $$
@@ -507,7 +512,7 @@ END;
 $$ 
 
 DELIMITER $$
-CREATE PROCEDURE Publication_Delete(IN idPublication INT)
+CREATE PROCEDURE Publication_Delete(IN idPublic INT)
 BEGIN
     DELETE 
     FROM Publication
@@ -519,41 +524,41 @@ $$
 
 DELIMITER $$
 
-CREATE PROCEDURE PublicIMG_GetAll()
+CREATE PROCEDURE ImgPublic_GetAll()
 BEGIN
     SELECT *
-    FROM PublicIMG;
+    FROM ImgPublic;
 END;
 
 $$
 
 DELIMITER $$ 
 
-CREATE PROCEDURE PublicIMG_GetById(IN idPublicIMG INT)
+CREATE PROCEDURE ImgPublic_GetById(IN idImg INT)
 BEGIN
     SELECT * 
-    FROM PublicIMG
-    WHERE (PublicIMG.idPublicIMG = idPublicIMG);
+    FROM ImgPublic
+    WHERE (ImgPublic.idImg = idImg);
 END;
 
 $$
 
 DELIMITER $$
-CREATE PROCEDURE PublicIMG_Add(IN url varchar(250), IN idPublication INT)
+CREATE PROCEDURE ImgPublic_Add(IN uri varchar(250), IN idPublic INT)
 BEGIN
-    INSERT INTO PublicIMG
-        (PublicIMG.url,PublicIMG.idPublication)
+    INSERT INTO ImgPublic
+        (ImgPublic.uri,ImgPublic.idPublic)
     VALUES
-        (url,idPublication);
+        (uri,idPublic);
 END;
 $$ 
 
 DELIMITER $$
-CREATE PROCEDURE PublicIMG_Delete(IN idPublication INT)
+CREATE PROCEDURE ImgPublic_Delete(IN idImg INT)
 BEGIN
     DELETE 
-    FROM Publication
-    WHERE (Publication.idPublication = idPublication);
+    FROM ImgPublic
+    WHERE (ImgPublic.idImg = idImg);
 END;
 $$
 
@@ -570,31 +575,41 @@ END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE Booking_GetById(IN idBooking INT)
+CREATE PROCEDURE Booking_GetById(IN idBook INT)
 BEGIN
     SELECT * 
     FROM Booking
-    WHERE (Booking.idBooking = idBooking);
+    WHERE (Booking.idBook = idBook);
 END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE Booking_Add(IN openDate DATE, IN closeDate DATE, IN payState VARCHAR(25), IN payCode VARCHAR(10),
-                         IN idPublication INT, IN idUser INT)
+CREATE PROCEDURE Booking_GetByUser(IN idUser INT)
+BEGIN
+    SELECT * 
+    FROM booking
+    WHERE (booking.idUser = idUser);
+END;
+$$
+
+
+DELIMITER $$
+CREATE PROCEDURE Booking_Add(IN startD DATE, IN finishD DATE, IN bookState VARCHAR(25), IN payCode VARCHAR(10),
+                         IN idPublic INT, IN idUser INT)
 BEGIN
     INSERT INTO Booking
-        (Booking.openDate, Booking.closeDate, Booking.payState, Booking.payCode, Booking.idPublication, Booking.idUser)
+        (Booking.startD, Booking.finishD, Booking.bookState, Booking.payCode, Booking.idPublic, Booking.idUser)
     VALUES
-        (openDate, closeDate, payState, payCode, idPublication, idUser);
+        (startD, finishD, bookState, payCode, idPublic, idUser);
 END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE Booking_Delete(IN idBooking INT)
+CREATE PROCEDURE Booking_Delete(IN idBook INT)
 BEGIN
     DELETE 
     FROM Booking
-    WHERE (Booking.idBooking = idBooking);
+    WHERE (Booking.idBook = idBook);
 END;
 $$
 
@@ -610,30 +625,30 @@ END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE BookingPet_GetById(IN idBooking INT)
+CREATE PROCEDURE BookingPet_GetById(IN idBP INT)
 BEGIN
     SELECT * 
     FROM BookingPet
-    WHERE (BookingPet.idBookingPet = idBookingPet);
+    WHERE (BookingPet.idBP = idBP);
 END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE BookingPet_Add(IN idBooking INT, IN idPet INT)
+CREATE PROCEDURE BookingPet_Add(IN idBook INT, IN idPet INT)
 BEGIN
     INSERT INTO BookingPet
-        (BookingPet.idBooking, BookingPet.idPet)
+        (BookingPet.idBook, BookingPet.idPet)
     VALUES
-        (idBooking, idPet);
+        (idBook, idPet);
 END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE BookingPet_Delete(IN idBookingPet INT)
+CREATE PROCEDURE BookingPet_Delete(IN idBP INT)
 BEGIN
     DELETE 
     FROM BookingPet
-    WHERE (BookingPet.idBookingPet = idBookingPet);
+    WHERE (BookingPet.idBP = idBP);
 END;
 $$
 
@@ -657,21 +672,30 @@ END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE Checker_Add(IN idBooking INT, IN idPet INT)
+CREATE PROCEDURE Checker_GetByBooking(IN idBook INT)
 BEGIN
-    INSERT INTO BookingPet
-        (Checker.idBooking, Checker.idPet)
-    VALUES
-        (idBooking, idPet);
+    SELECT * 
+    FROM Checker
+    WHERE (Checker.idBook = idBook);
 END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE Checker_Delete(IN Checker INT)
+CREATE PROCEDURE Checker_Add(IN emisionD DATE, IN closeD DATE, IN finalPrice INT, IN idBook INT)
+BEGIN
+    INSERT INTO Checker
+        (Checker.emisionD, Checker.closeD, Checker.finalPrice, Checker.idBook)
+    VALUES
+        (emisionD, closeD, finalPrice, idBook);
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE Checker_Delete(IN idChecker INT)
 BEGIN
     DELETE 
     FROM Checker
-    WHERE (Checker.idBookingPet = idBookingPet);
+    WHERE (Checker.idChecker = idChecker);
 END;
 $$
 
@@ -694,13 +718,22 @@ END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE Review_Add(IN dateR DATE, IN commentary VARCHAR(500), IN stars INT,
-                            IN idUser INT, IN idPublication INT)
+CREATE PROCEDURE Review_GetByPublic(IN idPublic INT)
+BEGIN
+    SELECT * 
+    FROM Review
+    WHERE (Review.idPublic = idPublic);
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE Review_Add(IN createD DATE, IN commentary VARCHAR(500), IN stars INT,
+                            IN idUser INT, IN idPublic INT)
 BEGIN
     INSERT INTO Review
-        (Review.dateR, Review.commentary, Review.stars, Review.idUser,Review.idPublication)
+        (Review.createD, Review.commentary, Review.stars, Review.idUser,Review.idPublic)
     VALUES
-        (dateR, commentary, stars, idUser, idPublication);
+        (createD, commentary, stars, idUser, idPublic);
 END;
 $$
 
@@ -716,16 +749,56 @@ $$
 
 
 /*********************************TEST PROCEDURES*******************************************/
+/*********************************TEST REVIEW*******************************************/
+CALL Review_GetAll();
+CALL Review_GetById(1);
+CALL Review_GetByPublic(1);
+/*CALL Review_Add(IN createD DATE, IN commentary VARCHAR(500), IN stars INT,
+                            IN idUser INT, IN idPublication INT)*/
+CALL Review_Add("2022-11-01", "Muy bueno, excelente servicio", 5, 4, 4);
+/*CALL Review_Delete(1);*/
+/*********************************TEST CHECKER*******************************************/
+CALL Checker_GetAll();
+CALL Checker_GetById(1);
+CALL Checker_GetByBooking(IN idBook INT)
+/*CALL Checker_AddChecker_Add(IN emisionD DATE, IN closeD DATE, IN finalPrice INT, IN idBook INT);*/
+CALL Checker_Add("2022-11-05", "2022-12-05", 2000, 1);
+/*CALL Checker_Delete(1);*/
+
+/*********************************TEST BOOKING PET*******************************************/
+CALL BookingPet_GetAll();
+CALL BookingPet_GetById(1);
+/*CALL BookingPet_Add(IN idBooking INT, IN idPet INT);*/
+CALL BookingPet_Add(1,1);
+/*CALL BookingPet_Delete(1);*/
+
+/*********************************TEST BOOKING*******************************************/
+CALL Booking_GetAll();
+CALL Booking_GetById(1);
+CALL Booking_GetByUser(4);
+/*CALL Booking_Add(IN openDate DATE, IN closeDate DATE, IN payState VARCHAR(25), IN payCode VARCHAR(10),
+                         IN idPublication INT, IN idUser INT)*/
+CALL Booking_Add("2022-11-01","2022-11-15","Pagado","123B45", 1, 1);
+
+/*CALL Booking_Delete(2);*/
 
 
 /*********************************TEST PUBLICATION*******************************************/
 
 CALL Publication_GetAll();
 CALL Publication_GetById(1);
+CALL Publication_GetByUser(1);
 /*CALL Publication_Add(openD,closeD,title,description,popularity,remuneration,idUser);*/
 CALL Publication_Add("2022-10-30","2022-11-8", "El mejor cuidador de toda Mar Del Plata","Soy un cuidador 
-de perros de 24 años que le gusta salir a correr todos los dias, por lo que su perro estará bien ejercitado", "5","4000","2");
-CALL Publication_Delete(2);
+de perros de 24 años que le gusta salir a correr todos los dias, por lo que su perro estará bien ejercitado", 5,"4000",2);
+/*CALL Publication_Delete(2);*/
+
+/*********************************TEST IMAGES*******************************************/
+CALL ImgPublic_GetAll();
+CALL ImgPublic_GetById(1);
+/*CALL ImgPublic_Add(IN url varchar(250), IN idPublication INT)*/
+CALL ImgPublic_Add("www.holaSoyUnaURL.com", 1);
+/*CALL ImgPublic_Delete(1);*/
 
 /*********************************TEST LOCATION*******************************************/
 CALL Location_GetAll();
