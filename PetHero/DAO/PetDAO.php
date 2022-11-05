@@ -112,7 +112,6 @@ use \Model\Pet as Pet;
                 ,$this->typeDAO->Get($row["idType"])
                 ,$this->sizeDAO->Get($row["idSize"])
                 ,$this->userDAO->Get($row["idUser"]));
-
             }
             return $pet;
         }
