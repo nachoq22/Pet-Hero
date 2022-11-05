@@ -40,6 +40,12 @@ use \Model\Publication as Publication;
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
 
+        public function NewPublication(Publication $public){
+            $user = $this->userDAO->GetByUsernameisKeeper($public->getUser()->getUsername());
+            $public->setUser($user);
+            $this->Add($public);
+        }
+
         public function Get($idPublic){
             $public = null;
             $query = "CALL Publication_GetById(?)";

@@ -7,6 +7,7 @@ use \DAO\SizeDAO as SizeDAO;
 use \DAO\PetTypeDAO as PetTypeDAO;
 use \DAO\UserDAO as UserDAO;
 use \DAO\PetDAO as PetDAO;
+use \DAO\PublicationDAO as PublicationDAO; 
 
     class HomeController{
         private $locationDAO;
@@ -14,6 +15,7 @@ use \DAO\PetDAO as PetDAO;
         private $typeDAO;
         private $userDAO;
         private $petDAO;
+        private $publicDAO;
 
         public function __construct(){
             $this->locationDAO = new LocationDAO();
@@ -21,15 +23,20 @@ use \DAO\PetDAO as PetDAO;
             $this->typeDAO = new PetTypeDAO();
             $this->userDAO = new UserDAO();
             $this->petDAO = new PetDAO();
+            $this->publicDAO = new PublicationDAO();
         }
 
         public function Index(){
+            /*
             $locationList=$this->locationDAO->GetAll();
             $sizeList=$this->sizeDAO->GetAll();
             $typeList=$this->typeDAO->GetAll();
             $userList =$this->userDAO->DefGetAll();
+            */
+
             //$userIs=$this->userDAO->Get(2);
             //require_once(VIEWS_PATH."PetList.php");
+            $publicList = $this->publicDAO->GetAll();
             require_once(VIEWS_PATH."Home.php");
         }
 
