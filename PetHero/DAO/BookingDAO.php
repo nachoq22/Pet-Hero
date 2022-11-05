@@ -55,6 +55,21 @@ use \Model\Booking as Booking;
 
         }
 
+        public function GetByUser($idUser){
+            $query = "CALL Booking_GetByUser(?);";
+            $parameters["idUser"] = $idUser;
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+
+            $book = new Booking();
+            $book->__fromDB($row["idBook"],$row["startD"]
+            ,$row["finishD"],$row["bookState"]
+            ,$row["payCode"]
+            ,$this->typeDAO->Get($row["idPublic"])
+            ,$this->sizeDAO->Get($row["idUser"]));
+            return $book;
+        }
+
         public function Get($id){
             $booking = null;
             $query = "CALL Booking_GetById(?)";

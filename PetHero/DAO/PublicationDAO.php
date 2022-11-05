@@ -59,6 +59,20 @@ use \Model\Publication as Publication;
             return $public;
         }
 
+        public function GetByUser($idUser){
+            $query = "CALL Publication_GetByUser(?)";
+            $parameters["idUser"] = $idUser;
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+
+            $publication = new Publication();
+            $book->__fromDB($row["idPublic"],$row["openD"]
+            ,$row["closeD"],$row["title"]
+            ,$row["description"],$row["popularity"],$row["remuneration"]
+            ,$this->sizeDAO->Get($row["idUser"]));
+            return $public;
+        }
+
         public function GetAll(){
             $publicList = array();    
 

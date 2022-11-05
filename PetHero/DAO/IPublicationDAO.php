@@ -7,6 +7,7 @@ use \Model\Publication as Publication;
         public function Add(Publication $public);
         public function GetAll();
         public function Get($idPublic);
+        public function GetByUser($idUser);
         public function Delete($idPublic);
     }
 ?>
