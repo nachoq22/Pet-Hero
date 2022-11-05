@@ -18,6 +18,104 @@
         </div>
     </div>
 
+
+
+
+
+    <div class="container px-4 py-5" id="custom-cards">
+    <h2 class="pb-2 border-bottom">Custom cards</h2>
+    <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
+      <div class="col">   
+
+        <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" 
+              style=" background-image: url('https://m.media-amazon.com/images/I/81FbYjj+PmL._CR204,0,1224,1224_UX256.jpg');
+                      background-size: cover;
+                      background-repeat: no-repeat;
+                      background-position: center center;
+                      width: 100%;">
+
+          <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+            <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Viviendo lejos de la multitud, encuentra paz para tu mascota </h3>
+            <ul class="d-flex list-unstyled mt-auto">
+              <li class="me">
+                <img src="https://pbs.twimg.com/media/E0e2SE4XsAgxVdm.jpg" alt="Bootstrap" width="32" height="32" class="rounded-circle border border-white">
+              </li>
+              <li class="d-flex align-items-center me-3">
+                <i class="bi bi-map me-2" width="1em" height="1em"></i>
+                <small>Earth</small>
+              </li>
+            </ul>
+
+            <ul class="d-flex list-unstyled mt-auto">
+              <li class="d-flex align-items-center me-3">
+                <i class="bi bi-calendar-date me-2" width="1em" height="1em"></i>
+                <small>12-10-2022</small>
+              </li>
+              <li class="d-flex align-items-center">
+                <i class="bi bi-calendar-date me-2" width="1em" height="1em"></i>
+                <small>12-10-2022</small>
+              </li>
+              
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="col">
+
+        <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('unsplash-photo-2.jpg');">
+          <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+            <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Much longer title that wraps to multiple lines</h3>
+            <ul class="d-flex list-unstyled mt-auto">
+              <li class="me-auto">
+                <img src="https://github.com/twbs.png" alt="Bootstrap" width="32" height="32" class="rounded-circle border border-white">
+              </li>
+              <li class="d-flex align-items-center me-3">
+                <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#geo-fill"></use></svg>
+                <small>Pakistan</small>
+              </li>
+              <li class="d-flex align-items-center">
+                <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#calendar3"></use></svg>
+                <small>4d</small>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="col">
+
+        <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('unsplash-photo-3.jpg');">
+          <div class="d-flex flex-column h-100 p-5 pb-3 text-shadow-1">
+            <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Another longer title belongs here</h3>
+            <ul class="d-flex list-unstyled mt-auto">
+              <li class="me-auto">
+                <img src="https://github.com/twbs.png" alt="Bootstrap" width="32" height="32" class="rounded-circle border border-white">
+              </li>
+              <li class="d-flex align-items-center me-3">
+                <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#geo-fill"></use></svg>
+                <small>California</small>
+              </li>
+              <li class="d-flex align-items-center">
+                <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#calendar3"></use></svg>
+                <small>5d</small>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+
+
+
+
+
     <div class="row">
         <div class="col-2">
             <div id="list-example" class="list-group">
