@@ -20,7 +20,7 @@ use \Model\Review as Review;
             $this->publicDAO = new PublicationDAO();
         }
 
-        public function Add(Review $review){
+        private function Add(Review $review){
             $query = "CALL Review_Add(?,?,?,?,?)";
             $parameters["createD"] = $review->getCreateD();
             $parameters["commentary"] = $review->getCommentary();
@@ -30,6 +30,14 @@ use \Model\Review as Review;
 
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
+        }
+
+        public function NewReview(Review $review){
+                $public = $this->publicDAO->Get($review->getPublication()->getId());
+            $review->setPublication($public);
+                $user = $this->userDAO->Get($review->getUser()->getId());
+            $review->setUser($user);
+            $this->Add($review);
         }
 
         public function GetAll(){
