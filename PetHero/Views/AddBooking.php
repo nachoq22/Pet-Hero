@@ -1,5 +1,5 @@
 <body>
-<form action="<?php echo FRONT_ROOT."/Reservation/Add" ?>" method="post" enctype="multipart/form-data" class="was-validated">
+<form action="<?php echo FRONT_ROOT."/Booking/Add" ?>" method="post" enctype="multipart/form-data" class="was-validated">
     <div class="row g-3">
 
         <div class="col-12">

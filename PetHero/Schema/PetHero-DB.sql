@@ -172,10 +172,10 @@ INSERT INTO Pet VALUES (0,"Willow","Suricatta",CONCAT("..\\Views\\Img\\IMGPet\\P
 CREATE TABLE IF NOT EXISTS Publication(
 	idPublic INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
 	openD DATE NOT NULL,
-	closeD DATE NOT NULL CHECK (closeD > openD),
+	closeD DATE NOT NULL,
 	title VARCHAR(50) NOT NULL,
 	description VARCHAR(200) NOT NULL,
-	popularity DEC(2,1) NOT NULL CHECK (popularity >= 0 AND popularity <=5),
+	popularity DEC(2,1) CHECK (popularity >= 0 AND popularity <=5),
 	remuneration DEC(10,2) NOT NULL,
 		idUser INT NOT NULL,
 		CONSTRAINT fk_publicUser FOREIGN KEY(idUser)
@@ -210,7 +210,7 @@ INSERT INTO ImgPublic VALUES (0,"IMG/Public/30102022153604.jpg",1);
 CREATE TABLE IF NOT EXISTS Booking(
 	idBook INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
 	startD DATE NOT NULL,
-	finishD DATE NOT NULL CHECK (finishD > startD),
+	finishD DATE NOT NULL,
 	bookState VARCHAR(50) NOT NULL, /*CHECK(bookState = "Awaiting Reply")*/
 	payCode VARCHAR(14), /*HACER CHECK DE QUE TENGA 4 LETRAS Y DEMAS NUMS*/
 		idPublic INT NOT NULL,
@@ -243,7 +243,7 @@ CREATE TABLE IF NOT EXISTS BookingPet(
 CREATE TABLE IF NOT EXISTS Checker(
 	idChecker INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
 	emisionD DATE NOT NULL,
-	closeD DATE NOT NULL CHECK (closeD > emisionD),
+	closeD DATE NOT NULL,
 	finalPrice DEC(10,2) NOT NULL,
 		idBook INT NOT NULL,
 			CONSTRAINT fk_checkerBook FOREIGN KEY(idBook)

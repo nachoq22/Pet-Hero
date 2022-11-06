@@ -9,7 +9,6 @@ use \DAO\BookingDAO as BookingDAO;
 use \DAO\PetDAO as PetDAO;
 use \Model\BookingPet as BookingPet;
 use \Model\Booking as Booking;
-use \Model\Pet as Pet;
 
     class BookingPetDAO implements IBookingPetDAO{
         private $connection;
@@ -23,8 +22,8 @@ use \Model\Pet as Pet;
             $this->petDAO = new PetDAO();
         }
 
-
-        public function Add(BookingPet $bp){
+//CON ESTO SE GUARDAN LOS PETS CORRESPONDIENTES A UNA BOOKING
+        private function Add(BookingPet $bp){
             $query = "CALL BP_Add(?,?)";
             $parameters["idBook"] = $bp->getBooking()->getId();
             $parameters["idPet"] = $bp->getPet()->getId();
@@ -32,6 +31,24 @@ use \Model\Pet as Pet;
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
+
+        private function NewBP(BookingPet $bp){
+                $pet = $this->petDAO->Get($bp->getPet()->getId());
+            $bp->setPet($pet);
+            $this->Add($bp);
+        }
+
+        public function NewBooking(Booking $booking,$petList){
+            $booking = $this->bookDAO->AddRet($booking);
+            foreach($petList as $pet){
+                $bp = new BookingPet();
+                    $bp->setBooking($booking);
+                    $bp->getPet()->setId($pet);
+                $this->NewBP($bp);
+            }
+        }
+
+        
 
         public function Get($id){
             $bookingPet = null;

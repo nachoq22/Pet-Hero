@@ -5,11 +5,9 @@ use \DAO\Connection as Connection;
 use \DAO\QueryType as QueryType;
 
 use \DAO\IBookingDAO as IBookingDAO;
-use \DAO\BookingPetDAO as BookingPetDAO;
 use \DAO\PublicationDAO as PublicationDAO;
 use \DAO\UserDAO as UserDAO;
 use \Model\Booking as Booking;
-use \Model\BookingPet as BookingPet;
 
     class BookingDAO implements IBookingDAO{
         private $connection;
@@ -17,38 +15,38 @@ use \Model\BookingPet as BookingPet;
 
         private $publicDAO;
         private $userDAO;
-        private $bpDAO;
         
 //DAO INJECTION
         public function __construct(){
             $this->publicDAO = new PublicationDAO();
             $this->userDAO = new UserDAO();
-            //$this->bpDAO = new BookingPetDAO();
         }
 
 //CON TODO ESTO SE REGISTRA UN BOOKING
-        public function Add(Booking $booking){
+        private function Add(Booking $booking){
             $query = "CALL Booking_Add(?,?,?,?,?)";
-            $parameters["openDate"] = $booking->getStartD();
-            $parameters["closeDate"] = $booking->getFinishD();
+            $parameters["startD"] = $booking->getStartD();
+            $parameters["finishD"] = $booking->getFinishD();
             $parameters["bookState"] = $booking->getBookState();
             $parameters["idPublic"] = $booking->getPublication()->getid();
             $parameters["idUser"] = $booking->getUser()->getId();
 
+            $idNBook = 0;
+
             $this->connection = Connection::GetInstance();
-            $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
+            $idNBook = $this->connection->ExecuteLastId($query,$parameters,$idNBook,QueryType::StoredProcedure);
+        return $idNBook;    
         }
 
-        private function AddRet(Booking $booking){
+        public function AddRet(Booking $booking){
                 $public = $this->publicDAO->Get($booking->getPublication()->getId());
                 $user = $this->userDAO->DGetByUsername($booking->getUser()->getUsername());
             $booking->setPublication($public);
             $booking->setuser($user);
-            $this->Add($booking);
-            $booking = $this->GetByPublic($public->getid());
+            $idNBook = $this->Add($booking);
+            $booking = $this->Get($idNBook);
         return $booking;    
-        }
-
+        }      
 ///
 
         public function GetAll(){
@@ -86,21 +84,6 @@ use \Model\BookingPet as BookingPet;
             return $book;
         }
 
-        public function GetByPublic($idPublic){
-            $query = "CALL Booking_GetByPublic(?);";
-            $parameters["idPublic"] = $idPublic;
-            $this->connection = Connection::GetInstance();
-            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
-
-            $book = new Booking();
-            $book->__fromDB($resultBD["idBook"],$resultBD["startD"]
-                            ,$resultBD["finishD"],$resultBD["bookState"]
-                            ,$resultBD["payCode"]
-                            ,$this->publicDAO->Get($resultBD["idPublic"])
-                            ,$this->userDAO->Get($resultBD["idUser"]));
-            return $book;
-        }
-
         public function Get($id){
             $booking = null;
             $query = "CALL Booking_GetById(?)";
@@ -111,11 +94,11 @@ use \Model\BookingPet as BookingPet;
             foreach($resultBD as $row){
                 $booking = new Booking();
 
-                $booking->__fromDB($row["idBooking"],$row["openDate"]
-                                  ,$row["closeDate"],$row["payState"],$row["payCode"]
+                $booking->__fromDBWithoutPC($row["idBook"],$row["startD"]
+                                  ,$row["finishD"],$row["bookState"]
                                   ,$this->publicDAO->Get($row["idPublic"])
-                                  ,$this->userDAO->Get($row["user"]));
-            }
+                                  ,$this->userDAO->Get($row["idUser"]));
+                }
             return $booking;
         }
 

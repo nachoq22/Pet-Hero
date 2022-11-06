@@ -56,7 +56,7 @@ use \Model\User as User;
         public function getPopularity() {
             return $this->popularity;
         }
-        public function getRemuneration() {
+        public function getRemuneration():float{
             return $this->remuneration;
         }
 

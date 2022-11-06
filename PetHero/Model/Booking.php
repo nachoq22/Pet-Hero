@@ -20,17 +20,26 @@ use \Model\User as User;
         public function __fromRequest($startD, $finishD, $bookState, Publication $publication, User $user){
             $this->startD = $startD;
             $this->finishD = $finishD;
-            $this->bookState = $bookState; 
+            $this->bookState = $bookState;
             $this->publication = $publication;
             $this->user = $user;
         }
 
-        public function __fromBD($idBook, $startD, $finishD, $bookState, $payCode, Publication $publication, User $user){
+        public function __fromDB($idBook, $startD, $finishD, $bookState, $payCode, Publication $publication, User $user){
             $this->idBook = $idBook;
             $this->startD = $startD;
             $this->finishD = $finishD;
             $this->bookState = $bookState;
             $this->payCode = $payCode;
+            $this->publication = $publication;
+            $this->user = $user;
+        }
+
+        public function __fromDBWithoutPC($idBook, $startD, $finishD, $bookState, Publication $publication, User $user){
+            $this->idBook = $idBook;
+            $this->startD = $startD;
+            $this->finishD = $finishD;
+            $this->bookState = $bookState;
             $this->publication = $publication;
             $this->user = $user;
         }
