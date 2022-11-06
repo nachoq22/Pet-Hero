@@ -1,10 +1,10 @@
 <?php
 namespace DAO;
 
-use \Model\BookingPet as BookingPet;
+use \Model\Booking as Booking;
 
     interface IBookingPetDAO{
-        public function Add(BookingPet $bp);
+        public function NewBooking(Booking $booking,$petList);
         public function Get($id);
         public function GetAll();
         public function Delete($idBP);

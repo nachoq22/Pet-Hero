@@ -56,7 +56,6 @@ use \DAO\PublicationDAO as PublicationDAO;
         }
 
         public function ViewPetList(){
-
             require_once(VIEWS_PATH."PetList.php");
         }
 

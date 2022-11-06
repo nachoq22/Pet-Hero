@@ -175,7 +175,7 @@ CREATE TABLE IF NOT EXISTS Publication(
 	closeD DATE NOT NULL,
 	title VARCHAR(50) NOT NULL,
 	description VARCHAR(200) NOT NULL,
-	popularity DEC(2,1) NOT NULL CHECK (popularity >= 0 AND popularity <=5),
+	popularity DEC(2,1) CHECK (popularity >= 0 AND popularity <=5),
 	remuneration DEC(10,2) NOT NULL,
 		idUser INT NOT NULL,
 		CONSTRAINT fk_publicUser FOREIGN KEY(idUser)

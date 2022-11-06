@@ -75,18 +75,21 @@ use \Exception as Exception;
             }        	    	
         }
 
-        public function ExecuteLastQuery($query, $parameters = array(), $queryType = QueryType::Query){            
+        public function ExecuteLastId($query, $parameters = array(), $returnLastId = false, $queryType = QueryType::Query){            
             try{
                 $this->Prepare($query);
                 
                 $this->BindParameters($parameters, $queryType);
 
                 $this->pdoStatement->execute();
-
-                return $this->pdo->lastInsertId();
-            }
-            catch(Exception $e){
-                throw $e;
+                
+                if($returnLastId){
+                    return $this->pdo->lastInsertId();
+                }else{
+                    return $this->pdoStatement->rowCount();
+                }
+            }catch(Exception $ex){
+                throw $ex;
             }        	    	
         }
     }

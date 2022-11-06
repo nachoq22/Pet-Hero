@@ -22,18 +22,32 @@ use \Model\Booking as Booking;
             $this->userDAO = new UserDAO();
         }
 
-        public function Add(Booking $booking){
-            $query = "CALL Booking_Add(?,?,?,?,?,?)";
-            $parameters["openDate"] = $booking->getStartD();
-            $parameters["closeDate"] = $booking->getFinishD();
+//CON TODO ESTO SE REGISTRA UN BOOKING
+        private function Add(Booking $booking){
+            $query = "CALL Booking_Add(?,?,?,?,?)";
+            $parameters["startD"] = $booking->getStartD();
+            $parameters["finishD"] = $booking->getFinishD();
             $parameters["bookState"] = $booking->getBookState();
-            $parameters["payCode"] = $booking->getPayCode();
             $parameters["idPublic"] = $booking->getPublication()->getid();
             $parameters["idUser"] = $booking->getUser()->getId();
 
+            $idNBook = 0;
+
             $this->connection = Connection::GetInstance();
-            $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
+            $idNBook = $this->connection->ExecuteLastId($query,$parameters,$idNBook,QueryType::StoredProcedure);
+        return $idNBook;    
         }
+
+        public function AddRet(Booking $booking){
+                $public = $this->publicDAO->Get($booking->getPublication()->getId());
+                $user = $this->userDAO->DGetByUsername($booking->getUser()->getUsername());
+            $booking->setPublication($public);
+            $booking->setuser($user);
+            $idNBook = $this->Add($booking);
+            $booking = $this->Get($idNBook);
+        return $booking;    
+        }      
+///
 
         public function GetAll(){
             $bookingList = array();    
@@ -80,11 +94,11 @@ use \Model\Booking as Booking;
             foreach($resultBD as $row){
                 $booking = new Booking();
 
-                $booking->__fromDB($row["idBooking"],$row["openDate"]
-                                  ,$row["closeDate"],$row["payState"],$row["payCode"]
+                $booking->__fromDBWithoutPC($row["idBook"],$row["startD"]
+                                  ,$row["finishD"],$row["bookState"]
                                   ,$this->publicDAO->Get($row["idPublic"])
-                                  ,$this->userDAO->Get($row["user"]));
-            }
+                                  ,$this->userDAO->Get($row["idUser"]));
+                }
             return $booking;
         }
 

@@ -12,12 +12,12 @@ use \Model\User as User;
         }
 
         public function Add($title,$description,$openD,$closeD,$remuneration,$images){
+            ///FALTA PROCESAR IMAGENES
             $public = new Publication();
             $user = new User();
             $user->setUsername("marsexpress");
             $public->__fromRequest($openD, $closeD, $title, $description,0, $remuneration,$user);
             $this->publicDAO->NewPublication($public);
-
         }
     }
 ?>

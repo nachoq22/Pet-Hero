@@ -8,7 +8,10 @@ use \Model\Pet as Pet;
         private Booking $booking;
         private Pet $pet;
 
-        public function __construct(){}
+        public function __construct(){
+            $this->booking = new Booking();
+            $this->pet = new Pet();
+        }
         
         public function __fromRequest(Booking $booking, Pet $pet){
             $this->booking = $booking;

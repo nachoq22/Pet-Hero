@@ -27,7 +27,7 @@ use \Model\Publication as Publication;
         } 
 
         public function Add(Publication $public){
-            $query = "CALL publication_Add(?,?,?,?,?,?)";
+            $query = "CALL publication_Add(?,?,?,?,?,?,?)";
             $parameters["openD"] = $public->getOpenDate();
             $parameters["closeD"] = $public->getCloseDate();
             $parameters["title"] = $public->getTitle();
@@ -41,7 +41,7 @@ use \Model\Publication as Publication;
         }
 
         public function NewPublication(Publication $public){
-            $user = $this->userDAO->GetByUsernameisKeeper($public->getUser()->getUsername());
+            $user = $this->userDAO->DGetByUsername($public->getUser()->getUsername());
             $public->setUser($user);
             $this->Add($public);
         }
@@ -60,7 +60,7 @@ use \Model\Publication as Publication;
                                         ,$row["closeD"],$row["title"]
                                         ,$row["description"],$row["popularity"]
                                         ,$row["remuneration"]
-                                        ,$this->userDAO->Get($row["idUser"]));
+                                        ,$this->userDAO->DGet($row["idUser"]));
                 }
             return $public;
         }
@@ -76,7 +76,7 @@ use \Model\Publication as Publication;
             $public->__fromDB($resultBD["idPublic"],$resultBD["openD"]
             ,$resultBD["closeD"],$resultBD["title"]
             ,$resultBD["description"],$resultBD["popularity"],$resultBD["remuneration"]
-            ,$this->userDAO->Get($resultBD["idUser"]));
+            ,$this->userDAO->DGet($resultBD["idUser"]));
             return $public;
         }
 
@@ -93,8 +93,7 @@ use \Model\Publication as Publication;
                                         ,$row["closeD"],$row["title"]
                                         ,$row["description"],$row["popularity"]
                                         ,$row["remuneration"]
-                                        ,$this->userDAO->Get($row["idUser"]));
-
+                                        ,$this->userDAO->DGet($row["idUser"]));
                 array_push($publicList,$public);
             }
             return $publicList;

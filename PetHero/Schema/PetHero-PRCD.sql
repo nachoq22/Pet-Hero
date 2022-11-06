@@ -470,68 +470,6 @@ BEGIN
 END;
 $$
 
-/*********************************TEST LOCATION*******************************************/
-CALL Location_GetAll();
-/*CALL Location_GetById(ID);*/
-CALL Location_GetById(2);
-/*CALL Location_Add(adress,neighborhood,city,province,country);*/
-CALL Location_Add("Mi calle","Mi Barrio","Mar del plata","Buenos Aires","Argentina");
-/*CALL Location_Delete(ID);*/
-/*CALL Location_Delete(6);*/
-
-/*********************************TEST PERSONAL DATA*******************************************/
-CALL PersonalData_GetAll();
-CALL PersonalData_GetById(2);
-/*CALL PersonalData_Add(name,surname,sex,dni,idLocation);*/
-Call PersonalData_Add("Ramiro","Talangana","M","44886655",2);
-/*Call PersonalData_Delete(6);*/
-
-/*********************************TEST USER*******************************************/
-Call User_GetAll();
-Call User_GetById(2);
-Call User_GetByUsername("planetar");
-/*CALL User_Add(username,password,varResp);*/
-CALL User_Login("planetar","orylOSad");
-/*CALL User_Add(username,password,email,idData);*/
-Call User_Add("pablitoClavito","ClavitoCrack","pablitoElCrack@gmail.com");
-/*CALL User_Add(username,password,email);*/
-Call User_Register("Elcucarachin","Carlos1245","elcuca@gmail.com");
-/*Call User_Delete(6);*/
-
-/*********************************TEST USERROLE*******************************************/
-Call UR_GetAll();
-Call UR_GetById(2);
-/*CALL Owner_Add(idUser,idRole);*/
-/*Call URole_Add(6,2);*/
-Call UR_IsKeeper(3);
-Call UR_UserToKeeper(6);
-/*Call Owner_Delete(6);*/
-
-/*********************************TEST SIZE*******************************************/
-Call Size_GetAll();
-Call Size_GetById(2);
-/*CALL Size_Add(name);*/
-Call Size_Add("ExtraBig");
-/*Call Size_Delete(6);*/
-
-/*********************************TEST PETTYPE*******************************************/
-Call PetType_GetAll();
-Call PetType_GetById(2);
-/*CALL PetType_Add(name);*/
-Call PetType_Add("Cacatuos");
-/*Call PetType_Delete(6);*/
-
-/*********************************TEST PET*******************************************/
-Call Pet_GetAll();
-Call Pet_GetById(2);
-Call Pet_GetByUser(2);
-/*CALL Size_Add(name,breed,profileIMG,vaccinationPlanIMG,observation,idSize,idPetType,idUser);*/
-Call Pet_Add("Salchichon","Suricatta",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Salchichon",(NOW() + 0),".jpg")
-						,CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Salchichon",(NOW() + 0),".jpg")
-						,"Tiene 6 dedos",1,5,3);
-/*Call Pet_Delete(6);*/
-
-
 /*********************************PROCEDURES PUBLICATION*******************************************/
 
 DELIMITER $$
@@ -562,7 +500,7 @@ $$
 
 DELIMITER $$
 CREATE PROCEDURE Publication_Add(IN openD DATE, IN closeD DATE, IN title VARCHAR(50),
-                         IN description VARCHAR(1000), IN popularity VARCHAR(1), IN remuneration INT,
+                         IN description VARCHAR(1000), IN popularity DEC(2,1), IN remuneration DEC(10,2),
 	                     IN idUser INT)
 BEGIN
     INSERT INTO Publication
@@ -656,13 +594,13 @@ $$
 
 
 DELIMITER $$
-CREATE PROCEDURE Booking_Add(IN startD DATE, IN finishD DATE, IN bookState VARCHAR(25), IN payCode VARCHAR(10),
+CREATE PROCEDURE Booking_Add(IN startD DATE, IN finishD DATE, IN bookState VARCHAR(25),
                          IN idPublic INT, IN idUser INT)
 BEGIN
     INSERT INTO Booking
-        (Booking.startD, Booking.finishD, Booking.bookState, Booking.payCode, Booking.idPublic, Booking.idUser)
+        (Booking.startD, Booking.finishD, Booking.bookState, Booking.idPublic, Booking.idUser)
     VALUES
-        (startD, finishD, bookState, payCode, idPublic, idUser);
+        (startD, finishD, bookState, idPublic, idUser);
 END;
 $$
 
@@ -679,7 +617,7 @@ $$
 /*********************************PROCEDURES BOOKING PET*******************************************/
 
 DELIMITER $$
-CREATE PROCEDURE BookingPet_GetAll()
+CREATE PROCEDURE BP_GetAll()
 BEGIN
     SELECT * 
     FROM BookingPet;
@@ -687,7 +625,7 @@ END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE BookingPet_GetById(IN idBP INT)
+CREATE PROCEDURE BP_GetById(IN idBP INT)
 BEGIN
     SELECT * 
     FROM BookingPet
@@ -696,7 +634,7 @@ END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE BookingPet_Add(IN idBook INT, IN idPet INT)
+CREATE PROCEDURE BP_Add(IN idBook INT, IN idPet INT)
 BEGIN
     INSERT INTO BookingPet
         (BookingPet.idBook, BookingPet.idPet)
@@ -706,7 +644,7 @@ END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE BookingPet_Delete(IN idBP INT)
+CREATE PROCEDURE BP_Delete(IN idBP INT)
 BEGIN
     DELETE 
     FROM BookingPet
@@ -812,13 +750,74 @@ $$
 
 /*********************************TEST PROCEDURES*******************************************/
 
+/*********************************TEST LOCATION*******************************************/
+CALL Location_GetAll();
+/*CALL Location_GetById(ID);*/
+CALL Location_GetById(2);
+/*CALL Location_Add(adress,neighborhood,city,province,country);*/
+CALL Location_Add("Mi calle","Mi Barrio","Mar del plata","Buenos Aires","Argentina");
+/*CALL Location_Delete(ID);*/
+/*CALL Location_Delete(6);*/
+
+/*********************************TEST PERSONAL DATA*******************************************/
+CALL PersonalData_GetAll();
+CALL PersonalData_GetById(2);
+/*CALL PersonalData_Add(name,surname,sex,dni,idLocation);*/
+Call PersonalData_Add("Ramiro","Talangana","M","44886655",2);
+/*Call PersonalData_Delete(6);*/
+
+/*********************************TEST USER*******************************************/
+Call User_GetAll();
+Call User_GetById(2);
+Call User_GetByUsername("planetar");
+/*CALL User_Add(username,password,varResp);*/
+CALL User_Login("planetar","orylOSad");
+/*CALL User_Add(username,password,email,idData);*/
+Call User_Add("pablitoClavito","ClavitoCrack","pablitoElCrack@gmail.com");
+/*CALL User_Add(username,password,email);*/
+Call User_Register("Elcucarachin","Carlos1245","elcuca@gmail.com");
+/*Call User_Delete(6);*/
+
+/*********************************TEST USERROLE*******************************************/
+Call UR_GetAll();
+Call UR_GetById(2);
+/*CALL Owner_Add(idUser,idRole);*/
+/*Call URole_Add(6,2);*/
+Call UR_IsKeeper(3);
+Call UR_UserToKeeper(6);
+/*Call Owner_Delete(6);*/
+
+/*********************************TEST SIZE*******************************************/
+Call Size_GetAll();
+Call Size_GetById(2);
+/*CALL Size_Add(name);*/
+Call Size_Add("ExtraBig");
+/*Call Size_Delete(6);*/
+
+/*********************************TEST PETTYPE*******************************************/
+Call PetType_GetAll();
+Call PetType_GetById(2);
+/*CALL PetType_Add(name);*/
+Call PetType_Add("Cacatuos");
+/*Call PetType_Delete(6);*/
+
+/*********************************TEST PET*******************************************/
+Call Pet_GetAll();
+Call Pet_GetById(2);
+Call Pet_GetByUser(2);
+/*CALL Size_Add(name,breed,profileIMG,vaccinationPlanIMG,observation,idSize,idPetType,idUser);*/
+Call Pet_Add("Salchichon","Suricatta",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Salchichon",(NOW() + 0),".jpg")
+						,CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Salchichon",(NOW() + 0),".jpg")
+						,"Tiene 6 dedos",1,5,3);
+/*Call Pet_Delete(6);*/
+
 /*********************************TEST PUBLICATION*******************************************/
 CALL Publication_GetAll();
 CALL Publication_GetById(1);
 CALL Publication_GetByUser(1);
 /*CALL Publication_Add(openD,closeD,title,description,popularity,remuneration,idUser);*/
-CALL Publication_Add("2022-10-30","2022-11-8", "El mejor cuidador de toda Mar Del Plata","Soy un cuidador 
-de perros de 24 años que le gusta salir a correr todos los dias, por lo que su perro estará bien ejercitado", 5,"4000",2);
+CALL Publication_Add("2022-10-30","2022-11-08", "El mejor cuidador de toda Mar Del Plata","Soy un cuidador 
+de perros de 24 años que le gusta salir a correr todos los dias, por lo que su perro estará bien ejercitado", 5,4000,2);
 /*CALL Publication_Delete(2);*/
 
 /*********************************TEST IMAGES*******************************************/
@@ -834,15 +833,15 @@ CALL Booking_GetById(1);
 CALL Booking_GetByUser(4);
 /*CALL Booking_Add(IN openDate DATE, IN closeDate DATE, IN payState VARCHAR(25), IN payCode VARCHAR(10),
                          IN idPublication INT, IN idUser INT)*/
-CALL Booking_Add("2022-11-01","2022-11-15","Pagado","123B45", 1, 1);
+CALL Booking_Add("2022-11-01","2022-11-15","In Review",1, 1);
 
 /*CALL Booking_Delete(2);*/
 
 /*********************************TEST BOOKING PET*******************************************/
-CALL BookingPet_GetAll();
-CALL BookingPet_GetById(1);
+CALL BP_GetAll();
+CALL BP_GetById(1);
 /*CALL BookingPet_Add(IN idBooking INT, IN idPet INT);*/
-CALL BookingPet_Add(1,1);
+CALL BP_Add(1,1);
 /*CALL BookingPet_Delete(1);*/
 
 /*********************************TEST CHECKER*******************************************/

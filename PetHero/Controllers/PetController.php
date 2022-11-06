@@ -70,7 +70,7 @@
         public function GetPetsByReservation(){
             //$petList = $this->petDAO->GetAllByUser(1);
             $petList = $this->petDAO->GetAll();
-            require_once(VIEWS_PATH."ReqReservation.php");
+            require_once(VIEWS_PATH."AddBooking.php");
         }
     }
 ?>

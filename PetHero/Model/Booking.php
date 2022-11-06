@@ -17,11 +17,10 @@ use \Model\User as User;
         //CONSTRUCTORS
         public function __construct(){}
 
-        public function __fromRequest($startD, $finishD, $bookState, $payCode, Publication $publication, User $user){
+        public function __fromRequest($startD, $finishD, $bookState, Publication $publication, User $user){
             $this->startD = $startD;
             $this->finishD = $finishD;
             $this->bookState = $bookState;
-            $this->payCode = $payCode;
             $this->publication = $publication;
             $this->user = $user;
         }
@@ -32,6 +31,15 @@ use \Model\User as User;
             $this->finishD = $finishD;
             $this->bookState = $bookState;
             $this->payCode = $payCode;
+            $this->publication = $publication;
+            $this->user = $user;
+        }
+
+        public function __fromDBWithoutPC($idBook, $startD, $finishD, $bookState, Publication $publication, User $user){
+            $this->idBook = $idBook;
+            $this->startD = $startD;
+            $this->finishD = $finishD;
+            $this->bookState = $bookState;
             $this->publication = $publication;
             $this->user = $user;
         }
