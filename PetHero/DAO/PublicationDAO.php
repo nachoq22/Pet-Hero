@@ -94,6 +94,26 @@ use \Model\Publication as Publication;
 
         }
 
+        public function Search(){
+            $publicList = array();    
+
+            $query = "CALL Publication_Search()";
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,array(),QueryType::StoredProcedure);
+
+            foreach($resultBD as $row){
+                $public = new Publication();
+                $public->__fromDB($row["idPublic"],$row["openD"]
+                                        ,$row["closeD"],$row["title"]
+                                        ,$row["description"],$row["popularity"]
+                                        ,$row["remuneration"]
+                                        ,$this->userDAO->Get($row["idUser"]));
+
+                array_push($publicList,$public);
+            }
+            return $publicList;
+        }
+
         public function Delete($idPublic){
             $query = "CALL Publication_Delete(?)";
             $parameters["idPublic"] = $idPublic;

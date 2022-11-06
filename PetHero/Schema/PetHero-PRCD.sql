@@ -499,6 +499,15 @@ END;
 $$
 
 DELIMITER $$
+CREATE PROCEDURE Search(IN phrase VARCHAR(50))
+BEGIN
+     SELECT *
+     FROM publication
+     WHERE publication.title LIKE CONCAT('%',phrase,'%') or publication.description like CONCAT('%',phrase,'%');
+END;
+$$
+
+DELIMITER $$
 CREATE PROCEDURE Publication_Add(IN openD DATE, IN closeD DATE, IN title VARCHAR(50),
                          IN description VARCHAR(1000), IN popularity VARCHAR(1), IN remuneration INT,
 	                     IN idUser INT)
@@ -589,6 +598,15 @@ BEGIN
     SELECT * 
     FROM booking
     WHERE (booking.idUser = idUser);
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE Booking_GetByPublic(IN idPublic INT)
+BEGIN
+    SELECT * 
+    FROM booking
+    WHERE (booking.idPublic = idPublic);
 END;
 $$
 
@@ -760,7 +778,7 @@ CALL Review_Add("2022-11-01", "Muy bueno, excelente servicio", 5, 4, 4);
 /*********************************TEST CHECKER*******************************************/
 CALL Checker_GetAll();
 CALL Checker_GetById(1);
-CALL Checker_GetByBooking(IN idBook INT)
+CALL Checker_GetByBooking(1);
 /*CALL Checker_AddChecker_Add(IN emisionD DATE, IN closeD DATE, IN finalPrice INT, IN idBook INT);*/
 CALL Checker_Add("2022-11-05", "2022-12-05", 2000, 1);
 /*CALL Checker_Delete(1);*/
@@ -776,6 +794,7 @@ CALL BookingPet_Add(1,1);
 CALL Booking_GetAll();
 CALL Booking_GetById(1);
 CALL Booking_GetByUser(4);
+CALL Booking_GetByPublic(1);
 /*CALL Booking_Add(IN openDate DATE, IN closeDate DATE, IN payState VARCHAR(25), IN payCode VARCHAR(10),
                          IN idPublication INT, IN idUser INT)*/
 CALL Booking_Add("2022-11-01","2022-11-15","Pagado","123B45", 1, 1);
@@ -788,6 +807,8 @@ CALL Booking_Add("2022-11-01","2022-11-15","Pagado","123B45", 1, 1);
 CALL Publication_GetAll();
 CALL Publication_GetById(1);
 CALL Publication_GetByUser(1);
+
+CALL Search("24 años");
 /*CALL Publication_Add(openD,closeD,title,description,popularity,remuneration,idUser);*/
 CALL Publication_Add("2022-10-30","2022-11-8", "El mejor cuidador de toda Mar Del Plata","Soy un cuidador 
 de perros de 24 años que le gusta salir a correr todos los dias, por lo que su perro estará bien ejercitado", 5,"4000",2);
