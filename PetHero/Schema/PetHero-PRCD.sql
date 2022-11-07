@@ -533,14 +533,21 @@ END;
 $$
 
 DELIMITER $$ 
-
 CREATE PROCEDURE ImgPublic_GetById(IN idImg INT)
 BEGIN
     SELECT * 
     FROM ImgPublic
     WHERE (ImgPublic.idImg = idImg);
 END;
+$$
 
+DELIMITER $$ 
+CREATE PROCEDURE ImgPublic_GetByPublic(IN idPublic INT)
+BEGIN
+    SELECT * 
+    FROM ImgPublic
+    WHERE (ImgPublic.idPublic = idPublic);
+END;
 $$
 
 DELIMITER $$

@@ -67,6 +67,41 @@ use \Model\Booking as Booking;
             return $bookingPet;
         }
 
+        public function GetPetsByBook($idBook){
+            $petList = array();
+            $query = "CALL BP_GetByBook(?)";
+            $parameters["idBook"] = $idBook;
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+            foreach($resultBD as $row){
+                $bp = new bookingPet();
+                $bp->__fromDB($row["idBP"],$this->bookDAO->Get($row["idBook"]),$this->petDAO->Get($row["idPet"]));
+
+            array_push($petList,$bp->getPet());
+            }
+        return $petList;
+        }
+
+///ACA RECUPERO PETS SEGUN LA LISTA DE BOOKINGS A FILTRAR
+        public function GetAllPetsBooks($username){
+                $booklist = $this->GetBookByUsername($username);
+            $psBsList = array();
+            foreach($booklist as $booking){
+                $petlist = array();
+                $petlist = $this->GetPetsByBook($booking->getid());
+
+                $psBsList = array_merge($psBsList,$petlist);
+            }
+        return $psBsList;    
+        }
+
+///ACA RECUPERO BOOKINGS
+        public function GetBookByUsername($username){
+           $bookList = $this->bookDAO->GetByUsername($username);
+        return $bookList;
+        }
+
+        
 //PARA FUNCIONAMIENTO DE CHECKER        
         private function GetFPPet(Booking $book){
             $petPay = 0;

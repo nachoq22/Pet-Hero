@@ -90,10 +90,16 @@ use \Model\Pet as Pet;
                 ,$row["vaccinationPlanIMG"],$row["observation"]
                 ,$this->typeDAO->Get($row["idType"])
                 ,$this->sizeDAO->Get($row["idSize"])
-                ,$this->userDAO->Get($row["idUser"]));
+                ,$this->userDAO->DGet($row["idUser"]));
                 array_push($petList,$pet);
             }
             return $petList;
+        }
+
+        public function GetAllByUsername($username){
+            $user = $this->userDAO->DGetByUsername($username);
+            $petList = $this->GetAllByUser($user->getId());
+        return $petList;
         }
 
         public function Get($id){

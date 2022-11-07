@@ -86,30 +86,59 @@ use \Model\Booking as Booking;
 
             foreach($resultBD as $row){
                 $booking = new Booking();
-                $booking->__fromDB($row["idBook"],$row["openDate"]
-                                  ,$row["closeDate"],$row["payState"],$row["payCode"]
+
+                $booking->__fromDBWithoutPC($row["idBook"],$row["startD"]
+                                  ,$row["finishD"],$row["bookState"]
                                   ,$this->publicDAO->Get($row["idPublic"])
-                                  ,$this->userDAO->Get($row["user"]));
+                                  ,$this->userDAO->Get($row["idUser"]));
 
                 array_push($bookingList,$booking);
             }
             return $bookingList;
-
         }
 
-        public function GetByUser($idUser){
+        public function GetAllByUser($idUser){
+            $bookList = array();
             $query = "CALL Booking_GetByUser(?);";
             $parameters["idUser"] = $idUser;
             $this->connection = Connection::GetInstance();
             $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
 
-            $book = new Booking();
-            $book->__fromDB($resultBD["idBook"],$resultBD["startD"]
-            ,$resultBD["finishD"],$resultBD["bookState"]
-            ,$resultBD["payCode"]
-            ,$this->publicDAO->Get($resultBD["idPublic"])
-            ,$this->userDAO->Get($resultBD["idUser"]));
-            return $book;
+            foreach($resultBD as $row){
+                $booking = new Booking();
+
+                $booking->__fromDBWithoutPC($row["idBook"],$row["startD"]
+                                  ,$row["finishD"],$row["bookState"]
+                                  ,$this->publicDAO->Get($row["idPublic"])
+                                  ,$this->userDAO->Get($row["idUser"]));
+
+                array_push($bookList,$booking);
+            }
+            return $bookList;
+        }
+
+        public function GetByUser($idUser){
+            $booking = NULL;
+            $query = "CALL Booking_GetByUser(?);";
+            $parameters["idUser"] = $idUser;
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+
+            foreach($resultBD as $row){
+                $booking = new Booking();
+
+                $booking->__fromDBWithoutPC($row["idBook"],$row["startD"]
+                                  ,$row["finishD"],$row["bookState"]
+                                  ,$this->publicDAO->Get($row["idPublic"])
+                                  ,$this->userDAO->Get($row["idUser"]));
+            }
+            return $booking;
+        }
+
+        public function GetByUsername($username){
+            $user = $this->userDAO->DGetByUsername($username);
+            $bookList = $this->GetAllByUser($user->getId());
+        return $bookList;
         }
 
         public function Get($id){

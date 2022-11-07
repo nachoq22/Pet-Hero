@@ -20,7 +20,7 @@
 
         public function Add(ImgPublic $imgPublic){
             $query = "CALL ImgPublic_Add(?,?)";
-            $parameters["url"] = $imgPublic->getUrl();
+            $parameters["uri"] = $imgPublic->getUrl();
             $parameters["idPublic"] = $imgPublic->getPublication()->getId();
 
             $this->connection = Connection::GetInstance();
@@ -37,10 +37,53 @@
             foreach($resultBD as $row){
                 $imgPublic = new ImgPublic();
 
-                $imgPublic->__fromDB($row["idImg"],$row["url"],$this->publicDAO->Get($row["idPublic"]));
+                $imgPublic->__fromDB($row["idImg"],$row["uri"],$this->publicDAO->Get($row["idPublic"]));
             }
             return $publicIMG;
         }
+
+        public function GetByPublic($idPublic){
+            $publicIMG = null;
+            $query = "CALL ImgPublic_GetByPublic(?)";
+            $parameters["idPublic"] = $idPublic;
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+
+            foreach($resultBD as $row){
+                $imgPublic = new ImgPublic();
+
+                $imgPublic->__fromDB($row["idImg"],$row["uri"],$this->publicDAO->Get($row["idPublic"]));
+            }
+            return $publicIMG;
+        }
+
+        public function GetAllByPublic($idPublic){
+            $imgPublicList = array();
+            $query = "CALL ImgPublic_GetByPublic(?)";
+            $parameters["idPublic"] = $idPublic;
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+
+            foreach($resultBD as $row){
+                $imgPublic = new ImgPublic();
+                $imgPublic->__fromDB($row["idImg"],$row["uri"],$this->publicDAO->Get($row["idPublic"]));
+
+                array_push($imgPublicList,$imgPublic);
+            }
+            return $imgPublicList;
+        }
+
+        public function GetByBookings($bookList){
+            $imgByBooks = array();
+            foreach($bookList as $book){
+                $imgByP = new ImgPublic();
+                $imgByP = $this->GetByPublic($book->getPublication()->getId());
+                array_push($imgByBooks,$imgByP);
+            }
+        return $imgByBooks;
+        }
+
+
 
         public function GetAll(){
             $imgPublicList = array();    
@@ -51,7 +94,7 @@
 
             foreach($resultBD as $row){
                 $imgPublic = new ImgPublic();
-                $imgPublic->__fromDB($row["idImg"],$row["url"],$this->publicDAO->Get($row["idPublic"]));
+                $imgPublic->__fromDB($row["idImg"],$row["uri"],$this->publicDAO->Get($row["idPublic"]));
 
                 array_push($imgPublicList,$imgPublic);
             }

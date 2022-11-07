@@ -72,13 +72,24 @@ use \Model\Publication as Publication;
             $this->connection = Connection::GetInstance();
             $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
 
-            $public = new Publication();
-            $public->__fromDB($resultBD["idPublic"],$resultBD["openD"]
-            ,$resultBD["closeD"],$resultBD["title"]
-            ,$resultBD["description"],$resultBD["popularity"],$resultBD["remuneration"]
-            ,$this->userDAO->DGet($resultBD["idUser"]));
+            foreach($resultBD as $row){
+                $public = new Publication();
+    
+                $public->__fromDB($row["idPublic"],$row["openD"]
+                                        ,$row["closeD"],$row["title"]
+                                        ,$row["description"],$row["popularity"]
+                                        ,$row["remuneration"]
+                                        ,$this->userDAO->DGet($row["idUser"]));
+                }
             return $public;
         }
+
+        public function GetByUsername($username){
+            $user = $this->userDAO->DGetByUsername($username);
+            $public = $this->GetByUser($user->getId());
+        $public;
+        }
+
 
         public function GetAll(){
             $publicList = array();    
@@ -98,6 +109,32 @@ use \Model\Publication as Publication;
             }
             return $publicList;
 
+        }
+
+        public function GetAllByUser($idUser){
+            $publicList = array();
+            $query = "CALL Publication_GetByUser(?)";
+            $parameters["idUser"] = $idUser;
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+
+            foreach($resultBD as $row){
+                $public = new Publication();
+    
+                $public->__fromDB($row["idPublic"],$row["openD"]
+                                        ,$row["closeD"],$row["title"]
+                                        ,$row["description"],$row["popularity"]
+                                        ,$row["remuneration"]
+                                        ,$this->userDAO->DGet($row["idUser"]));
+                array_push($publicList,$public);                        
+                }
+            return $publicList;
+        }
+
+        public function GetAllByUsername($username){
+            $user = $this->userDAO->DGet($username);
+            $publicList = $this->GetAllByUser($user->getId());
+        return $publicList;
         }
 
         public function Delete($idPublic){
