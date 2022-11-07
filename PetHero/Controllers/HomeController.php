@@ -71,6 +71,10 @@ use \DAO\PublicationDAO as PublicationDAO;
             require_once(VIEWS_PATH."ReqReservation.php");
         }
 
+        public function ViewPublication(){
+            require_once(VIEWS_PATH."Publication.php");
+        }
+
         public function ViewOwnerPanel(){
             $petList = $this->petDAO->GetAll();
             $owner = $this->userDAO->DGet(2);

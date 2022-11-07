@@ -29,22 +29,7 @@ use \Model\Checker as Checker;
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
 
-        public function Get($idChecker){
-            $checker = null;
-            $query = "CALL Checker_GetById(?)";
-            $parameters["idChecker"] = $idChecker;
-            $this->connection = Connection::GetInstance();
-            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
-
-            foreach($resultBD as $row){
-                $checker = new Checker();
-
-                $checker->__fromDB($row["idchecker"],$row["emisionD"]
-                ,$row["closeD"],$row["finalPrice"]
-                ,$this->bookDAO->Get($row["idBook"]));
-            }
-            return $checker;
-        }
+        
 
         public function GetByBook($idBook){
             $query = "CALL Checker_GetByBooking(?)";
@@ -77,6 +62,32 @@ use \Model\Checker as Checker;
             }
             return $checkerList;    
         }
+
+        public function NewChecker(Checker $checker,$rta){
+            if($rta == 1){
+                $this->bookDAO->UpdateStSwtich($checker->getBooking(),1);
+            }else{
+                $this->bookDAO->UpdateStSwtich($checker->getBooking(),4);
+            }
+        }
+
+        public function Get($idChecker){
+            $checker = null;
+            $query = "CALL Checker_GetById(?)";
+            $parameters["idChecker"] = $idChecker;
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+
+            foreach($resultBD as $row){
+                $checker = new Checker();
+                $checker->__fromDB($row["idchecker"],$row["emisionD"]
+                                    ,$row["closeD"],$row["finalPrice"]
+                            ,$this->bookDAO->Get($row["idBook"]));
+            }
+            return $checker;
+        }
+
+        
         
         public function Delete($idChecker){
             $query = "CALL Checker_Delete(?)";

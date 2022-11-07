@@ -1,4 +1,7 @@
 <body>
+
+  <a href="Home/ViewPublication">Go</a>
+
 	<div class="container-fluid">
 		<div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
 			<div class="carousel-inner">
