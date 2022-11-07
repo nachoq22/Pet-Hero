@@ -48,6 +48,34 @@ use \Model\Booking as Booking;
         return $booking;    
         }      
 ///
+        public function UpdateST(Booking $booking){
+            $query = "CALL Booking_UpdateST(?,?)";
+            $parameters["idBook"] = $booking->getStartD();
+            $parameters["bookState"] = $booking->getBookState();
+            $this->connection = Connection::GetInstance();
+            $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
+        }
+
+        public function UpdateStSwtich(Booking $book,$stateNum){
+            switch($stateNum){
+                case 1:
+                        $book->setBookState("Awaiting Payment");
+                    $this->UpdateST($book);
+                    break;
+                case 2:
+                        $book->setBookState("In Process");
+                    $this->UpdateST($book);
+                    break;
+                case 3:
+                        $book->setBookState("Finalized");
+                    $this->UpdateST($book);
+                    break;
+                case 4:
+                        $book->setBookState("Rechazed");
+                    $this->UpdateST($book);
+                    break;
+            }
+        }
 
         public function GetAll(){
             $bookingList = array();    
@@ -58,7 +86,7 @@ use \Model\Booking as Booking;
 
             foreach($resultBD as $row){
                 $booking = new Booking();
-                $booking->__fromDB($row["idBooking"],$row["openDate"]
+                $booking->__fromDB($row["idBook"],$row["openDate"]
                                   ,$row["closeDate"],$row["payState"],$row["payCode"]
                                   ,$this->publicDAO->Get($row["idPublic"])
                                   ,$this->userDAO->Get($row["user"]));
@@ -101,6 +129,36 @@ use \Model\Booking as Booking;
                 }
             return $booking;
         }
+
+        private function GetBookPay(Booking $book){
+            $bookPay = 0;
+            $query = "CALL Booking_GetBookigPay(?,?,?)";
+            $parameters["starD"] = $book->getStartD();
+            $parameters["finishD"] = $book->getFinishD();
+            $parameters["remuneration"] = $book->getPublication()->getRemuneration();
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+
+            foreach($resultBD as $row){
+                 $bookPay = $row["bookingPay"];
+            }
+            return $bookPay;
+        }
+
+        public function GetFPBook(Booking $book){
+            $bookPay = $this->GetBookPay($book);
+        return $bookPay;    
+        }
+
+/*funcion para retornar diff de dias
+        public function countDays($initD,$finishD){
+            $days = 0;
+            For($i=$initD;$i<$finishD;$i = date("Y-m-d", strtotime($i ."+ 1 days"))){
+                $days +=1;
+            }
+        return $days;    
+        }
+*/
 
         public function Delete($idBooking){
             $query = "CALL booking_Delete(?)";

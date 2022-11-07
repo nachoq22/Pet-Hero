@@ -48,8 +48,11 @@ use \Model\Booking as Booking;
             }
         }
 
-        
+        public function NewState(Booking $book,$stateNum){
+            $this->bookDAO->UpdateStSwtich($book,$stateNum);
+        }
 
+    
         public function Get($id){
             $bookingPet = null;
             $query = "CALL BP_GetById(?)";
@@ -62,6 +65,43 @@ use \Model\Booking as Booking;
                 $bp->__fromDB($row["idBP"],$this->bookDAO->Get($row["idBook"]),$this->petDAO->Get($row["idPet"]));
             }
             return $bookingPet;
+        }
+
+//PARA FUNCIONAMIENTO DE CHECKER        
+        private function GetFPPet(Booking $book){
+            $petPay = 0;
+            $query = "CALL BP_GetPetPay(?)";
+            $parameters["remuneration"] = $book->getPublication()->getRemuneration();
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+
+            foreach($resultBD as $row){
+                 $petPay = $row["petPay"];
+            }
+            return $petPay;
+        }
+
+        public function GetTotally(Booking $book){
+                $book = $this->bookDAO->Get($book->getId());
+            $subtotalBook = $this->bookDAO->GetFPBook($book);
+            $subtotalPet = $this->GetFPPet($book);
+            $total = ($subtotalBook + $subtotalPet) * 0.5;
+            return $total;
+        }
+///
+
+        public function GetByBook($idBook){
+            $bp = null;
+            $query = "CALL BP_GetByBook(?)";
+            $parameters["idBook"] = $idBook;
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+
+            foreach($resultBD as $row){
+                $bp = new bookingPet();
+                $bp->__fromDB($row["idBP"],$this->bookDAO->Get($row["idBook"]),$this->petDAO->Get($row["idPet"]));
+            }
+            return $bp;
         }
 
         public function GetAll(){

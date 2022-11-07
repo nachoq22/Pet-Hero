@@ -592,6 +592,13 @@ BEGIN
 END;
 $$
 
+DELIMITER $$
+CREATE PROCEDURE Booking_GetBookigPay(IN startD DATE,IN finishD DATE, IN remuneration DEC(10,2))
+BEGIN
+	SELECT (TIMESTAMPDIFF(DAY, startD, finishD)*remuneration) AS bookingPay;
+END;
+$$
+
 
 DELIMITER $$
 CREATE PROCEDURE Booking_Add(IN startD DATE, IN finishD DATE, IN bookState VARCHAR(25),
@@ -630,6 +637,15 @@ BEGIN
     SELECT * 
     FROM BookingPet
     WHERE (BookingPet.idBP = idBP);
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE BP_GetByBook(IN idBook INT)
+BEGIN
+    SELECT * 
+    FROM BookingPet
+    WHERE (BookingPet.idBook = idBook);
 END;
 $$
 
@@ -831,6 +847,8 @@ CALL ImgPublic_Add("www.holaSoyUnaURL.com", 1);
 CALL Booking_GetAll();
 CALL Booking_GetById(1);
 CALL Booking_GetByUser(4);
+/*CREATE PROCEDURE Booking_GetBookigPay(IN startD DATE,IN finishD DATE, IN remuneration DEC(10,2))*/
+CALL Booking_GetBookigPay('2022-11-06','2022-11-19',3500);
 /*CALL Booking_Add(IN openDate DATE, IN closeDate DATE, IN payState VARCHAR(25), IN payCode VARCHAR(10),
                          IN idPublication INT, IN idUser INT)*/
 CALL Booking_Add("2022-11-01","2022-11-15","In Review",1, 1);
@@ -840,6 +858,7 @@ CALL Booking_Add("2022-11-01","2022-11-15","In Review",1, 1);
 /*********************************TEST BOOKING PET*******************************************/
 CALL BP_GetAll();
 CALL BP_GetById(1);
+CALL BP_GetByBook(1);
 /*CALL BookingPet_Add(IN idBooking INT, IN idPet INT);*/
 CALL BP_Add(1,1);
 /*CALL BookingPet_Delete(1);*/
@@ -860,6 +879,7 @@ CALL Review_GetByPublic(1);
                             IN idUser INT, IN idPublication INT)*/
 CALL Review_Add("2022-11-01", "Muy bueno, excelente servicio", 5, 4, 2);
 /*CALL Review_Delete(1);*/
+
 
 
 	

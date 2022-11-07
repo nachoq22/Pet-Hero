@@ -3,13 +3,13 @@
 		<div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
 			<div class="carousel-inner">
 				<div class="carousel-item active" data-bs-interval="10000">
-					<img src="https://niveloculto.com/wp-content/uploads/2011/01/deadmoneyportada.jpg" class="d-block w-100" alt="...">
+					<img src="https://niveloculto.com/wp-content/uploads/2011/01/deadmoneyportada.jpg" class="d-block w-100" style="width: 100%; height: 40vw; object-fit: cover;" alt="...">
 				</div>
 				<div class="carousel-item" data-bs-interval="2000">
-					<img src="https://i.pinimg.com/originals/ee/a9/0a/eea90a6da78d11fb1e869844c1c587a5.jpg" class="d-block w-100" alt="...">
+					<img src="https://i.pinimg.com/originals/ee/a9/0a/eea90a6da78d11fb1e869844c1c587a5.jpg" class="d-block w-100" style="width: 100%; height: 40vw; object-fit: cover;" alt="...">
 				</div>
 				<div class="carousel-item">
-					<img src="https://www.xtrafondos.com/descargar.php?id=4419&resolucion=3840x2160" class="d-block w-100" alt="...">
+					<img src="https://www.xtrafondos.com/descargar.php?id=4419&resolucion=3840x2160" class="d-block w-100" style="width: 100%; height: 40vws; object-fit: cover;" alt="...">
 				</div>
 			</div>
 			<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
