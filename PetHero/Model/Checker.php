@@ -12,15 +12,14 @@ use \Model\Booking as Booking;
         //CONSTRUCTORS
         public function __construct(){}
 
-        public function __fromRequest($emisionD, $closeD, $finalPrice, Booking $booking)
-        {
+        public function __fromRequest($emisionD, $closeD, $finalPrice, Booking $booking){
             $this->emisionD = $emisionD;
             $this->closeD = $closeD;
             $this->finalPrice = $finalPrice;
             $this->booking = $booking;
         }
-        public function __fromDB($idChecker, $emisionD, $closeD, $finalPrice, Booking $booking)
-        {
+        
+        public function __fromDB($idChecker, $emisionD, $closeD, $finalPrice, Booking $booking){
             $this->idChecker = $idChecker;
             $this->emisionD = $emisionD;
             $this->closeD = $closeD;

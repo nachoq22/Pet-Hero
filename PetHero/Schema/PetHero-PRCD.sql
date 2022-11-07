@@ -499,17 +499,8 @@ END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE Search(IN phrase VARCHAR(50))
-BEGIN
-     SELECT *
-     FROM publication
-     WHERE publication.title LIKE CONCAT('%',phrase,'%') or publication.description like CONCAT('%',phrase,'%');
-END;
-$$
-
-DELIMITER $$
 CREATE PROCEDURE Publication_Add(IN openD DATE, IN closeD DATE, IN title VARCHAR(50),
-                         IN description VARCHAR(1000), IN popularity VARCHAR(1), IN remuneration INT,
+                         IN description VARCHAR(1000), IN popularity DEC(2,1), IN remuneration DEC(10,2),
 	                     IN idUser INT)
 BEGIN
     INSERT INTO Publication
@@ -602,23 +593,21 @@ END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE Booking_GetByPublic(IN idPublic INT)
+CREATE PROCEDURE Booking_GetBookigPay(IN startD DATE,IN finishD DATE, IN remuneration DEC(10,2))
 BEGIN
-    SELECT * 
-    FROM booking
-    WHERE (booking.idPublic = idPublic);
+	SELECT (TIMESTAMPDIFF(DAY, startD, finishD)*remuneration) AS bookingPay;
 END;
 $$
 
 
 DELIMITER $$
-CREATE PROCEDURE Booking_Add(IN startD DATE, IN finishD DATE, IN bookState VARCHAR(25), IN payCode VARCHAR(10),
+CREATE PROCEDURE Booking_Add(IN startD DATE, IN finishD DATE, IN bookState VARCHAR(25),
                          IN idPublic INT, IN idUser INT)
 BEGIN
     INSERT INTO Booking
-        (Booking.startD, Booking.finishD, Booking.bookState, Booking.payCode, Booking.idPublic, Booking.idUser)
+        (Booking.startD, Booking.finishD, Booking.bookState, Booking.idPublic, Booking.idUser)
     VALUES
-        (startD, finishD, bookState, payCode, idPublic, idUser);
+        (startD, finishD, bookState, idPublic, idUser);
 END;
 $$
 
@@ -635,7 +624,7 @@ $$
 /*********************************PROCEDURES BOOKING PET*******************************************/
 
 DELIMITER $$
-CREATE PROCEDURE BookingPet_GetAll()
+CREATE PROCEDURE BP_GetAll()
 BEGIN
     SELECT * 
     FROM BookingPet;
@@ -643,7 +632,7 @@ END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE BookingPet_GetById(IN idBP INT)
+CREATE PROCEDURE BP_GetById(IN idBP INT)
 BEGIN
     SELECT * 
     FROM BookingPet
@@ -652,7 +641,16 @@ END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE BookingPet_Add(IN idBook INT, IN idPet INT)
+CREATE PROCEDURE BP_GetByBook(IN idBook INT)
+BEGIN
+    SELECT * 
+    FROM BookingPet
+    WHERE (BookingPet.idBook = idBook);
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE BP_Add(IN idBook INT, IN idPet INT)
 BEGIN
     INSERT INTO BookingPet
         (BookingPet.idBook, BookingPet.idPet)
@@ -662,7 +660,7 @@ END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE BookingPet_Delete(IN idBP INT)
+CREATE PROCEDURE BP_Delete(IN idBP INT)
 BEGIN
     DELETE 
     FROM BookingPet
@@ -767,59 +765,6 @@ $$
 
 
 /*********************************TEST PROCEDURES*******************************************/
-/*********************************TEST REVIEW*******************************************/
-CALL Review_GetAll();
-CALL Review_GetById(1);
-CALL Review_GetByPublic(1);
-/*CALL Review_Add(IN createD DATE, IN commentary VARCHAR(500), IN stars INT,
-                            IN idUser INT, IN idPublication INT)*/
-CALL Review_Add("2022-11-01", "Muy bueno, excelente servicio", 5, 4, 4);
-/*CALL Review_Delete(1);*/
-/*********************************TEST CHECKER*******************************************/
-CALL Checker_GetAll();
-CALL Checker_GetById(1);
-CALL Checker_GetByBooking(1);
-/*CALL Checker_AddChecker_Add(IN emisionD DATE, IN closeD DATE, IN finalPrice INT, IN idBook INT);*/
-CALL Checker_Add("2022-11-05", "2022-12-05", 2000, 1);
-/*CALL Checker_Delete(1);*/
-
-/*********************************TEST BOOKING PET*******************************************/
-CALL BookingPet_GetAll();
-CALL BookingPet_GetById(1);
-/*CALL BookingPet_Add(IN idBooking INT, IN idPet INT);*/
-CALL BookingPet_Add(1,1);
-/*CALL BookingPet_Delete(1);*/
-
-/*********************************TEST BOOKING*******************************************/
-CALL Booking_GetAll();
-CALL Booking_GetById(1);
-CALL Booking_GetByUser(4);
-CALL Booking_GetByPublic(1);
-/*CALL Booking_Add(IN openDate DATE, IN closeDate DATE, IN payState VARCHAR(25), IN payCode VARCHAR(10),
-                         IN idPublication INT, IN idUser INT)*/
-CALL Booking_Add("2022-11-01","2022-11-15","Pagado","123B45", 1, 1);
-
-/*CALL Booking_Delete(2);*/
-
-
-/*********************************TEST PUBLICATION*******************************************/
-
-CALL Publication_GetAll();
-CALL Publication_GetById(1);
-CALL Publication_GetByUser(1);
-
-CALL Search("24 años");
-/*CALL Publication_Add(openD,closeD,title,description,popularity,remuneration,idUser);*/
-CALL Publication_Add("2022-10-30","2022-11-8", "El mejor cuidador de toda Mar Del Plata","Soy un cuidador 
-de perros de 24 años que le gusta salir a correr todos los dias, por lo que su perro estará bien ejercitado", 5,"4000",2);
-/*CALL Publication_Delete(2);*/
-
-/*********************************TEST IMAGES*******************************************/
-CALL ImgPublic_GetAll();
-CALL ImgPublic_GetById(1);
-/*CALL ImgPublic_Add(IN url varchar(250), IN idPublication INT)*/
-CALL ImgPublic_Add("www.holaSoyUnaURL.com", 1);
-/*CALL ImgPublic_Delete(1);*/
 
 /*********************************TEST LOCATION*******************************************/
 CALL Location_GetAll();
@@ -881,6 +826,60 @@ Call Pet_Add("Salchichon","Suricatta",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\S
 						,CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Salchichon",(NOW() + 0),".jpg")
 						,"Tiene 6 dedos",1,5,3);
 /*Call Pet_Delete(6);*/
+
+/*********************************TEST PUBLICATION*******************************************/
+CALL Publication_GetAll();
+CALL Publication_GetById(1);
+CALL Publication_GetByUser(1);
+/*CALL Publication_Add(openD,closeD,title,description,popularity,remuneration,idUser);*/
+CALL Publication_Add("2022-10-30","2022-11-08", "El mejor cuidador de toda Mar Del Plata","Soy un cuidador 
+de perros de 24 años que le gusta salir a correr todos los dias, por lo que su perro estará bien ejercitado", 5,4000,2);
+/*CALL Publication_Delete(2);*/
+
+/*********************************TEST IMAGES*******************************************/
+CALL ImgPublic_GetAll();
+CALL ImgPublic_GetById(1);
+/*CALL ImgPublic_Add(IN url varchar(250), IN idPublication INT)*/
+CALL ImgPublic_Add("www.holaSoyUnaURL.com", 1);
+/*CALL ImgPublic_Delete(1);*/
+
+/*********************************TEST BOOKING*******************************************/
+CALL Booking_GetAll();
+CALL Booking_GetById(1);
+CALL Booking_GetByUser(4);
+/*CREATE PROCEDURE Booking_GetBookigPay(IN startD DATE,IN finishD DATE, IN remuneration DEC(10,2))*/
+CALL Booking_GetBookigPay('2022-11-06','2022-11-19',3500);
+/*CALL Booking_Add(IN openDate DATE, IN closeDate DATE, IN payState VARCHAR(25), IN payCode VARCHAR(10),
+                         IN idPublication INT, IN idUser INT)*/
+CALL Booking_Add("2022-11-01","2022-11-15","In Review",1, 1);
+
+/*CALL Booking_Delete(2);*/
+
+/*********************************TEST BOOKING PET*******************************************/
+CALL BP_GetAll();
+CALL BP_GetById(1);
+CALL BP_GetByBook(1);
+/*CALL BookingPet_Add(IN idBooking INT, IN idPet INT);*/
+CALL BP_Add(1,1);
+/*CALL BookingPet_Delete(1);*/
+
+/*********************************TEST CHECKER*******************************************/
+CALL Checker_GetAll();
+CALL Checker_GetById(1);
+CALL Checker_GetByBooking(1);
+/*CALL Checker_AddChecker_Add(IN emisionD DATE, IN closeD DATE, IN finalPrice INT, IN idBook INT);*/
+CALL Checker_Add("2022-11-05", "2022-12-05", 2000, 1);
+/*CALL Checker_Delete(1);*/
+
+/*********************************TEST REVIEW*******************************************/
+CALL Review_GetAll();
+CALL Review_GetById(1);
+CALL Review_GetByPublic(1);
+/*CALL Review_Add(IN createD DATE, IN commentary VARCHAR(500), IN stars INT,
+                            IN idUser INT, IN idPublication INT)*/
+CALL Review_Add("2022-11-01", "Muy bueno, excelente servicio", 5, 4, 2);
+/*CALL Review_Delete(1);*/
+
 
 
 	

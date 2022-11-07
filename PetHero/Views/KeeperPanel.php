@@ -10,15 +10,15 @@
                 <ul class="nav nav-pills nav-flush flex-sm-column flex-row flex-nowrap mb-auto mx-auto text-center align-items-center" 
                         role="tablist" id="pills-tab" aria-orientation="vertical">
                     <li class="nav-item">
-                        <a href="#" class="nav-link active py-3 px-2" type="button" role="tab" id="ownerData-tab"
-                            data-bs-toggle="pill" data-bs-target="#ownerData" aria-controls="ownerData" 
+                        <a href="#" class="nav-link active py-3 px-2" type="button" role="tab" id="keeperData-tab"
+                            data-bs-toggle="pill" data-bs-target="#keeperData" aria-controls="keeperData" 
                             aria-selected="true"    data-bs-placement="right">
                             <i class="bi bi-journal-text fs-1"></i>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link py-3 px-2" type="button" role="tab" id="petList-tab"
-                            data-bs-toggle="pill" data-bs-target="#petList" aria-controls="petList" 
+                        <a href="#" class="nav-link py-3 px-2" type="button" role="tab" id="publicList-tab"
+                            data-bs-toggle="pill" data-bs-target="#publicList" aria-controls="publicList" 
                             aria-selected="false"    data-bs-placement="right">
                             <i class="bi bi-twitter fs-1"></i>
                         </a>
@@ -51,12 +51,12 @@
             <!-- content -->
 <!--OWNER DATA CONTENT-->
             <div class="tab-content" id="pills-tabContent">
-                <div class="tab-pane fade show active" id="ownerData" role="tabpanel" aria-labelledby="ownerData-tab" tabindex="0">
+                <div class="tab-pane fade show active" id="ownerData" role="keeperData" aria-labelledby="keeperData-tab" tabindex="0">
                     
                 </div>  
 
 <!--PETLIST CONTENT-->                
-                <div class="tab-pane" id="petList" role="tabpanel" aria-labelledby="petList-tab" tabindex="0">   
+                <div class="tab-pane" id="publicList" role="tabpanel" aria-labelledby="publicList-tab" tabindex="0">   
                     <div class="container-fluid content-row">
                         <div class="row">
                             <div class="col-2 mt-3">
@@ -100,7 +100,7 @@
                                 <th>Status</th>
                                 <th>Pets</th>
                                 <th>Checker</th>
-                                <th>PayCode Input</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -133,6 +133,7 @@
                                     <span class="badge rounded-pill text-bg-warning">In progress</span>
                                 </td>
                                 <td>
+                                    <div class="container-fluid">
                                     <div class="row">
                                         <div class="col-2">
                                                 <img src="https://mdbootstrap.com/img/new/avatars/8.jpg" class="rounded-circle" alt="" 
@@ -151,18 +152,24 @@
                                             style="width: 45px; height: 45px"/>
                                         </div>
                                     </div>
+                                    </div>
+                                    
                                 </td>
                                 <td>
                                 <a class="btn btn-outline-warning me-2" href="<?php echo FRONT_ROOT."/Checker/GetById"?>" type="button"><i class="bi bi-pencil-square"></i></a>
                                 </td>
                                 <td>
-                                <div class="form-floating mb-3">
-                                    <input type="number" class="form-control" id="remuneration" 
-                                            placeholder="San Antonio" name="remuneration" required>
-                                    <label for="remuneration">PayCode</label>
-                                        <div class="invalid-feedback">
-                                            Please enter a PayCode.
-                                        </div>
+                                <div class="container-fluid d-flex">
+                                    <form action="<?php echo FRONT_ROOT."/Checker/ToResponse" ?>" method="post">
+                                        <input type="hidden" class="visually-hidden" name="idBook" value="" >
+                                        <input type="hidden" class="visually-hidden" name="rta" value="1" >
+                                        <i class="bi bi-check-square-fill" type="submit" ></i>
+                                    </form>
+                                    <form action="<?php echo FRONT_ROOT."/Checker/ToResponse" ?>" method="post">
+                                        <input type="hidden" class="visually-hidden" name="idBook" value="" >
+                                        <input type="hidden" class="visually-hidden" name="rta" value="1" >
+                                        <i class="bi bi-x-square-fill" type="submit"></i>
+                                    </form>
                                 </div>
                                 </td>
                             </tr>

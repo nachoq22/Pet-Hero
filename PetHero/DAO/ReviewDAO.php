@@ -35,7 +35,7 @@ use \Model\Review as Review;
         public function NewReview(Review $review){
                 $public = $this->publicDAO->Get($review->getPublication()->getId());
             $review->setPublication($public);
-                $user = $this->userDAO->Get($review->getUser()->getId());
+                $user = $this->userDAO->DGetByUsername($review->getUser()->getUsername());
             $review->setUser($user);
             $this->Add($review);
         }

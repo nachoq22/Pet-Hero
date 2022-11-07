@@ -79,6 +79,12 @@ use \DAO\PublicationDAO as PublicationDAO;
             $petList = $this->petDAO->GetAll();
             $owner = $this->userDAO->DGet(2);
             require_once(VIEWS_PATH."OwnerPanel.php");
-        }        
+        }       
+        
+        public function ViewKeeperPanel(){
+            $petList = $this->petDAO->GetAll();
+            $owner = $this->userDAO->DGet(2);
+            require_once(VIEWS_PATH."KeeperPanel.php");
+        }      
     }
 ?>
