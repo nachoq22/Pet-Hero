@@ -27,7 +27,7 @@ include("Head.php");
             <a class="btn btn-outline-primary me-2" href="<?php echo FRONT_ROOT."/Home/ViewOwnerPanel"?>" type="button"><i class="bi bi-person-rolodex"></i></a>
           </li>
           <li class="nav-link">
-            <a class="btn btn-outline-primary me-2" href="<?php echo FRONT_ROOT."/Home/ViewKeeperPanel"?>" type="button"><i class="bi bi-person-rolodex"></i></a>
+            <a class="btn btn-outline-info me-2" href="<?php echo FRONT_ROOT."/Home/ViewKeeperPanel"?>" type="button"><i class="bi bi-person-rolodex"></i></a>
           </li>
 
           <li class="nav-item dropdown">

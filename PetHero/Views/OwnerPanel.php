@@ -7,6 +7,7 @@
                 <a class="d-block p-3 link-dark text-decoration-none" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Icon-only">
                     <i class="bi-bootstrap fs-1"></i>
                 </a>
+                
                 <ul class="nav nav-pills nav-flush flex-sm-column flex-row flex-nowrap mb-auto mx-auto text-center align-items-center" 
                         role="tablist" id="pills-tab" aria-orientation="vertical">
                     <li class="nav-item">
@@ -104,25 +105,30 @@
                             </tr>
                         </thead>
                         <tbody>
+                        <?php foreach ($bookList as $book) { ?> 
                             <tr>
                                 <td>
-                                    <div class="row">
+                                    <div class="row"> 
                                         <div class="col-2">
-                                            <img src="https://mdbootstrap.com/img/new/avatars/8.jpg" class="rounded-circle" alt="" 
+                                        <?php foreach ($imgList as $img) { ?> 
+                                            <?php if ($img->getPublication()->getId() == $book->getPublication()->getId()) { ?> 
+                                            <img src="<?php echo $img->getUrl()?>" class="rounded-circle" alt="" 
                                             style="width: 45px; height: 45px"/>
+                                            <?php } ?>
+                                        <?php } ?>
                                         </div>
                                         <div class="col">
                                             <div class="row">
                                                 <div class="col">
                                                     <div class="ms-3">
                                                     <p class="fw-bold mb-1">Start Date</p>
-                                                    <p class="text-muted mb-0">15-10-2022</p>
+                                                    <p class="text-muted mb-0"><?php echo $book->getStartD()?></p>
                                                     </div>
                                                 </div>
                                                 <div class="col">
                                                     <div class="ms-3">
                                                     <p class="fw-bold mb-1">Finish Date</p>
-                                                    <p class="text-muted mb-0">22-10-2022</p>
+                                                    <p class="text-muted mb-0"><?php echo $book->getFinishD()?></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -130,30 +136,37 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <span class="badge rounded-pill text-bg-warning">In progress</span>
+                                    <?php if ((STRCMP($book->getBookState(),"In Review") == 0) XOR 
+                                              (STRCMP($book->getBookState(),"Awaiting Payment") == 0)) { ?>    
+                                        <span class="badge rounded-pill text-bg-warning"><?php echo $book->getBookState()?></span>
+                                    <?php } ?>
+
+                                    <?php if ((STRCMP($book->getBookState(),"Canceled") == 0) XOR 
+                                              (STRCMP($book->getBookState(),"Expired") == 0) XOR
+                                              (STRCMP($book->getBookState(),"Declined ") == 0) XOR
+                                              (STRCMP($book->getBookState(),"Out of Term ") == 0) XOR
+                                              (STRCMP($book->getBookState(),"Finalized") == 0)) { ?>    
+                                        <span class="badge rounded-pill text-bg-danger"><?php echo $book->getBookState()?></span>
+                                    <?php } ?>
+
+                                    <?php if ((STRCMP($book->getBookState(),"In progress") == 0)) { ?>    
+                                        <span class="badge rounded-pill text-bg-success"><?php echo $book->getBookState()?></span>
+                                    <?php } ?>
                                 </td>
                                 <td>
                                     <div class="row">
-                                        <div class="col-2">
-                                                <img src="https://mdbootstrap.com/img/new/avatars/8.jpg" class="rounded-circle" alt="" 
-                                                style="width: 45px; height: 45px"/>
-                                        </div>
-                                        <div class="col-2">
-                                            <img src="https://mdbootstrap.com/img/new/avatars/8.jpg" class="rounded-circle" alt="" 
-                                            style="width: 45px; height: 45px"/>
-                                        </div>
-                                        <div class="col-2">
-                                            <img src="https://mdbootstrap.com/img/new/avatars/8.jpg" class="rounded-circle" alt="" 
-                                            style="width: 45px; height: 45px"/>
-                                        </div>
-                                        <div class="col-2">
-                                            <img src="https://mdbootstrap.com/img/new/avatars/8.jpg" class="rounded-circle" alt="" 
-                                            style="width: 45px; height: 45px"/>
-                                        </div>
+                                        <?php foreach ($bPetsList as $pet) { ?>   
+                                            <?php if ($pet->getBooking()->getId() == $book->getid()) { ?>           
+                                            <div class="col-2">
+                                                    <img src="<?php echo $pet->getPet()->getProfileIMG()?>" class="rounded-circle" alt="" 
+                                                    style="width: 45px; height: 45px;"/>
+                                            </div>
+                                            <?php } ?>
+                                        <?php } ?>
                                     </div>
                                 </td>
                                 <td>
-                                <a class="btn btn-outline-warning me-2" href="<?php echo FRONT_ROOT."/Checker/GetById"?>" type="button"><i class="bi bi-pencil-square"></i></a>
+                                    <a class="btn btn-outline-warning me-2" href="<?php echo FRONT_ROOT."/Checker/GetById"?>" type="button"><i class="bi bi-pencil-square"></i></a>
                                 </td>
                                 <td>
                                 <div class="form-floating mb-3">
@@ -166,6 +179,8 @@
                                 </div>
                                 </td>
                             </tr>
+                            <?php } ?>
+                            <!--
                             <tr>
                                 <td>
                                     <div class="d-flex align-items-center">
@@ -189,6 +204,7 @@
                                     <button type="button" class="btn btn-link btn-sm btn-rounded">Edit</button>
                                 </td>
                             </tr>
+                                    -->
                         </tbody>
                     </table>        
                 </div>

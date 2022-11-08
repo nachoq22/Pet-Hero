@@ -40,7 +40,7 @@ use \Exception as Exception;
                 $i++;
                 if($queryTipe == QueryType::Query){
                     $this->pdoStatement->bindParam(":",$parameterName,$parameters[$parameterName]);
-                }else{
+                }else{ 
                     $this->pdoStatement->bindParam($i,$parameters[$parameterName]);
                 }
             }
@@ -75,19 +75,15 @@ use \Exception as Exception;
             }        	    	
         }
 
-        public function ExecuteLastId($query, $parameters = array(), $returnLastId = false, $queryType = QueryType::Query){            
+        public function ExecuteLastId($query, $parameters = array(), $queryType = QueryType::Query){            
             try{
                 $this->Prepare($query);
                 
                 $this->BindParameters($parameters, $queryType);
 
                 $this->pdoStatement->execute();
-                
-                if($returnLastId){
-                    return $this->pdo->lastInsertId();
-                }else{
-                    return $this->pdoStatement->rowCount();
-                }
+
+                return $this->pdo->lastInsertId();
             }catch(Exception $ex){
                 throw $ex;
             }        	    	

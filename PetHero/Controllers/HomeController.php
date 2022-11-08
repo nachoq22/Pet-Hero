@@ -1,29 +1,40 @@
 <?php
 namespace Controllers;
-
-
+/*
 use \DAO\LocationDAO as LocationDAO;
 use \DAO\SizeDAO as SizeDAO;
 use \DAO\PetTypeDAO as PetTypeDAO;
+*/
 use \DAO\UserDAO as UserDAO;
 use \DAO\PetDAO as PetDAO;
 use \DAO\PublicationDAO as PublicationDAO; 
+use \DAO\BookingPetDAO as BookingPetDAO;
+use \DAO\ImgPublicDAO as ImgPublicDAO;
 
     class HomeController{
+        /*
         private $locationDAO;
         private $sizeDAO;
         private $typeDAO;
+        */
         private $userDAO;
         private $petDAO;
         private $publicDAO;
+        private $bpDAO;
+
+        private $imgPublicDAO;
 
         public function __construct(){
+            /*
             $this->locationDAO = new LocationDAO();
             $this->sizeDAO = new SizeDao();
             $this->typeDAO = new PetTypeDAO();
+            */
             $this->userDAO = new UserDAO();
             $this->petDAO = new PetDAO();
             $this->publicDAO = new PublicationDAO();
+            $this->bpDAO = new BookingPetDAO();
+            $this->imgPublicDAO = new ImgPublicDAO();
         }
 
         public function Index(){
@@ -72,14 +83,21 @@ use \DAO\PublicationDAO as PublicationDAO;
         }
 
         public function ViewOwnerPanel(){
-            $petList = $this->petDAO->GetAll();
-            $owner = $this->userDAO->DGet(2);
+            //$owner = $this->userDAO->DGet(2);   /*$owner = $this->userDAO->DGetByUsername(2);*/
+            $petList = $this->petDAO->GetAllByUsername("sculpordwarf"); /*$petList = $this->petDAO->GetAllByUsername("sculpordwarf");*/ 
+            $bookList = $this->bpDAO->GetBookByUsername("sculpordwarf"); /*$bookList = $this->bookDAO->GetByOwner(?);*/ 
+            $bPetsList = $this->bpDAO->GetAllPetsBooks("sculpordwarf"); 
+            $imgList = $this->imgPublicDAO->GetByBookings($bookList);
+            //print_r($imgList);
             require_once(VIEWS_PATH."OwnerPanel.php");
         }       
         
         public function ViewKeeperPanel(){
-            $petList = $this->petDAO->GetAll();
-            $owner = $this->userDAO->DGet(2);
+            //$owner = $this->userDAO->DGet(2);   /*$owner = $this->userDAO->DGetByUsername(2);*/
+            $petList = $this->petDAO->GetAllByUsername("sculpordwarf"); /*$petList = $this->petDAO->GetAllByUsername("sculpordwarf");*/ 
+            $bookList = $this->bpDAO->GetBookByUsername("sculpordwarf"); /*$bookList = $this->bookDAO->GetByOwner(?);*/ 
+            $bPetsList = $this->bpDAO->GetAllPetsBooks("sculpordwarf"); 
+            $imgList = $this->imgPublicDAO->GetByBookings($bookList);
             require_once(VIEWS_PATH."KeeperPanel.php");
         }      
 
