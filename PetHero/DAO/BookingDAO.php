@@ -47,7 +47,7 @@ use \Model\Booking as Booking;
             $booking = $this->Get($idNBook);
         return $booking;    
         }      
-///
+
         public function UpdateST(Booking $booking){
             $query = "CALL Booking_UpdateST(?,?)";
             $parameters["idBook"] = $booking->getStartD();

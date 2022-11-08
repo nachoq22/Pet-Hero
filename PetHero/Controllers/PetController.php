@@ -22,7 +22,8 @@
         }
 
         public function ViewPetList(){
-            $petList = $this->petDAO->GetAllByUser(1);
+            //$petList = $this->petDAO->GetAllByUser(1);
+            $petList = $this->petDAO->GetAll();
             require_once(VIEWS_PATH."PetList.php");
         }
 
@@ -47,25 +48,19 @@
             $user = $this->userDAO->Get(1);
             $pet = new Pet();
             $pet->__fromRequest($name, $breed, $observation, $typeOBJ, $sizeOBJ, $user);   
-            echo "<br>";
-            echo "<br>";
-            var_dump($pet);
-            echo "<br>";
-            echo "<br>";
-            var_dump($_FILES['ImagenP']);
-            echo "<br>";
-            echo "<br>";
-            var_dump($_FILES['ImagenV']);
-            /*$fileNameP = $_FILES['ImagenP']['name'];
+            //var_dump($pet);
+            //var_dump($_FILES['ImagenP']);
+            //var_dump($_FILES['ImagenV']);
+            $fileNameP = $_FILES['ImagenP']['name'];
             $fileP = $_FILES['ImagenP']['tmp_name'];
             $fileNameV = $_FILES['ImagenV']['name'];
             $fileV = $_FILES['ImagenV']['tmp_name'];
             
             
             $this->petDAO->RegisterPet($pet, $fileP, $fileNameP, $fileV, $fileNameV);
-            //$petList=$this->petDAO->GetAll();
-            //require_once(VIEWS_PATH."Home.php");
-        */} 
+            $petList=$this->petDAO->GetAll();
+            require_once(VIEWS_PATH."PetList.php");
+        } 
 
         public function GetPetsByReservation(){
             //$petList = $this->petDAO->GetAllByUser(1);

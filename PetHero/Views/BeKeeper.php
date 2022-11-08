@@ -81,10 +81,10 @@
                     <input class="form-check-input" type="radio" name="sex" id="sexF" value="F" required>
                     <label class="form-check-label" for="sexF"><i class="bi bi-gender-female"></i></label>
                 </div>
-                <div class="form-check form-check-inline">
+                <!--<div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="sex?" id="sex?" disabled>
                     <label class="form-check-label" for="sex?"><i class="bi bi-gender-trans"></i></label>
-                </div>
+                </div> -->
                     
             </div>
             <div class="form-floating mb-3">

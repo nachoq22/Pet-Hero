@@ -49,15 +49,15 @@ include("Head.php");
 
             
             <ul class="dropdown-menu" id="menuProfile">
-              <li><a class="dropdown-item" id="signUpItem" data-bs-toggle="modal" data-bs-target=".bs-modal-sm">Sign Up</a></li>
-              <li><a class="dropdown-item" id="loginItem" data-bs-toggle="modal" data-bs-target=".bs-modal-sm">Login</a></li>
+              <li><a type="button" class="dropdown-item" id="signUpItem" data-bs-toggle="modal" data-bs-target=".bs-modal-sm">Sign Up</a></li>
+              <li><a type="button" class="dropdown-item" id="loginItem" data-bs-toggle="modal" data-bs-target=".bs-modal-sm">Login</a></li>
             </ul>
           </li>
           
         </ul>
 
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <form class="d-flex" role="search" action="<?php echo FRONT_ROOT."/Home/Search" ?>" method="post">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="seach">
           <button class="btn btn-outline-success" type="submit">Search</button>
         </form>
       </div>

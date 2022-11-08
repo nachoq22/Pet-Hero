@@ -72,11 +72,13 @@ use \Model\Publication as Publication;
             $this->connection = Connection::GetInstance();
             $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
 
+            foreach($resultBD as $row){
             $public = new Publication();
-            $public->__fromDB($resultBD["idPublic"],$resultBD["openD"]
-            ,$resultBD["closeD"],$resultBD["title"]
-            ,$resultBD["description"],$resultBD["popularity"],$resultBD["remuneration"]
-            ,$this->userDAO->DGet($resultBD["idUser"]));
+            $public->__fromDB($row["idPublic"],$row["openD"]
+            ,$row["closeD"],$row["title"]
+            ,$row["description"],$row["popularity"],$row["remuneration"]
+            ,$this->userDAO->DGet($row["idUser"]));
+            }
             return $public;
         }
 
@@ -100,12 +102,12 @@ use \Model\Publication as Publication;
 
         }
 
-        public function Search(){
+        public function Search($phrase){
             $publicList = array();    
-
-            $query = "CALL Publication_Search()";
+            $query = "CALL Publication_Search(?)";
+            $parameters["phrase"] = $phrase;
             $this->connection = Connection::GetInstance();
-            $resultBD = $this->connection->Execute($query,array(),QueryType::StoredProcedure);
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
 
             foreach($resultBD as $row){
                 $public = new Publication();

@@ -1,7 +1,3 @@
-<?php
-var_dump($petaux);
-?>
-
 <body>
 <div class="card mx-auto" style="width: 50rem;">
   <img src="<?php echo $petaux->getProfileIMG()?>" class="card-img-top" style="width: 100%; height: 25vw; object-fit: cover;" alt="...">
@@ -11,9 +7,9 @@ var_dump($petaux);
     <p>Tamaño: <?php echo $petaux->getSize()->getName() ?></p>
     <p class="card-text"><?php echo $petaux->getObservation() ?> </p>
     <h5>Plan vacunacion:</h5>
-    <img src="<?php echo $petaux->getVaccinationPlanIMG()?>" alt="">
+    <br>
+    <img src="<?php echo $petaux->getVaccinationPlanIMG()?>" style="width: 100%; height: 25vw; object-fit: cover;" alt="">
   </div>
 </div>
 </body>
-
 <?

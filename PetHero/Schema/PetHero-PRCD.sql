@@ -499,6 +499,15 @@ END;
 $$
 
 DELIMITER $$
+CREATE PROCEDURE Publication_Search(IN phrase VARCHAR(50))
+BEGIN
+     SELECT *
+     FROM publication
+     WHERE publication.title LIKE CONCAT('%',phrase,'%') or publication.description like CONCAT('%',phrase,'%');
+END;
+$$
+
+DELIMITER $$
 CREATE PROCEDURE Publication_Add(IN openD DATE, IN closeD DATE, IN title VARCHAR(50),
                          IN description VARCHAR(1000), IN popularity DEC(2,1), IN remuneration DEC(10,2),
 	                     IN idUser INT)
@@ -831,6 +840,7 @@ Call Pet_Add("Salchichon","Suricatta",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\S
 CALL Publication_GetAll();
 CALL Publication_GetById(1);
 CALL Publication_GetByUser(1);
+CALL Publication_Search("24");
 /*CALL Publication_Add(openD,closeD,title,description,popularity,remuneration,idUser);*/
 CALL Publication_Add("2022-10-30","2022-11-08", "El mejor cuidador de toda Mar Del Plata","Soy un cuidador 
 de perros de 24 años que le gusta salir a correr todos los dias, por lo que su perro estará bien ejercitado", 5,4000,2);

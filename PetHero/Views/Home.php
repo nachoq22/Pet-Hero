@@ -1,6 +1,6 @@
 <body>
 
-  <a href="Home/ViewPublication">Go</a>
+  <a href="<?php echo FRONT_ROOT."/Publication/ViewPublication"?>">Go</a>
 
 	<div class="container-fluid">
 		<div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
