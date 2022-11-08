@@ -889,5 +889,8 @@ CALL Review_Add("2022-11-01", "Muy bueno, excelente servicio", 5, 4, 2);
 /*CALL Review_Delete(1);*/
 
 
+select LAST_INSERT_ID();
+
+
 
 	

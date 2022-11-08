@@ -34,7 +34,7 @@ use \Model\Booking as Booking;
             $idNBook = 0;
 
             $this->connection = Connection::GetInstance();
-            $idNBook = $this->connection->ExecuteLastId($query,$parameters,$idNBook,QueryType::StoredProcedure);
+            $idNBook = $this->connection->ExecuteLastId($query,$parameters,QueryType::StoredProcedure);
         return $idNBook;    
         }
 

@@ -18,13 +18,15 @@
             $this->publicDAO = new PublicationDAO();
         }
 
-        private function imgPPProcess($nameFile,$file,$publicationName){
-            $path= "Views\Img\IMGpublication\Profile\\".$publicationName.date("YmdHis").".jpg"; 
+        private function imgPuProcess($tmp_name){
+            $idR = random_int(1,1000000000000000000);
+            $path= "Views\Img\IMGPublic\\".$idR."-IMGPublic".date("YmdHis").".jpg"; 
             $path = str_replace(' ', '-', $path); 
             $pathDB =  "..\\".$path; 
-            move_uploaded_file($file,$path);
-            return $pathDB;
+            move_uploaded_file($tmp_name,$path);
+        return $pathDB;
         }
+
 
         public function Add(ImgPublic $imgPublic){
             $query = "CALL ImgPublic_Add(?,?)";
@@ -33,6 +35,23 @@
 
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
+        }
+
+
+        public function NewPublication(ImgPublic $public,$images){
+///ACA SE GUARDA LA PUBLICACION Y SE ACTUALIZA LA QUE VINO POR LA NUEVA CON ID NUEVO, PARA ASIGNAR A LAS IMG
+            $publicN = $this->publicDAO->NewPublication($public->getPublication());
+            $public->setPublication($publicN);
+//PARA OBTENER LOS VALORES DE TMP_NAME                
+            foreach($images as $k1=> $v1){
+                foreach($v1 as $k2 => $v2){
+                    if(strcmp($k1,"tmp_name") == 0){
+                        $path = $this->imgPuProcess($images[$k1][$k2]);
+                    $public->setUrl($path);
+                    $this->Add($public);
+                   }
+                }
+            }
         }
 
         public function Get($idImg){
