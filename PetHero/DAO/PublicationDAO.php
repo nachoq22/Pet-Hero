@@ -18,14 +18,6 @@ use \Model\Publication as Publication;
             $this->userDAO = new UserDAO();
         }
 
-        private function imgPPProcess($nameFile,$file,$publicationName){
-            $path= "Views\Img\IMGpublication\Profile\\".$publicationName.date("YmdHis").".jpg"; 
-            $path = str_replace(' ', '-', $path); 
-            $pathDB =  "..\\".$path; 
-            move_uploaded_file($file,$path);
-            return $pathDB;
-        } 
-
         public function Add(Publication $public){
             $query = "CALL publication_Add(?,?,?,?,?,?,?)";
             $parameters["openD"] = $public->getOpenDate();

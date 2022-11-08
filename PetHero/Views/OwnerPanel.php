@@ -108,10 +108,14 @@
                         <?php foreach ($bookList as $book) { ?> 
                             <tr>
                                 <td>
-                                    <div class="row">        
+                                    <div class="row"> 
                                         <div class="col-2">
-                                            <img src="https://mdbootstrap.com/img/new/avatars/8.jpg" class="rounded-circle" alt="" 
+                                        <?php foreach ($imgList as $img) { ?> 
+                                            <?php if ($img->getPublication()->getId() == $book->getPublication()->getId()) { ?> 
+                                            <img src="<?php echo $img->getUrl()?>" class="rounded-circle" alt="" 
                                             style="width: 45px; height: 45px"/>
+                                            <?php } ?>
+                                        <?php } ?>
                                         </div>
                                         <div class="col">
                                             <div class="row">
@@ -162,7 +166,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                <a class="btn btn-outline-warning me-2" href="<?php echo FRONT_ROOT."/Checker/GetById"?>" type="button"><i class="bi bi-pencil-square"></i></a>
+                                    <a class="btn btn-outline-warning me-2" href="<?php echo FRONT_ROOT."/Checker/GetById"?>" type="button"><i class="bi bi-pencil-square"></i></a>
                                 </td>
                                 <td>
                                 <div class="form-floating mb-3">

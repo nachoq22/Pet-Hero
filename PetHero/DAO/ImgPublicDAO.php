@@ -18,6 +18,14 @@
             $this->publicDAO = new PublicationDAO();
         }
 
+        private function imgPPProcess($nameFile,$file,$publicationName){
+            $path= "Views\Img\IMGpublication\Profile\\".$publicationName.date("YmdHis").".jpg"; 
+            $path = str_replace(' ', '-', $path); 
+            $pathDB =  "..\\".$path; 
+            move_uploaded_file($file,$path);
+            return $pathDB;
+        }
+
         public function Add(ImgPublic $imgPublic){
             $query = "CALL ImgPublic_Add(?,?)";
             $parameters["uri"] = $imgPublic->getUrl();
@@ -75,14 +83,18 @@
 
         public function GetByBookings($bookList){
             $imgByBooks = array();
+            $limitedPub = array();
             foreach($bookList as $book){
-                $imgByP = new ImgPublic();
-                $imgByP = $this->GetByPublic($book->getPublication()->getId());
-                array_push($imgByBooks,$imgByP);
-                
+                if(IN_ARRAY($book->getPublication()->getid(),$limitedPub) == false){
+                        ARRAY_PUSH($limitedPub,$book->getPublication()->getid());
+                    $imgByP = new ImgPublic();
+                    $imgByP = $this->GetByPublic($book->getPublication()->getId());
+                    ARRAY_PUSH($imgByBooks,$imgByP);
+                }
             }
         return $imgByBooks;
         }
+
 
 
 
