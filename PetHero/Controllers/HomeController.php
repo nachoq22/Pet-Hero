@@ -88,7 +88,7 @@ use \DAO\ImgPublicDAO as ImgPublicDAO;
             $bookList = $this->bpDAO->GetBookByUsername("sculpordwarf"); /*$bookList = $this->bookDAO->GetByOwner(?);*/ 
             $bPetsList = $this->bpDAO->GetAllPetsBooks("sculpordwarf"); 
             $imgList = $this->imgPublicDAO->GetByBookings($bookList);
-            print_r($imgList);
+            //print_r($imgList);
             require_once(VIEWS_PATH."OwnerPanel.php");
         }       
         
@@ -98,7 +98,6 @@ use \DAO\ImgPublicDAO as ImgPublicDAO;
             $bookList = $this->bpDAO->GetBookByUsername("sculpordwarf"); /*$bookList = $this->bookDAO->GetByOwner(?);*/ 
             $bPetsList = $this->bpDAO->GetAllPetsBooks("sculpordwarf"); 
             $imgList = $this->imgPublicDAO->GetByBookings($bookList);
-            print_r($imgList);
             require_once(VIEWS_PATH."KeeperPanel.php");
         }      
     }

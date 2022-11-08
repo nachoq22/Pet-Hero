@@ -50,9 +50,9 @@
             $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
 
             foreach($resultBD as $row){
-                $imgPublic = new ImgPublic();
+                $publicIMG = new ImgPublic();
 
-                $imgPublic->__fromDB($row["idImg"],$row["uri"],$this->publicDAO->Get($row["idPublic"]));
+                $publicIMG->__fromDB($row["idImg"],$row["uri"],$this->publicDAO->Get($row["idPublic"]));
             }
             return $publicIMG;
         }
@@ -79,6 +79,7 @@
                 $imgByP = new ImgPublic();
                 $imgByP = $this->GetByPublic($book->getPublication()->getId());
                 array_push($imgByBooks,$imgByP);
+                
             }
         return $imgByBooks;
         }

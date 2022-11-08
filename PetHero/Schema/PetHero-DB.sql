@@ -224,7 +224,7 @@ CREATE TABLE IF NOT EXISTS Booking(
 
 INSERT INTO Booking VALUES (0,DATE(NOW()),
 								  DATE_ADD(DATE(NOW()),INTERVAL 15 DAY)
-							     ,"PAID"
+							     ,"Finalized"
 								 ,"AT1048235672BY"
 								 ,1,4);
 

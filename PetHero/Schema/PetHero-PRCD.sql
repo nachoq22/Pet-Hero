@@ -846,6 +846,7 @@ de perros de 24 años que le gusta salir a correr todos los dias, por lo que su 
 /*********************************TEST IMAGES*******************************************/
 CALL ImgPublic_GetAll();
 CALL ImgPublic_GetById(1);
+CALL ImgPublic_GetByPublic(1);
 /*CALL ImgPublic_Add(IN url varchar(250), IN idPublication INT)*/
 CALL ImgPublic_Add("www.holaSoyUnaURL.com", 1);
 /*CALL ImgPublic_Delete(1);*/

@@ -68,7 +68,7 @@ use \Model\Booking as Booking;
         }
 
         public function GetPetsByBook($idBook){
-            $petList = array();
+            $bpetList = array();
             $query = "CALL BP_GetByBook(?)";
             $parameters["idBook"] = $idBook;
             $this->connection = Connection::GetInstance();
@@ -77,9 +77,9 @@ use \Model\Booking as Booking;
                 $bp = new bookingPet();
                 $bp->__fromDB($row["idBP"],$this->bookDAO->Get($row["idBook"]),$this->petDAO->Get($row["idPet"]));
 
-            array_push($petList,$bp->getPet());
+            array_push($bpetList,$bp);
             }
-        return $petList;
+        return $bpetList;
         }
 
 ///ACA RECUPERO PETS SEGUN LA LISTA DE BOOKINGS A FILTRAR
@@ -87,10 +87,10 @@ use \Model\Booking as Booking;
                 $booklist = $this->GetBookByUsername($username);
             $psBsList = array();
             foreach($booklist as $booking){
-                $petlist = array();
-                $petlist = $this->GetPetsByBook($booking->getid());
+                $bpetList = array();
+                $bpetList = $this->GetPetsByBook($booking->getid());
 
-                $psBsList = array_merge($psBsList,$petlist);
+                $psBsList = array_merge($psBsList,$bpetList);
             }
         return $psBsList;    
         }
