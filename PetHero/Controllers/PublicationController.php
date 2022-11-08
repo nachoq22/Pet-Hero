@@ -24,10 +24,10 @@ use \Model\Review as Review;
             $this->publicDAO->NewPublication($public);
         }
 
-        public function ViewPublication(){
+        public function ViewPublication($idPublic){
             $public = new Publication();
-            $public = $this->publicDAO->GetByUser(2);
-            $reviewList = $this->reviewDAO->GetAllByPublic(2);
+            $public = $this->publicDAO->Get($idPublic);
+            $reviewList = $this->reviewDAO->GetAllByPublic($idPublic);
             //var_dump($public);
             require_once(VIEWS_PATH."PublicInd.php");
         }

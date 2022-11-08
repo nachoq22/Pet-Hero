@@ -84,7 +84,7 @@
       </div>
 
   <?php foreach($publicList as $public){?>
-	  <div class="col">   
+    <div class="col">    
 		<div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" 
 					style=" background-image: url('https://cdn.bhdw.net/im/paisaje-arte-digital-papel-pintado-80890_w635.webp');
 					background-size: cover;
@@ -104,7 +104,6 @@
 						<small><?php echo $public->getCloseDate()?></small>
 					</li>
 				</ul>
-				
 				<ul class="d-flex list-unstyled mt-auto">
 					<li class="me">
 						<img src="https://pbs.twimg.com/media/E0e2SE4XsAgxVdm.jpg" alt="Bootstrap" width="32" height="32" class="rounded-circle border border-white me-3">
@@ -126,11 +125,15 @@
 								0 0 151px #0fa;">
 						<i class="bi bi-currency-dollar me-1" width="1em" height="1em"></i>
 						<small><strong><?php echo $public->getRemuneration()?></strong></small>
+            <form action="<?php echo FRONT_ROOT."/Publication/ViewPublication"?>" method="post">
+      <input type="hidden" name="idPet" value=<?php echo $public->getId() ?>>
+      <button type="submit" class="stretched-link" style="border-left-width: 0px;border-top-width: 0px;border-right-width: 0px;height: 0px;padding-right: 0px;padding-left: 0px;border-bottom-width: 0px;padding-bottom: 0px;padding-top: 0px;"></button></form>
 					</li>
 				</ul>
 			</div>
 		</div>
 	</div>
+
 	<?php } ?>
 <!--
 <div class="col">   
