@@ -212,6 +212,20 @@ use \Model\User as User;
         return $rta;
         }
 
+        public function IsUser(User $user){
+            $rta = 0;
+            $query = "CALL User_IsExist(?,?)";
+            $parameters["userName"] = $user->getUsername();
+            $parameters["email"] = $user->getEmail();
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+
+            foreach($resultBD as $row){
+                $rta = $row["rta"];
+            }
+        return $rta;
+        }
+
 //INSERT METHODS
         private function Add(User $user){
             $query = "CALL User_Add(?,?,?)";

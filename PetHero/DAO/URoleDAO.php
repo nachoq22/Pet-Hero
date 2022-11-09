@@ -96,11 +96,14 @@ use \Model\UserRole as UserRole;
         }
 
         public function Register(UserRole $ur){
-            $user = $this->userDAO->AddRet($ur->getUser());
-            $ur->setUser($user);
-            $ur->setRole($this->roleDAO->Get(1));
-            $this->Add($ur);
-            
+            if((empty($ur) == false)){
+                if($this->userDAO->IsUser($ur->getUser())){
+                $user = $this->userDAO->AddRet($ur->getUser());
+                $ur->setUser($user);
+                $ur->setRole($this->roleDAO->Get(1));
+                $this->Add($ur);
+                }
+            }
         }
 
         public function UtoKeeper(UserRole $ur){

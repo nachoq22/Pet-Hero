@@ -169,6 +169,15 @@ END;
 $$
 
 DELIMITER $$
+CREATE PROCEDURE User_IsExist(IN username VARCHAR(50), IN email VARCHAR(50))
+BEGIN
+    SELECT COUNT(idUser) as rta
+    FROM User
+    WHERE (User.username = username) OR (User.email = email);
+END;
+$$
+
+DELIMITER $$
 CREATE PROCEDURE User_Add(IN username VARCHAR(50),IN password VARCHAR(30),IN email VARCHAR(50))
 BEGIN
     INSERT INTO User

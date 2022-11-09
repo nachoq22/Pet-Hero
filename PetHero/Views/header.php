@@ -29,6 +29,9 @@ include("Head.php");
           <li class="nav-link">
             <a class="btn btn-outline-info me-2" href="<?php echo FRONT_ROOT."/Home/ViewKeeperPanel"?>" type="button"><i class="bi bi-person-rolodex"></i></a>
           </li>
+          <li class="nav-link">
+            <a class="btn btn-outline-primary me-2" href="<?php echo FRONT_ROOT."/Home/Logout"?>" type="button"><i class="bi bi-person-rolodex"></i></a>
+          </li>
 
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -44,14 +47,13 @@ include("Head.php");
 <!-- DROPDOWN -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-				<i class="bi bi-person-circle"></i>
+				      <i class="bi bi-person-circle"></i>
             </a>
 
-            
-            <ul class="dropdown-menu" id="menuProfile">
-              <li><a type="button" class="dropdown-item" id="signUpItem" data-bs-toggle="modal" data-bs-target=".bs-modal-sm">Sign Up</a></li>
-              <li><a type="button" class="dropdown-item" id="loginItem" data-bs-toggle="modal" data-bs-target=".bs-modal-sm">Login</a></li>
-            </ul>
+          <ul class="dropdown-menu" id="menuProfile">
+              <li><a class="dropdown-item" href="<?php echo FRONT_ROOT."/Home/ViewOwnerPanel"?>" type="button">Profile</a></li>
+              <li><a class="dropdown-item" href="<?php echo FRONT_ROOT."/Home/Logout"?>" type="button">Cerrar Session</a></li>
+          </ul> 
           </li>
           
         </ul>
@@ -134,13 +136,7 @@ include("Head.php");
 
 <script>
   const menu =  document.getElementById("menuProfile")
-  let isLogged=false;
-  //Parte que sirve para cambio de dropwdown items en caso de estar logueado
-  if(isLogged){
-    const item1 =  `<li><a class="dropdown-item" id="signUpItem" data-bs-toggle="modal" data-bs-target=".bs-modal-sm">Profile</a></li>
-    <li><a class="dropdown-item" id="signUpItem" data-bs-toggle="modal" data-bs-target=".bs-modal-sm">Cerrar Session</a></li>`
-    menu.innerHTML = item1
-  }else{
+
   //En caso de no estarlo mantiene los originales en el HTML de arriba y dispara MODAL --NO TOCAR
     const signUpItem = document.getElementById("signUpItem")
     signUpItem.addEventListener('click', (e) => {
@@ -151,5 +147,4 @@ include("Head.php");
   loginItem.addEventListener('click', (e) => {
     document.getElementById("pills-login-tab").click()
   })
-  }
 </script>

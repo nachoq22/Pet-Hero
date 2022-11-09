@@ -10,6 +10,7 @@ use \DAO\PetDAO as PetDAO;
 use \DAO\PublicationDAO as PublicationDAO; 
 use \DAO\BookingPetDAO as BookingPetDAO;
 use \DAO\ImgPublicDAO as ImgPublicDAO;
+use \Model\User as User;
 
     class HomeController{
         /*
@@ -38,15 +39,6 @@ use \DAO\ImgPublicDAO as ImgPublicDAO;
         }
 
         public function Index(){
-            /*
-            $locationList=$this->locationDAO->GetAll();
-            $sizeList=$this->sizeDAO->GetAll();
-            $typeList=$this->typeDAO->GetAll();
-            $userList =$this->userDAO->DefGetAll();
-            */
-
-            //$userIs=$this->userDAO->Get(2);
-            //require_once(VIEWS_PATH."PetList.php");
             $publicList = $this->publicDAO->GetAll();
             require_once(VIEWS_PATH."Home.php");
         }
@@ -104,6 +96,11 @@ use \DAO\ImgPublicDAO as ImgPublicDAO;
         public function Search($search){
             $publicList = $this->publicDAO->Search($search);
             require_once(VIEWS_PATH."Search.php");
+        }
+
+        public function Logout(){
+            session_destroy();
+            $this->Index();
         }
     }
 ?>
