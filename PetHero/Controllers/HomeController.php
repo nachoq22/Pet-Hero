@@ -84,9 +84,9 @@ use \DAO\ImgPublicDAO as ImgPublicDAO;
 
         public function ViewOwnerPanel(){
             //$owner = $this->userDAO->DGet(2);   /*$owner = $this->userDAO->DGetByUsername(2);*/
-            $petList = $this->petDAO->GetAllByUsername("sculpordwarf"); /*$petList = $this->petDAO->GetAllByUsername("sculpordwarf");*/ 
-            $bookList = $this->bpDAO->GetBookByUsername("sculpordwarf"); /*$bookList = $this->bookDAO->GetByOwner(?);*/ 
-            $bPetsList = $this->bpDAO->GetAllPetsBooks("sculpordwarf"); 
+            $petList = $this->petDAO->GetAllByUsername("venus"); /*$petList = $this->petDAO->GetAllByUsername("sculpordwarf");*/ 
+            $bookList = $this->bpDAO->GetBookByUsername("venus"); /*$bookList = $this->bookDAO->GetByOwner(?);*/ 
+            $bPetsList = $this->bpDAO->GetAllPetsBooks("venus"); 
             $imgList = $this->imgPublicDAO->GetByBookings($bookList);
             //print_r($imgList);
             require_once(VIEWS_PATH."OwnerPanel.php");

@@ -508,6 +508,8 @@ BEGIN
         ,Publication.idUser)
     VALUES
         (openD,closeD,title,description,popularity,remuneration,idUser);
+
+	SELECT LAST_INSERT_ID() as LastID;
 END;
 $$ 
 
@@ -615,6 +617,7 @@ BEGIN
         (Booking.startD, Booking.finishD, Booking.bookState, Booking.idPublic, Booking.idUser)
     VALUES
         (startD, finishD, bookState, idPublic, idUser);
+	SELECT LAST_INSERT_ID() as LastID;
 END;
 $$
 

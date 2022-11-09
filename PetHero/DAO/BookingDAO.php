@@ -24,6 +24,7 @@ use \Model\Booking as Booking;
 
 //CON TODO ESTO SE REGISTRA UN BOOKING
         private function Add(Booking $booking){
+            $idLastP = 0;
             $query = "CALL Booking_Add(?,?,?,?,?)";
             $parameters["startD"] = $booking->getStartD();
             $parameters["finishD"] = $booking->getFinishD();
@@ -31,11 +32,14 @@ use \Model\Booking as Booking;
             $parameters["idPublic"] = $booking->getPublication()->getid();
             $parameters["idUser"] = $booking->getUser()->getId();
 
-            $idNBook = 0;
-
+            
             $this->connection = Connection::GetInstance();
-            $idNBook = $this->connection->ExecuteLastId($query,$parameters,QueryType::StoredProcedure);
-        return $idNBook;    
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+    
+            foreach($resultBD as $row){
+                $idLastP = $row["LastID"];
+            }
+            return $idLastP; 
         }
 
         public function AddRet(Booking $booking){
