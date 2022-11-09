@@ -152,6 +152,26 @@ use \Model\Publication as Publication;
         return $publicList;
         }
 
+        public function Search($phrase){
+            $publicList = array();
+            $query = "CALL Publication_Search(?)";
+            $parameters["phrase"] = $phrase;
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+
+            foreach($resultBD as $row){
+                $public = new Publication();
+                $public->__fromDB($row["idPublic"],$row["openD"]
+                                        ,$row["closeD"],$row["title"]
+                                        ,$row["description"],$row["popularity"]
+                                        ,$row["remuneration"]
+                                        ,$this->userDAO->Get($row["idUser"]));
+
+                array_push($publicList,$public);
+            }
+            return $publicList;
+        }
+
         public function Delete($idPublic){
             $query = "CALL Publication_Delete(?)";
             $parameters["idPublic"] = $idPublic;
@@ -159,5 +179,6 @@ use \Model\Publication as Publication;
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
         }
+        
     }
 ?>

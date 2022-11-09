@@ -1,15 +1,22 @@
 <?php
 namespace Controllers;
 use \DAO\ImgPublicDAO as ImgPublicDAO;
+use \DAO\PublicationDAO as PublicationDAO;
+use \DAO\ReviewDAO as ReviewDAO;
 use \Model\ImgPublic as ImgPublic;
 use \Model\Publication as Publication;
 use \Model\User as User;
+use \Model\Review as Review;
 
     class PublicationController{
         private $publicDAO;
+        private $reviewDAO;
+        
 
         public function __construct(){
             $this->publicDAO = new ImgPublicDAO();
+            $this->publicationDAO = new PublicationDAO();
+            $this->reviewDAO = new ReviewDAO();
         }
 
         public function Add($title,$description,$openD,$closeD,$remuneration,$images){
@@ -39,6 +46,14 @@ use \Model\User as User;
             }
   */          
             $this->publicDAO->NewPublication($imgPublic,$images);
+        }
+
+        public function ViewPublication($idPublic){
+            $public = new Publication();
+            $public = $this->publicationDAO->Get($idPublic);
+            $reviewList = $this->reviewDAO->GetAllByPublic($idPublic);
+            //var_dump($public);
+            require_once(VIEWS_PATH."PublicInd.php");
         }
     }
 ?>

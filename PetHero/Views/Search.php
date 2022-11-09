@@ -97,6 +97,9 @@
 								0 0 151px #0fa;">
 						<i class="bi bi-currency-dollar me-1" width="1em" height="1em"></i>
 						<small><strong><?php echo $public->getRemuneration()?></strong></small>
+						<form action="<?php echo FRONT_ROOT."/Publication/ViewPublication"?>" method="post">
+      <input type="hidden" name="idPet" value=<?php echo $public->getId() ?>>
+      <button type="submit" class="stretched-link" style="border-left-width: 0px;border-top-width: 0px;border-right-width: 0px;height: 0px;padding-right: 0px;padding-left: 0px;border-bottom-width: 0px;padding-bottom: 0px;padding-top: 0px;"></button></form>
 					</li>
 				</ul>
 			</div>

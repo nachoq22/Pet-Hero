@@ -56,8 +56,8 @@ include("Head.php");
           
         </ul>
 
-        <form class="d-flex" role="search" action="<?php echo FRONT_ROOT."/Home/Search" ?>" method="post">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="seach">
+        <form class="d-flex" role="search" action="<?php echo FRONT_ROOT."/Home/Search" ?>" method="post" class="was-validated">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="seach" required>
           <button class="btn btn-outline-success" type="submit">Search</button>
         </form>
       </div>

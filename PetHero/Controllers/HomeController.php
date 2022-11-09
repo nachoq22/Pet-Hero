@@ -102,9 +102,7 @@ use \DAO\ImgPublicDAO as ImgPublicDAO;
         }      
 
         public function Search($search){
-            var_dump($search);
             $publicList = $this->publicDAO->Search($search);
-            var_dump($publicList);
             require_once(VIEWS_PATH."Search.php");
         }
     }

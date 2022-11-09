@@ -48,12 +48,12 @@
             $rta = $this->userDAO->Login($user);
             //var_dump($rta);
             if($rta!=0){
-                /*
+                
                 session_start();
                 $loggedUser = new User();
                 $loggedUser->setUsername($username);
                 $loggedUser->setPassword($password);
-                $_SESSION["loggedUser"]= $loggedUser;*/
+                $_SESSION["loggedUser"]= $loggedUser; 
                 //var_dump($user);
                 //$this->Index();
                 //var_dump($_SESSION["loggedUser"]);
