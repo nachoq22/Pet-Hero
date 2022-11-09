@@ -22,7 +22,7 @@
         }
 
         public function ViewPetList(){
-            //$petList = $this->petDAO->GetAllByUser(1);
+            //$petList = $this->petDAO->GetAllByUser($_SESSION["loggedUser"]->getName());
             $petList = $this->petDAO->GetAll();
             require_once(VIEWS_PATH."PetList.php");
         }

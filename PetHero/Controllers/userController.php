@@ -25,6 +25,7 @@
             $user->__fromRegister($username,$password,$email);
             $uRole= new UserRole();
             $uRole->setUser($user);
+            var_dump($uRole);
             $this->uRoleDAO->Register($uRole);
             $this->homeController->ViewOwnerPanel();//levantar sesion si es satifactorio           
         } 

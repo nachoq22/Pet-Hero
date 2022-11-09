@@ -1,6 +1,3 @@
-<?php
-include("Head.php");
-?>
 <header>
   <nav class="navbar navbar-expand-lg bg-light">
     <div class="container-fluid">
@@ -51,8 +48,8 @@ include("Head.php");
             </a>
 
           <ul class="dropdown-menu" id="menuProfile">
-              <li><a class="dropdown-item" href="<?php echo FRONT_ROOT."/Home/ViewOwnerPanel"?>" type="button">Profile</a></li>
-              <li><a class="dropdown-item" href="<?php echo FRONT_ROOT."/Home/Logout"?>" type="button">Cerrar Session</a></li>
+               <li><a class="dropdown-item" id="signUpItem" data-bs-toggle="modal" data-bs-target=".bs-modal-sm">Sign Up</a></li>
+              <li><a class="dropdown-item" id="loginItem" data-bs-toggle="modal" data-bs-target=".bs-modal-sm">Login</a></li>
           </ul> 
           </li>
           

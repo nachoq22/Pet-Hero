@@ -812,6 +812,7 @@ Call User_GetAll();
 Call User_GetById(2);
 Call User_GetByUsername("planetar");
 /*CALL User_Add(username,password,varResp);*/
+CALL User_IsExist("planetar","achternaga@wificon.eu");
 CALL User_Login("planetar","orylOSad");
 /*CALL User_Add(username,password,email,idData);*/
 Call User_Add("pablitoClavito","ClavitoCrack","pablitoElCrack@gmail.com");
