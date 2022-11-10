@@ -79,13 +79,13 @@
                         <div class="card border-success mb-3" style="max-width: 24rem;">
                         <div class="card-header bg-transparent border-success"><strong>$<?php echo $public->getRemuneration() ?> por noche</strong></div>
                         <div class="card-body text-success">
-                        <form action="<?php echo FRONT_ROOT."/Pet/GetPetsByReservation" ?>">
-                        <input type="hidden" value="<?php $public->getid() ?>">
+                        <form action="<?php echo FRONT_ROOT."/Pet/GetPetsByReservation" ?>" method="post">
+                        <input type="hidden" name="idPublic" value=<?php echo $public->getid() ?>>
                         <p class="card-text"> Ingrese el dia que le gustaria dejar a su mascota</p> <!-- mandar id de public -->
-                        <input type="date" id="" >
+                        <input type="date" id="" name="startD" >
                         <br><br>
                         <p class="card-text"> Ingrese el dia para ir a buscar su mascota</p> <!-- mandar id de public -->
-                        <input type="date" id="" >
+                        <input type="date" id="" name="finishD" >
                         </div>
                         <div class="card-footer bg-transparent border-success"><button type="submit" class="btn btn-primary">Comprobar disponibilidad</button></div></form>
                         </div> 

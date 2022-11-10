@@ -27,7 +27,7 @@
             $uRole->setUser($user);
             var_dump($uRole);
             $this->uRoleDAO->Register($uRole);
-            $this->homeController->ViewOwnerPanel();//levantar sesion si es satifactorio           
+            $this->homeController->ViewOwnerPanel("El registro ha sido exitoso!");//levantar sesion si es satifactorio           
         } 
 
         public function Login($username, $password){            

@@ -74,8 +74,9 @@ use \Model\User as User;
             require_once(VIEWS_PATH."ReqReservation.php");
         }
 
-        public function ViewOwnerPanel(){
+        public function ViewOwnerPanel($message = ""){
             //$owner = $this->userDAO->DGet(2);   /*$owner = $this->userDAO->DGetByUsername(2);*/
+            
             $petList = $this->petDAO->GetAllByUsername("sculpordwarf"); /*$petList = $this->petDAO->GetAllByUsername("sculpordwarf");*/ 
             $bookList = $this->bpDAO->GetBookByUsername("sculpordwarf"); /*$bookList = $this->bookDAO->GetByOwner(?);*/ 
             $bPetsList = $this->bpDAO->GetAllPetsBooks("sculpordwarf"); 

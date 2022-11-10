@@ -23,30 +23,34 @@ use \Model\Booking as Booking;
         }
 
 //CON TODO ESTO SE REGISTRA UN BOOKING
-        private function Add(Booking $booking){
-            $query = "CALL Booking_Add(?,?,?,?,?)";
-            $parameters["startD"] = $booking->getStartD();
-            $parameters["finishD"] = $booking->getFinishD();
-            $parameters["bookState"] = $booking->getBookState();
-            $parameters["idPublic"] = $booking->getPublication()->getid();
-            $parameters["idUser"] = $booking->getUser()->getId();
+            private function Add(Booking $booking){
+                $idLastP = 0;
+                $query = "CALL Booking_Add(?,?,?,?,?)";
+                $parameters["startD"] = $booking->getStartD();
+                $parameters["finishD"] = $booking->getFinishD();
+                $parameters["bookState"] = $booking->getBookState();
+                $parameters["idPublic"] = $booking->getPublication()->getid();
+                $parameters["idUser"] = $booking->getUser()->getId();
 
-            $idNBook = 0;
 
-            $this->connection = Connection::GetInstance();
-            $idNBook = $this->connection->ExecuteLastId($query,$parameters,QueryType::StoredProcedure);
-        return $idNBook;    
-        }
+                $this->connection = Connection::GetInstance();
+                $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
 
-        public function AddRet(Booking $booking){
-                $public = $this->publicDAO->Get($booking->getPublication()->getId());
-                $user = $this->userDAO->DGetByUsername($booking->getUser()->getUsername());
-            $booking->setPublication($public);
-            $booking->setuser($user);
-            $idNBook = $this->Add($booking);
-            $booking = $this->Get($idNBook);
-        return $booking;    
-        }      
+                foreach($resultBD as $row){
+                    $idLastP = $row["LastID"];
+                }
+                return $idLastP; 
+            }
+
+            public function AddRet(Booking $booking){
+                    $public = $this->publicDAO->Get($booking->getPublication()->getId());
+                    $user = $this->userDAO->DGetByUsername($booking->getUser()->getUsername());
+                $booking->setPublication($public);
+                $booking->setuser($user);
+                $idNBook = $this->Add($booking);
+                $booking = $this->Get($idNBook);
+            return $booking;
+            }     
 
         public function UpdateST(Booking $booking){
             $query = "CALL Booking_UpdateST(?,?)";

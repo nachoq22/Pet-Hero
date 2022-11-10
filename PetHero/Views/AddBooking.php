@@ -7,7 +7,7 @@
                 <div class="col">
                     <div class="form-floating mb-3">
                         <input type="date" class="form-control" id="startD" 
-                               placeholder="San Francisco 1578" name="startD" required>
+                               placeholder="<?php echo $startD ?>" name="startD" value="<?php echo $startD ?>" readonly required>
                         <label for="startD">Start Date</label>
                             <div class="invalid-feedback">
                                 Please enter a date.
@@ -17,7 +17,7 @@
                 <div class="col">
                     <div class="form-floating mb-3">
                         <input type="date" class="form-control" id="finishD" 
-                               placeholder="Pompeyita" name="finishD" required>
+                               placeholder="<?php echo $finishD ?>" name="finishD" value="<?php echo $finishD ?>" readonly required>
                         <label for="finishD">Finish Date</label>
                             <div class="invalid-feedback">
                                 Please enter a date.
@@ -26,7 +26,7 @@
                 </div>
             </div> 
         </div>    
-
+        <input type="hidden" name="idPublic" value="<?php echo $idPublic ?>">
         <div class="col-12">
             <div class="container marketing">
             <!-- Three columns of text below the carousel -->

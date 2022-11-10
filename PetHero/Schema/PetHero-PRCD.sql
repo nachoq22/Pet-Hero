@@ -576,7 +576,7 @@ BEGIN
     VALUES
         (uri,idPublic);
 END;
-$$ 
+$$
 
 DELIMITER $$
 CREATE PROCEDURE ImgPublic_Delete(IN idImg INT)
