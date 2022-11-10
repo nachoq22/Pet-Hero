@@ -222,6 +222,8 @@ use \Model\User as User;
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
 
+        
+
         public function AddRet(User $user){
             $this->Add($user);
             $userN = $this->GetByUsername($user->getUsername());

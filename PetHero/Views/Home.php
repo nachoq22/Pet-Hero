@@ -1,4 +1,16 @@
 <body>
+<?php if (!empty($message)){?>
+  <?php if (!empty($_SESSION["sessOn"])){?>
+    <div class="alert alert-light" role="alert">
+      <?php echo $message; ?>
+    </div>
+  <?php }else{?>
+    <div class="alert alert-danger" role="alert">
+      <?php echo $message; ?>
+    </div>
+  <?php } ?>
+<?php } ?>
+
 	<div class="container-fluid">
 		<div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
 			<div class="carousel-inner">
@@ -22,7 +34,7 @@
 			</button>
 		</div>
 	</div>
-	
+
 
 
     <div class="container px-4 py-5" id="custom-cards">

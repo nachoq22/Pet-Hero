@@ -3,6 +3,7 @@ namespace DAO;
 
 use \DAO\Connection as Connection;
 use \DAO\QueryType as QueryType;
+use \Exception as Exception;
 
 use \DAO\ILocationDAO as ILocationDAO;
 use \Model\Location as Location;
@@ -71,20 +72,20 @@ use \Model\Location as Location;
 
 //INSERT METHODS
         private function Add(Location $location){
-            $query = "CALL Location_Add(?,?,?,?,?)";
-            $parameters["adress"] = $location->getAdress();
-            $parameters["neighborhood"] = $location->getNeighborhood();
-            $parameters["city"] = $location->getCity();
-            $parameters["province"] = $location->getProvince();
-            $parameters["country"] = $location->getCountry();
+                $query = "CALL Location_Add(?,?,?,?,?)";
+                $parameters["adress"] = $location->getAdress();
+                $parameters["neighborhood"] = $location->getNeighborhood();
+                $parameters["city"] = $location->getCity();
+                $parameters["province"] = $location->getProvince();
+                $parameters["country"] = $location->getCountry();
 
-            $this->connection = Connection::GetInstance();
-            $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
+                $this->connection = Connection::GetInstance();
+                $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);    
         }
 
         public function AddRet(Location $location){
-            $this->Add($location);
-            $location = $this->getByAll($location);
+                $this->Add($location);
+                $location = $this->getByAll($location);
         return $location;    
         }
         

@@ -562,6 +562,7 @@ BEGIN
 END;
 $$ 
 
+
 DELIMITER $$
 CREATE PROCEDURE ImgPublic_Delete(IN idImg INT)
 BEGIN
@@ -608,6 +609,18 @@ BEGIN
 END;
 $$
 
+
+DELIMITER $$
+CREATE PROCEDURE Booking_Add(IN startD DATE, IN finishD DATE, IN bookState VARCHAR(25),
+                         IN idPublic INT, IN idUser INT)
+BEGIN
+    INSERT INTO Booking
+        (Booking.startD, Booking.finishD, Booking.bookState, Booking.idPublic, Booking.idUser)
+    VALUES
+        (startD, finishD, bookState, idPublic, idUser);
+	SELECT LAST_INSERT_ID() as LastID;
+END;
+$$
 
 DELIMITER $$
 CREATE PROCEDURE Booking_Add(IN startD DATE, IN finishD DATE, IN bookState VARCHAR(25),
@@ -890,9 +903,6 @@ CALL Review_GetByPublic(1);
                             IN idUser INT, IN idPublication INT)*/
 CALL Review_Add("2022-11-01", "Muy bueno, excelente servicio", 5, 4, 2);
 /*CALL Review_Delete(1);*/
-
-
-select LAST_INSERT_ID();
 
 
 

@@ -19,7 +19,7 @@
         }
 
         private function imgPuProcess($tmp_name){
-            $idR = random_int(1,1000000000000000000);
+            $idR = random_int(1,100000000);
             $path= "Views\Img\IMGPublic\\".$idR."-IMGPublic".date("YmdHis").".jpg"; 
             $path = str_replace(' ', '-', $path); 
             $pathDB =  "..\\".$path; 

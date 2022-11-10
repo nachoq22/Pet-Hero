@@ -37,16 +37,7 @@ use \DAO\ImgPublicDAO as ImgPublicDAO;
             $this->imgPublicDAO = new ImgPublicDAO();
         }
 
-        public function Index(){
-            /*
-            $locationList=$this->locationDAO->GetAll();
-            $sizeList=$this->sizeDAO->GetAll();
-            $typeList=$this->typeDAO->GetAll();
-            $userList =$this->userDAO->DefGetAll();
-            */
-
-            //$userIs=$this->userDAO->Get(2);
-            //require_once(VIEWS_PATH."PetList.php");
+        public function Index($message = ""){
             $publicList = $this->publicDAO->GetAll();
             require_once(VIEWS_PATH."Home.php");
         }
@@ -70,7 +61,7 @@ use \DAO\ImgPublicDAO as ImgPublicDAO;
             require_once(VIEWS_PATH."PetList.php");
         }
 
-        public function ViewBeKeeper(){
+        public function ViewBeKeeper($message = ""){
             require_once(VIEWS_PATH."BeKeeper.php");
         }
 

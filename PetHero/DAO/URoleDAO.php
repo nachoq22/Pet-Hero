@@ -2,6 +2,7 @@
 namespace DAO;
 use \DAO\Connection as Connection;
 use \DAO\QueryType as QueryType;
+use \Exception as Exception;
 
 use \DAO\LocationDAO as LocationDAO;
 use \DAO\PersonalDataDAO as PersonalDataDAO;
@@ -72,7 +73,7 @@ use \Model\UserRole as UserRole;
             return $ur;
         }
 
-        public function IsKeeper(UserRole $ur){
+        private function GetIsKeeper(UserRole $ur){
             $rta = 0;
             $query = "CALL UR_IsKeeper(?)";
             $parameters["idUser"] = $ur->getUser()->getId();
@@ -83,6 +84,13 @@ use \Model\UserRole as UserRole;
                 $rta = $row["rta"];
             }
         return $rta;
+        }
+
+        public function IsKeeper(UserRole $ur){
+            $user = $this->userDAO->DGetByUsername($ur->getUser()->getUsername());
+            $ur->setUser($user);
+            $rta = $this->GetIsKeeper($ur);
+        return $rta;    
         }
 
 //INSERT METHODS
@@ -96,22 +104,41 @@ use \Model\UserRole as UserRole;
         }
 
         public function Register(UserRole $ur){
-            $user = $this->userDAO->AddRet($ur->getUser());
-            $ur->setUser($user);
-            $ur->setRole($this->roleDAO->Get(1));
-            $this->Add($ur);
-            
-        }
-
-        public function UtoKeeper(UserRole $ur){
-            $location = $this->locationDAO->AddRet($ur->getUser()->getData()->getLocation());
-                $ur->getUser()->getData()->setLocation($location);
-            $data = $this->dataDAO->AddRet($ur->getUser()->getData());
-                $ur->getUser()->setData($data);
-            $user = $this->userDAO->HookData($ur->getUser());
+            if((empty($ur) == false) || 
+            (empty($this->userDAO->DGetByUsername($ur->getUser()->getUsername()) == true))){
+                $user = $this->userDAO->AddRet($ur->getUser());
                 $ur->setUser($user);
-            $ur->setRole($this->roleDAO->Get(2));
-            $this->Add($ur);   
+                $ur->setRole($this->roleDAO->Get(1));
+                $this->Add($ur);
+            }
+        }
+//FUNCION DEDICADA A UPGRADEAR UN USER
+        public function UtoKeeper(UserRole $ur){
+            $e = "";  
+                try{
+                    $location = $this->locationDAO->AddRet($ur->getUser()->getData()->getLocation());
+                    $ur->getUser()->getData()->setLocation($location);  
+                }catch(Exception $location){
+                    $location = "Error al registrar Localidad,por favor reintente";
+                return $location;    
+                }
+                try{
+                    $data = $this->dataDAO->AddRet($ur->getUser()->getData());
+                    $ur->getUser()->setData($data);
+                }catch(Exception $data){
+                    $data = "Error al registrar Informacion Personal,por favor reintente";
+                return $data;  
+                }   
+                try{
+                    $user = $this->userDAO->HookData($ur->getUser());
+                    $ur->setUser($user);
+                    $ur->setRole($this->roleDAO->Get(2));
+                    $this->Add($ur); 
+                }catch(Exception $ur){
+                    $ur = "Error servidor interno, reintente en unos minutos";
+                return $ur;
+                }   
+        return  $e;
         }
 
 //DELETE METHODS

@@ -7,7 +7,7 @@
     use \Model\UserRole as UserRole;
     use \Model\Location as Location;
     use \Model\PersonalData as PersonalData;
-    
+    use \PDOException as PDOException;
 
     class UserController{
         private $userDAO;
@@ -21,22 +21,6 @@
         }
 
         public function Register($username, $email, $password){
-            /*$user = $this->userDAO->GetByUserName($userName);
-
-            if($user == null){
-                $user = $this->userDAO->GetByEmail($email);
-                if ($user == null){
-                    $user = new User();
-                    $user->__fromRequest($username,$password,$email);
-                    $this->UserDAO->Add($user);
-                    require_once(VIEWS_PATH."Prueba.php");
-                }else{
-                    //El email ya esta en uso
-                }
-            
-            }else{
-                //El usuario ya esta en uso
-            }*/
             $user = new User();
             $user->__fromRegister($username,$password,$email);
             $uRole= new UserRole();
@@ -59,25 +43,34 @@
                 //var_dump($user);
                 //$this->Index();
                 //var_dump($_SESSION["loggedUser"]);
-                $this->homeController->Index();
+                $this->homeController->Index("Te has logueado con exito");
             }
+            
         }
 
         public function BeKeeper($adress, $neighborhood, $city, $province, $country,
                                  $name,$surname,$sex,$dni){
             $location = new Location();
-                $location->__fromRequest($adress, $neighborhood, $city, $province,$country);
+            $location->__fromRequest($adress, $neighborhood, $city, $province,$country);
             $data = new PersonalData();
-                $data->__fromRequest($name,$surname,$sex,$dni,$location);
-            
-            /*SETTING DE DATOS A UNA INSTANCIA USER DESDE LA SESSION*/
+            $data->__fromRequest($name,$surname,$sex,$dni,$location);  
+/*SETTING DE DATOS A UNA INSTANCIA USER DESDE LA SESSION*/
             $user = new User();
-                $user->__fromRequest("Elcucarachin","Carlos1245","elcuca@gmail.com",$data);
+            $user->__fromRequest("Elcucarachin","Carlos1245","elcuca@gmail.com",$data);
             $uRole = new UserRole();
-                $uRole->setUser($user);
-            //var_dump($uRole);    
-            $this->uRoleDAO->UtoKeeper($uRole);
-            $this->homeController->Index();
+            $uRole->setUser($user);     
+
+            if(!empty($this->uRoleDAO->IsKeeper($uRole))){   
+                $message = $this->uRoleDAO->UtoKeeper($uRole);
+                    if(!empty($message)){
+                        $this->homeController->ViewBeKeeper($message);
+                    }else{
+                        $message = "Felicidades, ha adquirido el rol de keeper";
+                    }
+            }else{
+                $message = "Error, ya posee el rol de keeper";
+            }
+            $this->homeController->Index($message);
         }
 
         public function DeleteUser($id){

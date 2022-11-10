@@ -76,15 +76,16 @@ use \Model\PersonalData as PersonalData;
 
 //INSERT METHODS
         private function Add(PersonalData $data){
-            $query = "CALL PersonalData_Add(?,?,?,?,?)";
-            $parameters["name"] = $data->getName();
-            $parameters["surname"] = $data->getSurname();
-            $parameters["sex"] = $data->getSex();
-            $parameters["dni"] = $data->getDni();
-            $parameters["idLocation"] = $data->getLocation()->getId();
 
-            $this->connection = Connection::GetInstance();
-            $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
+                $query = "CALL PersonalData_Add(?,?,?,?,?)";
+                $parameters["name"] = $data->getName();
+                $parameters["surname"] = $data->getSurname();
+                $parameters["sex"] = $data->getSex();
+                $parameters["dni"] = $data->getDni();
+                $parameters["idLocation"] = $data->getLocation()->getId();
+
+                $this->connection = Connection::GetInstance();
+                $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
 
         public function AddRet(PersonalData $data){
