@@ -64,7 +64,6 @@
 
         public function GetPetsByReservation($idPublic, $startD, $finishD){
             //$petList = $this->petDAO->GetAllByUser(1);
-            var_dump($idPublic);
             $petList = $this->petDAO->GetAll();
             require_once(VIEWS_PATH."AddBooking.php");
         }

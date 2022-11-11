@@ -20,15 +20,12 @@
     <div class="col-7">
     <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img src="..." class="d-block w-100" alt="...">
+  <?php foreach($ImgList as $img){ ?>
+  <div class="carousel-item active">
+      <img src="<?php echo $img->getUrl()?>" class="d-block w-100" alt="..." style="width: 100%; height: 30vw; object-fit: cover;">
     </div>
-    <div class="carousel-item">
-      <img src="..." class="d-block w-100" alt="...">
-    </div>
-    <div class="carousel-item">
-      <img src="..." class="d-block w-100" alt="...">
-    </div>
+    <?php } ?>
+
   </div>
   <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -79,13 +76,13 @@
                         <div class="card border-success mb-3" style="max-width: 24rem;">
                         <div class="card-header bg-transparent border-success"><strong>$<?php echo $public->getRemuneration() ?> por noche</strong></div>
                         <div class="card-body text-success">
-                        <form action="<?php echo FRONT_ROOT."/Pet/GetPetsByReservation" ?>" method="post">
+                        <form action="<?php echo FRONT_ROOT."/Publication/ValidateDateFP" ?>" method="post">
                         <input type="hidden" name="idPublic" value=<?php echo $public->getid() ?>>
                         <p class="card-text"> Ingrese el dia que le gustaria dejar a su mascota</p> <!-- mandar id de public -->
-                        <input type="date" id="" name="startD" >
+                        <input type="date" id="" name="startD" required >
                         <br><br>
                         <p class="card-text"> Ingrese el dia para ir a buscar su mascota</p> <!-- mandar id de public -->
-                        <input type="date" id="" name="finishD" >
+                        <input type="date" id="" name="finishD" required >
                         </div>
                         <div class="card-footer bg-transparent border-success"><button type="submit" class="btn btn-primary">Comprobar disponibilidad</button></div></form>
                         </div> 

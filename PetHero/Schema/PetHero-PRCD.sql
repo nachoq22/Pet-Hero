@@ -517,6 +517,16 @@ END;
 $$
 
 DELIMITER $$
+CREATE PROCEDURE Publication_DateCheck(IN openD DATE, IN closeD DATE, IN idPublic INT)
+BEGIN
+    SELECT COUNT(idPublic) as rta 
+    FROM publication
+    WHERE (publication.idPublic = idPublic) AND (publication.openD < openD) AND (publication.closeD >= closeD);
+END;
+$$
+
+
+DELIMITER $$
 CREATE PROCEDURE Publication_Add(IN openD DATE, IN closeD DATE, IN title VARCHAR(50),
                          IN description VARCHAR(1000), IN popularity DEC(2,1), IN remuneration DEC(10,2),
 	                     IN idUser INT)
@@ -624,6 +634,15 @@ BEGIN
 END;
 $$
 
+DELIMITER $$
+CREATE PROCEDURE Booking_CheckRange(IN startD DATE, IN finishD DATE, IN idPublic INT)
+BEGIN
+    SELECT *
+    FROM booking
+     WHERE (booking.idPublic=idPublic) AND ((booking.startD > startD AND booking.startD < finishD) 
+            OR (booking.startD < startD AND booking.finishD > startD));
+END;
+$$
 
 DELIMITER $$
 CREATE PROCEDURE Booking_Add(IN startD DATE, IN finishD DATE, IN bookState VARCHAR(25),
@@ -862,6 +881,9 @@ CALL Publication_Search("24");
 CALL Publication_Add("2022-10-30","2022-11-08", "El mejor cuidador de toda Mar Del Plata","Soy un cuidador 
 de perros de 24 años que le gusta salir a correr todos los dias, por lo que su perro estará bien ejercitado", 5,4000,2);
 /*CALL Publication_Delete(2);*/
+CALL Publication_DateCheck("2022-10-31", "2022-11-10", 1);
+
+
 
 /*********************************TEST IMAGES*******************************************/
 CALL ImgPublic_GetAll();
@@ -879,8 +901,13 @@ CALL Booking_GetByUser(4);
 CALL Booking_GetBookigPay('2022-11-06','2022-11-19',3500);
 /*CALL Booking_Add(IN openDate DATE, IN closeDate DATE, IN payState VARCHAR(25), IN payCode VARCHAR(10),
                          IN idPublication INT, IN idUser INT)*/
-CALL Booking_Add("2022-11-01","2022-11-15","In Review",1, 1);
-
+CALL Booking_Add("2022-10-15","2022-11-15","In Review",5, 1);
+CALL Booking_CheckRange("2022-09-17", "2022-09-22", 5); /*ARRANCA ANTES TERMINA ANTES ANDA BIEN */
+CALL Booking_CheckRange("2022-09-17", "2022-11-13", 5); #ARRANCA ANTES TERMINA EN EL MEDIO -CONTEMPLA
+CALL Booking_CheckRange("2022-08-17", "2022-12-19", 5); #ARRANCA ANTES TERMINA DESPUES -CONTEMPLA
+CALL Booking_CheckRange("2022-10-17", "2022-11-12", 5); #ARRANCA EN EL MEDIO TERMINA EN EL MEDIO -CONTEMPLA
+CALL Booking_CheckRange("2022-10-17", "2022-12-28", 5); #ARRANCA EN EL MEDIO TERMINA DESPUES -CONTEMPLA 
+CALL Booking_CheckRange("2022-11-21", "2022-12-14", 5); #ARRANCA DESPUES TERMINA DESPUES -CONTEMPLA
 /*CALL Booking_Delete(2);*/
 
 /*********************************TEST BOOKING PET*******************************************/

@@ -114,7 +114,9 @@
         return $imgByBooks;
         }
 
-
+        public function GetPublication(ImgPublic $public){
+            return $this->publicDAO->Get($public->getPublication()->getId());
+        }
 
 
         public function GetAll(){
@@ -141,5 +143,9 @@
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
         }  
+
+        public function ValidateDP($startD, $finishD, $idPublic){
+            return $this->publicDAO->ValidateDP($startD, $finishD, $idPublic);
+        }
     }
 ?>

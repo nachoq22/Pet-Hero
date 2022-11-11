@@ -145,5 +145,49 @@ use \Model\Publication as Publication;
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
         }
+
+        public function Search($phrase){
+            $publicList = array();    
+            $query = "CALL Publication_Search(?)";
+            $parameters["phrase"] = $phrase;
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+
+            foreach($resultBD as $row){
+                $public = new Publication();
+                $public->__fromDB($row["idPublic"],$row["openD"]
+                                        ,$row["closeD"],$row["title"]
+                                        ,$row["description"],$row["popularity"]
+                                        ,$row["remuneration"]
+                                        ,$this->userDAO->Get($row["idUser"]));
+
+                array_push($publicList,$public);
+            }
+            return $publicList;
+        }
+
+        public function ValidateDP($startD, $finishD, $idPublic){
+            $rta = NULL;
+            $query = "CALL Publication_DateCheck(?,?,?)";
+            $parameters["openD"] = $startD;
+            $parameters["closeD"] = $finishD;
+            $parameters["idPublic"] = $idPublic;
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+
+            foreach($resultBD as $row){
+                $rta = $row["rta"];
+
+                }
+            return $rta;
+        }
+
+
+
+
+
+
+
+
     }
 ?>

@@ -17,16 +17,26 @@ use \Controllers\HomeController as HomeController;
         }
 
         public function Add($startD,$finishD,$idPublic,$petsId){
-            $publication = new Publication();
-            $publication->setid($idPublic);
-
-            $user = new User();
-            $user->setUsername("venus");
-            $book = new Booking();
-            $book->__fromRequest($startD,$finishD,"In Review",$publication,$user);
-            $this->bpDAO->NewBooking($book,$petsId);
-            $this->homeController->ViewOwnerPanel("Su reserva se ha realizado con exito");
-            
+            if($this->bpDAO->ValidateTypes($petsId)==1){  
+                $publication = new Publication();
+                $publication->setid($idPublic);
+                $user = new User();
+                $user->setUsername("venus");
+                $book = new Booking();
+                $book->__fromRequest($startD,$finishD,"In Review",$publication,$user);
+                if($this->bpDAO->ValidateTypesOnBookings($book, $petsId)==1){
+                    $this->bpDAO->NewBooking($book,$petsId);
+                    echo "fue un exito";
+                }else{
+                echo "El keeper cuidará a una mascota de otra especie en las fechas introducidas";
+                }
+            }else{
+                echo "Sus mascotas deben ser de la misma especie";
+            }
+            /*$this->bpDAO->NewBooking($book,$petsId);
+            $this->homeController->ViewOwnerPanel("Su reserva se ha realizado con exito");*/
         }
+
+
     }
 ?>

@@ -1,24 +1,25 @@
 <?php
 namespace Controllers;
 use \DAO\ImgPublicDAO as ImgPublicDAO;
-use \DAO\PublicationDAO as PublicationDAO;
 use \DAO\ReviewDAO as ReviewDAO;
 use \Model\ImgPublic as ImgPublic;
 use \Model\Publication as Publication;
 use \Model\User as User;
 use \Model\Review as Review;
 use \Controllers\HomeController as HomeController;
+use \Controllers\PetController as PetController;
 
     class PublicationController{
         private $publicDAO;
         private $reviewDAO;
         private $homeController;
+        private $petController;
 
         public function __construct(){
             $this->publicDAO = new ImgPublicDAO();
-            $this->publicationDAO = new PublicationDAO();
             $this->reviewDAO = new ReviewDAO();
             $this->homeController = new HomeController();
+            $this->petController = new PetController();
         }
 
         public function Add($title,$description,$openD,$closeD,$remuneration,$images){
@@ -54,10 +55,23 @@ use \Controllers\HomeController as HomeController;
 
         public function ViewPublication($idPublic){
             $public = new Publication();
-            $public = $this->publicationDAO->Get($idPublic);
-            $reviewList = $this->reviewDAO->GetAllByPublic($idPublic);
+            $public->setId($idPublic);
+            $imgPublic = new ImgPublic();
+            $imgPublic->setPublication($public);
+            $public = $this->publicDAO->GetPublication($imgPublic);
+            $reviewList = $this->reviewDAO->GetAllByPublic($public->getId());
             //var_dump($public);
+            $ImgList = $this->publicDAO->GetAllByPublic($public->getId());
             require_once(VIEWS_PATH."PublicInd.php");
+        }
+
+        public function ValidateDateFP($idPublic, $startD, $finishD){
+            if($this->publicDAO->ValidateDP($startD, $finishD, $idPublic) == 1){
+                $this->petController->GetPetsByReservation($idPublic, $startD, $finishD);
+            }else{
+                $this->ViewPublication($idPublic);
+            }
+
         }
     }
 ?>
