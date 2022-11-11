@@ -212,7 +212,7 @@ CREATE TABLE IF NOT EXISTS Booking(
 	startD DATE NOT NULL,
 	finishD DATE NOT NULL,
 	bookState VARCHAR(50) NOT NULL, /*CHECK(bookState = "Awaiting Reply")*/
-	payCode VARCHAR(14), /*HACER CHECK DE QUE TENGA 4 LETRAS Y DEMAS NUMS*/
+	payCode VARCHAR(14),
 		idPublic INT NOT NULL,
 		idUser INT NOT NULL,
 			CONSTRAINT fk_bookPublic FOREIGN KEY(idPublic)

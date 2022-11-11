@@ -15,13 +15,16 @@ use \Model\User as User;
 
         public function Add($startD,$finishD,$petsId){
             $publication = new Publication();
-            $publication->setid(1);
+            $publication->setid(4);
 
             $user = new User();
             $user->setUsername("venus");
             $book = new Booking();
             $book->__fromRequest($startD,$finishD,"In Review",$publication,$user);
             $this->bpDAO->NewBooking($book,$petsId);
+        }
+
+        public function Accept(){
             
         }
     }

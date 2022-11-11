@@ -30,13 +30,14 @@ use \Model\Checker as Checker;
         }
 
         public function NewChecker(Checker $checker,$rta){
-            $bp = $this->bpDAO->GetByBook($checker->getBooking()); 
+            $bp = $this->bpDAO->GetByBook($checker->getBooking()->getId()); 
             if($rta == 1){
                     $totally = $this->bpDAO->GetTotally($bp->getBooking());         
                     $openD = DATE("Y-m-d");
                     $closeD = DATE("Y-m-d",STRTOTIME($openD."+ 3 days"));
                 $checker->__fromRequest($openD,$closeD,$totally,$bp->getBooking());
                 $this->Add($checker);
+                $this->bpDAO->NewState($bp->getBooking(),$rta);
             }else{
                 $this->bpDAO->NewState($bp->getBooking(),$rta);
             }
@@ -88,6 +89,11 @@ use \Model\Checker as Checker;
                 array_push($checkerList,$checker);
             }
             return $checkerList;    
+        }
+
+        public function UpdatePayCode($book){
+            $message = $this->bpDAO->UpdatePayCode($book);
+        return $message;
         }
         
         public function Delete($idChecker){

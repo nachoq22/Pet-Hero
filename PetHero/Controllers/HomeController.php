@@ -73,7 +73,7 @@ use \DAO\ImgPublicDAO as ImgPublicDAO;
             require_once(VIEWS_PATH."ReqReservation.php");
         }
 
-        public function ViewOwnerPanel(){
+        public function ViewOwnerPanel($message=""){
             //$owner = $this->userDAO->DGet(2);   /*$owner = $this->userDAO->DGetByUsername(2);*/
             $petList = $this->petDAO->GetAllByUsername("venus"); /*$petList = $this->petDAO->GetAllByUsername("sculpordwarf");*/ 
             $bookList = $this->bpDAO->GetBookByUsername("venus"); /*$bookList = $this->bookDAO->GetByOwner(?);*/ 
@@ -85,9 +85,10 @@ use \DAO\ImgPublicDAO as ImgPublicDAO;
         
         public function ViewKeeperPanel(){
             //$owner = $this->userDAO->DGet(2);   /*$owner = $this->userDAO->DGetByUsername(2);*/
-            $petList = $this->petDAO->GetAllByUsername("sculpordwarf"); /*$petList = $this->petDAO->GetAllByUsername("sculpordwarf");*/ 
-            $bookList = $this->bpDAO->GetBookByUsername("sculpordwarf"); /*$bookList = $this->bookDAO->GetByOwner(?);*/ 
-            $bPetsList = $this->bpDAO->GetAllPetsBooks("sculpordwarf"); 
+            $publicList = $this->publicDAO->GetAllByUsername("sculpordwarf"); /*$petList = $this->petDAO->GetAllByUsername("sculpordwarf");*/ 
+            $imgByPublic = $this->imgPublicDAO->GetOneByPublics($publicList);
+            $bookList = $this->bpDAO->GetBookByKeeper("sculpordwarf"); /*$bookList = $this->bookDAO->GetByOwner(?);*/ 
+            $bPetsList = $this->bpDAO->GetAllPetsByBooks("sculpordwarf");
             $imgList = $this->imgPublicDAO->GetByBookings($bookList);
             require_once(VIEWS_PATH."KeeperPanel.php");
         }      

@@ -623,14 +623,20 @@ END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE Booking_Add(IN startD DATE, IN finishD DATE, IN bookState VARCHAR(25),
-                         IN idPublic INT, IN idUser INT)
+CREATE PROCEDURE Booking_UpdateST(IN idBook INT, IN bookState VARCHAR(50))
 BEGIN
-    INSERT INTO Booking
-        (Booking.startD, Booking.finishD, Booking.bookState, Booking.idPublic, Booking.idUser)
-    VALUES
-        (startD, finishD, bookState, idPublic, idUser);
-	SELECT LAST_INSERT_ID() as LastID;
+    UPDATE Booking
+        SET Booking.bookState = bookState
+    WHERE Booking.idBook = idBook;
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE Booking_UpdateCode(IN idBook INT, IN payCode VARCHAR(14))
+BEGIN
+    UPDATE Booking
+        SET Booking.payCode = payCode
+    WHERE Booking.idBook = idBook;
 END;
 $$
 
@@ -667,6 +673,15 @@ DELIMITER $$
 CREATE PROCEDURE BP_GetByBook(IN idBook INT)
 BEGIN
     SELECT * 
+    FROM BookingPet
+    WHERE (BookingPet.idBook = idBook);
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE BP_GetPetPay(IN remuneration DEC(10,2),IN idBook INT)
+BEGIN
+    SELECT (COUNT(idPet) * remuneration) AS petPay
     FROM BookingPet
     WHERE (BookingPet.idBook = idBook);
 END;
@@ -876,6 +891,8 @@ CALL Booking_GetBookigPay('2022-11-06','2022-11-19',3500);
 /*CALL Booking_Add(IN openDate DATE, IN closeDate DATE, IN payState VARCHAR(25), IN payCode VARCHAR(10),
                          IN idPublication INT, IN idUser INT)*/
 CALL Booking_Add("2022-11-01","2022-11-15","In Review",1, 1);
+/*CALL Booking_UpdateST(IN idBook DATE, IN bookState VARCHAR(25))*/
+CALL Booking_UpdateST(2,"Awaiting Payment");
 
 /*CALL Booking_Delete(2);*/
 
@@ -884,6 +901,8 @@ CALL BP_GetAll();
 CALL BP_GetById(1);
 CALL BP_GetByBook(1);
 /*CALL BookingPet_Add(IN idBooking INT, IN idPet INT);*/
+/*CALL BP_GetPetPay(remuneration,idBooking);*/
+CALL BP_GetPetPay(500,4);
 CALL BP_Add(1,1);
 /*CALL BookingPet_Delete(1);*/
 

@@ -91,7 +91,6 @@ use \Model\Publication as Publication;
         $public;
         }
 
-
         public function GetAll(){
             $publicList = array();    
 
@@ -133,7 +132,7 @@ use \Model\Publication as Publication;
         }
 
         public function GetAllByUsername($username){
-            $user = $this->userDAO->DGet($username);
+            $user = $this->userDAO->DGetByUsername($username);
             $publicList = $this->GetAllByUser($user->getId());
         return $publicList;
         }

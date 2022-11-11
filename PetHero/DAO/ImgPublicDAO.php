@@ -114,6 +114,20 @@
         return $imgByBooks;
         }
 
+        public function GetOneByPublics($publicList){
+            $imgByBooks = array();
+            $limitedPub = array();
+            foreach($publicList as $public){
+                if(IN_ARRAY($public->getid(),$limitedPub) == false){
+                        ARRAY_PUSH($limitedPub,$public->getid());
+                    $imgByP = new ImgPublic();
+                    $imgByP = $this->GetByPublic($public->getid());
+                    ARRAY_PUSH($imgByBooks,$imgByP);
+                }
+            }
+        return $imgByBooks;
+        }
+
 
 
 

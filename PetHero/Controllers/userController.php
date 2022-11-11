@@ -45,7 +45,6 @@
                 //var_dump($_SESSION["loggedUser"]);
                 $this->homeController->Index("Te has logueado con exito");
             }
-            
         }
 
         public function BeKeeper($adress, $neighborhood, $city, $province, $country,

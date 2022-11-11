@@ -17,7 +17,7 @@ use \Model\User as User;
             
             $public = new Publication();
             $user = new User();
-            $user->setUsername("marsexpress");
+            $user->setUsername("sculpordwarf");
             $public->__fromRequest($openD, $closeD, $title, $description,0, $remuneration,$user);
             $imgPublic = new ImgPublic();
             $imgPublic->setPublication($public);

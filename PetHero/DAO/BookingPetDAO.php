@@ -1,14 +1,15 @@
 <?php
 namespace DAO;
 
-use \DAO\Connection as Connection;
-use \DAO\QueryType as QueryType;
-
-use \DAO\IBookingPetDAO as IBookingPetDAO;
-use \DAO\BookingDAO as BookingDAO;
+use \Exception as Exception;
 use \DAO\PetDAO as PetDAO;
-use \Model\BookingPet as BookingPet;
+
 use \Model\Booking as Booking;
+use \DAO\QueryType as QueryType;
+use \DAO\BookingDAO as BookingDAO;
+use \DAO\Connection as Connection;
+use \Model\BookingPet as BookingPet;
+use \DAO\IBookingPetDAO as IBookingPetDAO;
 
     class BookingPetDAO implements IBookingPetDAO{
         private $connection;
@@ -101,12 +102,25 @@ use \Model\Booking as Booking;
         return $bookList;
         }
 
+
+        public function GetAllPetsByBooks($username){
+            $booklist = $this->GetBookByKeeper($username);
+        $psBsList = array();
+        foreach($booklist as $booking){
+            $bpetList = array();
+            $bpetList = $this->GetPetsByBook($booking->getid());
+
+            $psBsList = array_merge($psBsList,$bpetList);
+        }
+    return $psBsList;    
+    }
         
 //PARA FUNCIONAMIENTO DE CHECKER        
         private function GetFPPet(Booking $book){
             $petPay = 0;
-            $query = "CALL BP_GetPetPay(?)";
+            $query = "CALL BP_GetPetPay(?,?)";
             $parameters["remuneration"] = $book->getPublication()->getRemuneration();
+            $parameters["idBook"] = $book->getId();
             $this->connection = Connection::GetInstance();
             $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
 
@@ -139,6 +153,45 @@ use \Model\Booking as Booking;
             return $bp;
         }
 
+//RECUPERO BOOKINGS POR KEEPER
+        public function GetBookByKeeper($username){
+            $matches = $this->bookDAO->GetBookByKeeper($username);
+        return $matches;    
+        }
+//
+
+        public function CheckPayCode(Booking $book){
+            $rta = 0;
+            $bookA = $this->bookDAO->Get($book->getId());
+            if((STRCMP($bookA->getBookState(),"Awaiting Payment") == 0)){
+                foreach($this->GenPayCodes() as $code){
+                    if($book->getPayCode() == $code){
+                        $rta = 1;
+                        return $rta;
+                    }
+                }
+            }
+            return $rta;
+        }
+
+        public function UpdatePayCode(Booking $book){
+            $message = "Error: El numero de pago ingresado no es valido";
+            $rta = $this->CheckPayCode($book);
+            if($rta ==1){
+                try{
+                    $this->bookDAO->UpdateCode($book);
+                    $this->bookDAO->UpdateStSwtich($book,2);
+                    $message = "Successful: Su comprobante ha sido aceptado";
+                }catch(Exception $e){
+                    $message = "Error: No se pudo actualizar el estado de su reserva, reintente mas tarde";
+                    return $message;
+                }
+            }
+            return $message;
+        }
+
+
+
         public function GetAll(){
             $bpList = array();    
 
@@ -161,6 +214,22 @@ use \Model\Booking as Booking;
 
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
+        }
+
+        private function GenPayCodes(){
+            $payCodeList = array();
+            array_push($payCodeList,"2356942225");
+            array_push($payCodeList,"2953479394");
+            array_push($payCodeList,"4436675246");
+            array_push($payCodeList,"5878746552");
+            array_push($payCodeList,"2436977836");
+            array_push($payCodeList,"5553434269");
+            array_push($payCodeList,"8793569575");
+            array_push($payCodeList,"7439386563");
+            array_push($payCodeList,"5647789525");
+            array_push($payCodeList,"3934865252");
+            array_push($payCodeList,"9483284459");
+        return $payCodeList;    
         }
     }
 ?>

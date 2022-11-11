@@ -52,34 +52,56 @@ use \Model\Booking as Booking;
         return $booking;    
         }      
 ///
-        public function UpdateST(Booking $booking){
-            $query = "CALL Booking_UpdateST(?,?)";
-            $parameters["idBook"] = $booking->getStartD();
-            $parameters["bookState"] = $booking->getBookState();
-            $this->connection = Connection::GetInstance();
-            $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
-        }
-
         public function UpdateStSwtich(Booking $book,$stateNum){
             switch($stateNum){
+                case 0:
+                    $book->setBookState("Declined");
+                    $this->UpdateST($book);
+                    break;
                 case 1:
                         $book->setBookState("Awaiting Payment");
                     $this->UpdateST($book);
                     break;
                 case 2:
-                        $book->setBookState("In Process");
+                        $book->setBookState("Waiting Start");
                     $this->UpdateST($book);
                     break;
                 case 3:
-                        $book->setBookState("Finalized");
+                        $book->setBookState("In Progress");
                     $this->UpdateST($book);
                     break;
                 case 4:
-                        $book->setBookState("Rechazed");
+                        $book->setBookState("Expired");
+                    $this->UpdateST($book);
+                    break;
+                case 6:
+                        $book->setBookState("Out of Term");
+                    $this->UpdateST($book);
+                    break;
+                case 7:
+                        $book->setBookState("Finalized");
                     $this->UpdateST($book);
                     break;
             }
         }
+
+        public function UpdateST(Booking $booking){
+            $query = "CALL Booking_UpdateST(?,?)";
+            $parameters["idBook"] = $booking->getId();
+            $parameters["bookState"] = $booking->getBookState();
+            $this->connection = Connection::GetInstance();
+            $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
+        }
+
+        public function UpdateCode(Booking $booking){
+            $query = "CALL Booking_UpdateCode(?,?)";
+            $parameters["idBook"] = $booking->getId();
+            $parameters["payCode"] = $booking->getPayCode();
+            $this->connection = Connection::GetInstance();
+            $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
+        }
+
+
 
         public function GetAll(){
             $bookingList = array();    
@@ -183,6 +205,27 @@ use \Model\Booking as Booking;
         return $bookPay;    
         }
 
+///RECUPERAR BOOKINGS SI LAS REQUIERO COMO KEEPER
+        public function GetBookByKeeper($username){
+            $matches = array();
+            $bookings = $this->GetAll();
+            foreach($bookings as $book){
+                if($book->getPublication()->getUser()->getUsername() == $username){
+                    array_push($matches,$book);
+                }
+            }
+            return $matches;
+        }
+///
+    public function Delete($idBooking){
+        $query = "CALL booking_Delete(?)";
+        $parameters["idbooking"] = $idBooking;
+
+        $this->connection = Connection::GetInstance();
+        $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
+    }
+}
+
 /*funcion para retornar diff de dias
         public function countDays($initD,$finishD){
             $days = 0;
@@ -193,12 +236,5 @@ use \Model\Booking as Booking;
         }
 */
 
-        public function Delete($idBooking){
-            $query = "CALL booking_Delete(?)";
-            $parameters["idbooking"] = $idBooking;
-
-            $this->connection = Connection::GetInstance();
-            $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
-        }
-    }
+        
 ?>

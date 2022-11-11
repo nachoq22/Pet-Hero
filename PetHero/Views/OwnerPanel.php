@@ -1,4 +1,16 @@
 <body>
+<?php if (!empty($message)){
+    if (strpos($message, "Error") !== false){?>
+        <div class="alert alert-danger" role="alert">
+        <?php echo $message; ?>
+        </div>
+    <?php }else{ ?>
+    <div class="alert alert-ligth" role="alert">
+        <?php echo $message; ?>
+    </div>
+    <?php } ?>
+<?php } ?>
+
 <div class="container-fluid">
     <div class="row">
         
@@ -101,7 +113,8 @@
                                 <th>Status</th>
                                 <th>Pets</th>
                                 <th>Checker</th>
-                                <th>PayCode Input</th>
+                                <th>PayCode</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -143,13 +156,14 @@
 
                                     <?php if ((STRCMP($book->getBookState(),"Canceled") == 0) XOR 
                                               (STRCMP($book->getBookState(),"Expired") == 0) XOR
-                                              (STRCMP($book->getBookState(),"Declined ") == 0) XOR
+                                              (STRCMP($book->getBookState(),"Declined") == 0) XOR
                                               (STRCMP($book->getBookState(),"Out of Term ") == 0) XOR
                                               (STRCMP($book->getBookState(),"Finalized") == 0)) { ?>    
                                         <span class="badge rounded-pill text-bg-danger"><?php echo $book->getBookState()?></span>
                                     <?php } ?>
 
-                                    <?php if ((STRCMP($book->getBookState(),"In progress") == 0)) { ?>    
+                                    <?php if ((STRCMP($book->getBookState(),"Waiting Start") == 0) XOR 
+                                              (STRCMP($book->getBookState(),"In progress") == 0)) { ?>    
                                         <span class="badge rounded-pill text-bg-success"><?php echo $book->getBookState()?></span>
                                     <?php } ?>
                                 </td>
@@ -169,42 +183,34 @@
                                     <a class="btn btn-outline-warning me-2" href="<?php echo FRONT_ROOT."/Checker/GetById"?>" type="button"><i class="bi bi-pencil-square"></i></a>
                                 </td>
                                 <td>
-                                <div class="form-floating mb-3">
-                                    <input type="number" class="form-control" id="remuneration" 
-                                            placeholder="San Antonio" name="remuneration" required>
-                                    <label for="remuneration">PayCode</label>
-                                        <div class="invalid-feedback">
-                                            Please enter a PayCode.
+                                 <?php if((STRCMP($book->getBookState(),"Awaiting Payment") == 0)){?>
+                                    <form action="<?php echo FRONT_ROOT."/Checker/EnterPaycode" ?>" method="post" name="sendPayC">
+                                        <div class="form-floating mb-3">   
+                                            <input type="hidden" name="idBook" value=<?php echo $book->getId() ?>>  
+                                            <input type="number" class="form-control" id="payCode" 
+                                                    placeholder="San Antonio" name="payCode" onkeypress="if (event.keyCode == 13) send()" required>
+                                            <label for="payCode">PayCode</label>
+                                                <div class="invalid-feedback">
+                                                    Please enter a PayCode.
+                                                </div>
                                         </div>
-                                </div>
+                                    </form>
+                                <?php } ?>
+                                </td>
+                                <td>
+                                <?php if(STRCMP($book->getBookState(),"Waiting Start") == 0){?>
+                                        <a class="btn btn-outline-danger me-2" href="<?php echo FRONT_ROOT."/Checker/GetById"?>" type="button">Cancelar Reserva</a>
+                                    <!--MODAL CON INFO DEL BOOKING?-->
+                                    <?php } if((STRCMP($book->getBookState(),"Canceled") == 0) XOR 
+                                              (STRCMP($book->getBookState(),"Expired") == 0) XOR
+                                              (STRCMP($book->getBookState(),"Declined") == 0) XOR
+                                              (STRCMP($book->getBookState(),"Out of Term ") == 0) XOR
+                                              (STRCMP($book->getBookState(),"Finalized") == 0)){ ?>
+                                    <a class="btn btn-outline-info me-2" href="<?php echo FRONT_ROOT."/Checker/GetById"?>" type="button"><i class="bi bi-file-spreadsheet"></i></a>
+                                    <?php } ?>
                                 </td>
                             </tr>
                             <?php } ?>
-                            <!--
-                            <tr>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <img src="https://mdbootstrap.com/img/new/avatars/6.jpg" class="rounded-circle" alt="" 
-                                        style="width: 45px; height: 45px"/>
-                                        <div class="ms-3">
-                                            <p class="fw-bold mb-1">Alex Ray</p>
-                                            <p class="text-muted mb-0">alex.ray@gmail.com</p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <p class="fw-normal mb-1">Consultant</p>
-                                    <p class="text-muted mb-0">Finance</p>
-                                </td>
-                                <td>
-                                    <span class="badge badge-primary rounded-pill d-inline">Onboarding</span>
-                                </td>
-                                <td>Junior</td>
-                                <td>
-                                    <button type="button" class="btn btn-link btn-sm btn-rounded">Edit</button>
-                                </td>
-                            </tr>
-                                    -->
                         </tbody>
                     </table>        
                 </div>
@@ -213,4 +219,5 @@
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+<script>function send(){ document.sendPayC.submit()}</script>
 </body>
