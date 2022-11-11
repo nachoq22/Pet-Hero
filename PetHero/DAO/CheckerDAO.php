@@ -90,11 +90,6 @@ use \Model\Checker as Checker;
             }
             return $checkerList;    
         }
-
-        public function UpdatePayCode($book){
-            $message = $this->bpDAO->UpdatePayCode($book);
-        return $message;
-        }
         
         public function Delete($idChecker){
             $query = "CALL Checker_Delete(?)";

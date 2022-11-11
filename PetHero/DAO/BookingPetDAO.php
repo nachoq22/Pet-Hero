@@ -190,7 +190,20 @@ use \DAO\IBookingPetDAO as IBookingPetDAO;
             return $message;
         }
 
+        public function CancelBook(Booking $booking){
+            $message = "";
+            try{
+                $this->bookDAO->UpdateStSwtich($booking,3);
+                $message = "Successful: Reserva cancelada satisfactoriamente";
+            }catch(Exception $e){
+                $message = "Error: No se pudo cancelar la reserva, reintente mas tarde.";
+            }
+            return $message;
+        }
 
+        public function UpdateAllStates(){
+            $this->bookDAO->UpdateAllStates();
+        }
 
         public function GetAll(){
             $bpList = array();    

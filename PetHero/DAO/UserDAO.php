@@ -28,11 +28,6 @@ use \Model\User as User;
             
             foreach($resultBD as $row){
                 $user = new User();
-/*
-                $user->__fromDBisKeeper($row["idUser"],$row["username"]
-                               ,$row["password"],$row["email"]
-                               ,$this->dataDAO->Get($row["idData"]));
-*/
                 $user->__fromDBnoKeeper($row["idUser"],$row["username"]
                                        ,$row["password"],$row["email"]);
 

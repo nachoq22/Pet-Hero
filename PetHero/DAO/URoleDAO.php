@@ -114,20 +114,20 @@ use \Model\UserRole as UserRole;
         }
 //FUNCION DEDICADA A UPGRADEAR UN USER
         public function UtoKeeper(UserRole $ur){
-            $e = "";  
+            $message = "Sucessful: Ha obtenido el rol de keeper.";  
                 try{
                     $location = $this->locationDAO->AddRet($ur->getUser()->getData()->getLocation());
                     $ur->getUser()->getData()->setLocation($location);  
                 }catch(Exception $location){
-                    $location = "Error al registrar Localidad,por favor reintente";
-                return $location;    
+                    $message = "Error: No se pudo registrar Localidad,por favor reintente.";
+                return $message;    
                 }
                 try{
                     $data = $this->dataDAO->AddRet($ur->getUser()->getData());
                     $ur->getUser()->setData($data);
                 }catch(Exception $data){
-                    $data = "Error al registrar Informacion Personal,por favor reintente";
-                return $data;  
+                    $message = "Error: No se pudo registrar Informacion Personal,por favor reintente.";
+                return $message;  
                 }   
                 try{
                     $user = $this->userDAO->HookData($ur->getUser());
@@ -135,10 +135,10 @@ use \Model\UserRole as UserRole;
                     $ur->setRole($this->roleDAO->Get(2));
                     $this->Add($ur); 
                 }catch(Exception $ur){
-                    $ur = "Error servidor interno, reintente en unos minutos";
-                return $ur;
+                    $message = "Error: No se pudo completar el upgrade, reintente en unos minutos.";
+                return $message;
                 }   
-        return  $e;
+        return  $message;
         }
 
 //DELETE METHODS

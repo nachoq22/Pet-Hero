@@ -3,6 +3,7 @@ namespace DAO;
 
 use \DAO\Connection as Connection;
 use \DAO\QueryType as QueryType;
+use \Exception as Exception;
 
 use \DAO\IBookingDAO as IBookingDAO;
 use \DAO\PublicationDAO as PublicationDAO;
@@ -67,10 +68,14 @@ use \Model\Booking as Booking;
                     $this->UpdateST($book);
                     break;
                 case 3:
-                        $book->setBookState("In Progress");
+                        $book->setBookState("Canceled");
                     $this->UpdateST($book);
                     break;
                 case 4:
+                        $book->setBookState("In Progress");
+                    $this->UpdateST($book);
+                    break;
+                case 5:
                         $book->setBookState("Expired");
                     $this->UpdateST($book);
                     break;
@@ -100,8 +105,6 @@ use \Model\Booking as Booking;
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
-
-
 
         public function GetAll(){
             $bookingList = array();    
@@ -223,6 +226,48 @@ use \Model\Booking as Booking;
 
         $this->connection = Connection::GetInstance();
         $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
+    }
+
+    public function UpdateAllStates(){
+        $bookisList = $this->GetAll();
+        if(!EMPTY($bookisList)){
+            $this->UpdateToExpired($bookisList);
+            $this->UpdateToInP($bookisList);
+            $this->UpdateToFinalized($bookisList);
+        }
+    }
+
+    private function UpdateToExpired($bookList){
+        foreach($bookList as $book){
+            if(STRCMP($book->getBookState(),"In Review") == 0){
+                $cutD = DATE("Y-m-d",STRTOTIME($book->getStartD()."- 3 days"));
+                if($cutD == DATE("Y-m-d")){
+                    $this->UpdateStSwtich($book,5);
+                }
+            }   
+        }
+    }
+
+    private function UpdateToInP($bookList){
+        foreach($bookList as $book){
+            if(STRCMP($book->getBookState(),"Waiting Start") == 0){
+                if($book->getStartD() == DATE("Y-m-d")){
+                    $this->UpdateStSwtich($book,4);
+                }
+            }   
+        }
+    }
+
+    private function UpdateToFinalized($bookList){
+        foreach($bookList as $book){
+            if(STRCMP($book->getBookState(),"In Progress") == 0){
+                $cutD = DATE("Y-m-d",STRTOTIME($book->getFinishD()."+ 1 days"));
+                var_dump($cutD);
+                if($cutD == DATE("Y-m-d")){
+                    $this->UpdateStSwtich($book,7);
+                }
+            }  
+        }
     }
 }
 

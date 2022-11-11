@@ -24,13 +24,5 @@ use \Model\Booking as Booking;
             $this->checkDAO->NewChecker($check,$rta);
             $this->homeC->ViewKeeperPanel();
         }
-
-        public function EnterPaycode($idBook,$payCode){
-            $book = new Booking();
-            $book->setId($idBook);
-            $book->setPayCode($payCode);
-            $message = $this->checkDAO->UpdatePayCode($book);
-            $this->homeC->ViewOwnerPanel($message);
-        }
     }
 ?>

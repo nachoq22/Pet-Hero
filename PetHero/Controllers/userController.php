@@ -1,13 +1,12 @@
 <?php
-    namespace Controllers;
-    use \DAO\UserDAO as UserDAO;
-    use \DAO\URoleDAO as URoleDAO;
+namespace Controllers;
+use \DAO\UserDAO as UserDAO;
+use \DAO\URoleDAO as URoleDAO;
     
-    use \Model\User as User;
-    use \Model\UserRole as UserRole;
-    use \Model\Location as Location;
-    use \Model\PersonalData as PersonalData;
-    use \PDOException as PDOException;
+use \Model\User as User;
+use \Model\UserRole as UserRole;
+use \Model\Location as Location;
+use \Model\PersonalData as PersonalData;
 
     class UserController{
         private $userDAO;
@@ -16,8 +15,8 @@
 
         public function __construct(){
             $this->userDAO = new UserDAO();
-            $this->homeController = new HomeController();
             $this->uRoleDAO = new URoleDAO();
+            $this->homeController = new HomeController();
         }
 
         public function Register($username, $email, $password){
@@ -61,10 +60,8 @@
 
             if(!empty($this->uRoleDAO->IsKeeper($uRole))){   
                 $message = $this->uRoleDAO->UtoKeeper($uRole);
-                    if(!empty($message)){
+                    if((strpos($message, "Error") !== false)){
                         $this->homeController->ViewBeKeeper($message);
-                    }else{
-                        $message = "Felicidades, ha adquirido el rol de keeper";
                     }
             }else{
                 $message = "Error, ya posee el rol de keeper";

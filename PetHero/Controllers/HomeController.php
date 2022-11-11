@@ -74,6 +74,7 @@ use \DAO\ImgPublicDAO as ImgPublicDAO;
         }
 
         public function ViewOwnerPanel($message=""){
+            $this->bpDAO->UpdateAllStates();
             //$owner = $this->userDAO->DGet(2);   /*$owner = $this->userDAO->DGetByUsername(2);*/
             $petList = $this->petDAO->GetAllByUsername("venus"); /*$petList = $this->petDAO->GetAllByUsername("sculpordwarf");*/ 
             $bookList = $this->bpDAO->GetBookByUsername("venus"); /*$bookList = $this->bookDAO->GetByOwner(?);*/ 
@@ -84,6 +85,7 @@ use \DAO\ImgPublicDAO as ImgPublicDAO;
         }       
         
         public function ViewKeeperPanel(){
+            $this->bpDAO->UpdateAllStates();
             //$owner = $this->userDAO->DGet(2);   /*$owner = $this->userDAO->DGetByUsername(2);*/
             $publicList = $this->publicDAO->GetAllByUsername("sculpordwarf"); /*$petList = $this->petDAO->GetAllByUsername("sculpordwarf");*/ 
             $imgByPublic = $this->imgPublicDAO->GetOneByPublics($publicList);
