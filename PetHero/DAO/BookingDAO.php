@@ -196,14 +196,13 @@ use \Model\Booking as Booking;
         public function Delete($idBooking){
             $query = "CALL booking_Delete(?)";
             $parameters["idbooking"] = $idBooking;
-
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
         }
 
+        //ESTO SIRVE PARA ENCONTRAR TODOS LOS BOOKING EN LOS QUE COINCIDA LAS FECHAS CON LA NUESTRA (FUNCION LLAMADA DESDE BOOKINGPETDAO)
         public function GetAllMatchingDatesByPublic(Booking $booking){
             $bookingList = array();    
-
             $query = "CALL Booking_CheckRange(?,?,?)";
             $parameters["starD"] = $booking->getStartD();
             $parameters["finishD"] = $booking->getFinishD();
@@ -212,7 +211,6 @@ use \Model\Booking as Booking;
             $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
             foreach($resultBD as $row){
                 $booking = new Booking();
-
                 $booking->__fromDBWithoutPC($row["idBook"],$row["startD"]
                                   ,$row["finishD"],$row["bookState"]
                                   ,$this->publicDAO->Get($row["idPublic"])
@@ -221,6 +219,7 @@ use \Model\Booking as Booking;
             }
             return $bookingList;
         }
+        ///////////
 
     }
 ?>

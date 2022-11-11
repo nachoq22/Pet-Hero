@@ -146,6 +146,7 @@ use \Model\Publication as Publication;
             $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
         }
 
+        // ESTO SIRVE PARA BUSCAR MEDIANTE LA BARRA DE BUSQUEDA UNA PUBLICACION POR MEDIO DEL TITULO O DESCRIPCION 
         public function Search($phrase){
             $publicList = array();    
             $query = "CALL Publication_Search(?)";
@@ -165,7 +166,9 @@ use \Model\Publication as Publication;
             }
             return $publicList;
         }
+        ///////////////////////////////////////////
 
+        //ESTO SIRVE PARA VERIFICAR QUE LA FECHA QUE INGRESA EL USUARIO COINCIDA CON LAS DISPONIBLES POR EL KEEPER
         public function ValidateDP($startD, $finishD, $idPublic){
             $rta = NULL;
             $query = "CALL Publication_DateCheck(?,?,?)";
@@ -181,13 +184,16 @@ use \Model\Publication as Publication;
                 }
             return $rta;
         }
+        //////////////////////////////////////
 
-
-
-
-
-
-
+        public function ValidateOnWeek($startD){
+            $rta = 0;
+            $limitD = DATE("Y-m-d",STRTOTIME(DATE("Y-m-d") ."+ 7 days"));
+            if($limitD<$startD){
+                $rta = 1;
+            }
+            return $rta;
+        }
 
     }
 ?>

@@ -147,5 +147,10 @@
         public function ValidateDP($startD, $finishD, $idPublic){
             return $this->publicDAO->ValidateDP($startD, $finishD, $idPublic);
         }
+        
+        public function ValidateOnWeek($startD){
+            return $this->publicDAO->ValidateOnWeek($startD);
+        }
+
     }
 ?>

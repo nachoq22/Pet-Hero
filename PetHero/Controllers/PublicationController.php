@@ -53,7 +53,7 @@ use \Controllers\PetController as PetController;
 
         }
 
-        public function ViewPublication($idPublic){
+        public function ViewPublication($idPublic, $message=""){
             $public = new Publication();
             $public->setId($idPublic);
             $imgPublic = new ImgPublic();
@@ -66,12 +66,16 @@ use \Controllers\PetController as PetController;
         }
 
         public function ValidateDateFP($idPublic, $startD, $finishD){
-            if($this->publicDAO->ValidateDP($startD, $finishD, $idPublic) == 1){
+            if($this->publicDAO->ValidateOnWeek($startD)==1){
+                if($this->publicDAO->ValidateDP($startD, $finishD, $idPublic) == 1){
                 $this->petController->GetPetsByReservation($idPublic, $startD, $finishD);
+                }else{
+                    $this->ViewPublication($idPublic, "Las fechas ingresadas no entran en el rango de establecidas por el Keeper");
+                }
             }else{
-                $this->ViewPublication($idPublic);
-            }
-
+                $this->ViewPublication($idPublic, "Las reservas deben tener 1 semana de aniticipacion");
+             }
         }
+
     }
 ?>

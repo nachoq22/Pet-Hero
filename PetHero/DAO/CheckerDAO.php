@@ -11,7 +11,6 @@ use \Model\Checker as Checker;
     class CheckerDAO implements ICheckerDAO{
         private $connection;
         private $tableName = 'Checker';
-
         private $bpDAO;
 
         public function __construct(){
