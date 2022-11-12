@@ -13,7 +13,7 @@ use \Model\User as User;
             $this->reviewDAO = new ReviewDAO();
         }
 
-        public function Add($idPublic,$commentary,$stars){
+        public function Add($idPublic,$stars,$commentary){
             $public = new Publication();
                 $public->setId($idPublic);
             $user = new User();

@@ -303,7 +303,7 @@ use \Model\Booking as Booking;
         $this->connection = Connection::GetInstance();
         $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
     }
-}
+
 /*funcion para retornar diff de dias
         public function countDays($initD,$finishD){
             $days = 0;
@@ -312,5 +312,45 @@ use \Model\Booking as Booking;
             }
         return $days;    
         }
-*/     
+*/
+
+        //ESTO SIRVE PARA ENCONTRAR TODOS LOS BOOKING EN LOS QUE COINCIDA LAS FECHAS CON LA NUESTRA (FUNCION LLAMADA DESDE BOOKINGPETDAO)
+        public function GetAllMatchingDatesByPublic(Booking $booking){
+            $bookingList = array();    
+            $query = "CALL Booking_CheckRange(?,?,?)";
+            $parameters["starD"] = $booking->getStartD();
+            $parameters["finishD"] = $booking->getFinishD();
+            $parameters["idPublic"] = $booking->getPublication()->getid();
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+            foreach($resultBD as $row){
+                $booking = new Booking();
+                $booking->__fromDBWithoutPC($row["idBook"],$row["startD"]
+                                  ,$row["finishD"],$row["bookState"]
+                                  ,$this->publicDAO->Get($row["idPublic"])
+                                  ,$this->userDAO->Get($row["idUser"]));
+                array_push($bookingList,$booking);
+            }
+            return $bookingList;
+        }
+        ////////
+        
+        //ESTO COMPROBARA SI EL USUARIO HA COMPLETADO UN BOOKING CON LA PUBLICACION
+        public function CheckBookDone($idUser, $idPublic){
+            $canReview = 0;
+            $bookingList = $this->GetAllByUser($idUser);
+            foreach($bookingList as $book){
+                if($book->getPublication()->getId()==$idPublic){
+                    if(strcmp($book->getBookState(),"Finalized")==0){
+                        $canReview = 1;
+                        return $canReview;
+                    }
+                }
+            
+            }
+            return $canReview;
+        }
+    }
+        //////////////////////////
+
 ?>

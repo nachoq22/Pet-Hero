@@ -10,6 +10,7 @@ use \DAO\PetDAO as PetDAO;
 use \DAO\PublicationDAO as PublicationDAO; 
 use \DAO\BookingPetDAO as BookingPetDAO;
 use \DAO\ImgPublicDAO as ImgPublicDAO;
+use \Model\User as User;
 
     class HomeController{
         /*
@@ -94,5 +95,20 @@ use \DAO\ImgPublicDAO as ImgPublicDAO;
             $imgList = $this->imgPublicDAO->GetByBookings($bookList);
             require_once(VIEWS_PATH."KeeperPanel.php");
         }      
+
+        public function Search($search){
+            $publicList = $this->publicDAO->Search($search);
+            require_once(VIEWS_PATH."Search.php");
+        }
+
+        public function Logout(){
+            session_destroy();
+            $this->Index();
+        }
+
+        public function ViewAddReview(){
+            $public = $this->publicDAO->Get(1);
+            require_once(VIEWS_PATH."AddReview.php");
+        }
     }
 ?>

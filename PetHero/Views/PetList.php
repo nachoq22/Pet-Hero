@@ -16,7 +16,7 @@
     </a>
   </div>
 
-
+  
   <?php
     foreach ($petList as $pet) { ?>
   <div class="col-2 mt-3" >

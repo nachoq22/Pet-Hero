@@ -111,12 +111,13 @@ use \Model\UserRole as UserRole;
         }
 
         public function Register(UserRole $ur){
-            if((empty($ur) == false) ||  (empty($this->userDAO->DGetByUsername($ur->getUser()->getUsername()) == true))){
+            if(($this->userDAO->IsUser($ur->getUser()))==0){
                 $user = $this->userDAO->AddRet($ur->getUser());
-                    $ur->setUser($user);
-                    $ur->setRole($this->roleDAO->Get(1));
+                $ur->setUser($user);
+                $ur->setRole($this->roleDAO->Get(1));
                 $this->Add($ur);
             }
+            
         }
 
 //-----------------------------------------------------

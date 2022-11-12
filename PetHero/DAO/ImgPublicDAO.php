@@ -120,6 +120,10 @@ use \Model\ImgPublic as ImgPublic;
             }
         return $imgByBooks;
         }
+        
+        public function GetPublication(ImgPublic $public){
+            return $this->publicDAO->Get($public->getPublication()->getId());
+        }
 
 //======================================================================
 // INSERT METHODS
@@ -161,5 +165,14 @@ use \Model\ImgPublic as ImgPublic;
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
         }  
+
+        public function ValidateDP($startD, $finishD, $idPublic){
+            return $this->publicDAO->ValidateDP($startD, $finishD, $idPublic);
+        }
+        
+        public function ValidateOnWeek($startD){
+            return $this->publicDAO->ValidateOnWeek($startD);
+        }
+
     }
 ?>

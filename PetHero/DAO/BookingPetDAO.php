@@ -85,7 +85,7 @@ use \DAO\IBookingPetDAO as IBookingPetDAO;
             $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
 
             foreach($resultBD as $row){
-                $bp = new bookingPet();
+                $bp = new BookingPet();
                 $bp->__fromDB($row["idBP"],$this->bookDAO->Get($row["idBook"]),$this->petDAO->Get($row["idPet"]));
                 array_push($bpetList,$bp);
             }
@@ -274,6 +274,63 @@ use \DAO\IBookingPetDAO as IBookingPetDAO;
             $parameters["idBP"] = $idBP;
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
-        }  
+        }
+
+
+        //ESTO HACE FUNCIONAR LA VALIDACION DE TIPOS DE MASCOTAS ANTES DE VALIDAR FECHAS
+        public function GetAllPetsbyBooking($idList) {
+            $petList = array();
+            
+            foreach($idList as $obj){
+                $pet = new Pet();
+                $pet = $this->petDAO->Get($obj);
+                array_push($petList, $pet);
+            }
+            return $petList;
+
+        }
+
+        public function ValidateTypes($idList){
+            $petList= $this->GetAllPetsbyBooking($idList);
+            $rta=0;
+            $type="";
+            foreach($petList as $pet){
+                if(empty($type)){
+                    $type = $pet->getType()->getName();
+                }
+                if(strcmp($pet->getType()->getName(), $type)!=0){
+                    $rta =0;
+                    return $rta;
+                }else{
+                    $rta = 1;
+                }
+            }
+        return $rta;
+        }
+        /////////////////////
+
+        
+        //ESTO SIRVE PARA COMPARAR EL TIPO DE MASCOTAS DE NUESTRO BOOKING CON EL TIPO DE LAS MASCOTAS DE LOS BOOKING QUE COINCIDAN CON NUESTRA FECHA INTRODUCIDA
+        public function ValidateTypesOnBookings(Booking $booking, $idList){
+            $matches = $this->bookDAO->GetAllMatchingDatesByPublic($booking); 
+            $petList = $this->GetAllPetsbyBooking($idList);
+            $pet = $petList[0];
+            $rta = 1;
+            if(!empty($matches)){
+                foreach($matches as $book){
+                    $bookN = $this->GetByBook($book->getId());
+                    $TypeBP = $bookN->getPet()->getType()->getName();
+                    if (strcmp($TypeBP, $pet->getType()->getName())!=0){
+                        $rta=0;
+                        return $rta;
+                    }
+                }
+            }
+            return $rta;
+        }
+        ////////////////////////////
+
+        
+
     }
 ?>

@@ -22,7 +22,8 @@ use \Controllers\HomeController as HomeController;
         }
 
         public function ViewPetList(){
-            $petList = $this->petDAO->GetAllByUser(1);
+            //$petList = $this->petDAO->GetAllByUser($_SESSION["loggedUser"]->getName());
+            $petList = $this->petDAO->GetAll();
             require_once(VIEWS_PATH."PetList.php");
         }
 
@@ -45,17 +46,15 @@ use \Controllers\HomeController as HomeController;
             $user = $this->userDAO->DGet(1);
             $pet = new Pet();
             $pet->__fromRequest($name, $breed, $observation, $typeOBJ, $sizeOBJ, $user);   
-
             $fileNameP = $_FILES['ImagenP']['name'];
             $fileP = $_FILES['ImagenP']['tmp_name'];
             $fileNameV = $_FILES['ImagenV']['name'];
             $fileV = $_FILES['ImagenV']['tmp_name'];
-            $this->petDAO->RegisterPet($pet, $fileP, $fileNameP, $fileV, $fileNameV);
-            //$petList=$this->petDAO->GetAll();
-            //require_once(VIEWS_PATH."Home.php");
+            $message = $this->petDAO->RegisterPet($pet, $fileP, $fileNameP, $fileV, $fileNameV);
+            $this->homeController->ViewOwnerPanel($message);
         } 
 
-        public function GetPetsByReservation(){
+        public function GetPetsByReservation($idPublic, $startD, $finishD, $message=""){
             //$petList = $this->petDAO->GetAllByUser(1);
             $petList = $this->petDAO->GetAll();
             require_once(VIEWS_PATH."AddBooking.php");

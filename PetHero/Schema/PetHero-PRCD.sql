@@ -169,6 +169,15 @@ END;
 $$
 
 DELIMITER $$
+CREATE PROCEDURE User_IsExist(IN username VARCHAR(50), IN email VARCHAR(50))
+BEGIN
+    SELECT COUNT(idUser) as rta
+    FROM User
+    WHERE (User.username = username) OR (User.email = email);
+END;
+$$
+
+DELIMITER $$
 CREATE PROCEDURE User_Add(IN username VARCHAR(50),IN password VARCHAR(30),IN email VARCHAR(50))
 BEGIN
     INSERT INTO User
@@ -499,6 +508,25 @@ END;
 $$
 
 DELIMITER $$
+CREATE PROCEDURE Publication_Search(IN phrase VARCHAR(50))
+BEGIN
+     SELECT *
+     FROM publication
+     WHERE publication.title LIKE CONCAT('%',phrase,'%') or publication.description like CONCAT('%',phrase,'%');
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE Publication_DateCheck(IN openD DATE, IN closeD DATE, IN idPublic INT)
+BEGIN
+    SELECT COUNT(idPublic) as rta 
+    FROM publication
+    WHERE (publication.idPublic = idPublic) AND (publication.openD < openD) AND (publication.closeD >= closeD);
+END;
+$$
+
+
+DELIMITER $$
 CREATE PROCEDURE Publication_Add(IN openD DATE, IN closeD DATE, IN title VARCHAR(50),
                          IN description VARCHAR(1000), IN popularity DEC(2,1), IN remuneration DEC(10,2),
 	                     IN idUser INT)
@@ -512,6 +540,15 @@ BEGIN
 	SELECT LAST_INSERT_ID() as LastID;
 END;
 $$ 
+
+DELIMITER $$
+CREATE PROCEDURE Publication_UpdatePopularity(IN idPublic INT, IN score DEC(2,1))
+BEGIN
+    UPDATE publication
+        SET publication.popularity = score
+    WHERE publication.idPublic = idPublic;
+END;
+$$
 
 DELIMITER $$
 CREATE PROCEDURE Publication_Delete(IN idPublic INT)
@@ -560,7 +597,7 @@ BEGIN
     VALUES
         (uri,idPublic);
 END;
-$$ 
+$$
 
 
 DELIMITER $$
@@ -609,6 +646,15 @@ BEGIN
 END;
 $$
 
+DELIMITER $$
+CREATE PROCEDURE Booking_CheckRange(IN startD DATE, IN finishD DATE, IN idPublic INT)
+BEGIN
+    SELECT *
+    FROM booking
+     WHERE (booking.idPublic=idPublic) AND (booking.bookState ="Waiting Start" OR booking.bookState="In Progress" ) AND ((booking.startD > startD AND booking.startD < finishD) 
+            OR (booking.startD < startD AND booking.finishD > startD));
+END;
+$$
 
 DELIMITER $$
 CREATE PROCEDURE Booking_Add(IN startD DATE, IN finishD DATE, IN bookState VARCHAR(25),
@@ -825,6 +871,7 @@ Call User_GetAll();
 Call User_GetById(2);
 Call User_GetByUsername("planetar");
 /*CALL User_Add(username,password,varResp);*/
+CALL User_IsExist("planetar","achternaga@wificon.eu");
 CALL User_Login("planetar","orylOSad");
 /*CALL User_Add(username,password,email,idData);*/
 Call User_Add("pablitoClavito","ClavitoCrack","pablitoElCrack@gmail.com");
@@ -869,10 +916,15 @@ Call Pet_Add("Salchichon","Suricatta",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\S
 CALL Publication_GetAll();
 CALL Publication_GetById(1);
 CALL Publication_GetByUser(1);
+CALL Publication_Search("24");
 /*CALL Publication_Add(openD,closeD,title,description,popularity,remuneration,idUser);*/
 CALL Publication_Add("2022-10-30","2022-11-08", "El mejor cuidador de toda Mar Del Plata","Soy un cuidador 
 de perros de 24 años que le gusta salir a correr todos los dias, por lo que su perro estará bien ejercitado", 5,4000,2);
 /*CALL Publication_Delete(2);*/
+CALL Publication_DateCheck("2022-10-31", "2022-11-10", 1);
+CALL Publication_UpdatePopularity(1, 3);
+
+
 
 /*********************************TEST IMAGES*******************************************/
 CALL ImgPublic_GetAll();
@@ -890,10 +942,15 @@ CALL Booking_GetByUser(4);
 CALL Booking_GetBookigPay('2022-11-06','2022-11-19',3500);
 /*CALL Booking_Add(IN openDate DATE, IN closeDate DATE, IN payState VARCHAR(25), IN payCode VARCHAR(10),
                          IN idPublication INT, IN idUser INT)*/
-CALL Booking_Add("2022-11-01","2022-11-15","In Review",1, 1);
+CALL Booking_Add("2022-10-15","2022-11-15","In Review",5, 1);
+CALL Booking_CheckRange("2022-09-17", "2022-09-22", 5); /*ARRANCA ANTES TERMINA ANTES ANDA BIEN */
+CALL Booking_CheckRange("2022-09-17", "2022-11-13", 5); #ARRANCA ANTES TERMINA EN EL MEDIO -CONTEMPLA
+CALL Booking_CheckRange("2022-08-17", "2022-12-19", 5); #ARRANCA ANTES TERMINA DESPUES -CONTEMPLA
+CALL Booking_CheckRange("2022-10-17", "2022-11-12", 5); #ARRANCA EN EL MEDIO TERMINA EN EL MEDIO -CONTEMPLA
+CALL Booking_CheckRange("2022-10-17", "2022-12-28", 5); #ARRANCA EN EL MEDIO TERMINA DESPUES -CONTEMPLA 
+CALL Booking_CheckRange("2022-11-21", "2022-12-14", 5); #ARRANCA DESPUES TERMINA DESPUES -CONTEMPLA
 /*CALL Booking_UpdateST(IN idBook DATE, IN bookState VARCHAR(25))*/
 CALL Booking_UpdateST(2,"Awaiting Payment");
-
 /*CALL Booking_Delete(2);*/
 
 /*********************************TEST BOOKING PET*******************************************/
@@ -917,7 +974,7 @@ CALL Checker_Add("2022-11-05", "2022-12-05", 2000, 1);
 /*********************************TEST REVIEW*******************************************/
 CALL Review_GetAll();
 CALL Review_GetById(1);
-CALL Review_GetByPublic(1);
+CALL Review_GetByPublic(3);
 /*CALL Review_Add(IN createD DATE, IN commentary VARCHAR(500), IN stars INT,
                             IN idUser INT, IN idPublication INT)*/
 CALL Review_Add("2022-11-01", "Muy bueno, excelente servicio", 5, 4, 2);

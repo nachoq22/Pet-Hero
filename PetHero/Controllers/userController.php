@@ -25,24 +25,20 @@ use \Model\PersonalData as PersonalData;
                 $uRole= new UserRole();
                 $uRole->setUser($user);
             $this->uRoleDAO->Register($uRole);
-            $this->homeController->Index();
+            $this->homeController->ViewOwnerPanel("El registro ha sido exitoso!");//levantar sesion si es satifactorio           
         } 
 
         public function Login($username, $password){            
                 $user = new User();
                 $user->__fromLogin($username,$password);
             $rta = $this->userDAO->Login($user);
-            //var_dump($rta);
             if($rta!=0){
-                /*session_start();
                 $loggedUser = new User();
                 $loggedUser->setUsername($username);
                 $loggedUser->setPassword($password);
-                $_SESSION["loggedUser"]= $loggedUser;*/
-                //var_dump($user);
-                //$this->Index();
-                //var_dump($_SESSION["loggedUser"]);
-                $this->homeController->Index("Te has logueado con exito");
+                $_SESSION["loggedUser"] = $loggedUser;
+                $_SESSION["var"] = 1; 
+                $this->homeController->Index();
             }
         }
 
