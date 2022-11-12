@@ -142,12 +142,21 @@ use \Model\Pet as Pet;
         }
 
         public function RegisterPet(Pet $pet,$fileP,$fileNameP,$fileV,$fileNameV){
-            $pet->setType($this->typeDAO->GetByName($pet->getType()->getName()));
-            $pet->setSize($this->sizeDAO->GetByName($pet->getSize()->getName()));
-            $pet->setUser($this->userDAO->GetByUsername($pet->getUser()->getUsername()));
-            $this->Add($pet,$fileP,$fileNameP,$fileV,$fileNameV);
+            $message = "Successful: Se ha registrado correctamente su mascota";
+            try{
+                $pet->setType($this->typeDAO->GetByName($pet->getType()->getName()));
+                $pet->setSize($this->sizeDAO->GetByName($pet->getSize()->getName()));
+                $pet->setUser($this->userDAO->GetByUsername($pet->getUser()->getUsername()));
+                $this->Add($pet,$fileP,$fileNameP,$fileV,$fileNameV);
+            }
+            catch(Exception $e){
+                $message = "Error: Se han cargado archivos invalidos, intente mas tarde";
+                return $message;
+            }
+            return $message;
         }
 
+        
 //DELETE METHODS
         public function Delete($id){
             $query = "CALL Pet_Delete(?)";

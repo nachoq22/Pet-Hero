@@ -43,13 +43,18 @@ use \Model\Booking as Booking;
             }
 
             public function AddRet(Booking $booking){
-                    $public = $this->publicDAO->Get($booking->getPublication()->getId());
-                    $user = $this->userDAO->DGetByUsername($booking->getUser()->getUsername());
+                $public = $this->publicDAO->Get($booking->getPublication()->getId());
+                $user = $this->userDAO->DGetByUsername($booking->getUser()->getUsername());
                 $booking->setPublication($public);
                 $booking->setuser($user);
+                try{
                 $idNBook = $this->Add($booking);
                 $booking = $this->Get($idNBook);
-            return $booking;
+                }
+                catch(exception $e){
+                return $message="Error: no se ha podido guardar el booking";
+                }
+                return $booking;
             }     
 
         public function UpdateST(Booking $booking){

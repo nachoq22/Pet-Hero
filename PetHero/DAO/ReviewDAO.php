@@ -25,20 +25,24 @@ use \Model\Review as Review;
             $parameters["createD"] = $review->getCreateD();
             $parameters["commentary"] = $review->getCommentary();
             $parameters["stars"] = $review->getStars();
-            $parameters["idPublic"] = $review->getPublication()->getId();
             $parameters["idUser"] = $review->getUser()->getId();
-
+            $parameters["idPublic"] = $review->getPublication()->getid();
+            
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
 
         public function NewReview(Review $review){
-                $public = $this->publicDAO->Get($review->getPublication()->getId());
+                $public = $this->publicDAO->Get($review->getPublication()->getid());
             $review->setPublication($public);
-                $user = $this->userDAO->DGetByUsername($review->getUser()->getUsername());
+            $user = $this->userDAO->DGetByUsername($review->getUser()->getUsername());
             $review->setUser($user);
+            var_dump($review);
             $this->Add($review);
+
+            $this->UpdatePopularity($public, $this->CalculateScore($public));
         }
+
 
         public function GetAll(){
             $reviewList = array();    
@@ -68,11 +72,10 @@ use \Model\Review as Review;
 
             foreach($resultBD as $row){
                 $review = new Review();
-
                 $review->__fromDB($row["idReview"],$row["createD"]
                 ,$row["commentary"],$row["stars"]
                 ,$this->publicDAO->Get($row["idPublic"])
-                ,$this->userDAO->Get($row["idUser"]));
+                ,$this->userDAO->DGet($row["idUser"]));
                 array_push($reviewList,$review);
             }
             return $reviewList;
@@ -102,6 +105,26 @@ use \Model\Review as Review;
 
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
+        }
+
+        public function UpdatePopularity($public, $score){
+            $query = "CALL Publication_UpdatePopularity(?,?)";
+            $parameters["idPublic"] = $public->getid();
+            $parameters["score"] = $score;
+
+            $this->connection = Connection::GetInstance();
+            $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
+        }
+
+        public function CalculateScore($public){
+            $reviewList = $this->GetAllByPublic($public->getid());
+            $score = 0;
+            $total = 0;
+            foreach($reviewList as $review){
+                $score += $review->getStars();
+                $total += 1;
+            }
+            return round(($score/$total), 2);
         }
     }
 ?>

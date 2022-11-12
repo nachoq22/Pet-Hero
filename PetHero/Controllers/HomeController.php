@@ -74,6 +74,11 @@ use \Model\User as User;
             require_once(VIEWS_PATH."ReqReservation.php");
         }
 
+        public function ViewAddReview(){
+            $public = $this->publicDAO->Get(1);
+            require_once(VIEWS_PATH."AddReview.php");
+        }
+
         public function ViewOwnerPanel($message = ""){
             //$owner = $this->userDAO->DGet(2);   /*$owner = $this->userDAO->DGetByUsername(2);*/
             

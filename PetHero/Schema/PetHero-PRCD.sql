@@ -540,6 +540,15 @@ END;
 $$ 
 
 DELIMITER $$
+CREATE PROCEDURE Publication_UpdatePopularity(IN idPublic INT, IN score DEC(2,1))
+BEGIN
+    UPDATE publication
+        SET publication.popularity = score
+    WHERE publication.idPublic = idPublic;
+END;
+$$
+
+DELIMITER $$
 CREATE PROCEDURE Publication_Delete(IN idPublic INT)
 BEGIN
     DELETE 
@@ -639,7 +648,7 @@ CREATE PROCEDURE Booking_CheckRange(IN startD DATE, IN finishD DATE, IN idPublic
 BEGIN
     SELECT *
     FROM booking
-     WHERE (booking.idPublic=idPublic) AND ((booking.startD > startD AND booking.startD < finishD) 
+     WHERE (booking.idPublic=idPublic) AND (booking.bookState ="Waiting Start" OR booking.bookState="In Progress" ) AND ((booking.startD > startD AND booking.startD < finishD) 
             OR (booking.startD < startD AND booking.finishD > startD));
 END;
 $$
@@ -882,6 +891,7 @@ CALL Publication_Add("2022-10-30","2022-11-08", "El mejor cuidador de toda Mar D
 de perros de 24 años que le gusta salir a correr todos los dias, por lo que su perro estará bien ejercitado", 5,4000,2);
 /*CALL Publication_Delete(2);*/
 CALL Publication_DateCheck("2022-10-31", "2022-11-10", 1);
+CALL Publication_UpdatePopularity(1, 3);
 
 
 
@@ -929,7 +939,7 @@ CALL Checker_Add("2022-11-05", "2022-12-05", 2000, 1);
 /*********************************TEST REVIEW*******************************************/
 CALL Review_GetAll();
 CALL Review_GetById(1);
-CALL Review_GetByPublic(1);
+CALL Review_GetByPublic(3);
 /*CALL Review_Add(IN createD DATE, IN commentary VARCHAR(500), IN stars INT,
                             IN idUser INT, IN idPublication INT)*/
 CALL Review_Add("2022-11-01", "Muy bueno, excelente servicio", 5, 4, 2);

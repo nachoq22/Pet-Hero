@@ -34,19 +34,31 @@ use \Model\Pet as Pet;
         }
 
         private function NewBP(BookingPet $bp){
-                $pet = $this->petDAO->Get($bp->getPet()->getId());
+            $pet = $this->petDAO->Get($bp->getPet()->getId());
             $bp->setPet($pet);
             $this->Add($bp);
         }
 
         public function NewBooking(Booking $booking,$petList){
-            $booking = $this->bookDAO->AddRet($booking);
-            foreach($petList as $pet){
-                $bp = new BookingPet();
+            $message = "Successful: Se ha completado la reserva exitosamente";
+            try{
+                $booking = $this->bookDAO->AddRet($booking);
+            }
+            catch(exception $e){
+                $message = "Error: No se ha podido completar la reserva, intente nuevamente";
+            }
+            try{
+                foreach($petList as $pet){
+                    $bp = new BookingPet();
                     $bp->setBooking($booking);
                     $bp->getPet()->setId($pet);
-                $this->NewBP($bp);
+                    $this->NewBP($bp);
+                }
             }
+            catch(exception $e){
+                $message="Error: ha ocurrido un fallo en el guardado de pets, intente nuevamente";
+            }
+            return $message;
         }
 
         public function NewState(Booking $book,$stateNum){
@@ -186,7 +198,6 @@ use \Model\Pet as Pet;
                 if(empty($type)){
                     $type = $pet->getType()->getName();
                 }
-
                 if(strcmp($pet->getType()->getName(), $type)!=0){
                     $rta =0;
                     return $rta;
@@ -208,9 +219,6 @@ use \Model\Pet as Pet;
             if(!empty($matches)){
                 foreach($matches as $book){
                     $bookN = $this->GetByBook($book->getId());
-                    echo('<pre>');
-                    print_r($bookN);
-                    echo('</pre>');
                     $TypeBP = $bookN->getPet()->getType()->getName();
                     if (strcmp($TypeBP, $pet->getType()->getName())!=0){
                         $rta=0;

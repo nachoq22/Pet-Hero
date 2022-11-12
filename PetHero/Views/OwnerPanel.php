@@ -1,4 +1,18 @@
 <body>
+
+<?php if (!empty($message)){ 
+    if(strpos($message, "Successful") !== false){?>
+    <div class="alert alert-success" role="alert">
+      <?php echo $message; ?>
+    </div>
+<?php }else{ ?>
+<div class="alert alert-danger" role="alert">
+      <?php echo $message; ?>
+    </div>
+<?php } ?>
+<?php } ?>
+
+
 <div class="container-fluid">
     <div class="row">
         

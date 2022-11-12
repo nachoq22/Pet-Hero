@@ -1,5 +1,5 @@
 <body>
-
+<a class="btn btn-outline-primary me-2" href="<?php echo FRONT_ROOT."/Home/ViewAddReview"?>" type="button"><i class="bi bi-person-rolodex"></i></a>
 	<div class="container-fluid">
 		<div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
 			<div class="carousel-inner">
@@ -10,7 +10,7 @@
 					<img src="https://i.pinimg.com/originals/ee/a9/0a/eea90a6da78d11fb1e869844c1c587a5.jpg" class="d-block w-100" style="width: 100%; height: 40vw; object-fit: cover;" alt="...">
 				</div>
 				<div class="carousel-item">
-					<img src="https://www.xtrafondos.com/descargar.php?id=4419&resolucion=3840x2160" class="d-block w-100" style="width: 100%; height: 40vws; object-fit: cover;" alt="...">
+					<img src="https://www.xtrafondos.com/descargar.php?id=4419&resolucion=3840x2160" class="d-block w-100" style="width: 100%; height: 40vw; object-fit: cover;" alt="...">
 				</div>
 			</div>
 			<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
@@ -24,8 +24,6 @@
 		</div>
 	</div>
 	
-
-
     <div class="container px-4 py-5" id="custom-cards">
     <h2 class="pb-2 border-bottom">With best rating</h2>
 	

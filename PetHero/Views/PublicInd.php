@@ -96,6 +96,77 @@
 </div>
 
     <br><br><br>
+    <div class="row mt-3"> <!-- Escribir Reseña -->
+    <div class="col-2">   
+    </div>
+    <div class="col-4">
+    <div class="card">
+      <div class="card-body">
+      <div class="row">
+        <div class="col">
+        <p>Nachoq22</p>
+        </div>
+        <div class="col">
+        <style>#form {
+  width: 250px;
+  margin: 0 auto;
+  height: 50px;
+}
+#form p {
+  text-align: center;
+}
+#form label {
+  font-size: 20px;
+}
+input[type="radio"] {
+  display: none;
+}
+label {
+  color: grey;
+}
+.clasificacion {
+  direction: rtl;
+  unicode-bidi: bidi-override;
+}
+label:hover,
+label:hover ~ label {
+  color: orange;
+}
+input[type="radio"]:checked ~ label {
+  color: orange;
+}</style>
+        <form action="<?php echo FRONT_ROOT."/Review/Add" ?>" method="post" name="sendPayC">
+                                        <div class="form-floating mb-3">
+                                            <input type="hidden" name="idPublic" value=<?php echo $public->getid() ?>>     
+                                            <p class="clasificacion">
+                                              <input id="radio1" type="radio" name="estrellas" value="5" ><!--
+                                              --><label for="radio1">★</label><!--
+                                              --><input id="radio2" type="radio" name="estrellas" value="4"><!--
+                                              --><label for="radio2">★</label><!--
+                                              --><input id="radio3" type="radio" name="estrellas" value="3"><!--
+                                              --><label for="radio3">★</label><!--
+                                              --><input id="radio4" type="radio" name="estrellas" value="2"><!--
+                                              --><label for="radio4">★</label><!--
+                                              --><input id="radio5" type="radio" name="estrellas" value="1"><!--
+                                              --><label for="radio5">★</label>
+                                            </p>
+                                            </div>
+                                            </div>
+                                        <div class="form-floating mb-3">
+                        <textarea class="form-control" id="review" placeholder="Come mucho" name="review" onkeypress="if (event.keyCode == 13) Send()" required></textarea>
+                        <label for="review">review</label>
+                            <div class="invalid-feedback">
+                                Enter any observation, special care or details.
+                            </div>
+                    </div>
+                </div>
+        </form>
+      </div>
+    </div>
+    </div>
+    <div class="col-6">
+    </div>
+  </div>
     <?php foreach ($reviewList as $review){?>
   <div class="row mt-3"> <!-- RESEÑAS -->
     <div class="col-2">   
@@ -118,6 +189,6 @@
 <br><br><br>
 
 
-
+<script>function Send(){document.sendPayC.submit()}</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 </body>

@@ -1,4 +1,9 @@
 <body>
+<?php if (!empty($message)){?>
+    <div class="alert alert-danger" role="alert">
+      <?php echo $message; ?>
+    </div>
+<?php } ?>
 <form action="<?php echo FRONT_ROOT."/Booking/Add" ?>" method="post" enctype="multipart/form-data" class="was-validated">
     <div class="row g-3">
 

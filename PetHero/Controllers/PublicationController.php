@@ -59,22 +59,24 @@ use \Controllers\PetController as PetController;
             $imgPublic = new ImgPublic();
             $imgPublic->setPublication($public);
             $public = $this->publicDAO->GetPublication($imgPublic);
-            $reviewList = $this->reviewDAO->GetAllByPublic($public->getId());
-            //var_dump($public);
-            $ImgList = $this->publicDAO->GetAllByPublic($public->getId());
+            $reviewList = $this->reviewDAO->GetAllByPublic($public->getid());
+            $ImgList = $this->publicDAO->GetAllByPublic($public->getid());
             require_once(VIEWS_PATH."PublicInd.php");
         }
 
         public function ValidateDateFP($idPublic, $startD, $finishD){
-            if($this->publicDAO->ValidateOnWeek($startD)==1){
-                if($this->publicDAO->ValidateDP($startD, $finishD, $idPublic) == 1){
-                $this->petController->GetPetsByReservation($idPublic, $startD, $finishD);
+            if($startD<$finishD){
+                if($this->publicDAO->ValidateOnWeek($startD)==1){
+                    if($this->publicDAO->ValidateDP($startD, $finishD, $idPublic) == 1){
+                        $this->petController->GetPetsByReservation($idPublic, $startD, $finishD);
+                    }else{
+                        $this->ViewPublication($idPublic, "Las fechas ingresadas no entran en el rango de establecidas por el Keeper");
+                    }
                 }else{
-                    $this->ViewPublication($idPublic, "Las fechas ingresadas no entran en el rango de establecidas por el Keeper");
+                    $this->ViewPublication($idPublic, "Las reservas deben tener 1 semana de aniticipacion");
                 }
             }else{
-                $this->ViewPublication($idPublic, "Las reservas deben tener 1 semana de aniticipacion");
-             }
+                $this->ViewPublication($idPublic, "La fecha de finalizacion debe ser despues de la de inicio");}
         }
 
     }

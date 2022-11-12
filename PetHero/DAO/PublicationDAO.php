@@ -42,9 +42,9 @@ use \Model\Publication as Publication;
         public function NewPublication(Publication $public){
                 $user = $this->userDAO->DGetByUsername($public->getUser()->getUsername());
                 $public->setUser($user);
-            $idLastP = $this->Add($public);
-            $publicN = $this->Get($idLastP);
-        return $publicN;
+                $idLastP = $this->Add($public);
+                $publicN = $this->Get($idLastP);
+                return $publicN;
         }
 
         public function Get($idPublic){
