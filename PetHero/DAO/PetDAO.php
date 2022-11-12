@@ -2,6 +2,7 @@
 namespace DAO;
 use \DAO\Connection as Connection;
 use \DAO\QueryType as QueryType;
+use Exception as Exception;
 
 use \DAO\IPetDAO as IPetDAO;
 use \DAO\PetTypeDAO as PetTypeDAO;
@@ -144,7 +145,7 @@ use \Model\Pet as Pet;
             try{
                 $pet->setType($this->typeDAO->GetByName($pet->getType()->getName()));
                 $pet->setSize($this->sizeDAO->GetByName($pet->getSize()->getName()));
-                $pet->setUser($this->userDAO->GetByUsername($pet->getUser()->getUsername()));
+                $pet->setUser($this->userDAO->DGetByUsername($pet->getUser()->getUsername()));
                 $this->Add($pet,$fileP,$fileNameP,$fileV,$fileNameV);
             }
             catch(Exception $e){

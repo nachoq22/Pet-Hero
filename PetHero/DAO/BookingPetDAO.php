@@ -1,18 +1,19 @@
 <?php
 namespace DAO;
-use \Exception as Exception;
-use \DAO\PetDAO as PetDAO;
-
-use \Model\Booking as Booking;
 use \DAO\QueryType as QueryType;
-use \DAO\BookingDAO as BookingDAO;
 use \DAO\Connection as Connection;
-use \Model\BookingPet as BookingPet;
+use \Exception as Exception;
+
 use \DAO\IBookingPetDAO as IBookingPetDAO;
+use \DAO\BookingDAO as BookingDAO;
+use \DAO\PetDAO as PetDAO;
+use \Model\BookingPet as BookingPet;
+use \Model\Booking as Booking;
+use \Model\Pet as Pet;
 
     class BookingPetDAO implements IBookingPetDAO{
         private $connection;
-        private $tableName = 'bookingbookingPet';
+        private $tableName = 'BookingPet';
 
         private $bookDAO;
         private $petDAO;
@@ -104,6 +105,7 @@ use \DAO\IBookingPetDAO as IBookingPetDAO;
         return $psBsList;    
         }
 
+
 #2.2.TRAIGO TODOS LOS PETS SEGUN UN USERNAME DE KEEPER
         public function GetAllPetsByBooks($username){
                 $booklist = $this->GetAllBooksByKeeper($username);
@@ -193,17 +195,28 @@ use \DAO\IBookingPetDAO as IBookingPetDAO;
 //-----------------------------------------------------     
         public function NewBooking(Booking $booking,$petList){
 #GUARDO Y RECUPERO BOOKING COMPLETO CON ID
-            $booking = $this->bookDAO->AddRet($booking);
+            $message = "Successful: Se ha completado la reserva exitosamente";
+                try{
+                    $booking = $this->bookDAO->AddRet($booking);
+                }catch(exception $e){
+                    $message = "Error: No se ha podido completar la reserva, intente nuevamente";
+                }
 #GUARDO EN BUCLE BP USANDO EL BOOKING GUARDADO Y RECUPERADO
-            foreach($petList as $pet){
-                    $bp = new BookingPet();
-                    $bp->setBooking($booking);
-                    $bp->getPet()->setId($pet);
-                $pet = $this->petDAO->Get($bp->getPet()->getId());
-                $bp->setPet($pet);
-            $this->Add($bp);
+                try{
+                    foreach($petList as $pet){
+                        $bp = new BookingPet();
+                        $bp->setBooking($booking);
+                        $bp->getPet()->setId($pet);
+                        $pet = $this->petDAO->Get($bp->getPet()->getId());
+                        $bp->setPet($pet);
+                        $this->Add($bp);
+                    }
+                }
+                catch(exception $e){
+                    $message="Error: ha ocurrido un fallo en el guardado de pets, intente nuevamente";
+                }
+            return $message;
             }
-        }
 //-----------------------------------------------------
 //-----------------------------------------------------  
 
@@ -277,17 +290,16 @@ use \DAO\IBookingPetDAO as IBookingPetDAO;
         }
 
 
-        //ESTO HACE FUNCIONAR LA VALIDACION DE TIPOS DE MASCOTAS ANTES DE VALIDAR FECHAS
+//ESTO HACE FUNCIONAR LA VALIDACION DE TIPOS DE MASCOTAS ANTES DE VALIDAR FECHAS
         public function GetAllPetsbyBooking($idList) {
             $petList = array();
-            
+    
             foreach($idList as $obj){
                 $pet = new Pet();
                 $pet = $this->petDAO->Get($obj);
                 array_push($petList, $pet);
             }
             return $petList;
-
         }
 
         public function ValidateTypes($idList){
@@ -310,7 +322,7 @@ use \DAO\IBookingPetDAO as IBookingPetDAO;
         /////////////////////
 
         
-        //ESTO SIRVE PARA COMPARAR EL TIPO DE MASCOTAS DE NUESTRO BOOKING CON EL TIPO DE LAS MASCOTAS DE LOS BOOKING QUE COINCIDAN CON NUESTRA FECHA INTRODUCIDA
+//ESTO SIRVE PARA COMPARAR EL TIPO DE MASCOTAS DE NUESTRO BOOKING CON EL TIPO DE LAS MASCOTAS DE LOS BOOKING QUE COINCIDAN CON NUESTRA FECHA INTRODUCIDA
         public function ValidateTypesOnBookings(Booking $booking, $idList){
             $matches = $this->bookDAO->GetAllMatchingDatesByPublic($booking); 
             $petList = $this->GetAllPetsbyBooking($idList);
@@ -329,8 +341,5 @@ use \DAO\IBookingPetDAO as IBookingPetDAO;
             return $rta;
         }
         ////////////////////////////
-
-        
-
     }
 ?>

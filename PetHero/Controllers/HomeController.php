@@ -85,7 +85,7 @@ use \Model\User as User;
             require_once(VIEWS_PATH."OwnerPanel.php");
         }       
         
-        public function ViewKeeperPanel(){
+        public function ViewKeeperPanel($message=""){
             $this->bpDAO->UpdateAllStates();
             //$owner = $this->userDAO->DGet(2);   /*$owner = $this->userDAO->DGetByUsername(2);*/
             $publicList = $this->publicDAO->GetAllByUsername("sculpordwarf"); /*$petList = $this->petDAO->GetAllByUsername("sculpordwarf");*/ 

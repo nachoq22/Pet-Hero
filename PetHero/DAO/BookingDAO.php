@@ -328,7 +328,7 @@ use \Model\Booking as Booking;
                 $booking->__fromDBWithoutPC($row["idBook"],$row["startD"]
                                   ,$row["finishD"],$row["bookState"]
                                   ,$this->publicDAO->Get($row["idPublic"])
-                                  ,$this->userDAO->Get($row["idUser"]));
+                                  ,$this->userDAO->DGet($row["idUser"]));
                 array_push($bookingList,$booking);
             }
             return $bookingList;

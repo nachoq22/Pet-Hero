@@ -43,15 +43,14 @@ use \Controllers\PetController as PetController;
             $book->setId($idBook);
             $book->setPayCode($payCode);
             $message = $this->bpDAO->UpdatePayCode($book);
-        $this->homeC->ViewOwnerPanel($message);
+        $this->homeController->ViewOwnerPanel($message);
     }
 
     public function CancelBook($idBook){
             $book = new Booking();
             $book->setId($idBook);
             $message = $this->bpDAO->CancelBook($book);
-        $t
-
-
+            $this->homeController->ViewOwnerPanel($message);
     }
+}
 ?>
