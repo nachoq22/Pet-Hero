@@ -1,80 +1,76 @@
 <body>
-<?php if (!empty($message)){?>
-  <?php if (!empty($_SESSION["sessOn"])){?>
-    <div class="alert alert-light" role="alert">
-      <?php echo $message; ?>
-    </div>
-  <?php }else{?>
-    <div class="alert alert-danger" role="alert">
-      <?php echo $message; ?>
-    </div>
+  <?php if (!empty($message)) { ?>
+    <?php if (!empty($_SESSION["sessOn"])) { ?>
+      <div class="alert alert-light" role="alert">
+        <?php echo $message; ?>
+      </div>
+    <?php } else { ?>
+      <div class="alert alert-danger" role="alert">
+        <?php echo $message; ?>
+      </div>
+    <?php } ?>
   <?php } ?>
-<?php } ?>
+  <a class="btn btn-outline-primary me-2" href="<?php echo FRONT_ROOT . "/Home/ViewAddReview" ?>" type="button"><i class="bi bi-person-rolodex"></i></a>
+  <div class="container-fluid">
+    <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active" data-bs-interval="10000">
+          <img src="https://niveloculto.com/wp-content/uploads/2011/01/deadmoneyportada.jpg" class="d-block w-100" style="width: 100%; height: 40vw; object-fit: cover;" alt="...">
+        </div>
+        <div class="carousel-item" data-bs-interval="2000">
+          <img src="https://i.pinimg.com/originals/ee/a9/0a/eea90a6da78d11fb1e869844c1c587a5.jpg" class="d-block w-100" style="width: 100%; height: 40vw; object-fit: cover;" alt="...">
+        </div>
+        <div class="carousel-item">
+          <img src="https://www.xtrafondos.com/descargar.php?id=4419&resolucion=3840x2160" class="d-block w-100" style="width: 100%; height: 40vw; object-fit: cover;" alt="...">
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  </div>
 
-	<div class="container-fluid">
-		<div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
-			<div class="carousel-inner">
-				<div class="carousel-item active" data-bs-interval="10000">
-					<img src="https://niveloculto.com/wp-content/uploads/2011/01/deadmoneyportada.jpg" class="d-block w-100" style="width: 100%; height: 40vw; object-fit: cover;" alt="...">
-				</div>
-				<div class="carousel-item" data-bs-interval="2000">
-					<img src="https://i.pinimg.com/originals/ee/a9/0a/eea90a6da78d11fb1e869844c1c587a5.jpg" class="d-block w-100" style="width: 100%; height: 40vw; object-fit: cover;" alt="...">
-				</div>
-				<div class="carousel-item">
-					<img src="https://www.xtrafondos.com/descargar.php?id=4419&resolucion=3840x2160" class="d-block w-100" style="width: 100%; height: 40vws; object-fit: cover;" alt="...">
-				</div>
-			</div>
-			<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
-				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-				<span class="visually-hidden">Previous</span>
-			</button>
-			<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
-				<span class="carousel-control-next-icon" aria-hidden="true"></span>
-				<span class="visually-hidden">Next</span>
-			</button>
-		</div>
-	</div>
-
-
-
-    <div class="container px-4 py-5" id="custom-cards">
+  <div class="container px-4 py-5" id="custom-cards">
     <h2 class="pb-2 border-bottom">With best rating</h2>
-	
+
     <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-3 py-2">
-      <div class="col">   
 
-        <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" 
-              style=" background-image: url('https://cdn.bhdw.net/im/paisaje-arte-digital-papel-pintado-80890_w635.webp');
-                      background-size: cover;
-                      background-repeat: no-repeat;
-                      background-position: center center;
-                      width: 100%;">
+      <?php foreach ($publicList as $public) { ?>
+        <div class="col">
+          <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style=" background-image: url('https://cdn.bhdw.net/im/paisaje-arte-digital-papel-pintado-80890_w635.webp');
+					background-size: cover;
+					background-repeat: no-repeat;
+					background-position: center center;
+					width: 100%;">
+            <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+              <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold"><?php echo $public->getTitle() ?></h3>
 
-          <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
-            <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Viviendo lejos de la multitud, encuentra paz para tu mascota </h3>
-            
-            <ul class="d-flex list-unstyled mt-auto">
-              <li class="d-flex align-items-center me-3">
-                <i class="bi bi-calendar-date me-2" width="1em" height="1em"></i>
-                <small>12-10-2022</small>
-              </li>
-              <li class="d-flex align-items-center">
-                <i class="bi bi-calendar-date me-2" width="1em" height="1em"></i>
-                <small>12-10-2022</small>
-              </li>
-            </ul>
-            
-            <ul class="d-flex list-unstyled mt-auto">
-              <li class="me">
-                <img src="https://pbs.twimg.com/media/E0e2SE4XsAgxVdm.jpg" alt="Bootstrap" width="32" height="32" class="rounded-circle border border-white me-3">
-              </li>
-              <li class="d-flex align-items-center me-3">
-                <i class="bi bi-map me-1" width="1em" height="1em"></i>
-                <small>Earth</small>
-              </li>
-              <li class="d-flex align-items-center me-3" 
-              style="color: #fff;
-                      text-shadow:
+              <ul class="d-flex list-unstyled mt-auto">
+                <li class="d-flex align-items-center me-3">
+                  <i class="bi bi-calendar-date me-2" width="1em" height="1em"></i>
+                  <small><?php echo $public->getOpenDate() ?></small>
+                </li>
+                <li class="d-flex align-items-center">
+                  <i class="bi bi-calendar-date me-2" width="1em" height="1em"></i>
+                  <small><?php echo $public->getCloseDate() ?></small>
+                </li>
+              </ul>
+              <ul class="d-flex list-unstyled mt-auto">
+                <li class="me">
+                  <img src="https://pbs.twimg.com/media/E0e2SE4XsAgxVdm.jpg" alt="Bootstrap" width="32" height="32" class="rounded-circle border border-white me-3">
+                </li>
+                <li class="d-flex align-items-center me-3">
+                  <i class="bi bi-map me-1" width="1em" height="1em"></i>
+                  <small><?php echo $public->getUser()->getData()->getLocation()->getCity() ?></small>
+                </li>
+                <li class="d-flex align-items-center me-3" 
+                    style="color: #fff;
+                          text-shadow:
                           0 0 7px #fff,
                           0 0 10px #fff,
                           0 0 21px #fff,
@@ -83,64 +79,119 @@
                           0 0 92px #0fa,
                           0 0 102px #0fa,
                           0 0 151px #0fa;">
-                <i class="bi bi-currency-dollar me-1" width="1em" height="1em"></i>
-                <small><strong>2500</strong></small>
-              </li>
-            </ul>
+                  <i class="bi bi-currency-dollar me-1" width="1em" height="1em"></i>
+                  <small><strong><?php echo $public->getRemuneration() ?></strong></small>
+                  <form action="<?php echo FRONT_ROOT . "/Publication/ViewPublication" ?>" method="post">
+                    <input type="hidden" name="idPublic" value=<?php echo $public->getId() ?>>
+                    <button type="submit" class="stretched-link" style="border-left-width: 0px;border-top-width: 0px;border-right-width: 0px;height: 0px;padding-right: 0px;padding-left: 0px;border-bottom-width: 0px;padding-bottom: 0px;padding-top: 0px;"></button>
+                  </form>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
+      <?php } ?>
+      <!--
+<div class="col">   
+<div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" 
+	  style=" background-image: url('https://cdn.bhdw.net/im/paisaje-arte-digital-papel-pintado-80890_w635.webp');
+			  background-size: cover;
+			  background-repeat: no-repeat;
+			  background-position: center center;
+			  width: 100%;">
+  <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+	<h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Viviendo lejos de la multitud, encuentra paz para tu mascota </h3>
+	
+	<ul class="d-flex list-unstyled mt-auto">
+	  <li class="d-flex align-items-center me-3">
+		<i class="bi bi-calendar-date me-2" width="1em" height="1em"></i>
+		<small>12-10-2022</small>
+	  </li>
+	  <li class="d-flex align-items-center">
+		<i class="bi bi-calendar-date me-2" width="1em" height="1em"></i>
+		<small>12-10-2022</small>
+	  </li>
+	</ul>
+	
+	<ul class="d-flex list-unstyled mt-auto">
+	  <li class="me">
+		<img src="https://pbs.twimg.com/media/E0e2SE4XsAgxVdm.jpg" alt="Bootstrap" width="32" height="32" class="rounded-circle border border-white me-3">
+	  </li>
+	  <li class="d-flex align-items-center me-3">
+		<i class="bi bi-map me-1" width="1em" height="1em"></i>
+		<small>Earth</small>
+	  </li>
+	  <li class="d-flex align-items-center me-3" 
+	  style="color: #fff;
+			  text-shadow:
+				  0 0 7px #fff,
+				  0 0 10px #fff,
+				  0 0 21px #fff,
+				  0 0 42px #0fa,
+				  0 0 82px #0fa,
+				  0 0 92px #0fa,
+				  0 0 102px #0fa,
+				  0 0 151px #0fa;">
+		<i class="bi bi-currency-dollar me-1" width="1em" height="1em"></i>
+		<small><strong>2500</strong></small>
+	  </li>
+	</ul>
+  </div>
+</div>
+</div>
+<div class="col">   
+<div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" 
+	  style=" background-image: url('https://cdn.bhdw.net/im/paisaje-arte-digital-papel-pintado-80890_w635.webp');
+			  background-size: cover;
+			  background-repeat: no-repeat;
+			  background-position: center center;
+			  width: 100%;">
+  <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+	<h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Viviendo lejos de la multitud, encuentra paz para tu mascota </h3>
+	
+	<ul class="d-flex list-unstyled mt-auto">
+	  <li class="d-flex align-items-center me-3">
+		<i class="bi bi-calendar-date me-2" width="1em" height="1em"></i>
+		<small>12-10-2022</small>
+	  </li>
+	  <li class="d-flex align-items-center">
+		<i class="bi bi-calendar-date me-2" width="1em" height="1em"></i>
+		<small>12-10-2022</small>
+	  </li>
+	</ul>
+	
+	<ul class="d-flex list-unstyled mt-auto">
+	  <li class="me">
+		<img src="https://pbs.twimg.com/media/E0e2SE4XsAgxVdm.jpg" alt="Bootstrap" width="32" height="32" class="rounded-circle border border-white me-3">
+	  </li>
+	  <li class="d-flex align-items-center me-3">
+		<i class="bi bi-map me-1" width="1em" height="1em"></i>
+		<small>Earth</small>
+	  </li>
+	  <li class="d-flex align-items-center me-3" 
+	  style="color: #fff;
+			  text-shadow:
+				  0 0 7px #fff,
+				  0 0 10px #fff,
+				  0 0 21px #fff,
+				  0 0 42px #0fa,
+				  0 0 82px #0fa,
+				  0 0 92px #0fa,
+				  0 0 102px #0fa,
+				  0 0 151px #0fa;">
+		<i class="bi bi-currency-dollar me-1" width="1em" height="1em"></i>
+		<small><strong>2500</strong></small>
+	  </li>
+	</ul>
+  </div>
+</div>
+</div>
+    </div>
+  </div>
+  -->
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+</body>
 
-      </div>
-
-  <?php foreach($publicList as $public){?>
-	  <div class="col">   
-		<div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" 
-					style=" background-image: url('https://cdn.bhdw.net/im/paisaje-arte-digital-papel-pintado-80890_w635.webp');
-					background-size: cover;
-					background-repeat: no-repeat;
-					background-position: center center;
-					width: 100%;">
-			<div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
-				<h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold"><?php echo $public->getTitle()?></h3>
-				
-				<ul class="d-flex list-unstyled mt-auto">
-					<li class="d-flex align-items-center me-3">
-						<i class="bi bi-calendar-date me-2" width="1em" height="1em"></i>
-						<small><?php echo $public->getOpenDate()?></small>
-					</li>
-					<li class="d-flex align-items-center">
-						<i class="bi bi-calendar-date me-2" width="1em" height="1em"></i>
-						<small><?php echo $public->getCloseDate()?></small>
-					</li>
-				</ul>
-				
-				<ul class="d-flex list-unstyled mt-auto">
-					<li class="me">
-						<img src="https://pbs.twimg.com/media/E0e2SE4XsAgxVdm.jpg" alt="Bootstrap" width="32" height="32" class="rounded-circle border border-white me-3">
-					</li>
-					<li class="d-flex align-items-center me-3">
-						<i class="bi bi-map me-1" width="1em" height="1em"></i>
-						<small><?php echo $public->getUser()->getData()->getLocation()->getCity()?></small>
-					</li>
-					<li class="d-flex align-items-center me-3" 
-								style="color: #fff;
-								text-shadow:
-								0 0 7px #fff,
-								0 0 10px #fff,
-								0 0 21px #fff,
-								0 0 42px #0fa,
-								0 0 82px #0fa,
-								0 0 92px #0fa,
-								0 0 102px #0fa,
-								0 0 151px #0fa;">
-						<i class="bi bi-currency-dollar me-1" width="1em" height="1em"></i>
-						<small><strong><?php echo $public->getRemuneration()?></strong></small>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</div>
-	<?php } ?>
 <!--
 <div class="col">   
 
@@ -293,7 +344,7 @@
                                     <th scope="col">Country</th>
                                 </tr>
                             </thead>
-                            <tbody> <?php foreach($locationList as $location){ ?>
+                            <tbody> <?php foreach ($locationList as $location) { ?>
                                 <tr>
                                     <th scope="row"><?php echo $location->getId() ?></th>
                                     <td><?php echo $location->getAdress() ?></td>
@@ -301,7 +352,7 @@
                                     <td><?php echo $location->getCity() ?></td>
                                     <td><?php echo $location->getProvince() ?></td>
                                     <td><?php echo $location->getCountry() ?></td>
-                                </tr><?php }?>     
+                                </tr><?php } ?>     
                             </tbody>
                         </table>
                     </div>
@@ -325,25 +376,25 @@
                                     <th scope="col">Country</th>
                                 </tr>
                             </thead>
-                            <tbody> <?php foreach($userList as $user){ ?>
+                            <tbody> <?php foreach ($userList as $user) { ?>
                                 <tr>
                                     <th scope="row"><?php echo $user->getId() ?></th>
                                     <td><?php echo $user->getUsername() ?></td>
                                     <td><?php echo $user->getEmail() ?></td>
                                     <td><?php echo $user->getPassword() ?></td>
-                                    <?php if($user->getData() != NULL){ ?>
+                                    <?php if ($user->getData() != NULL) { ?>
                                     <td><?php echo $user->getData()->getName() ?></td>
                                     <td><?php echo $user->getData()->getSurname() ?></td>
-                                    <td><?php echo $user->getData()->getSex()?></td>
-                                    <td><?php echo $user->getData()->getDni()?></td>
+                                    <td><?php echo $user->getData()->getSex() ?></td>
+                                    <td><?php echo $user->getData()->getDni() ?></td>
 
-                                    <td><?php echo $user->getData()->getLocation()->getAdress()?></td>
-                                    <td><?php echo $user->getData()->getLocation()->getNeighborhood()?></td>
-                                    <td><?php echo $user->getData()->getLocation()->getCity()?></td>
-                                    <td><?php echo $user->getData()->getLocation()->getProvince()?></td>
-                                    <td><?php echo $user->getData()->getLocation()->getCountry()?></td>
-                                    <?php }?>
-                                </tr><?php }?>     
+                                    <td><?php echo $user->getData()->getLocation()->getAdress() ?></td>
+                                    <td><?php echo $user->getData()->getLocation()->getNeighborhood() ?></td>
+                                    <td><?php echo $user->getData()->getLocation()->getCity() ?></td>
+                                    <td><?php echo $user->getData()->getLocation()->getProvince() ?></td>
+                                    <td><?php echo $user->getData()->getLocation()->getCountry() ?></td>
+                                    <?php } ?>
+                                </tr><?php } ?>     
                             </tbody>
                         </table>
                     </div>
@@ -356,11 +407,11 @@
                                     <th scope="col">Name</th>
                                 </tr>
                             </thead>
-                            <tbody> <?php foreach($sizeList as $size){ ?>
+                            <tbody> <?php foreach ($sizeList as $size) { ?>
                                 <tr>
                                     <th scope="row"><?php echo $size->getId() ?></th>
                                     <td><?php echo $size->getName() ?></td>
-                                </tr><?php }?>     
+                                </tr><?php } ?>     
                             </tbody>
                         </table>
                     </div>
@@ -373,11 +424,11 @@
                                     <th scope="col">Name</th>
                                 </tr>
                             </thead>
-                            <tbody> <?php foreach($typeList as $type){ ?>
+                            <tbody> <?php foreach ($typeList as $type) { ?>
                                 <tr>
                                     <th scope="row"><?php echo $type->getId() ?></th>
                                     <td><?php echo $type->getName() ?></td>
-                                </tr><?php }?>     
+                                </tr><?php } ?>     
                             </tbody>
                         </table>
                     </div>

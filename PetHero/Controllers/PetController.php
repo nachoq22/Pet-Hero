@@ -43,7 +43,7 @@ use \Controllers\HomeController as HomeController;
             $typeOBJ = new PetType();
             $typeOBJ->setName($type);
             $user = new User();
-            $user = $this->userDAO->DGet(1);
+            $user = $this->userDAO->DGet(3);
             $pet = new Pet();
             $pet->__fromRequest($name, $breed, $observation, $typeOBJ, $sizeOBJ, $user);   
             $fileNameP = $_FILES['ImagenP']['name'];
