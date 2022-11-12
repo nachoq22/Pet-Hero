@@ -1,6 +1,5 @@
 <?php
 namespace DAO;
-
 use \DAO\Connection as Connection;
 use \DAO\QueryType as QueryType;
 
@@ -10,7 +9,6 @@ use \DAO\SizeDAO as SizeDAO;
 use \DAO\UserDAO as UserDAO;
 use \Model\Pet as Pet;
 
-
     class PetDAO implements IPetDAO{
         private $connection;
         private $tableName = 'Pet';
@@ -19,33 +17,39 @@ use \Model\Pet as Pet;
         private $sizeDAO;
         private $userDAO;
 
-//DAO INJECTION
+//======================================================================
+// DAOs INJECTION
+//======================================================================
         public function __construct(){
             $this->typeDAO = new PetTypeDAO();
             $this->sizeDAO = new SizeDAO();
             $this->userDAO = new UserDAO();
         }
 
-//TOOLS
-    private function imgPPProcess($nameFile,$file,$petName){
-        $path= "Views\Img\IMGPet\Profile\\".$petName.date("YmdHis").".jpg"; 
-        $path = str_replace(' ', '-', $path); 
-        $pathDB =  "..\\".$path; 
-        move_uploaded_file($file,$path);
+//======================================================================
+// METHODS TOOLS
+//======================================================================
+        private function imgPPProcess($nameFile,$file,$petName){
+            $path= "Views\Img\IMGPet\Profile\\".$petName.date("YmdHis").".jpg"; 
+            $path = str_replace(' ', '-', $path); 
+            $pathDB =  "..\\".$path; 
+
+            move_uploaded_file($file,$path);
         return $pathDB;
-    }    
+        }    
 
-    private function imgPVPProcess($nameFile,$file,$petName){
-        $path= "Views\Img\IMGPet\VaccinationPlan\\".$petName.date("YmdHis").".jpg"; 
-        $path = str_replace(' ', '-', $path); 
-        $pathDB =  "..\\".$path;  
-        
-        move_uploaded_file($file,$path);
+        private function imgPVPProcess($nameFile,$file,$petName){
+            $path= "Views\Img\IMGPet\VaccinationPlan\\".$petName.date("YmdHis").".jpg"; 
+            $path = str_replace(' ', '-', $path); 
+            $pathDB =  "..\\".$path;  
+            
+            move_uploaded_file($file,$path);
         return $pathDB;
-    }       
+        }       
 
-
-//SELECT METHODS
+//======================================================================
+// SELECT METHODS
+//======================================================================
         public function GetAll(){
             $petList = array();
 
@@ -55,23 +59,15 @@ use \Model\Pet as Pet;
 
             foreach($resultBD as $row){
                 $pet = new Pet();
-/*
                 $pet->__fromDB($row["idPet"],$row["name"]
-                ,$row["breed"],$row["profileIMG"]
-                ,$row["vaccinationPlanIMG"],$row["observation"]
-                ,$this->typeDAO->Get($row["idType"])
-                ,$this->sizeDAO->Get($row["idSize"])
-                ,$this->ownerDAO->Get($row["idOwner"]));
-*/
-                $pet->setId($row["idPet"]);
-                $pet->setName($row["name"]);
-                $pet->setBreed($row["breed"]);
-                $pet->setProfileIMG($row["profileIMG"]);
-                $pet->setVaccinationPlanIMG($row["vaccinationPlanIMG"]);
-                $pet->setObservation($row["observation"]);
+                              ,$row["breed"],$row["profileIMG"]
+                              ,$row["vaccinationPlanIMG"],$row["observation"]
+                              ,$this->typeDAO->Get($row["idType"])
+                              ,$this->sizeDAO->Get($row["idSize"])
+                              ,$this->userDAO->dGet($row["idUser"]));
                 array_push($petList,$pet);
             }
-            return $petList;
+        return $petList;
         }
 
         public function GetAllByUser($idUser){
@@ -84,16 +80,15 @@ use \Model\Pet as Pet;
 
             foreach($resultBD as $row){
                 $pet = new Pet();
-
                 $pet->__fromDB($row["idPet"],$row["name"]
-                ,$row["breed"],$row["profileIMG"]
-                ,$row["vaccinationPlanIMG"],$row["observation"]
-                ,$this->typeDAO->Get($row["idType"])
-                ,$this->sizeDAO->Get($row["idSize"])
-                ,$this->userDAO->DGet($row["idUser"]));
+                              ,$row["breed"],$row["profileIMG"]
+                              ,$row["vaccinationPlanIMG"],$row["observation"]
+                              ,$this->typeDAO->Get($row["idType"])
+                              ,$this->sizeDAO->Get($row["idSize"])
+                              ,$this->userDAO->DGet($row["idUser"]));
                 array_push($petList,$pet);
             }
-            return $petList;
+        return $petList;
         }
 
         public function GetAllByUsername($username){
@@ -111,21 +106,22 @@ use \Model\Pet as Pet;
 
             foreach($resultBD as $row){
                 $pet = new Pet();
-
                 $pet->__fromDB($row["idPet"],$row["name"]
-                ,$row["breed"],$row["profileIMG"]
-                ,$row["vaccinationPlanIMG"],$row["observation"]
-                ,$this->typeDAO->Get($row["idType"])
-                ,$this->sizeDAO->Get($row["idSize"])
-                ,$this->userDAO->Get($row["idUser"]));
+                              ,$row["breed"],$row["profileIMG"]
+                              ,$row["vaccinationPlanIMG"],$row["observation"]
+                              ,$this->typeDAO->Get($row["idType"])
+                              ,$this->sizeDAO->Get($row["idSize"])
+                              ,$this->userDAO->DGet($row["idUser"]));
             }
-            return $pet;
+        return $pet;
         }
 
-//INSERT METHODS
+//======================================================================
+// INSERT METHODS
+//======================================================================
         private function Add(Pet $pet,$fileP,$fileNameP,$fileV,$fileNameV){
-            $pet->setProfileIMG($this->imgPPProcess($fileNameP,$fileP,$pet->getName()));
-            $pet->setVaccinationPlanIMG($this->imgPVPProcess($fileNameV,$fileV,$pet->getName()));
+                $pet->setProfileIMG($this->imgPPProcess($fileNameP,$fileP,$pet->getName()));
+                $pet->setVaccinationPlanIMG($this->imgPVPProcess($fileNameV,$fileV,$pet->getName()));
 
             $query = "CALL Pet_Add(?,?,?,?,?,?,?,?)";
             $parameters["name"] = $pet->getName();
@@ -136,19 +132,23 @@ use \Model\Pet as Pet;
             $parameters["idType"] = $pet->getType()->getId();
             $parameters["idSize"] = $pet->getSize()->getId();
             $parameters["idUser"] = $pet->getUser()->getId();
-
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
 
+//-----------------------------------------------------
+// METHOD DEDICATED TO REGISTER A PET
+//-----------------------------------------------------
         public function RegisterPet(Pet $pet,$fileP,$fileNameP,$fileV,$fileNameV){
-            $pet->setType($this->typeDAO->GetByName($pet->getType()->getName()));
-            $pet->setSize($this->sizeDAO->GetByName($pet->getSize()->getName()));
-            $pet->setUser($this->userDAO->GetByUsername($pet->getUser()->getUsername()));
-            $this->Add($pet,$fileP,$fileNameP,$fileV,$fileNameV);
+                $pet->setType($this->typeDAO->GetByName($pet->getType()->getName()));
+                $pet->setSize($this->sizeDAO->GetByName($pet->getSize()->getName()));
+                $pet->setUser($this->userDAO->DGetByUsername($pet->getUser()->getUsername()));
+        $this->Add($pet,$fileP,$fileNameP,$fileV,$fileNameV);
         }
 
-//DELETE METHODS
+//======================================================================
+// DELETE METHODS
+//======================================================================
         public function Delete($id){
             $query = "CALL Pet_Delete(?)";
             $parameters["idPet"] = $id;

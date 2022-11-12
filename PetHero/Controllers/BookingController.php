@@ -16,27 +16,28 @@ use \Model\User as User;
         }
 
         public function Add($startD,$finishD,$petsId){
-            $publication = new Publication();
-            $publication->setid(4);
+                $publication = new Publication();
+                $publication->setid(4);
 
-            $user = new User();
-            $user->setUsername("venus");
-            $book = new Booking();
-            $book->__fromRequest($startD,$finishD,"In Review",$publication,$user);
+                $user = new User();
+                $user->setUsername("venus");
+                $book = new Booking();
+                $book->__fromRequest($startD,$finishD,"In Review",$publication,$user);
             $this->bpDAO->NewBooking($book,$petsId);
         }
+
         public function EnterPaycode($idBook,$payCode){
-            $book = new Booking();
-            $book->setId($idBook);
-            $book->setPayCode($payCode);
-            $message = $this->bpDAO->UpdatePayCode($book);
+                $book = new Booking();
+                $book->setId($idBook);
+                $book->setPayCode($payCode);
+                $message = $this->bpDAO->UpdatePayCode($book);
             $this->homeC->ViewOwnerPanel($message);
         }
 
         public function CancelBook($idBook){
-            $book = new Booking();
-            $book->setId($idBook);
-            $message = $this->bpDAO->CancelBook($book);
+                $book = new Booking();
+                $book->setId($idBook);
+                $message = $this->bpDAO->CancelBook($book);
             $this->homeC->ViewOwnerPanel($message);
         }
     }

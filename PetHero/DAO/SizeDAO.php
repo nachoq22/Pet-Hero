@@ -10,7 +10,9 @@ use \Model\Size as Size;
         private $connection;
         private $tableName = 'Size';
 
-//SELECT METHODS
+//======================================================================
+// SELECT METHODS
+//======================================================================
         public function GetAll(){
             $sizeList = array();
 
@@ -26,11 +28,11 @@ use \Model\Size as Size;
             return $sizeList;
         }
 
-        public function Get($id){
+        public function Get($idSize){
             $size = null;
 
             $query = "CALL Size_GetById(?)";
-            $parameters["idSize"] = $id;
+            $parameters["idSize"] = $idSize;
             $this->connection = Connection::GetInstance();
             $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
 
@@ -56,7 +58,9 @@ use \Model\Size as Size;
             return $size;
         }
 
-//INSERT METHODS
+//======================================================================
+// INSERT METHODS
+//======================================================================
         public function Add(Size $size){
             $query = "CALL Size_Add(?)";
             $parameters["name"] = $size->getName();
@@ -65,10 +69,12 @@ use \Model\Size as Size;
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
 
-//DELETE METHODS
-        public function Delete($id){
+//======================================================================
+// DELETE METHODS
+//======================================================================
+        public function Delete($idSize){
             $query = "CALL Size_Delete(?)";
-            $parameters["idSize"] = $id;
+            $parameters["idSize"] = $idSize;
 
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);

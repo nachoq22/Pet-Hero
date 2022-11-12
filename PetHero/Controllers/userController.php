@@ -20,17 +20,17 @@ use \Model\PersonalData as PersonalData;
         }
 
         public function Register($username, $email, $password){
-            $user = new User();
-            $user->__fromRegister($username,$password,$email);
-            $uRole= new UserRole();
-            $uRole->setUser($user);
+                $user = new User();
+                $user->__fromRegister($username,$password,$email);
+                $uRole= new UserRole();
+                $uRole->setUser($user);
             $this->uRoleDAO->Register($uRole);
             $this->homeController->Index();
         } 
 
         public function Login($username, $password){            
-            $user = new User();
-            $user->__fromLogin($username,$password);
+                $user = new User();
+                $user->__fromLogin($username,$password);
             $rta = $this->userDAO->Login($user);
             //var_dump($rta);
             if($rta!=0){
@@ -46,17 +46,16 @@ use \Model\PersonalData as PersonalData;
             }
         }
 
-        public function BeKeeper($adress, $neighborhood, $city, $province, $country,
-                                 $name,$surname,$sex,$dni){
-            $location = new Location();
-            $location->__fromRequest($adress, $neighborhood, $city, $province,$country);
-            $data = new PersonalData();
-            $data->__fromRequest($name,$surname,$sex,$dni,$location);  
-/*SETTING DE DATOS A UNA INSTANCIA USER DESDE LA SESSION*/
-            $user = new User();
-            $user->__fromRequest("Elcucarachin","Carlos1245","elcuca@gmail.com",$data);
-            $uRole = new UserRole();
-            $uRole->setUser($user);     
+        public function BeKeeper($adress, $neighborhood, $city, $province, $country, $name,$surname,$sex,$dni){
+                $location = new Location();
+                $location->__fromRequest($adress, $neighborhood, $city, $province,$country);
+                $data = new PersonalData();
+                $data->__fromRequest($name,$surname,$sex,$dni,$location);  
+    /*SETTING DE DATOS A UNA INSTANCIA USER DESDE LA SESSION*/
+                $user = new User();
+                $user->__fromRequest("Elcucarachin","Carlos1245","elcuca@gmail.com",$data);
+                $uRole = new UserRole();
+                $uRole->setUser($user);     
 
             if(!empty($this->uRoleDAO->IsKeeper($uRole))){   
                 $message = $this->uRoleDAO->UtoKeeper($uRole);

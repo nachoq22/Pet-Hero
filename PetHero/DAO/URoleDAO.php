@@ -19,7 +19,9 @@ use \Model\UserRole as UserRole;
         private $userDAO;
         private $roleDAO;
 
-//DAO INJECTION
+//======================================================================
+// DAOs INJECTION
+//======================================================================
         public function __construct(){
             $this->locationDAO = new LocationDAO();
             $this->dataDAO = new PersonalDataDAO();
@@ -27,7 +29,9 @@ use \Model\UserRole as UserRole;
             $this->roleDAO = new RoleDAO();
         }
 
-//SELECT METHODS
+//======================================================================
+// SELECT METHODS
+//======================================================================
         public function GetAll(){
             $urList = array();
 
@@ -37,23 +41,23 @@ use \Model\UserRole as UserRole;
             
             foreach($resultBD as $row){
                 $ur = new UserRole();
-                $ur->__fromDB($row["idUR"],$this->userDAO->Get($row["idUser"]),$this->roleDAO->Get($row["idRole"]));
+                $ur->__fromDB($row["idUR"],$this->userDAO->DGet($row["idUser"]),$this->roleDAO->Get($row["idRole"]));
                 array_push($urList,$ur);
             }
             return $urList;
         }
 
-        public function Get($id){
+        public function Get($idUR){
             $ur = null;
 
             $query = "CALL UR_GetById(?)";
-            $parameters["idUR"] = $id;
+            $parameters["idUR"] = $idUR;
             $this->connection = Connection::GetInstance();
             $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
 
             foreach($resultBD as $row){
                 $ur = new UserRole();
-                $ur->__fromDB($row["idUR"],$this->userDAO->Get($row["idUser"]),$this->roleDAO->Get($row["idRole"]));
+                $ur->__fromDB($row["idUR"],$this->userDAO->DGet($row["idUser"]),$this->roleDAO->Get($row["idRole"]));
             }
             return $ur;
         }
@@ -68,13 +72,14 @@ use \Model\UserRole as UserRole;
 
             foreach($resultBD as $row){
                 $ur = new UserRole();
-                $ur->__fromDB($row["idUR"],$this->userDAO->Get($row["idUser"]),$this->roleDAO->Get($row["idRole"]));
+                $ur->__fromDB($row["idUR"],$this->userDAO->DGet($row["idUser"]),$this->roleDAO->Get($row["idRole"]));
             }
             return $ur;
         }
 
         private function GetIsKeeper(UserRole $ur){
             $rta = 0;
+
             $query = "CALL UR_IsKeeper(?)";
             $parameters["idUser"] = $ur->getUser()->getId();
             $this->connection = Connection::GetInstance();
@@ -87,13 +92,15 @@ use \Model\UserRole as UserRole;
         }
 
         public function IsKeeper(UserRole $ur){
-            $user = $this->userDAO->DGetByUsername($ur->getUser()->getUsername());
-            $ur->setUser($user);
+                $user = $this->userDAO->DGetByUsername($ur->getUser()->getUsername());
+                $ur->setUser($user);
             $rta = $this->GetIsKeeper($ur);
         return $rta;    
         }
 
-//INSERT METHODS
+//======================================================================
+// INSERT METHODS
+//======================================================================
         private function Add(UserRole $ur){
             $query = "CALL UR_Add(?,?)";
             $parameters["idUser"] = $ur->getUser()->getId();
@@ -104,48 +111,53 @@ use \Model\UserRole as UserRole;
         }
 
         public function Register(UserRole $ur){
-            if((empty($ur) == false) || 
-            (empty($this->userDAO->DGetByUsername($ur->getUser()->getUsername()) == true))){
+            if((empty($ur) == false) ||  (empty($this->userDAO->DGetByUsername($ur->getUser()->getUsername()) == true))){
                 $user = $this->userDAO->AddRet($ur->getUser());
-                $ur->setUser($user);
-                $ur->setRole($this->roleDAO->Get(1));
+                    $ur->setUser($user);
+                    $ur->setRole($this->roleDAO->Get(1));
                 $this->Add($ur);
             }
         }
-//FUNCION DEDICADA A UPGRADEAR UN USER
+
+//-----------------------------------------------------
+// METHODS DEDICATED TO GIVING ROLE KEEPER
+//-----------------------------------------------------
         public function UtoKeeper(UserRole $ur){
             $message = "Sucessful: Ha obtenido el rol de keeper.";  
                 try{
                     $location = $this->locationDAO->AddRet($ur->getUser()->getData()->getLocation());
-                    $ur->getUser()->getData()->setLocation($location);  
-                }catch(Exception $location){
+                        $ur->getUser()->getData()->setLocation($location);  
+                }catch(Exception $e){
                     $message = "Error: No se pudo registrar Localidad,por favor reintente.";
                 return $message;    
                 }
                 try{
                     $data = $this->dataDAO->AddRet($ur->getUser()->getData());
-                    $ur->getUser()->setData($data);
-                }catch(Exception $data){
+                        $ur->getUser()->setData($data);
+                }catch(Exception $e){
                     $message = "Error: No se pudo registrar Informacion Personal,por favor reintente.";
                 return $message;  
                 }   
                 try{
                     $user = $this->userDAO->HookData($ur->getUser());
-                    $ur->setUser($user);
-                    $ur->setRole($this->roleDAO->Get(2));
+                        $ur->setUser($user);
+                        $ur->setRole($this->roleDAO->Get(2));
                     $this->Add($ur); 
-                }catch(Exception $ur){
+                }catch(Exception $e){
                     $message = "Error: No se pudo completar el upgrade, reintente en unos minutos.";
                 return $message;
                 }   
         return  $message;
         }
+//-----------------------------------------------------
+//-----------------------------------------------------
 
-//DELETE METHODS
+//======================================================================
+// DELETE METHODS
+//======================================================================
         public function Delete($id){
             $query = "CALL UR_Delete(?)";
             $parameters["idUR"] = $id;
-
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
         }

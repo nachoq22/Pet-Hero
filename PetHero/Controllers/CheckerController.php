@@ -19,8 +19,8 @@ use \Model\Booking as Booking;
         public function ToResponse($idBook,$rta){
                 $book = new Booking();
                 $book->setId($idBook);
-            $check = new Checker();    
-            $check->setBooking($book);
+                $check = new Checker();    
+                $check->setBooking($book);
             $this->checkDAO->NewChecker($check,$rta);
             $this->homeC->ViewKeeperPanel();
         }

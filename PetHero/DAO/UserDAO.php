@@ -13,12 +13,19 @@ use \Model\User as User;
 
         private $dataDAO;
 
-//DAO INJECTION
+//======================================================================
+// DAOs INJECTION
+//======================================================================
         public function __construct(){
             $this->dataDAO = new PersonalDataDAO();
         }
 
-//SELECT METHODS
+//======================================================================
+// SELECT METHODS
+//======================================================================
+
+/* 
+GET ALL COMMENTS FUNCTIONS
         public function GetAll(){
             $userList = array();
 
@@ -53,30 +60,31 @@ use \Model\User as User;
             }
             return $userList;
         }
+*/
 
+        public function DefGetAll(){
+            $userList = array();
 
-    public function DefGetAll(){
-        $userList = array();
+            $query = "CALL User_GetAll()";
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,array(),QueryType::StoredProcedure);
 
-        $query = "CALL User_GetAll()";
-        $this->connection = Connection::GetInstance();
-        $resultBD = $this->connection->Execute($query,array(),QueryType::StoredProcedure);
-
-        foreach($resultBD as $row){
-            $user = new User();
-            if($row["idData"]){
-                $user->__fromDBisKeeper($row["idUser"],$row["username"]
-                                       ,$row["password"],$row["email"]
-                                       ,$this->dataDAO->Get($row["idData"]));
+            foreach($resultBD as $row){
+                $user = new User();
+                if($row["idData"]){
+                    $user->__fromDBisKeeper($row["idUser"],$row["username"]
+                                        ,$row["password"],$row["email"]
+                                        ,$this->dataDAO->Get($row["idData"]));
+                }
+                $user->__fromDBnoKeeper($row["idUser"],$row["username"]
+                                    ,$row["password"],$row["email"]);
+                array_push($userList,$user);
             }
-            $user->__fromDBnoKeeper($row["idUser"],$row["username"]
-                                   ,$row["password"],$row["email"]);
-            array_push($userList,$user);
+            return $userList;
         }
-        return $userList;
-    }
 
-
+/* 
+GET COMMENTS FUNCTIONS
         public function Get($id){
             $user = null;
 
@@ -87,11 +95,6 @@ use \Model\User as User;
 
             foreach($resultBD as $row){
                 $user = new User();
-/*
-                $user->__fromDBisKeeper($row["idUser"],$row["username"]
-                               ,$row["password"],$row["email"]
-                               ,this->dataDAO->Get($row["idData"]));
-*/
                 $user->__fromDBnoKeeper($row["idUser"],$row["username"]
                                ,$row["password"],$row["email"]);
             }
@@ -114,7 +117,7 @@ use \Model\User as User;
             }
             return $user;
         }
-
+*/
 
         public function DGet($id){
             $user = null;
@@ -137,7 +140,7 @@ use \Model\User as User;
             return $user;
         }
 
-
+/* GET COMMENTS FUNCTIONS
         public function GetByUsername($username){
             $user = null;
 
@@ -145,7 +148,7 @@ use \Model\User as User;
             $parameters["username"] = $username;
             $this->connection = Connection::GetInstance();
             $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
-            
+
             foreach($resultBD as $row){
                 $user = new User();
                 $user->__fromDBnoKeeper($row["idUser"],$row["username"]
@@ -170,6 +173,7 @@ use \Model\User as User;
             }
             return $user;
         }
+*/
 
         public function DGetByUsername($username){
             $user = null;
@@ -189,11 +193,12 @@ use \Model\User as User;
                 $user->__fromDBnoKeeper($row["idUser"],$row["username"]
                     ,$row["password"],$row["email"]);
             }
-            return $user;
+        return $user;
         }
         
         public function Login(User $user){
             $rta = 0;
+
             $query = "CALL User_Login(?,?)";
             $parameters["username"] = $user->getUsername();
             $parameters["password"] = $user->getPassword();
@@ -203,11 +208,12 @@ use \Model\User as User;
             foreach($resultBD as $row){
                 $rta = $row["rta"];
             }
-            
         return $rta;
         }
 
-//INSERT METHODS
+//======================================================================
+// INSERT METHODS
+//======================================================================
         private function Add(User $user){
             $query = "CALL User_Add(?,?,?)";
             $parameters["username"] = $user->getUsername();
@@ -217,14 +223,15 @@ use \Model\User as User;
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
 
-        
-
         public function AddRet(User $user){
             $this->Add($user);
-            $userN = $this->GetByUsername($user->getUsername());
+            $userN = $this->DGetByUsername($user->getUsername());
         return $userN;
         }
 
+//-----------------------------------------------------
+// METHODS DEDICATED TO GIVING ROLE KEEPER
+//-----------------------------------------------------
         private function AddHookData(User $user){
             $query = "CALL User_HookData(?,?)";
             $parameters["idUser"] = $user->getId();
@@ -234,12 +241,14 @@ use \Model\User as User;
         }
 
         public function HookData(User $user){
-                $userA = $this->GetByUsername($user->getUsername());
+                $userA = $this->DGetByUsername($user->getUsername());
                 $user->setId($userA->getId());
             $this->AddHookData($user);
-            $userN = $this->GetByUsernameisKeeper($user->getUsername());   
+            $userN = $this->DGetByUsername($user->getUsername());
         return $userN;
         }
+//-----------------------------------------------------
+//-----------------------------------------------------
    
 //DELETE METHODS
         public function Delete($id){

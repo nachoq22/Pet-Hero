@@ -77,7 +77,7 @@ use \DAO\ImgPublicDAO as ImgPublicDAO;
             $this->bpDAO->UpdateAllStates();
             //$owner = $this->userDAO->DGet(2);   /*$owner = $this->userDAO->DGetByUsername(2);*/
             $petList = $this->petDAO->GetAllByUsername("venus"); /*$petList = $this->petDAO->GetAllByUsername("sculpordwarf");*/ 
-            $bookList = $this->bpDAO->GetBookByUsername("venus"); /*$bookList = $this->bookDAO->GetByOwner(?);*/ 
+            $bookList = $this->bpDAO->GetAllBooksByUsername("venus"); /*$bookList = $this->bookDAO->GetByOwner(?);*/
             $bPetsList = $this->bpDAO->GetAllPetsBooks("venus"); 
             $imgList = $this->imgPublicDAO->GetByBookings($bookList);
             //print_r($imgList);
@@ -88,8 +88,8 @@ use \DAO\ImgPublicDAO as ImgPublicDAO;
             $this->bpDAO->UpdateAllStates();
             //$owner = $this->userDAO->DGet(2);   /*$owner = $this->userDAO->DGetByUsername(2);*/
             $publicList = $this->publicDAO->GetAllByUsername("sculpordwarf"); /*$petList = $this->petDAO->GetAllByUsername("sculpordwarf");*/ 
-            $imgByPublic = $this->imgPublicDAO->GetOneByPublics($publicList);
-            $bookList = $this->bpDAO->GetBookByKeeper("sculpordwarf"); /*$bookList = $this->bookDAO->GetByOwner(?);*/ 
+            $imgByPublic = $this->imgPublicDAO->GetAccordingPublic($publicList);
+            $bookList = $this->bpDAO->GetAllBooksByKeeper("sculpordwarf"); /*$bookList = $this->bookDAO->GetByOwner(?);*/
             $bPetsList = $this->bpDAO->GetAllPetsByBooks("sculpordwarf");
             $imgList = $this->imgPublicDAO->GetByBookings($bookList);
             require_once(VIEWS_PATH."KeeperPanel.php");

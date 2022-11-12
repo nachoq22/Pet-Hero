@@ -1,6 +1,5 @@
 <?php
 namespace DAO;
-
 use \Exception as Exception;
 use \DAO\PetDAO as PetDAO;
 
@@ -18,217 +17,17 @@ use \DAO\IBookingPetDAO as IBookingPetDAO;
         private $bookDAO;
         private $petDAO;
 
+//======================================================================
+// DAOs INJECTION
+//======================================================================
         public function __construct(){
             $this->bookDAO = new BookingDAO();
             $this->petDAO = new PetDAO();
         }
 
-//CON ESTO SE GUARDAN LOS PETS CORRESPONDIENTES A UNA BOOKING
-        private function Add(BookingPet $bp){
-            $query = "CALL BP_Add(?,?)";
-            $parameters["idBook"] = $bp->getBooking()->getId();
-            $parameters["idPet"] = $bp->getPet()->getId();
-
-            $this->connection = Connection::GetInstance();
-            $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
-        }
-
-        private function NewBP(BookingPet $bp){
-                $pet = $this->petDAO->Get($bp->getPet()->getId());
-            $bp->setPet($pet);
-            $this->Add($bp);
-        }
-
-        public function NewBooking(Booking $booking,$petList){
-            $booking = $this->bookDAO->AddRet($booking);
-            foreach($petList as $pet){
-                $bp = new BookingPet();
-                    $bp->setBooking($booking);
-                    $bp->getPet()->setId($pet);
-                $this->NewBP($bp);
-            }
-        }
-
-        public function NewState(Booking $book,$stateNum){
-            $this->bookDAO->UpdateStSwtich($book,$stateNum);
-        }
-
-    
-        public function Get($id){
-            $bookingPet = null;
-            $query = "CALL BP_GetById(?)";
-            $parameters["idBP"] = $id;
-            $this->connection = Connection::GetInstance();
-            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
-
-            foreach($resultBD as $row){
-                $bp = new bookingPet();
-                $bp->__fromDB($row["idBP"],$this->bookDAO->Get($row["idBook"]),$this->petDAO->Get($row["idPet"]));
-            }
-            return $bookingPet;
-        }
-
-        public function GetPetsByBook($idBook){
-            $bpetList = array();
-            $query = "CALL BP_GetByBook(?)";
-            $parameters["idBook"] = $idBook;
-            $this->connection = Connection::GetInstance();
-            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
-            foreach($resultBD as $row){
-                $bp = new bookingPet();
-                $bp->__fromDB($row["idBP"],$this->bookDAO->Get($row["idBook"]),$this->petDAO->Get($row["idPet"]));
-
-            array_push($bpetList,$bp);
-            }
-        return $bpetList;
-        }
-
-///ACA RECUPERO PETS SEGUN LA LISTA DE BOOKINGS A FILTRAR
-        public function GetAllPetsBooks($username){
-                $booklist = $this->GetBookByUsername($username);
-            $psBsList = array();
-            foreach($booklist as $booking){
-                $bpetList = array();
-                $bpetList = $this->GetPetsByBook($booking->getid());
-
-                $psBsList = array_merge($psBsList,$bpetList);
-            }
-        return $psBsList;    
-        }
-
-///ACA RECUPERO BOOKINGS
-        public function GetBookByUsername($username){
-           $bookList = $this->bookDAO->GetByUsername($username);
-        return $bookList;
-        }
-
-
-        public function GetAllPetsByBooks($username){
-            $booklist = $this->GetBookByKeeper($username);
-        $psBsList = array();
-        foreach($booklist as $booking){
-            $bpetList = array();
-            $bpetList = $this->GetPetsByBook($booking->getid());
-
-            $psBsList = array_merge($psBsList,$bpetList);
-        }
-    return $psBsList;    
-    }
-        
-//PARA FUNCIONAMIENTO DE CHECKER        
-        private function GetFPPet(Booking $book){
-            $petPay = 0;
-            $query = "CALL BP_GetPetPay(?,?)";
-            $parameters["remuneration"] = $book->getPublication()->getRemuneration();
-            $parameters["idBook"] = $book->getId();
-            $this->connection = Connection::GetInstance();
-            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
-
-            foreach($resultBD as $row){
-                 $petPay = $row["petPay"];
-            }
-            return $petPay;
-        }
-
-        public function GetTotally(Booking $book){
-                $book = $this->bookDAO->Get($book->getId());
-            $subtotalBook = $this->bookDAO->GetFPBook($book);
-            $subtotalPet = $this->GetFPPet($book);
-            $total = ($subtotalBook + $subtotalPet) * 0.5;
-            return $total;
-        }
-///
-
-        public function GetByBook($idBook){
-            $bp = null;
-            $query = "CALL BP_GetByBook(?)";
-            $parameters["idBook"] = $idBook;
-            $this->connection = Connection::GetInstance();
-            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
-
-            foreach($resultBD as $row){
-                $bp = new bookingPet();
-                $bp->__fromDB($row["idBP"],$this->bookDAO->Get($row["idBook"]),$this->petDAO->Get($row["idPet"]));
-            }
-            return $bp;
-        }
-
-//RECUPERO BOOKINGS POR KEEPER
-        public function GetBookByKeeper($username){
-            $matches = $this->bookDAO->GetBookByKeeper($username);
-        return $matches;    
-        }
-//
-
-        public function CheckPayCode(Booking $book){
-            $rta = 0;
-            $bookA = $this->bookDAO->Get($book->getId());
-            if((STRCMP($bookA->getBookState(),"Awaiting Payment") == 0)){
-                foreach($this->GenPayCodes() as $code){
-                    if($book->getPayCode() == $code){
-                        $rta = 1;
-                        return $rta;
-                    }
-                }
-            }
-            return $rta;
-        }
-
-        public function UpdatePayCode(Booking $book){
-            $message = "Error: El numero de pago ingresado no es valido";
-            $rta = $this->CheckPayCode($book);
-            if($rta ==1){
-                try{
-                    $this->bookDAO->UpdateCode($book);
-                    $this->bookDAO->UpdateStSwtich($book,2);
-                    $message = "Successful: Su comprobante ha sido aceptado";
-                }catch(Exception $e){
-                    $message = "Error: No se pudo actualizar el estado de su reserva, reintente mas tarde";
-                    return $message;
-                }
-            }
-            return $message;
-        }
-
-        public function CancelBook(Booking $booking){
-            $message = "";
-            try{
-                $this->bookDAO->UpdateStSwtich($booking,3);
-                $message = "Successful: Reserva cancelada satisfactoriamente";
-            }catch(Exception $e){
-                $message = "Error: No se pudo cancelar la reserva, reintente mas tarde.";
-            }
-            return $message;
-        }
-
-        public function UpdateAllStates(){
-            $this->bookDAO->UpdateAllStates();
-        }
-
-        public function GetAll(){
-            $bpList = array();    
-
-            $query = "CALL BP_GetAll()";
-            $this->connection = Connection::GetInstance();
-            $resultBD = $this->connection->Execute($query,array(),QueryType::StoredProcedure);
-
-            foreach($resultBD as $row){
-                $bp = new bookingPet();
-                $bp->__fromDB($row["idBP"],$this->bookDAO->Get($row["idBook"]),$this->petDAO->Get($row["idPet"]));
-
-                array_push($bpList,$bp);
-            }
-            return $bpList;
-        }
-        
-        public function Delete($idBP){
-            $query = "CALL BP_Delete(?)";
-            $parameters["idBP"] = $idBP;
-
-            $this->connection = Connection::GetInstance();
-            $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
-        }
-
+//======================================================================
+// TOOL METHOD
+//======================================================================
         private function GenPayCodes(){
             $payCodeList = array();
             array_push($payCodeList,"2356942225");
@@ -244,5 +43,237 @@ use \DAO\IBookingPetDAO as IBookingPetDAO;
             array_push($payCodeList,"9483284459");
         return $payCodeList;    
         }
+
+//======================================================================
+// SELECT METHODS
+//======================================================================
+        public function GetAll(){
+            $bpList = array();    
+
+            $query = "CALL BP_GetAll()";
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,array(),QueryType::StoredProcedure);
+
+            foreach($resultBD as $row){
+                $bp = new bookingPet();
+                $bp->__fromDB($row["idBP"],$this->bookDAO->Get($row["idBook"]),$this->petDAO->Get($row["idPet"]));
+                array_push($bpList,$bp);
+            }
+        return $bpList;
+        }
+
+#1.1.TRAIGO BOOKINGS SEGUN USERNAME OWNER
+        public function GetAllBooksByUsername($username){
+            $bookList = $this->bookDAO->GetAllBooksByUsername($username);
+        return $bookList;
+        }
+
+
+#2.1.TRAIGO BOOKINGS SEGUN USERNAME KEEPER
+        public function GetAllBooksByKeeper($username){
+            $matches = $this->bookDAO->GetAllBooksByKeeper($username);
+        return $matches;    
+        }
+
+#1||2.TRAIGO LOS PETS CORRESPONDIENTES A UNA BOOKING        
+        public function GetPetsByBook($idBook){
+            $bpetList = array();
+
+            $query = "CALL BP_GetByBook(?)";
+            $parameters["idBook"] = $idBook;
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+
+            foreach($resultBD as $row){
+                $bp = new bookingPet();
+                $bp->__fromDB($row["idBP"],$this->bookDAO->Get($row["idBook"]),$this->petDAO->Get($row["idPet"]));
+                array_push($bpetList,$bp);
+            }
+        return $bpetList;
+        }
+
+#1.2.TRAIGO TODOS LOS PETS SEGUN UN USERNAME DE OWNER
+        public function GetAllPetsBooks($username){
+                $booklist = $this->GetAllBooksByUsername($username);
+                $psBsList = array();
+            foreach($booklist as $booking){
+                    $bpetList = array();
+                    $bpetList = $this->GetPetsByBook($booking->getid());
+                $psBsList = array_merge($psBsList,$bpetList);
+            }
+        return $psBsList;    
+        }
+
+#2.2.TRAIGO TODOS LOS PETS SEGUN UN USERNAME DE KEEPER
+        public function GetAllPetsByBooks($username){
+                $booklist = $this->GetAllBooksByKeeper($username);
+                $psBsList = array();
+            foreach($booklist as $booking){
+                    $bpetList = array();
+                    $bpetList = $this->GetPetsByBook($booking->getid());
+                $psBsList = array_merge($psBsList,$bpetList);
+            }
+        return $psBsList;    
+        }
+
+        public function Get($idBP){
+            $bookingPet = null;
+
+            $query = "CALL BP_GetById(?)";
+            $parameters["idBP"] = $idBP;
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+
+            foreach($resultBD as $row){
+                $bp = new bookingPet();
+                $bp->__fromDB($row["idBP"],$this->bookDAO->Get($row["idBook"]),$this->petDAO->Get($row["idPet"]));
+            }
+        return $bookingPet;
+        }
+
+#UN BP SEGUN BOOKING
+        public function GetByBook($idBook){
+            $bp = null;
+            $query = "CALL BP_GetByBook(?)";
+            $parameters["idBook"] = $idBook;
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+
+            foreach($resultBD as $row){
+                $bp = new bookingPet();
+                $bp->__fromDB($row["idBP"],$this->bookDAO->Get($row["idBook"]),$this->petDAO->Get($row["idPet"]));
+            }
+        return $bp;
+        }
+
+        
+//-----------------------------------------------------
+// METHODS THAT OBTAIN TOTAL FROM THE DAYS OF STAY AND THE AMOUNT OF PET
+//-----------------------------------------------------  
+#SUBTOTAL POR MASCOTA     
+        private function GetFPPet(Booking $book){
+            $petPay = 0;
+            $query = "CALL BP_GetPetPay(?,?)";
+            $parameters["remuneration"] = $book->getPublication()->getRemuneration();
+            $parameters["idBook"] = $book->getId();
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+
+            foreach($resultBD as $row){
+                $petPay = $row["petPay"];
+            }
+            return $petPay;
+        }
+
+#MITAD DEL TOTAL CORRESPONDIENTE AL PAGO/VALOR DEL CHECKER
+        public function GetTotally(Booking $book){
+                $book = $this->bookDAO->Get($book->getId());
+            $subtotalBook = $this->bookDAO->GetFPBook($book);
+            $subtotalPet = $this->GetFPPet($book);
+            $total = ($subtotalBook + $subtotalPet) * 0.5;
+            return $total;
+        }
+//-----------------------------------------------------
+//-----------------------------------------------------  
+
+//======================================================================
+// INSERT METHODS
+//======================================================================
+
+        private function Add(BookingPet $bp){
+            $query = "CALL BP_Add(?,?)";
+            $parameters["idBook"] = $bp->getBooking()->getId();
+            $parameters["idPet"] = $bp->getPet()->getId();
+            $this->connection = Connection::GetInstance();
+            $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
+        }
+
+//-----------------------------------------------------
+// METHOD TO CREATE A BOOKING WITH PETS
+//-----------------------------------------------------     
+        public function NewBooking(Booking $booking,$petList){
+#GUARDO Y RECUPERO BOOKING COMPLETO CON ID
+            $booking = $this->bookDAO->AddRet($booking);
+#GUARDO EN BUCLE BP USANDO EL BOOKING GUARDADO Y RECUPERADO
+            foreach($petList as $pet){
+                    $bp = new BookingPet();
+                    $bp->setBooking($booking);
+                    $bp->getPet()->setId($pet);
+                $pet = $this->petDAO->Get($bp->getPet()->getId());
+                $bp->setPet($pet);
+            $this->Add($bp);
+            }
+        }
+//-----------------------------------------------------
+//-----------------------------------------------------  
+
+//======================================================================
+// UPDATE METHODS
+//======================================================================
+        public function NewState(Booking $book,$stateNum){
+            $this->bookDAO->UpdateStSwtich($book,$stateNum);
+        }
+
+        public function CancelBook(Booking $booking){
+            $message = "";
+            try{
+                $this->NewState($booking,3);
+                //$this->bookDAO->UpdateStSwtich($booking,3);
+                $message = "Successful: Reserva cancelada satisfactoriamente";
+            }catch(Exception $e){
+                $message = "Error: No se pudo cancelar la reserva, reintente mas tarde.";
+            }
+            return $message;
+        }
+
+        public function UpdateAllStates(){
+            $this->bookDAO->UpdateAllStates();
+        }
+
+//-----------------------------------------------------
+// METHODS IN CHARGE OF THE PAYMENT CODE VALIDATION AND SETTING
+//-----------------------------------------------------   
+#CHEQUEAMOS QUE EL PAYCODE SEA VALIDO
+        public function CheckPayCode(Booking $book){
+            $rta = 0;
+            $bookA = $this->bookDAO->Get($book->getId());
+            if((STRCMP($bookA->getBookState(),"Awaiting Payment") == 0)){
+                foreach($this->GenPayCodes() as $code){
+                    if($book->getPayCode() == $code){
+                        $rta = 1;
+                    return $rta;
+                    }
+                }
+            }
+            return $rta;
+        }
+
+#ACTUALIZAMOS VALOR DE PAYCODE EN LA BOOKING Y EL ESTADO EN EL QUE SE ENCUENTRA
+        public function UpdatePayCode(Booking $book){
+            $message = "Error: El numero de pago ingresado no es valido";
+            $rta = $this->CheckPayCode($book);
+            if($rta ==1){
+                try{
+                    $this->bookDAO->UpdateCode($book);
+                    //$this->bookDAO->UpdateStSwtich($book,2);
+                    $this->NewState($book,2);
+                    $message = "Successful: Su comprobante ha sido aceptado";
+                }catch(Exception $e){
+                    $message = "Error: No se pudo actualizar el estado de su reserva, reintente mas tarde";
+                    return $message;
+                }
+            }
+            return $message;
+        }
+
+//======================================================================
+// DELETE METHODS
+//======================================================================       
+        public function Delete($idBP){
+            $query = "CALL BP_Delete(?)";
+            $parameters["idBP"] = $idBP;
+            $this->connection = Connection::GetInstance();
+            $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
+        }  
     }
 ?>

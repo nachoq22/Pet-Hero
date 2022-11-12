@@ -13,15 +13,12 @@ use \Model\User as User;
         }
 
         public function Add($title,$description,$openD,$closeD,$remuneration,$images){
-            ///FALTA PROCESAR IMAGENES
-            
-            $public = new Publication();
-            $user = new User();
-            $user->setUsername("sculpordwarf");
-            $public->__fromRequest($openD, $closeD, $title, $description,0, $remuneration,$user);
-            $imgPublic = new ImgPublic();
-            $imgPublic->setPublication($public);
-
+                $public = new Publication();
+                $user = new User();
+                $user->setUsername("sculpordwarf");
+                $public->__fromRequest($openD, $closeD, $title, $description,0, $remuneration,$user);
+                $imgPublic = new ImgPublic();
+                $imgPublic->setPublication($public);
 //PARA VER COMPOSISION GENERAL
 /*
             echo "ESTO ES LO QUE TIENE: <br>";          
@@ -29,7 +26,7 @@ use \Model\User as User;
                 echo "<br>"; 
                 $n = 0;
                 $cant = COUNT($images["tmp_name"]);
-//PARA OBTENER LOS VALORES DE TMP_NAME        
+ PARA OBTENER LOS VALORES DE TMP_NAME        
             foreach($images as $k1=> $v1){
                 foreach($v1 as $k2 => $v2){
                     if(strcmp($k1,"tmp_name") == 0){

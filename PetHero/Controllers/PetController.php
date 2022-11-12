@@ -1,14 +1,14 @@
 <?php
-    namespace Controllers;
-    use \DAO\PetDAO as PetDAO;
-    use \DAO\UserDAO as UserDAO;
+namespace Controllers;
+use \DAO\PetDAO as PetDAO;
+use \DAO\UserDAO as UserDAO;
 
-    use \Model\Pet as Pet;
-    use \Model\Size as Size;
-    use \Model\PetType as PetType;
-    use \Model\User as User;
+use \Model\Pet as Pet;
+use \Model\Size as Size;
+use \Model\PetType as PetType;
+use \Model\User as User;
 
-    use \Controllers\HomeController as HomeController;
+use \Controllers\HomeController as HomeController;
 
         class PetController{
             private $petDAO;
@@ -42,7 +42,7 @@
             $typeOBJ = new PetType();
             $typeOBJ->setName($type);
             $user = new User();
-            $user = $this->userDAO->Get(1);
+            $user = $this->userDAO->DGet(1);
             $pet = new Pet();
             $pet->__fromRequest($name, $breed, $observation, $typeOBJ, $sizeOBJ, $user);   
 

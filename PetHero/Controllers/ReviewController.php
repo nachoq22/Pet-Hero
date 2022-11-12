@@ -21,7 +21,6 @@ use \Model\User as User;
             $review = new Review();
                 $review->__fromRequest(DATE("Y-m-d"),$commentary,$stars,$public,$user);
             $this->reviewDAO->NewReview($review);
-
         }
     }
 ?>
