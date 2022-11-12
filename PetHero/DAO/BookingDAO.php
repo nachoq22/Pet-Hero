@@ -224,7 +224,25 @@ use \Model\Booking as Booking;
             }
             return $bookingList;
         }
-        ///////////
+        ////////
+        
+        //ESTO COMPROBARA SI EL USUARIO HA COMPLETADO UN BOOKING CON LA PUBLICACION
+        public function CheckBookDone($idUser, $idPublic){
+            $canReview = 0;
+            $bookingList = $this->GetAllByUser($idUser);
+            foreach($bookingList as $book){
+                if($book->getPublication()->getId()==$idPublic){
+                    if(strcmp($book->getBookState(),"Finalized")==0){
+                        $canReview = 1;
+                        return $canReview;
+                    }
+                }
+            
+            }
+            return $canReview;
+        }
+        //////////////////////////
 
-    }
+
+}
 ?>

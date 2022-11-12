@@ -2,6 +2,7 @@
 namespace Controllers;
 use \DAO\ImgPublicDAO as ImgPublicDAO;
 use \DAO\ReviewDAO as ReviewDAO;
+use \DAO\BookingDAO as BookingDAO;
 use \Model\ImgPublic as ImgPublic;
 use \Model\Publication as Publication;
 use \Model\User as User;
@@ -14,12 +15,14 @@ use \Controllers\PetController as PetController;
         private $reviewDAO;
         private $homeController;
         private $petController;
+        private $bookingDAO;
 
         public function __construct(){
             $this->publicDAO = new ImgPublicDAO();
             $this->reviewDAO = new ReviewDAO();
             $this->homeController = new HomeController();
             $this->petController = new PetController();
+            $this->bookingDAO = new BookingDAO();
         }
 
         public function Add($title,$description,$openD,$closeD,$remuneration,$images){
@@ -60,6 +63,7 @@ use \Controllers\PetController as PetController;
             $imgPublic->setPublication($public);
             $public = $this->publicDAO->GetPublication($imgPublic);
             $reviewList = $this->reviewDAO->GetAllByPublic($public->getid());
+            $canReview = $this->bookingDAO->CheckBookDone(1, $idPublic);
             $ImgList = $this->publicDAO->GetAllByPublic($public->getid());
             require_once(VIEWS_PATH."PublicInd.php");
         }
