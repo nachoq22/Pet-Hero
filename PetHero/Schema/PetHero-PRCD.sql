@@ -479,6 +479,7 @@ BEGIN
 END;
 $$
 
+/*********************************PROCEDURES SECOND PART*******************************************/
 /*********************************PROCEDURES PUBLICATION*******************************************/
 
 DELIMITER $$
@@ -611,7 +612,6 @@ $$
 
 
 /*********************************PROCEDURES BOOKING*******************************************/
-
 
 DELIMITER $$
 CREATE PROCEDURE Booking_GetAll()
@@ -848,7 +848,7 @@ $$
 
 
 
-/*********************************TEST PROCEDURES*******************************************/
+                /*********************************TEST PROCEDURES*******************************************/
 
 /*********************************TEST LOCATION*******************************************/
 CALL Location_GetAll();
@@ -863,7 +863,7 @@ CALL Location_Add("Mi calle","Mi Barrio","Mar del plata","Buenos Aires","Argenti
 CALL PersonalData_GetAll();
 CALL PersonalData_GetById(2);
 /*CALL PersonalData_Add(name,surname,sex,dni,idLocation);*/
-Call PersonalData_Add("Ramiro","Talangana","M","44886655",2);
+Call PersonalData_Add("Bryan","Heads","M","44886655",6);
 /*Call PersonalData_Delete(6);*/
 
 /*********************************TEST USER*******************************************/
@@ -874,9 +874,9 @@ Call User_GetByUsername("planetar");
 CALL User_IsExist("planetar","achternaga@wificon.eu");
 CALL User_Login("planetar","orylOSad");
 /*CALL User_Add(username,password,email,idData);*/
-Call User_Add("pablitoClavito","ClavitoCrack","pablitoElCrack@gmail.com");
+Call User_Add("Pablo","Tringuin","triguillo@gmail.com");
 /*CALL User_Add(username,password,email);*/
-Call User_Register("Elcucarachin","Carlos1245","elcuca@gmail.com");
+Call User_Register("Eduardo","Manitas","manitasDeManteca@gmail.com");
 /*Call User_Delete(6);*/
 
 /*********************************TEST USERROLE*******************************************/
@@ -885,14 +885,14 @@ Call UR_GetById(2);
 /*CALL Owner_Add(idUser,idRole);*/
 /*Call URole_Add(6,2);*/
 Call UR_IsKeeper(3);
-Call UR_UserToKeeper(6);
+#Call UR_UserToKeeper(6);
 /*Call Owner_Delete(6);*/
 
 /*********************************TEST SIZE*******************************************/
 Call Size_GetAll();
 Call Size_GetById(2);
 /*CALL Size_Add(name);*/
-Call Size_Add("ExtraBig");
+Call Size_Add("Big-Extra");
 /*Call Size_Delete(6);*/
 
 /*********************************TEST PETTYPE*******************************************/
@@ -907,22 +907,22 @@ Call Pet_GetAll();
 Call Pet_GetById(2);
 Call Pet_GetByUser(2);
 /*CALL Size_Add(name,breed,profileIMG,vaccinationPlanIMG,observation,idSize,idPetType,idUser);*/
-Call Pet_Add("Salchichon","Suricatta",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Salchichon",(NOW() + 0),".jpg")
+/*Call Pet_Add("Salchichon","Suricatta",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Salchichon",(NOW() + 0),".jpg")
 						,CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Salchichon",(NOW() + 0),".jpg")
-						,"Tiene 6 dedos",1,5,3);
+						,"Tiene 6 dedos",1,5,3);*/
 /*Call Pet_Delete(6);*/
 
 /*********************************TEST PUBLICATION*******************************************/
 CALL Publication_GetAll();
 CALL Publication_GetById(1);
 CALL Publication_GetByUser(1);
-CALL Publication_Search("24");
+CALL Publication_Search("playa");
 /*CALL Publication_Add(openD,closeD,title,description,popularity,remuneration,idUser);*/
-CALL Publication_Add("2022-10-30","2022-11-08", "El mejor cuidador de toda Mar Del Plata","Soy un cuidador 
-de perros de 24 años que le gusta salir a correr todos los dias, por lo que su perro estará bien ejercitado", 5,4000,2);
+/*CALL Publication_Add("2022-10-30","2022-11-08", "El mejor cuidador de toda Mar Del Plata","Soy un cuidador 
+de perros de 24 años que le gusta salir a correr todos los dias, por lo que su perro estará bien ejercitado", 5,4000,2);*/
 /*CALL Publication_Delete(2);*/
 CALL Publication_DateCheck("2022-10-31", "2022-11-10", 1);
-CALL Publication_UpdatePopularity(1, 3);
+#CALL Publication_UpdatePopularity(1, 3);
 
 
 
@@ -931,7 +931,7 @@ CALL ImgPublic_GetAll();
 CALL ImgPublic_GetById(1);
 CALL ImgPublic_GetByPublic(1);
 /*CALL ImgPublic_Add(IN url varchar(250), IN idPublication INT)*/
-CALL ImgPublic_Add("www.holaSoyUnaURL.com", 1);
+#CALL ImgPublic_Add("www.holaSoyUnaURL.com", 1);
 /*CALL ImgPublic_Delete(1);*/
 
 /*********************************TEST BOOKING*******************************************/
@@ -950,7 +950,7 @@ CALL Booking_CheckRange("2022-10-17", "2022-11-12", 5); #ARRANCA EN EL MEDIO TER
 CALL Booking_CheckRange("2022-10-17", "2022-12-28", 5); #ARRANCA EN EL MEDIO TERMINA DESPUES -CONTEMPLA 
 CALL Booking_CheckRange("2022-11-21", "2022-12-14", 5); #ARRANCA DESPUES TERMINA DESPUES -CONTEMPLA
 /*CALL Booking_UpdateST(IN idBook DATE, IN bookState VARCHAR(25))*/
-CALL Booking_UpdateST(2,"Awaiting Payment");
+#CALL Booking_UpdateST(2,"Awaiting Payment");
 /*CALL Booking_Delete(2);*/
 
 /*********************************TEST BOOKING PET*******************************************/
@@ -960,7 +960,7 @@ CALL BP_GetByBook(1);
 /*CALL BookingPet_Add(IN idBooking INT, IN idPet INT);*/
 /*CALL BP_GetPetPay(remuneration,idBooking);*/
 CALL BP_GetPetPay(500,4);
-CALL BP_Add(1,1);
+#CALL BP_Add(1,1);
 /*CALL BookingPet_Delete(1);*/
 
 /*********************************TEST CHECKER*******************************************/
@@ -968,7 +968,7 @@ CALL Checker_GetAll();
 CALL Checker_GetById(1);
 CALL Checker_GetByBooking(1);
 /*CALL Checker_AddChecker_Add(IN emisionD DATE, IN closeD DATE, IN finalPrice INT, IN idBook INT);*/
-CALL Checker_Add("2022-11-05", "2022-12-05", 2000, 1);
+#CALL Checker_Add("2022-11-05", "2022-12-05", 2000, 1);
 /*CALL Checker_Delete(1);*/
 
 /*********************************TEST REVIEW*******************************************/
@@ -977,9 +977,5 @@ CALL Review_GetById(1);
 CALL Review_GetByPublic(3);
 /*CALL Review_Add(IN createD DATE, IN commentary VARCHAR(500), IN stars INT,
                             IN idUser INT, IN idPublication INT)*/
-CALL Review_Add("2022-11-01", "Muy bueno, excelente servicio", 5, 4, 2);
+#CALL Review_Add("2022-11-01", "Muy bueno, excelente servicio", 5, 4, 2);
 /*CALL Review_Delete(1);*/
-
-
-
-	

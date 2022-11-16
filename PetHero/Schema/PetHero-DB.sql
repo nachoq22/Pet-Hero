@@ -61,12 +61,18 @@ CREATE TABLE IF NOT EXISTS User(
 		CONSTRAINT fk_UserData FOREIGN KEY (idData)
 			REFERENCES PersonalData(idData)
 );
-/*PARA PRUEBA SE LES LINKEO ID, EN GENERAL NO VA XK EL REGISTRO QUEDA EXCENTO,HABILITA LUEGO DE QUERERER SER KEEPER*/
+/*Keepers*/
 INSERT INTO User VALUES (0,"planetar","orylOSad","achternaga@wificon.eu",1);
 INSERT INTO User VALUES (0,"marsexpress","eIrCHips","djlucadj@lifestyleunrated.com",2);
 INSERT INTO User VALUES (0,"venus","MuncENsu","medennikovadasha@boranora.com",3);
 INSERT INTO User VALUES (0,"sculpordwarf","cIShAphe","saschre@hs-gilching.de",4);
 INSERT INTO User VALUES (0,"toystory","nShaREDO","ovnoya@emvil.com",5);
+
+/*Owners*/
+INSERT INTO User (idUser,username,password,email) VALUES (0,"bluckiz","12345678","bluckiz@gmail.com");
+INSERT INTO User (idUser,username,password,email) VALUES (0,"nacho","12345678","nacho@gmail.com");
+INSERT INTO User (idUser,username,password,email) VALUES (0,"misa","12345678","misa@gmail.com");
+INSERT INTO User (idUser,username,password,email) VALUES (0,"ignacio","12345678","ignacio@gmail.com");
 
 /*********************************ROLE*******************************************/
 CREATE TABLE IF NOT EXISTS Role(
@@ -93,7 +99,7 @@ CREATE TABLE IF NOT EXISTS UserRole(
 		CONSTRAINT fk_Role FOREIGN KEY (idRole)
 			REFERENCES Role(idRole)	
 );
-
+/*Keepers*/
 INSERT INTO UserRole VALUES(0,1,1);
 INSERT INTO UserRole VALUES(0,1,2);
 INSERT INTO UserRole VALUES(0,2,1);
@@ -104,6 +110,12 @@ INSERT INTO UserRole VALUES(0,4,1);
 INSERT INTO UserRole VALUES(0,4,2);
 INSERT INTO UserRole VALUES(0,5,1);
 INSERT INTO UserRole VALUES(0,5,2);
+
+/*Owners*/
+INSERT INTO UserRole VALUES(0,6,1);
+INSERT INTO UserRole VALUES(0,7,1);
+INSERT INTO UserRole VALUES(0,8,1);
+INSERT INTO UserRole VALUES(0,9,1);
 
 /*********************************SIZE*******************************************/
 CREATE TABLE IF NOT EXISTS Size(
@@ -148,6 +160,7 @@ CREATE TABLE IF NOT EXISTS Pet(
 			REFERENCES User(idUser)
 );
 
+/* INSERTS PARA GENERAR DE LA MISMA FORMA EN QUE LO HACE PHP, SIN HARDCODEO
 INSERT INTO Pet VALUES (0,"Coco","Mestizo",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Coco",(NOW() + 0),".jpg")
 						,CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Coco",(NOW() + 0),".jpg")
 						,"Esta re duro",1,1,1);
@@ -163,6 +176,22 @@ INSERT INTO Pet VALUES (0,"Laila","Ariray",CONCAT("..\\Views\\Img\\IMGPet\\Profi
 INSERT INTO Pet VALUES (0,"Willow","Suricatta",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Willow",(NOW() + 0),".jpg")
 						,CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Willow",(NOW() + 0),".jpg")
 						,"Se escapa constantemente",5,5,5);
+*/
+INSERT INTO Pet VALUES (0,"Coco","Mestizo",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Coco","202211151843",".jpg")
+						,CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Coco","202211151843",".jpg")
+						,"Esta re duro",1,1,1);
+INSERT INTO Pet VALUES (0,"Thor","Lykoi",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Thor","202211151843",".jpg")
+						,CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Thor","202211151843",".jpg")
+						,"Rompe todo",2,2,2);
+INSERT INTO Pet VALUES (0,"Faraon","Pigmeo africano",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Faraon","202211151843",".jpg")
+						,CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Faraon","202211151843",".jpg")
+						,"Come mucho",3,3,3);
+INSERT INTO Pet VALUES (0,"Laila","Ariray",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Laila","202211151843",".jpg")
+						,CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Laila","202211151843",".jpg")
+						,"No tiene baño propio",4,4,6);
+INSERT INTO Pet VALUES (0,"Willow","Suricatta",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Willow","202211151843",".jpg")
+						,CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Willow","202211151843",".jpg")
+						,"Se escapa constantemente",5,5,7);
 
 
 /*SEGUNDA PARTE, ADMINISTRACION DE PUBLICACIONES, RESERVAS Y RESENIAS*/
@@ -182,16 +211,24 @@ CREATE TABLE IF NOT EXISTS Publication(
 			REFERENCES User(idUser)
 );
 
-INSERT INTO Publication 
-	VALUES (0,"2022-10-30","2022-11-02","De Gran comodidad"
-			 ,"Casa doble planta con patio trasero, casucha con acolchado para mascotas grandes que lo requieran"
-			 ,4.8,3500.10,1);
-/*								 
-INSERT INTO Publication VALUES (0,"","","","",0.0,0.0,2)
-INSERT INTO Publication VALUES (0,"","","","",0.0,0.0,3)
-INSERT INTO Publication VALUES (0,"","","","",0.0,0.0,4)
-INSERT INTO Publication VALUES (0,"","","","",0.0,0.0,5)
-*/
+INSERT INTO Publication VALUES (0,"2022-12-02","2022-12-30","De Gran comodidad"," ¡No permitas que tu mascota se quede atrás! 
+								Las mejores actividades para el, ¡Unas vacaciones para los miembros peludos de la familia! 
+								A tu mascota le encantará investigar un nuevo lugar, y tú te sentirás mejor sabiendo que 
+								esta haciendo algo nuevo y seguro.",0.0,3500,1);
+INSERT INTO Publication VALUES (0,"2022-12-10","2022-12-30","Calidez para tu mascota","Este verano, reserva su lugar en el sol. 
+								Nosotros lo llevaremos a las mejores playas, donde podrá relajarse y divertirte. 
+								No te quedes en casa, ¡ven a disfrutar del sol con nosotros!",0.0,5000,2);
+INSERT INTO Publication VALUES (0,"2023-01-05","2023-02-20","Tranquilidad para ahora y despues","Reservar ahora 
+								y asegurar su lugar en la lista de espera para el próximo año. Si reserva con nosotros, 
+								podrá estar tranquilo sabiendo que su lugar estará a salvo.",0.0,4200,3);
+INSERT INTO Publication VALUES (0,"2022-11-28","2023-01-20","La perfeccion es nuestra filosofia","Al hacer tu reserva, 
+								nos aseguramos de que tu estancia sea perfecta. Tenemos una variedad de opciones para que elijas, 
+								y todas las comodidades que necesita tu mascota.",0.0,7500,4);
+INSERT INTO Publication VALUES (0,"2022-12-22","2023-01-10","Sera como estar en casa","Haz una reserva para tu mascota y 
+								asegúrate de recibir el mejor servicio. Nuestro equipo de profesionales se asegurará de que 
+								tu mascota esté segura y cómoda durante su estadía. están aquí. 
+								Estamos a tu disposición para hacer de tu estancia una experiencia inolvidable.",0.0,9300,5);
+
 
 /*********************************PUBLICATION IMAGES*******************************************/
 CREATE TABLE IF NOT EXISTS ImgPublic(
@@ -202,9 +239,27 @@ CREATE TABLE IF NOT EXISTS ImgPublic(
 			REFERENCES Publication(idPublic)
 );
 
-INSERT INTO ImgPublic VALUES (0,"IMG/Public/30102022153601.jpg",1);
-INSERT INTO ImgPublic VALUES (0,"IMG/Public/30102022153602.jpg",1);
-INSERT INTO ImgPublic VALUES (0,"IMG/Public/30102022153604.jpg",1);
+INSERT INTO ImgPublic VALUES (0,"..\\Views\\Img\\IMGPublic\\11223344-IMGPublic20221115213311.jpg",1);
+INSERT INTO ImgPublic VALUES (0,"..\\Views\\Img\\IMGPublic\\55667788-IMGPublic20221115213311.jpg",1);
+INSERT INTO ImgPublic VALUES (0,"..\\Views\\Img\\IMGPublic\\11447788-IMGPublic20221115213311.jpg",1);
+
+INSERT INTO ImgPublic VALUES (0,"..\\Views\\Img\\IMGPublic\\44776633-IMGPublic20221115213322.jpg",2);
+INSERT INTO ImgPublic VALUES (0,"..\\Views\\Img\\IMGPublic\\11774499-IMGPublic20221115213322.jpg",2);
+INSERT INTO ImgPublic VALUES (0,"..\\Views\\Img\\IMGPublic\\33556688-IMGPublic20221115213322.jpg",2);
+
+INSERT INTO ImgPublic VALUES (0,"..\\Views\\Img\\IMGPublic\\2321547139-IMGPublic202211152133.jpg",3);
+INSERT INTO ImgPublic VALUES (0,"..\\Views\\Img\\IMGPublic\\8189340865-IMGPublic202211152133.jpg",3);
+INSERT INTO ImgPublic VALUES (0,"..\\Views\\Img\\IMGPublic\\6327715270-IMGPublic202211152133.jpg",3);
+
+INSERT INTO ImgPublic VALUES (0,"..\\Views\\Img\\IMGPublic\\6745476559-IMGPublic202211152144.jpg",4);
+INSERT INTO ImgPublic VALUES (0,"..\\Views\\Img\\IMGPublic\\5300927809-IMGPublic202211152144.jpg",4);
+INSERT INTO ImgPublic VALUES (0,"..\\Views\\Img\\IMGPublic\\9858419706-IMGPublic202211152144.jpg",4);
+
+INSERT INTO ImgPublic VALUES (0,"..\\Views\\Img\\IMGPublic\\2284550973-IMGPublic202211152155.jpg",5);
+INSERT INTO ImgPublic VALUES (0,"..\\Views\\Img\\IMGPublic\\3551448123-IMGPublic202211152155.jpg",5);
+INSERT INTO ImgPublic VALUES (0,"..\\Views\\Img\\IMGPublic\\3256367687-IMGPublic202211152155.jpg",5);
+
+
 
 /*********************************BOOKING*******************************************/
 CREATE TABLE IF NOT EXISTS Booking(
@@ -221,12 +276,17 @@ CREATE TABLE IF NOT EXISTS Booking(
 				REFERENCES User(idUser)
 );
 
-
+/* INSERT CON FECHA ACTUAL CADA VEZ QUE SE LEVANTA LA BDD
 INSERT INTO Booking VALUES (0,DATE(NOW()),
 								  DATE_ADD(DATE(NOW()),INTERVAL 15 DAY)
 							     ,"Finalized"
 								 ,"AT1048235672BY"
 								 ,1,4);
+*/
+
+INSERT INTO Booking VALUES (0,"2022-12-12","2022-12-17","Waiting Start","65667469864268",1,6);
+INSERT INTO Booking VALUES (0,"2023-01-10","2023-01-20","Waiting Start","79624905898821",2,7);
+
 
 /*********************************BOOKING PET*******************************************/
 CREATE TABLE IF NOT EXISTS BookingPet(
@@ -239,6 +299,9 @@ CREATE TABLE IF NOT EXISTS BookingPet(
 				REFERENCES Pet(idPet)		
 );
 
+INSERT INTO BookingPet VALUES (0,1,4); 
+INSERT INTO BookingPet VALUES (0,2,5); 
+
 /*********************************CHECKER*******************************************/
 CREATE TABLE IF NOT EXISTS Checker(
 	idChecker INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
@@ -250,7 +313,8 @@ CREATE TABLE IF NOT EXISTS Checker(
 				REFERENCES Booking(idBook)
 );
 
-INSERT INTO Checker VALUES (0,DATE(NOW()),DATE_ADD(DATE(NOW()),INTERVAL 15 DAY),13500.30,1);
+INSERT INTO Checker VALUES (0,"2022-10-15","2022-10-18",21000,1);
+INSERT INTO Checker VALUES (0,"2022-10-28","2022-10-31",55000,2);
 
 /*********************************REVIEW*******************************************/
 CREATE TABLE IF NOT EXISTS Review(
@@ -265,5 +329,3 @@ CREATE TABLE IF NOT EXISTS Review(
 			CONSTRAINT fk_reviewUser FOREIGN KEY(idUser)
 				REFERENCES User(idUser)
 );
-
-INSERT INTO Review VALUES(0,DATE(NOW()),"Muy buen servicio, satisfecho en su totalidad.",4.7,1,5);

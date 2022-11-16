@@ -85,10 +85,10 @@
                                         <div class="card-body d-flex justify-content-center" style="height: 70px;">
                                             <h5 class="card-title"><?php echo $public->getTitle() ?></h5>
                                                 <!--<a href="../Pet/ViewPetProfile" class="stretched-link"></a>-->
-                                            <form action="../Pet/ViewPetProfile">
-                                                <input type="hidden" name="idPet" value=<?php echo $public->getid() ?>>
+                                                <form action="<?php echo FRONT_ROOT."/Publication/ViewPublication"?>" method="post">
+                                                    <input type="hidden" name="idPublic" value=<?php echo $public->getId() ?>>
                                                     <button type="submit" class="stretched-link" style="border-left-width: 0px;border-top-width: 0px;border-right-width: 0px;height: 0px;padding-right: 0px;padding-left: 0px;border-bottom-width: 0px;padding-bottom: 0px;padding-top: 0px;"></button>
-                                            </form>
+                                                </form>
                                         </div>
                                 </div>
                             </div>

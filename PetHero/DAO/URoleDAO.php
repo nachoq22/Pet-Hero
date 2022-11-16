@@ -111,43 +111,53 @@ use \Model\UserRole as UserRole;
         }
 
         public function Register(UserRole $ur){
+            $message= "Error: Y existe un usuarios con ese Username.";
             if(($this->userDAO->IsUser($ur->getUser()))==0){
-                $user = $this->userDAO->AddRet($ur->getUser());
-                $ur->setUser($user);
-                $ur->setRole($this->roleDAO->Get(1));
-                $this->Add($ur);
+                $message= "Sucessful: Se ha registrado satisfactoriamente.";
+                try{
+                    $user = $this->userDAO->AddRet($ur->getUser());
+                    $ur->setUser($user);
+                    $ur->setRole($this->roleDAO->Get(1));
+                    $this->Add($ur);
+                }catch(Exception $e){
+                    $message = "Error: No se ha podido procesar su solicitud, reintente mas tarde.";
+                return $message; 
+                }
             }
-            
+            return $message; 
         }
 
 //-----------------------------------------------------
 // METHODS DEDICATED TO GIVING ROLE KEEPER
 //-----------------------------------------------------
         public function UtoKeeper(UserRole $ur){
-            $message = "Sucessful: Ha obtenido el rol de keeper.";  
-                try{
-                    $location = $this->locationDAO->AddRet($ur->getUser()->getData()->getLocation());
-                        $ur->getUser()->getData()->setLocation($location);  
-                }catch(Exception $e){
-                    $message = "Error: No se pudo registrar Localidad,por favor reintente.";
-                return $message;    
-                }
-                try{
-                    $data = $this->dataDAO->AddRet($ur->getUser()->getData());
-                        $ur->getUser()->setData($data);
-                }catch(Exception $e){
-                    $message = "Error: No se pudo registrar Informacion Personal,por favor reintente.";
-                return $message;  
-                }   
-                try{
-                    $user = $this->userDAO->HookData($ur->getUser());
-                        $ur->setUser($user);
-                        $ur->setRole($this->roleDAO->Get(2));
-                    $this->Add($ur); 
-                }catch(Exception $e){
-                    $message = "Error: No se pudo completar el upgrade, reintente en unos minutos.";
-                return $message;
-                }   
+            $message = "Error, ya posee el rol de keeper";
+            if(!empty($this->IsKeeper($ur))){   
+                $message = "Sucessful: Ha obtenido el rol de keeper.";  
+                    try{
+                        $location = $this->locationDAO->AddRet($ur->getUser()->getData()->getLocation());
+                            $ur->getUser()->getData()->setLocation($location);  
+                    }catch(Exception $e){
+                        $message = "Error: No se pudo registrar Localidad,por favor reintente.";
+                    return $message;    
+                    }
+                    try{
+                        $data = $this->dataDAO->AddRet($ur->getUser()->getData());
+                            $ur->getUser()->setData($data);
+                    }catch(Exception $e){
+                        $message = "Error: No se pudo registrar Informacion Personal,por favor reintente.";
+                    return $message;  
+                    }   
+                    try{
+                        $user = $this->userDAO->HookData($ur->getUser());
+                            $ur->setUser($user);
+                            $ur->setRole($this->roleDAO->Get(2));
+                        $this->Add($ur); 
+                    }catch(Exception $e){
+                        $message = "Error: No se pudo completar el upgrade, reintente en unos minutos.";
+                    return $message;
+                    }  
+            } 
         return  $message;
         }
 //-----------------------------------------------------

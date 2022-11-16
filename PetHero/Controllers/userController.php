@@ -24,21 +24,31 @@ use \Model\PersonalData as PersonalData;
                 $user->__fromRegister($username,$password,$email);
                 $uRole= new UserRole();
                 $uRole->setUser($user);
-            $this->uRoleDAO->Register($uRole);
-            $this->homeController->ViewOwnerPanel("El registro ha sido exitoso!");//levantar sesion si es satifactorio           
+            $message = $this->uRoleDAO->Register($uRole);
+                if(strpos($message,"Error")!==false){
+                    $_SESSION["logUser"] = $user;
+                    $_SESSION["isKeeper"] = true; 
+                    $this->homeController->ViewOwnerPanel($message); 
+                }else{
+                    $this->homeController->Index($message); 
+                }           
         } 
 
         public function Login($username, $password){            
                 $user = new User();
                 $user->__fromLogin($username,$password);
             $rta = $this->userDAO->Login($user);
-            if($rta!=0){
-                $loggedUser = new User();
-                $loggedUser->setUsername($username);
-                $loggedUser->setPassword($password);
-                $_SESSION["loggedUser"] = $loggedUser;
-                $_SESSION["var"] = 1; 
-                $this->homeController->Index();
+            if(!empty($rta)){
+                $_SESSION["logUser"] = $user;
+                $ur = new UserRole();
+                $ur->setUser($user);
+                if(!empty($this->uRoleDAO->IsKeeper($ur))){
+                    $_SESSION["isKeeper"] = true; 
+                }
+                
+                $this->homeController->Index("Successful: Se ha logueado correctamente");
+            }else{
+                $this->homeController->Index("Error: Credenciales invalidas, reintente...");
             }
         }
 
@@ -53,15 +63,13 @@ use \Model\PersonalData as PersonalData;
                 $uRole = new UserRole();
                 $uRole->setUser($user);     
 
-            if(!empty($this->uRoleDAO->IsKeeper($uRole))){   
                 $message = $this->uRoleDAO->UtoKeeper($uRole);
                     if((strpos($message, "Error") !== false)){
                         $this->homeController->ViewBeKeeper($message);
+                         $_SESSION["isKeep"] = 1; 
+                    }else{
+                        $this->homeController->Index($message);
                     }
-            }else{
-                $message = "Error, ya posee el rol de keeper";
-            }
-            $this->homeController->Index($message);
         }
 
         public function DeleteUser($id){

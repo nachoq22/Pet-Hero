@@ -17,6 +17,7 @@ use \Model\Booking as Booking;
         }
 
         public function ToResponse($idBook,$rta){
+        $this->homeC->isLogged();    
                 $book = new Booking();
                 $book->setId($idBook);
                 $check = new Checker();    

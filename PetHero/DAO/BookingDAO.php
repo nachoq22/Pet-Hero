@@ -336,18 +336,22 @@ use \Model\Booking as Booking;
         ////////
         
         //ESTO COMPROBARA SI EL USUARIO HA COMPLETADO UN BOOKING CON LA PUBLICACION
-        public function CheckBookDone($idUser, $idPublic){
+        public function CheckBookDone($username, $idPublic){
             $canReview = 0;
-            $bookingList = $this->GetAllByUser($idUser);
-            foreach($bookingList as $book){
-                if($book->getPublication()->getId()==$idPublic){
-                    if(strcmp($book->getBookState(),"Finalized")==0){
-                        $canReview = 1;
-                        return $canReview;
+            try{
+                $dUser = $this->userDAO->DGetByUsername($username);
+                $bookingList = $this->GetAllByUser($dUser->getId());
+                foreach($bookingList as $book){
+                    if($book->getPublication()->getId()==$idPublic){
+                        if(strcmp($book->getBookState(),"Finalized")==0){
+                            $canReview = 1;
+                            return $canReview;
+                        }
                     }
                 }
-            
-            }
+            }catch(Exception $e){
+                return $canReview;
+            }     
             return $canReview;
         }
     }

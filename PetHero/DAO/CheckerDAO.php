@@ -5,6 +5,7 @@ use \DAO\QueryType as QueryType;
 
 use \DAO\ICheckerDAO as ICheckerDAO;
 use \DAO\BookingPetDAO as BookingPetDAO;
+use Exception;
 use \Model\Checker as Checker;
 
     class CheckerDAO implements ICheckerDAO{
@@ -73,7 +74,7 @@ use \Model\Checker as Checker;
 //======================================================================
 // INSERT METHODS
 //======================================================================
-        public function Add(Checker $Checker){
+        private function Add(Checker $Checker){
             $query = "CALL Checker_Add(?,?,?,?)";
             $parameters["emisionD"] = $Checker->getEmissionDate();
             $parameters["closeD"] = $Checker->getcloseDate();
@@ -87,17 +88,34 @@ use \Model\Checker as Checker;
 // METHOD TO CREATE A CHECKER AND UPDATE A BOOKING
 //-----------------------------------------------------      
         public function NewChecker(Checker $checker,$rta){
+            $message = "Successful: Se ha creado el checker y actualizado la reserva.";
                 $bp = $this->bpDAO->GetByBook($checker->getBooking()->getId()); 
-            if($rta == 1){
-                    $totally = $this->bpDAO->GetTotally($bp->getBooking());         
-                    $openD = DATE("Y-m-d");
-                    $closeD = DATE("Y-m-d",STRTOTIME($openD."+ 3 days"));
-                    $checker->__fromRequest($openD,$closeD,$totally,$bp->getBooking());
-                $this->Add($checker);
-                $this->bpDAO->NewState($bp->getBooking(),$rta);
-            }else{
-                $this->bpDAO->NewState($bp->getBooking(),$rta);
-            }
+                try{
+                    if($rta == 1){
+                        try{
+                        $totally = $this->bpDAO->GetTotally($bp->getBooking());
+                        }catch(Exception $e){
+                            $message = "Error: Ha ocurrido un error inesperado, intente mas tarde.";
+                            return $message;
+                        }
+                        try{
+                            $openD = DATE("Y-m-d");
+                            $closeD = DATE("Y-m-d",STRTOTIME($openD."+ 3 days"));
+                            $checker->__fromRequest($openD,$closeD,$totally,$bp->getBooking());
+                            $this->Add($checker);
+                        }catch(Exception $e){
+                            $message = "Error: No se ha podido generar el checker, intente mas tarde.";
+                            return $message;
+                        }      
+                        $this->bpDAO->NewState($bp->getBooking(),$rta);
+                    }else{
+                        $this->bpDAO->NewState($bp->getBooking(),$rta);
+                    }
+                }catch(Exception $e){
+                    $message = "Error: No se ha podido actualizar la reserva, intente mas tarde.";
+                return $message;
+                }  
+        return $message;   
         }
 
 //======================================================================

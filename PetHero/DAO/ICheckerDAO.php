@@ -3,7 +3,7 @@ namespace DAO;
 
 use \Model\Checker as Checker;
     interface ICheckerDAO{
-        public function Add(Checker $Checker);
+        public function NewChecker(Checker $checker,$rta);
         public function Get($idChecker);
         public function GetByBook($idBook);
         public function GetAll();
