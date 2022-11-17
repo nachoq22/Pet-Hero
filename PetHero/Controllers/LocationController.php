@@ -4,8 +4,7 @@ namespace Controllers;
 use \DAO\LocationDAO;
 use \Model\Location as Location;
 
-    class LocationController 
-    {
+    class LocationController{
         private $locationDAO;
         private $homeController;
         public function __construct(){
@@ -17,18 +16,9 @@ use \Model\Location as Location;
             $locationList=$this->locationDAO->GetAll();
         }
 
-        public function Add($adress, $neighborhood, $city, $province, $country)
-        {
-            //var_dump($adress);
-            
-            $location = new Location();
-
-            $location->__fromRequest($adress, $neighborhood, $city, $province, $country);
-            /*$location->setAdress($adress);
-            $location->setNeighborhood($neighborhood);
-            $location->setCity($city);
-            $location->setProvince($province);
-            $location->setCountry($country);*/
+        public function Add($adress, $neighborhood, $city, $province, $country){
+                $location = new Location();
+                $location->__fromRequest($adress, $neighborhood, $city, $province, $country);
             $this->locationDAO->AddRet($location);
             $this->homeController->Index();
         } 

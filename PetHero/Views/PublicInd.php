@@ -78,7 +78,7 @@
                   </div> <!-- DESCRIPCION -->
 </div>
           <div class="col-6"> <!-- UBICACION Y KEEPER -->
-                        <?php if($public->getUser()->getUsername() != "planetar"){ ?>
+                        <?php if($public->getUser()->getUsername() != $logUser->getUsername()){ ?>
                         <div class="card border-success mb-3" style="max-width: 24rem;">
                         <div class="card-header bg-transparent border-success"><strong>$<?php echo $public->getRemuneration() ?> por noche</strong></div>
                         <div class="card-body text-success">

@@ -20,7 +20,7 @@
                         <a href="#" class="nav-link py-3 px-2" type="button" role="tab" id="publicList-tab"
                             data-bs-toggle="pill" data-bs-target="#publicList" aria-controls="publicList" 
                             aria-selected="false"    data-bs-placement="right">
-                            <i class="bi bi-twitter fs-1"></i>
+                            <i class="bi bi-file-earmark-richtext fs-1"></i>
                         </a>
                     </li>
                     <li class="nav-item"> 
@@ -47,15 +47,17 @@
             </div>
         </div>
         
+
+
         <div class="col-sm p-3 min-vh-100">
             <!-- content -->
-<!--OWNER DATA CONTENT-->
+<!--KEEPER DATA CONTENT-->
             <div class="tab-content" id="pills-tabContent">
                 <div class="tab-pane fade show active" id="ownerData" role="keeperData" aria-labelledby="keeperData-tab" tabindex="0">
                     
                 </div>  
 
-<!--PETLIST CONTENT-->                
+<!--PUBLICLIST CONTENT-->                
                 <div class="tab-pane" id="publicList" role="tabpanel" aria-labelledby="publicList-tab" tabindex="0">   
                     <div class="container-fluid content-row">
                         <div class="row">
@@ -71,18 +73,22 @@
                                     </a>
                                 </div>
                             </div>
-                    <?php foreach ($petList as $pet) { ?>
+                    <?php foreach ($publicList as $public) { ?>
                             <div class="col-2 mt-3" >
                                 <div class="card h-100">
-                                    <img src="<?php echo $pet->getProfileIMG()?>" class="card-img-top" 
+                                <?php foreach ($imgByPublic as $imgP) { ?> 
+                                            <?php if ($imgP->getPublication()->getid() == $public->getid()) { ?> 
+                                    <img src="<?php echo $imgP->getUrl()?>" class="card-img-top" 
                                     style="width: 100%; height: 10vw; object-fit: cover;" alt="...">
+                                    <?php } ?>
+                                        <?php } ?>
                                         <div class="card-body d-flex justify-content-center" style="height: 70px;">
-                                            <h5 class="card-title"><?php echo $pet->getName() ?></h5>
+                                            <h5 class="card-title"><?php echo $public->getTitle() ?></h5>
                                                 <!--<a href="../Pet/ViewPetProfile" class="stretched-link"></a>-->
-                                            <form action="../Pet/ViewPetProfile">
-                                                <input type="hidden" name="idPet" value=<?php echo $pet->getId() ?>>
+                                                <form action="<?php echo FRONT_ROOT."/Publication/ViewPublication"?>" method="post">
+                                                    <input type="hidden" name="idPublic" value=<?php echo $public->getId() ?>>
                                                     <button type="submit" class="stretched-link" style="border-left-width: 0px;border-top-width: 0px;border-right-width: 0px;height: 0px;padding-right: 0px;padding-left: 0px;border-bottom-width: 0px;padding-bottom: 0px;padding-top: 0px;"></button>
-                                            </form>
+                                                </form>
                                         </div>
                                 </div>
                             </div>
@@ -104,25 +110,28 @@
                             </tr>
                         </thead>
                         <tbody>
+                        <?php foreach ($bookList as $book) { ?> 
                             <tr>
                                 <td>
-                                    <div class="row">
+                                    <div class="row"> 
                                         <div class="col-2">
-                                            <img src="https://mdbootstrap.com/img/new/avatars/8.jpg" class="rounded-circle" alt="" 
+
+                                            <img src="" class="rounded-circle" alt="" 
                                             style="width: 45px; height: 45px"/>
+                         
                                         </div>
                                         <div class="col">
                                             <div class="row">
                                                 <div class="col">
                                                     <div class="ms-3">
                                                     <p class="fw-bold mb-1">Start Date</p>
-                                                    <p class="text-muted mb-0">15-10-2022</p>
+                                                    <p class="text-muted mb-0"><?php echo $book->getStartD()?></p>
                                                     </div>
                                                 </div>
                                                 <div class="col">
                                                     <div class="ms-3">
                                                     <p class="fw-bold mb-1">Finish Date</p>
-                                                    <p class="text-muted mb-0">22-10-2022</p>
+                                                    <p class="text-muted mb-0"><?php echo $book->getFinishD()?></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -130,72 +139,72 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <span class="badge rounded-pill text-bg-warning">In progress</span>
+                                    <?php if ((STRCMP($book->getBookState(),"In Review") == 0) XOR 
+                                              (STRCMP($book->getBookState(),"Awaiting Payment") == 0)) { ?>    
+                                        <span class="badge rounded-pill text-bg-warning"><?php echo $book->getBookState()?></span>
+                                    <?php } ?>
+
+                                    <?php if ((STRCMP($book->getBookState(),"Canceled") == 0) XOR 
+                                              (STRCMP($book->getBookState(),"Expired") == 0) XOR
+                                              (STRCMP($book->getBookState(),"Declined") == 0) XOR
+                                              (STRCMP($book->getBookState(),"Out of Term") == 0) XOR
+                                              (STRCMP($book->getBookState(),"Finalized") == 0)) { ?>    
+                                        <span class="badge rounded-pill text-bg-danger"><?php echo $book->getBookState()?></span>
+                                    <?php } ?>
+
+                                    <?php if ((STRCMP($book->getBookState(),"Waiting Start") == 0) XOR 
+                                              (STRCMP($book->getBookState(),"In Progress") == 0)) { ?>    
+                                        <span class="badge rounded-pill text-bg-success"><?php echo $book->getBookState()?></span>
+                                    <?php } ?>
                                 </td>
+
                                 <td>
-                                    <div class="container-fluid">
                                     <div class="row">
-                                        <div class="col-2">
-                                                <img src="https://mdbootstrap.com/img/new/avatars/8.jpg" class="rounded-circle" alt="" 
-                                                style="width: 45px; height: 45px"/>
-                                        </div>
-                                        <div class="col-2">
-                                            <img src="https://mdbootstrap.com/img/new/avatars/8.jpg" class="rounded-circle" alt="" 
-                                            style="width: 45px; height: 45px"/>
-                                        </div>
-                                        <div class="col-2">
-                                            <img src="https://mdbootstrap.com/img/new/avatars/8.jpg" class="rounded-circle" alt="" 
-                                            style="width: 45px; height: 45px"/>
-                                        </div>
-                                        <div class="col-2">
-                                            <img src="https://mdbootstrap.com/img/new/avatars/8.jpg" class="rounded-circle" alt="" 
-                                            style="width: 45px; height: 45px"/>
-                                        </div>
+                                        <?php foreach ($bPetsList as $pet) { ?>   
+                                            <?php if ($pet->getBooking()->getId() == $book->getId()) { ?>           
+                                            <div class="col-2">
+                                                    <img src="<?php echo $pet->getPet()->getProfileIMG()?>" class="rounded-circle" alt="" 
+                                                    style="width: 45px; height: 45px;"/>
+                                            </div>
+                                            <?php } ?>
+                                        <?php } ?>
                                     </div>
-                                    </div>
-                                    
                                 </td>
+
                                 <td>
-                                <a class="btn btn-outline-warning me-2" href="<?php echo FRONT_ROOT."/Checker/GetById"?>" type="button"><i class="bi bi-pencil-square"></i></a>
+                                    <a class="btn btn-outline-warning me-2" href="<?php echo FRONT_ROOT."/Checker/GetById"?>" type="button"><i class="bi bi-pencil-square"></i></a>
                                 </td>
+
                                 <td>
+                                    <?php if ((STRCMP($book->getBookState(),"In Review") == 0)){ ?>         
                                 <div class="container-fluid d-flex">
                                     <form action="<?php echo FRONT_ROOT."/Checker/ToResponse" ?>" method="post">
-                                        <input type="hidden" class="visually-hidden" name="idBook" value="" >
+                                        <input type="hidden" class="visually-hidden" name="idBook" value= <?php echo $book->getId()?>>
                                         <input type="hidden" class="visually-hidden" name="rta" value="1" >
-                                        <i class="bi bi-check-square-fill" type="submit" ></i>
+                                        <button class="btn btn-outline-success" type="submit"><i class="bi bi-check-square"></i></button>
                                     </form>
                                     <form action="<?php echo FRONT_ROOT."/Checker/ToResponse" ?>" method="post">
-                                        <input type="hidden" class="visually-hidden" name="idBook" value="" >
-                                        <input type="hidden" class="visually-hidden" name="rta" value="1" >
-                                        <i class="bi bi-x-square-fill" type="submit"></i>
+                                        <input type="hidden" class="visually-hidden" name="idBook" value= <?php echo $book->getId()?>>
+                                        <input type="hidden" class="visually-hidden" name="rta" value="0" >
+                                        <button class="btn btn-outline-danger" type="submit"><i class="bi bi-x-square"></i></button>
                                     </form>
                                 </div>
+                                    <?php } if(STRCMP($book->getBookState(),"Waiting Start") == 0){?>
+                                        <form action="<?php echo FRONT_ROOT."/Booking/CancelBook"?>" method="post" onsubmit="return Confirm()">
+                                        <input type="hidden" name="idBook" value=<?php echo $book->getId() ?>>
+                                        <button class="btn btn-outline-danger me-2" type="submit">Cancel Booking</button>
+                                        </form>
+                                    <!--MODAL CON INFO DEL BOOKING?-->
+                                    <?php } if((STRCMP($book->getBookState(),"Canceled") == 0) XOR 
+                                              (STRCMP($book->getBookState(),"Expired") == 0) XOR
+                                              (STRCMP($book->getBookState(),"Declined") == 0) XOR
+                                              (STRCMP($book->getBookState(),"Out of Term") == 0) XOR
+                                              (STRCMP($book->getBookState(),"Finalized") == 0)){ ?>
+                                    <a class="btn btn-outline-info me-2" href="<?php echo FRONT_ROOT."/Checker/GetById"?>" type="button"><i class="bi bi-file-spreadsheet"></i></a>
+                                    <?php } ?>
                                 </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <img src="https://mdbootstrap.com/img/new/avatars/6.jpg" class="rounded-circle" alt="" 
-                                        style="width: 45px; height: 45px"/>
-                                        <div class="ms-3">
-                                            <p class="fw-bold mb-1">Alex Ray</p>
-                                            <p class="text-muted mb-0">alex.ray@gmail.com</p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <p class="fw-normal mb-1">Consultant</p>
-                                    <p class="text-muted mb-0">Finance</p>
-                                </td>
-                                <td>
-                                    <span class="badge badge-primary rounded-pill d-inline">Onboarding</span>
-                                </td>
-                                <td>Junior</td>
-                                <td>
-                                    <button type="button" class="btn btn-link btn-sm btn-rounded">Edit</button>
-                                </td>
-                            </tr>
+                            </tr>        
+                        <?php } ?>
                         </tbody>
                     </table>        
                 </div>
@@ -204,4 +213,9 @@
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+<script>
+    function Confirm(){
+        return confirm("Do you want to cancel the booking?");
+    }
+</script>
 </body>

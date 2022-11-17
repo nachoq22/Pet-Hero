@@ -1,14 +1,14 @@
 <?php
-    namespace Controllers;
-    use \DAO\PetDAO as PetDAO;
-    use \DAO\UserDAO as UserDAO;
+namespace Controllers;
+use \DAO\PetDAO as PetDAO;
+use \DAO\UserDAO as UserDAO;
 
-    use \Model\Pet as Pet;
-    use \Model\Size as Size;
-    use \Model\PetType as PetType;
-    use \Model\User as User;
+use \Model\Pet as Pet;
+use \Model\Size as Size;
+use \Model\PetType as PetType;
+use \Model\User as User;
 
-    use \Controllers\HomeController as HomeController;
+use \Controllers\HomeController as HomeController;
 
         class PetController{
             private $petDAO;
@@ -28,7 +28,7 @@
         }
 
         public function ViewPetProfile($idPet){
-            //var_dump($idPet);
+            $this->homeController->isLogged();
             $petaux = $this->petDAO->Get($idPet);
             require_once(VIEWS_PATH."PetProfile.php");
         }
@@ -38,25 +38,26 @@
         }
 
         public function Add($name, $breed, $type, $size, $observation,$ImagenP,$ImagenV){
+            $this->homeController->isLogged();
             $sizeOBJ = new Size();
             $sizeOBJ->setName($size);
             $typeOBJ = new PetType();
             $typeOBJ->setName($type);
-            $user = new User();
-            $user = $this->userDAO->Get(1);
+            $logUser = $_SESSION["logUser"];
             $pet = new Pet();
-            $pet->__fromRequest($name, $breed, $observation, $typeOBJ, $sizeOBJ, $user);   
+            $pet->__fromRequest($name, $breed, $observation, $typeOBJ, $sizeOBJ, $logUser);   
             $fileNameP = $_FILES['ImagenP']['name'];
             $fileP = $_FILES['ImagenP']['tmp_name'];
             $fileNameV = $_FILES['ImagenV']['name'];
             $fileV = $_FILES['ImagenV']['tmp_name'];
             $message = $this->petDAO->RegisterPet($pet, $fileP, $fileNameP, $fileV, $fileNameV);
-            $this->homeController->ViewOwnerPanel($message);
+            $this->homeController->ViewOwnerPanel($message);      
         } 
 
         public function GetPetsByReservation($idPublic, $startD, $finishD, $message=""){
-            //$petList = $this->petDAO->GetAllByUser(1);
-            $petList = $this->petDAO->GetAll();
+            $this->homeController->isLogged();
+            $logUser = $_SESSION["logUser"];
+            $petList = $this->petDAO->GetAllByUsername($logUser->getUsername());
             require_once(VIEWS_PATH."AddBooking.php");
         }
     }

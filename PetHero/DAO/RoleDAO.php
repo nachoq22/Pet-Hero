@@ -10,7 +10,9 @@ use \Model\Role as Role;
         private $connection;
         private $tableName = 'Role';
 
-//SELECT METHODS
+//======================================================================
+// SELECT METHODS
+//======================================================================
         public function GetAll(){
             $roleList = array();
 
@@ -56,7 +58,10 @@ use \Model\Role as Role;
             return $role;
         }
 
-//INSERT METHODS
+
+//======================================================================
+// INSERT METHODS
+//======================================================================
         public function Add(Role $role){
             $query = "CALL Role_Add(?,?)";
             $parameters["name"] = $role->getName();
@@ -66,7 +71,10 @@ use \Model\Role as Role;
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
 
-//DELETE METHODS
+
+//======================================================================
+// DELETE METHODS
+//======================================================================
         public function Delete($idRole){
             $query = "CALL Role_Delete(?)";
             $parameters["idRole"] = $idRole;

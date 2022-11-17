@@ -1,4 +1,11 @@
 <body>
+<?php if (!empty($message)){?>
+  <div class="alert alert-light" role="alert">
+    <?php echo $message; ?>
+  </div>
+<?php }?>
+
+
 <form action="<?php echo FRONT_ROOT."/User/BeKeeper" ?>" method="post" enctype="multipart/form-data" class="was-validated">
     <div class="row g-3">
 

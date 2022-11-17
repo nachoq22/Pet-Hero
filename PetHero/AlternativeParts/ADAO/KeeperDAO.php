@@ -35,7 +35,7 @@ use \Model\Keeper as Keeper;
             foreach($resultBD as $row){
                 $keeper = new Keeper();
 
-                $keeper->__fromDB($row["idKeeper"],$this->userDAO->Get($row["idUser"]));
+                $keeper->__fromDB($row["idKeeper"],$this->userDAO->DGet($row["idUser"]));
 
                  array_push($keeperList,$keeper);
             }
@@ -52,14 +52,14 @@ use \Model\Keeper as Keeper;
 
             foreach($resultBD as $row){
                 $keeper = new Keeper();
-                $keeper->__fromDB($row["idKeeper"],$this->userDAO->Get($row["idUser"]));
+                $keeper->__fromDB($row["idKeeper"],$this->userDAO->DGet($row["idUser"]));
             }
             return $keeper;
         }
 
         public function GetbyUser($username){
             $keeper = null;
-            $user = $this->userDAO->GetByUsername($username);
+            $user = $this->userDAO->DGetByUsername($username);
 
             $query = "CALL Keeper_GetByIdUser(?)";
             $parameters["idUser"] = $user->getId();

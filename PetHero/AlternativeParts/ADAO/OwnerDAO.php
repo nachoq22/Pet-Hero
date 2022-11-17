@@ -31,7 +31,7 @@ use \Model\Owner as Owner;
             
             foreach($resultBD as $row){
                 $owner = new Owner();
-                $owner->__fromDB($row["idOwner"],$this->userDAO->Get($row["idUser"]));
+                $owner->__fromDB($row["idOwner"],$this->userDAO->DGet($row["idUser"]));
                 array_push($ownerList,$owner);
             }
             return $ownerList;
@@ -47,14 +47,14 @@ use \Model\Owner as Owner;
 
             foreach($resultBD as $row){
                 $owner = new Owner();
-                $owner->__fromDB($row["idOwner"],$this->userDAO->Get($row["idUser"]));
+                $owner->__fromDB($row["idOwner"],$this->userDAO->DGet($row["idUser"]));
             }
             return $owner;
         }
 
         public function GetbyUser($username){
             $owner = null;
-            $user = $this->userDAO->GetByUsername($username);
+            $user = $this->userDAO->DGetByUsername($username);
 
             $query = "CALL Owner_GetByIdUser(?)";
             $parameters["idUser"] = $user->getId();

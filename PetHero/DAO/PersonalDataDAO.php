@@ -1,6 +1,5 @@
 <?php
 namespace DAO;
-
 use \DAO\Connection as Connection;
 use \DAO\QueryType as QueryType;
 
@@ -14,12 +13,16 @@ use \Model\PersonalData as PersonalData;
 
         private $locationDAO;
 
-//DAO INJECTION
+//======================================================================
+// DAOs INJECTION
+//======================================================================
         public function __construct(){
             $this->locationDAO = new LocationDAO();
         }
 
-//SELECT METHODS
+//======================================================================
+// SELECT METHODS
+//======================================================================
         public function GetAll(){
             $dataList = array();
 
@@ -29,13 +32,11 @@ use \Model\PersonalData as PersonalData;
             
             foreach($resultBD as $row){
                 $data = new PersonalData();
-                $data->__fromDB($row["id"],$row["name"]
-                               ,$row["surname"],$row["sex"]
-                               ,$row["dni"]
+                $data->__fromDB($row["id"],$row["name"],$row["surname"],$row["sex"],$row["dni"]
                                ,$this->locationDAO->Get($row["idLocation"]));
                 array_push($dataList,$data);
             }
-            return $dataList;
+        return $dataList;
         }
 
         public function Get($id){
@@ -49,11 +50,10 @@ use \Model\PersonalData as PersonalData;
             foreach($resultBD as $row){
                 $data = new PersonalData();
 
-                $data->__fromDB($row["idData"],$row["name"]
-                               ,$row["surname"],$row["sex"]
-                               ,$row["dni"],$this->locationDAO->Get($row["idLocation"]));
+                $data->__fromDB($row["idData"],$row["name"],$row["surname"],$row["sex"],$row["dni"]
+                               ,$this->locationDAO->Get($row["idLocation"]));
             }
-            return $data;
+        return $data;
         }
 
         private function GetbyDni($dni){
@@ -67,24 +67,24 @@ use \Model\PersonalData as PersonalData;
             foreach($resultBD as $row){
                 $data = new PersonalData();
 
-                $data->__fromDB($row["idData"],$row["name"]
-                               ,$row["surname"],$row["sex"]
-                               ,$row["dni"],$this->locationDAO->Get($row["idLocation"]));
+                $data->__fromDB($row["idData"],$row["name"],$row["surname"],$row["sex"],$row["dni"]
+                               ,$this->locationDAO->Get($row["idLocation"]));
             }
-            return $data;
+        return $data;
         }
 
-//INSERT METHODS
+//======================================================================
+// INSERT METHODS
+//======================================================================
         private function Add(PersonalData $data){
-            $query = "CALL PersonalData_Add(?,?,?,?,?)";
-            $parameters["name"] = $data->getName();
-            $parameters["surname"] = $data->getSurname();
-            $parameters["sex"] = $data->getSex();
-            $parameters["dni"] = $data->getDni();
-            $parameters["idLocation"] = $data->getLocation()->getId();
-
-            $this->connection = Connection::GetInstance();
-            $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
+                $query = "CALL PersonalData_Add(?,?,?,?,?)";
+                $parameters["name"] = $data->getName();
+                $parameters["surname"] = $data->getSurname();
+                $parameters["sex"] = $data->getSex();
+                $parameters["dni"] = $data->getDni();
+                $parameters["idLocation"] = $data->getLocation()->getId();
+                $this->connection = Connection::GetInstance();
+                $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
 
         public function AddRet(PersonalData $data){
@@ -93,11 +93,12 @@ use \Model\PersonalData as PersonalData;
         return $dataN; 
         }
 
-//INSERT METHODS
+//======================================================================
+// DELETE METHODS
+//======================================================================
         public function Delete($id){
             $query = "CALL Location_Delete(?)";
             $parameters["id"] = $id;
-
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
         }
