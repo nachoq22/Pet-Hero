@@ -114,11 +114,13 @@
                             <tr>
                                 <td>
                                     <div class="row"> 
-                                        <div class="col-2">
-
-                                            <img src="" class="rounded-circle" alt="" 
+                                    <div class="col-2">
+                                        <?php foreach ($imgList as $img) { ?> 
+                                            <?php if ($img->getPublication()->getId() == $book->getPublication()->getId()) { ?> 
+                                            <img src="<?php echo $img->getUrl()?>" class="rounded-circle" alt="" 
                                             style="width: 45px; height: 45px"/>
-                         
+                                            <?php } ?>
+                                        <?php } ?>
                                         </div>
                                         <div class="col">
                                             <div class="row">

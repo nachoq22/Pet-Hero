@@ -781,12 +781,21 @@ END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE Checker_Add(IN emisionD DATE, IN closeD DATE, IN finalPrice INT, IN idBook INT)
+CREATE PROCEDURE Checker_GetByRef(IN refCode VARCHAR(20))
+BEGIN
+    SELECT * 
+    FROM Checker
+    WHERE (Checker.refCode = refCode);
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE Checker_Add(IN refCode VARCHAR(20),IN emisionD DATE, IN closeD DATE, IN finalPrice INT, IN idBook INT)
 BEGIN
     INSERT INTO Checker
-        (Checker.emisionD, Checker.closeD, Checker.finalPrice, Checker.idBook)
+        (Checker.refCode,Checker.emisionD, Checker.closeD, Checker.finalPrice, Checker.idBook)
     VALUES
-        (emisionD, closeD, finalPrice, idBook);
+        (refCode,emisionD, closeD, finalPrice, idBook);
 END;
 $$
 
@@ -939,7 +948,7 @@ CALL Booking_GetAll();
 CALL Booking_GetById(1);
 CALL Booking_GetByUser(4);
 /*CREATE PROCEDURE Booking_GetBookigPay(IN startD DATE,IN finishD DATE, IN remuneration DEC(10,2))*/
-CALL Booking_GetBookigPay('2022-11-06','2022-11-19',3500);
+CALL Booking_GetBookigPay('2022-11-06','2022-11-10',50);
 /*CALL Booking_Add(IN openDate DATE, IN closeDate DATE, IN payState VARCHAR(25), IN payCode VARCHAR(10),
                          IN idPublication INT, IN idUser INT)*/
 CALL Booking_Add("2022-10-15","2022-11-15","In Review",1, 1);
@@ -959,7 +968,7 @@ CALL BP_GetById(1);
 CALL BP_GetByBook(1);
 /*CALL BookingPet_Add(IN idBooking INT, IN idPet INT);*/
 /*CALL BP_GetPetPay(remuneration,idBooking);*/
-CALL BP_GetPetPay(500,4);
+CALL BP_GetPetPay(500,2);
 #CALL BP_Add(1,1);
 /*CALL BookingPet_Delete(1);*/
 

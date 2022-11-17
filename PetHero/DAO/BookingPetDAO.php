@@ -172,8 +172,9 @@ use \Model\Pet as Pet;
                 $book = $this->bookDAO->Get($book->getId());
             $subtotalBook = $this->bookDAO->GetFPBook($book);
             $subtotalPet = $this->GetFPPet($book);
-            $total = ($subtotalBook + $subtotalPet) * 0.5;
-            return $total;
+                $total = ($subtotalBook + $subtotalPet);
+            $checkPay = $total / 2;
+        return $checkPay;
         }
 //-----------------------------------------------------
 //-----------------------------------------------------  

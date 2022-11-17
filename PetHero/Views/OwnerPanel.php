@@ -126,7 +126,7 @@
                                         <div class="col-2">
                                         <?php foreach ($imgList as $img) { ?> 
                                             <?php if ($img->getPublication()->getId() == $book->getPublication()->getId()) { ?> 
-                                            <img src="<?php echo "../".$img->getUrl()?>" class="rounded-circle" alt="" 
+                                            <img src="<?php echo $img->getUrl()?>" class="rounded-circle" alt="" 
                                             style="width: 45px; height: 45px"/>
                                             <?php } ?>
                                         <?php } ?>
@@ -185,7 +185,7 @@
                                 </td>
                                 <td>
                                 <?php if(STRCMP($book->getBookState(),"Awaiting Payment") == 0){?>   
-                                    <form action="<?php echo FRONT_ROOT."/Booking/EnterPaycode" ?>" method="post" name="sendPayC">
+                                    <form action="<?php /*echo FRONT_ROOT."/Booking/EnterPaycode"*/ echo FRONT_ROOT."/Checker/PayCheck" ?>" method="post" name="sendPayC">
                                         <div class="form-floating mb-3">   
                                             <input type="hidden" name="idBook" value=<?php echo $book->getId() ?>>  
                                             <input type="number" class="form-control" id="payCode" 

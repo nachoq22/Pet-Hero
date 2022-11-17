@@ -21,10 +21,29 @@ use \Model\Checker as Checker;
         }
 
 //======================================================================
+// TOOLS METHODS
+//======================================================================
+        private function GenRefCode(){
+            $refCode = "";
+            while(empty($refCode)){  
+                $pattern = "1234567890abcdefghijklmnopqrstuvwxyz";
+                $max = strlen($pattern)-1;
+                for($i = 0; $i < 20; $i++){
+                    $refCode .= substr($pattern, mt_rand(0,$max), 1);
+                    if(!empty($this->GetByRef($refCode))){
+                        $refCode = "";
+                    }
+                }   
+            }
+            return $refCode;
+        }
+
+//======================================================================
 // SELECT METHODS
 //======================================================================
         public function Get($idChecker){
             $checker = null;
+
             $query = "CALL Checker_GetById(?)";
             $parameters["idChecker"] = $idChecker;
             $this->connection = Connection::GetInstance();
@@ -32,14 +51,21 @@ use \Model\Checker as Checker;
 
             foreach($resultBD as $row){
                 $checker = new Checker();
-                $checker->__fromDB($row["idchecker"],$row["emisionD"]
+                if($row["payD"] != NULL){
+                    $checker->__fromDBP($row["idChecker"],$row["refCode"],$row["emisionD"]
+                                  ,$row["closeD"],$row["payD"] ,$row["finalPrice"]
+                                  ,$this->bpDAO->GetByBook($resultBD["idBook"])->getBooking());
+                }
+                $checker->__fromDB($row["idChecker"],$row["refCode"],$row["emisionD"]
                                   ,$row["closeD"],$row["finalPrice"]
-                                  ,$this->bpDAO->GetByBook($row["idBook"])->getBooking());
+                                  ,$this->bpDAO->GetByBook($resultBD["idBook"])->getBooking());
             }
         return $checker;
         }
 
         public function GetByBook($idBook){
+            $checker = null;
+
             $query = "CALL Checker_GetByBooking(?)";
             $parameters["idBook"] = $idBook;
             $this->connection = Connection::GetInstance();
@@ -47,12 +73,41 @@ use \Model\Checker as Checker;
 
             foreach($resultBD as $row){
                 $checker = new Checker();
-                $checker->__fromDB($row["idchecker"],$row["emisionD"]
+                if($row["payD"] != NULL){
+                    $checker->__fromDBP($row["idChecker"],$row["refCode"],$row["emisionD"]
+                                  ,$row["closeD"],$row["payD"] ,$row["finalPrice"]
+                                  ,$this->bpDAO->GetByBook($resultBD["idBook"])->getBooking());
+                }
+                $checker->__fromDB($row["idChecker"],$row["refCode"],$row["emisionD"]
                                   ,$row["closeD"],$row["finalPrice"]
                                   ,$this->bpDAO->GetByBook($resultBD["idBook"])->getBooking());
             }
         return $checker;
         }
+
+        public function GetByRef($refCode){
+            $checker = null;
+
+            $query = "CALL Checker_GetByRef(?)";
+            $parameters["refCode"] = $refCode;
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+
+            foreach($resultBD as $row){
+                $checker = new Checker();
+                if($row["payD"] != NULL){
+                    $checker->__fromDBP($row["idChecker"],$row["refCode"],$row["emisionD"]
+                                  ,$row["closeD"],$row["payD"] ,$row["finalPrice"]
+                                  ,$this->bpDAO->GetByBook($resultBD["idBook"])->getBooking());
+                }
+                $checker->__fromDB($row["idChecker"],$row["refCode"],$row["emisionD"]
+                                  ,$row["closeD"],$row["finalPrice"]
+                                  ,$this->bpDAO->GetByBook($resultBD["idBook"])->getBooking());
+            }
+        return $checker;
+        }
+
+
 
         public function GetAll(){
             $checkerList = array();    
@@ -63,10 +118,15 @@ use \Model\Checker as Checker;
 
             foreach($resultBD as $row){
                 $checker = new Checker();
-                $checker->__fromDB($row["idchecker"],$row["emisionD"]
+                if($row["payD"] != NULL){
+                    $checker->__fromDBP($row["idChecker"],$row["refCode"],$row["emisionD"]
+                                  ,$row["closeD"],$row["payD"] ,$row["finalPrice"]
+                                  ,$this->bpDAO->GetByBook($resultBD["idBook"])->getBooking());
+                }
+                $checker->__fromDB($row["idChecker"],$row["refCode"],$row["emisionD"]
                                   ,$row["closeD"],$row["finalPrice"]
                                   ,$this->bpDAO->GetByBook($resultBD["idBook"])->getBooking());
-                array_push($checkerList,$checker);
+            array_push($checkerList,$checker);
             }
         return $checkerList;    
         }
@@ -74,12 +134,13 @@ use \Model\Checker as Checker;
 //======================================================================
 // INSERT METHODS
 //======================================================================
-        private function Add(Checker $Checker){
-            $query = "CALL Checker_Add(?,?,?,?)";
-            $parameters["emisionD"] = $Checker->getEmissionDate();
-            $parameters["closeD"] = $Checker->getcloseDate();
-            $parameters["finalPrice"] = $Checker->getFinalPrice();
-            $parameters["idBook"] = $Checker->getBooking()->getId();
+        private function Add(Checker $checker){
+            $query = "CALL Checker_Add(?,?,?,?,?)";
+            $parameters["refCode"] = $checker->getRefCode();
+            $parameters["emisionD"] = $checker->getEmissionDate();
+            $parameters["closeD"] = $checker->getcloseDate();
+            $parameters["finalPrice"] = $checker->getFinalPrice();
+            $parameters["idBook"] = $checker->getBooking()->getId();
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
@@ -95,16 +156,17 @@ use \Model\Checker as Checker;
                         try{
                         $totally = $this->bpDAO->GetTotally($bp->getBooking());
                         }catch(Exception $e){
-                            $message = "Error: Ha ocurrido un error inesperado, intente mas tarde.";
+                                $message = "Error: Ha ocurrido un error inesperado, intente mas tarde.";
                             return $message;
                         }
                         try{
                             $openD = DATE("Y-m-d");
                             $closeD = DATE("Y-m-d",STRTOTIME($openD."+ 3 days"));
-                            $checker->__fromRequest($openD,$closeD,$totally,$bp->getBooking());
+                            $refCode = $this->GenRefCode();
+                            $checker->__fromRequest($refCode,$openD,$closeD,$totally,$bp->getBooking());
                             $this->Add($checker);
                         }catch(Exception $e){
-                            $message = "Error: No se ha podido generar el checker, intente mas tarde.";
+                                $message = "Error: No se ha podido generar el checker, intente mas tarde.";
                             return $message;
                         }      
                         $this->bpDAO->NewState($bp->getBooking(),$rta);
@@ -117,6 +179,33 @@ use \Model\Checker as Checker;
                 }  
         return $message;   
         }
+
+//-----------------------------------------------------
+// METHOD TO UPDATE A CHECKER AND BOOKING
+//-----------------------------------------------------  
+        private function SetPayDChecker(Checker $checker){
+            $query = "CALL Checker_Add(?)";
+            $parameters["idChecker"] = $checker->getEmissionDate();
+            $parameters["payD"] = $checker->getPayDate();
+            $this->connection = Connection::GetInstance();
+            $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
+        }
+
+        public function PayCheck(Checker $checker){
+            $message = $this->bpDAO->UpdatePayCode($checker->getBooking());
+            try{
+                if(strpos($message,"Error") !== false){
+                    $dateN = DATE("Y-m-d");
+                    $checker->setPayD($dateN);
+                    $this->SetPayDChecker($checker);
+                }
+            }catch(Exception $e){
+                $message = $message .", no se ha actualizado el checker.";
+                return $message;
+            }
+            return $message;
+        }
+
 
 //======================================================================
 // DELETE METHODS

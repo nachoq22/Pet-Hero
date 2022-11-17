@@ -52,7 +52,7 @@
               <li><a class="dropdown-item" id="loginItem" data-bs-toggle="modal" data-bs-target=".bs-modal-sm">Login</a></li>
           </ul> 
           </li>
-  
+
         </ul>
 
         <form class="d-flex" role="search" action="<?php echo FRONT_ROOT."/Home/Search" ?>" method="post" class="was-validated">

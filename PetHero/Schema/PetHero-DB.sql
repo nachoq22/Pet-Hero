@@ -305,16 +305,18 @@ INSERT INTO BookingPet VALUES (0,2,5);
 /*********************************CHECKER*******************************************/
 CREATE TABLE IF NOT EXISTS Checker(
 	idChecker INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+	refCode VARCHAR(20) UNIQUE,
 	emisionD DATE NOT NULL,
 	closeD DATE NOT NULL,
+	payD DATE,
 	finalPrice DEC(10,2) NOT NULL,
 		idBook INT NOT NULL,
 			CONSTRAINT fk_checkerBook FOREIGN KEY(idBook)
 				REFERENCES Booking(idBook)
 );
 
-INSERT INTO Checker VALUES (0,"2022-10-15","2022-10-18",21000,1);
-INSERT INTO Checker VALUES (0,"2022-10-28","2022-10-31",55000,2);
+INSERT INTO Checker VALUES (0,"111999a17a98w2364er","2022-10-15","2022-10-18","2022-10-16",21000,1);
+INSERT INTO Checker VALUES (0,"22a8x7a21a98w1289ra","2022-10-28","2022-10-31","2022-10-29",55000,2);
 
 /*********************************REVIEW*******************************************/
 CREATE TABLE IF NOT EXISTS Review(
