@@ -40,10 +40,16 @@ use \Model\Publication as Publication;
         
 
         public function NewPublication(Publication $public){
+                try{
                 $user = $this->userDAO->DGetByUsername($public->getUser()->getUsername());
                 $public->setUser($user);
                 $idLastP = $this->Add($public);
                 $publicN = $this->Get($idLastP);
+                }
+                catch(Exception $e){
+                    $message = "Error: No se ha podido crear la publicacion";
+                    return $message;
+                }
                 return $publicN;
         }
 

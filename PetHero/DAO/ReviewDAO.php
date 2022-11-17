@@ -33,14 +33,19 @@ use \Model\Review as Review;
         }
 
         public function NewReview(Review $review){
+            $message = "Sucesful: Se ha publicado su review con exito!";
+            try{
                 $public = $this->publicDAO->Get($review->getPublication()->getid());
             $review->setPublication($public);
             $user = $this->userDAO->DGetByUsername($review->getUser()->getUsername());
             $review->setUser($user);
-            var_dump($review);
             $this->Add($review);
-
+            }
+            catch (Exception $e){
+                $message="No se ha podido escribir la review, intente nuevamente";
+            }
             $this->UpdatePopularity($public, $this->CalculateScore($public));
+            return $message;
         }
 
 

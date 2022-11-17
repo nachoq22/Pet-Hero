@@ -32,7 +32,7 @@
   <?php foreach($publicList as $public){?>
     <div class="col">    
 		<div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" 
-					style=" background-image: url('https://cdn.bhdw.net/im/paisaje-arte-digital-papel-pintado-80890_w635.webp');
+					style=" background-image: url('..\Views\Img\IMGPublic\852776585-IMGPublic20221110003612.jpg');
 					background-size: cover;
 					background-repeat: no-repeat;
 					background-position: center center;
