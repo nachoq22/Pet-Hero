@@ -1,3 +1,9 @@
+<?php if (!empty($message)){?>
+  <div class="alert alert-light" role="alert">
+    <?php echo $message; ?>
+  </div>
+<?php }?>
+
 <body>
 <form action="<?php echo FRONT_ROOT."/Publication/Add" ?>" method="post" enctype="multipart/form-data" class="was-validated">
 

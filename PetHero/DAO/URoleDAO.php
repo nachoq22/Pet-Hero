@@ -77,11 +77,11 @@ use \Model\UserRole as UserRole;
             return $ur;
         }
 
-        private function GetIsKeeper(UserRole $ur){
+        private function GetIsKeeper($user){
             $rta = 0;
 
             $query = "CALL UR_IsKeeper(?)";
-            $parameters["idUser"] = $ur->getUser()->getId();
+            $parameters["idUser"] = $user->getId();
             $this->connection = Connection::GetInstance();
             $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
 
@@ -91,12 +91,15 @@ use \Model\UserRole as UserRole;
         return $rta;
         }
 
-        public function IsKeeper(UserRole $ur){
-                $user = $this->userDAO->DGetByUsername($ur->getUser()->getUsername());
-                $ur->setUser($user);
-            $rta = $this->GetIsKeeper($ur);
+        public function IsKeeper($userName){
+                $user = $this->userDAO->DGetByUsername($userName);
+            $rta = $this->GetIsKeeper($user);
         return $rta;    
         }
+
+        /*public function NewIsKeeper($userName){
+            $user = $this->userDAO->DGetByUsername($userName->getUser()->getUsername());
+        }*/
 
 //======================================================================
 // INSERT METHODS
@@ -131,8 +134,10 @@ use \Model\UserRole as UserRole;
 // METHODS DEDICATED TO GIVING ROLE KEEPER
 //-----------------------------------------------------
         public function UtoKeeper(UserRole $ur){
+            $userName = $ur->getUser()->getUsername();
             $message = "Error, ya posee el rol de keeper";
-            if(!empty($this->IsKeeper($ur))){   
+            
+            if(empty($this->IsKeeper($userName))){   
                 $message = "Sucessful: Ha obtenido el rol de keeper.";  
                     try{
                         $location = $this->locationDAO->AddRet($ur->getUser()->getData()->getLocation());
@@ -141,9 +146,10 @@ use \Model\UserRole as UserRole;
                         $message = "Error: No se pudo registrar Localidad,por favor reintente.";
                     return $message;    
                     }
-                    try{
+                    try{           
                         $data = $this->dataDAO->AddRet($ur->getUser()->getData());
                             $ur->getUser()->setData($data);
+                        
                     }catch(Exception $e){
                         $message = "Error: No se pudo registrar Informacion Personal,por favor reintente.";
                     return $message;  

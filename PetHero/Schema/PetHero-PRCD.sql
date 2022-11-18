@@ -526,7 +526,16 @@ BEGIN
 END;
 $$
 
-
+DELIMITER $$
+CREATE PROCEDURE Publication_NIDate(IN openD DATE, IN closeD DATE, IN idUser int)
+BEGIN
+	SELECT COUNT(idPublic) as rta
+    FROM publication
+    WHERE (publication.idUser = idUser) AND ((publication.openD > openD AND publication.openD < closeD) OR 
+											(publication.openD < openD AND publication.closeD > openD));
+END;
+$$
+    
 DELIMITER $$
 CREATE PROCEDURE Publication_Add(IN openD DATE, IN closeD DATE, IN title VARCHAR(50),
                          IN description VARCHAR(1000), IN popularity DEC(2,1), IN remuneration DEC(10,2),
@@ -781,12 +790,21 @@ END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE Checker_Add(IN emisionD DATE, IN closeD DATE, IN finalPrice INT, IN idBook INT)
+CREATE PROCEDURE Checker_GetByRef(IN refCode VARCHAR(20))
+BEGIN
+    SELECT * 
+    FROM Checker
+    WHERE (Checker.refCode = refCode);
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE Checker_Add(IN refCode VARCHAR(20),IN emisionD DATE, IN closeD DATE, IN finalPrice INT, IN idBook INT)
 BEGIN
     INSERT INTO Checker
-        (Checker.emisionD, Checker.closeD, Checker.finalPrice, Checker.idBook)
+        (Checker.refCode,Checker.emisionD, Checker.closeD, Checker.finalPrice, Checker.idBook)
     VALUES
-        (emisionD, closeD, finalPrice, idBook);
+        (refCode,emisionD, closeD, finalPrice, idBook);
 END;
 $$
 
@@ -991,7 +1009,7 @@ Call Pet_GetByUser(2);
 /*Call Pet_Delete(6);*/
 
 /*********************************TEST PUBLICATION*******************************************/
-#CALL Publication_GetAll();
+CALL Publication_GetAll();
 #CALL Publication_GetById(1);
 CALL Publication_GetByUser(1);
 CALL Publication_Search("playa");
@@ -1001,7 +1019,7 @@ de perros de 24 años que le gusta salir a correr todos los dias, por lo que su 
 /*CALL Publication_Delete(2);*/
 CALL Publication_DateCheck("2022-10-31", "2022-11-10", 1);
 #CALL Publication_UpdatePopularity(1, 3);
-
+CALL Publication_NIDate("2022-12-15","2023-01-12" ,1);
 
 
 /*********************************TEST IMAGES*******************************************/
@@ -1032,9 +1050,9 @@ CALL Booking_CheckRange("2022-11-21", "2022-12-14", 1); #ARRANCA DESPUES TERMINA
 /*CALL Booking_Delete(2);*/
 
 /*********************************TEST BOOKING PET*******************************************/
-#CALL BP_GetAll();
+CALL BP_GetAll();
 #CALL BP_GetById(1);
-CALL BP_GetByBook(1);
+CALL BP_GetByBook(4);
 /*CALL BookingPet_Add(IN idBooking INT, IN idPet INT);*/
 /*CALL BP_GetPetPay(remuneration,idBooking);*/
 CALL BP_GetPetPay(500,4);
@@ -1042,7 +1060,7 @@ CALL BP_GetPetPay(500,4);
 /*CALL BookingPet_Delete(1);*/
 
 /*********************************TEST CHECKER*******************************************/
-#CALL Checker_GetAll();
+CALL Checker_GetAll();
 CALL Checker_GetById(1);
 CALL Checker_GetByBooking(1);
 /*CALL Checker_AddChecker_Add(IN emisionD DATE, IN closeD DATE, IN finalPrice INT, IN idBook INT);*/

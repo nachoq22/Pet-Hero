@@ -1,4 +1,15 @@
 <body>
+<?php if (!empty($message)){ 
+    if(strpos($message, "Error") !== false){?>
+    <div class="alert alert-danger" role="alert">
+      <?php echo $message; ?>
+    </div>
+<?php }else{ ?>
+<div class="alert alert-success" role="alert">
+      <?php echo $message; ?>
+    </div>
+<?php } ?>
+<?php } ?>
 <div class="container-fluid">
     <div class="row">
         
@@ -63,7 +74,7 @@
                         <div class="row">
                             <div class="col-2 mt-3">
                                 <div class="card h-100" style="height: 170px;">
-                                    <a href="../Home/ViewAddPet">
+                                    <a href="<?php echo FRONT_ROOT."/Home/ViewAddPublication" ?>">
                                         <div class="card-body justify-content-center" style="display:flex; justify-content: center;" >
                                             <svg xmlns="http://www.w3.org/2000/svg" width="150" height="220" fill="currentColor" class="bi bi-plus-square; opacity-50" viewBox="0 0 16 16">
                                                 <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
@@ -78,7 +89,7 @@
                                 <div class="card h-100">
                                 <?php foreach ($imgByPublic as $imgP) { ?> 
                                             <?php if ($imgP->getPublication()->getid() == $public->getid()) { ?> 
-                                    <img src="<?php echo $imgP->getUrl()?>" class="card-img-top" 
+                                    <img src="<?php echo "../".$imgP->getUrl()?>" class="card-img-top" 
                                     style="width: 100%; height: 10vw; object-fit: cover;" alt="...">
                                     <?php } ?>
                                         <?php } ?>
@@ -114,11 +125,13 @@
                             <tr>
                                 <td>
                                     <div class="row"> 
-                                        <div class="col-2">
-
-                                            <img src="" class="rounded-circle" alt="" 
+                                    <div class="col-2">
+                                        <?php foreach ($imgList as $img) { ?> 
+                                            <?php if ($img->getPublication()->getId() == $book->getPublication()->getId()) { ?> 
+                                            <img src="<?php echo "../".$img->getUrl()?>" class="rounded-circle" alt="" 
                                             style="width: 45px; height: 45px"/>
-                         
+                                            <?php } ?>
+                                        <?php } ?>
                                         </div>
                                         <div class="col">
                                             <div class="row">
@@ -160,19 +173,36 @@
 
                                 <td>
                                     <div class="row">
-                                        <?php foreach ($bPetsList as $pet) { ?>   
-                                            <?php if ($pet->getBooking()->getId() == $book->getId()) { ?>           
+                                    <?php foreach ($bPetsList as $pet) { ?>
+                                            <?php if ($pet->getBooking()->getId() == $book->getId()) { ?>
                                             <div class="col-2">
-                                                    <img src="<?php echo $pet->getPet()->getProfileIMG()?>" class="rounded-circle" alt="" 
-                                                    style="width: 45px; height: 45px;"/>
-                                            </div>
+                                            <div class="container-fluid d-flex">
+
+                                                    <form action="<?php echo FRONT_ROOT."/Pet/ViewPetProfile"?>" method="post">
+                                                <input type="hidden" name="idPet" value=<?php echo $pet->getPet()->getId() ?>>
+                                                    <button type="submit" style="border-left-width: 0px;border-top-width: 0px;border-right-width: 0px;height: 0px;padding-right: 0px;padding-left: 0px;border-bottom-width: 0px;padding-bottom: 0px;padding-top: 0px;"><img src="<?php echo $pet->getPet()->getProfileIMG()?>" class="rounded-circle" alt="" 
+                                                    style="width: 45px; height: 45px;"/></button>
+                                            </form>
                                             <?php } ?>
                                         <?php } ?>
                                     </div>
                                 </td>
 
                                 <td>
-                                    <a class="btn btn-outline-warning me-2" href="<?php echo FRONT_ROOT."/Checker/GetById"?>" type="button"><i class="bi bi-pencil-square"></i></a>
+                                <?php if ((STRCMP($book->getBookState(),"Awaiting Payment") == 0) XOR 
+                                           (STRCMP($book->getBookState(),"Canceled") == 0) XOR
+                                           (STRCMP($book->getBookState(),"Expired") == 0) XOR
+                                           (STRCMP($book->getBookState(),"Out of Term") == 0) XOR
+                                           (STRCMP($book->getBookState(),"Finalized") == 0) XOR
+                                           (STRCMP($book->getBookState(),"Waiting Start") == 0) XOR 
+                                           (STRCMP($book->getBookState(),"In Progress") == 0)) { ?> 
+                                <div class="container-fluid d-flex">
+                                        <form action="<?php echo FRONT_ROOT."/Checker/ViewChecker" ?>" method="post">
+                                            <input type="hidden" class="visually-hidden" name="idBook" value= <?php echo $book->getId()?>>
+                                            <button class="btn btn-outline-warning" type="submit"><i class="bi bi-pencil-square"></i></button>
+                                        </form>
+                                    </div>
+                                    <?php } ?>
                                 </td>
 
                                 <td>
@@ -200,7 +230,7 @@
                                               (STRCMP($book->getBookState(),"Declined") == 0) XOR
                                               (STRCMP($book->getBookState(),"Out of Term") == 0) XOR
                                               (STRCMP($book->getBookState(),"Finalized") == 0)){ ?>
-                                    <a class="btn btn-outline-info me-2" href="<?php echo FRONT_ROOT."/Checker/GetById"?>" type="button"><i class="bi bi-file-spreadsheet"></i></a>
+                                    <a class="btn btn-outline-info me-2" href="<?php echo FRONT_ROOT."/Checker/ViewChecker"?>" type="button"><i class="bi bi-file-spreadsheet"></i></a>
                                     <?php } ?>
                                 </td>
                             </tr>        

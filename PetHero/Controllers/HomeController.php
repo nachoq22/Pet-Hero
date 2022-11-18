@@ -35,6 +35,7 @@ use \Model\User as User;
 
         public function Search($search){
             $publicList = $this->publicDAO->Search($search);
+            $imgByPublic =  $this->imgPublicDAO->GetAccordingPublic($publicList);
             require_once(VIEWS_PATH."Search.php");
         }
 
@@ -79,7 +80,7 @@ use \Model\User as User;
             require_once(VIEWS_PATH."KeeperPanel.php");
         }     
 
-        public function ViewAddPublication(){
+        public function ViewAddPublication($message = ""){
             $this->isLogged();
             $this->isKeeper();
             require_once(VIEWS_PATH."AddPublication.php");

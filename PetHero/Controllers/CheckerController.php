@@ -18,12 +18,29 @@ use \Model\Booking as Booking;
 
         public function ToResponse($idBook,$rta){
         $this->homeC->isLogged();    
-                $book = new Booking();
-                $book->setId($idBook);
-                $check = new Checker();    
-                $check->setBooking($book);
-            $this->checkDAO->NewChecker($check,$rta);
-            $this->homeC->ViewKeeperPanel();
+            $book = new Booking();
+            $book->setId($idBook);
+            $check = new Checker();    
+            $check->setBooking($book);
+            $message = $this->checkDAO->NewChecker($check,$rta);
+            $this->homeC->ViewKeeperPanel($message);
+        }
+
+        public function PayCheck($idBook,$payCode){
+        $this->homeC->isLogged();    
+            $book = new Booking();
+            $book->setId($idBook);
+            $book->setPayCode($payCode);
+            $check = new Checker();    
+            $check->setBooking($book);
+            $message = $this->checkDAO->PayCheck($check);
+        $this->homeC->ViewOwnerPanel($message);
+        }
+        
+        public function ViewChecker($idBook){
+        $this->homeC->isLogged();
+            $checker = $this->checkDAO->GetByBook($idBook);
+            require_once(VIEWS_PATH."ViewChecker.php");
         }
     }
 ?>

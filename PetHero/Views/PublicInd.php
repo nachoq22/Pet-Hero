@@ -27,7 +27,7 @@
   <div class="carousel-inner">
   <?php foreach($ImgList as $img){ ?>
   <div class="carousel-item active">
-      <img src="<?php echo $img->getUrl()?>" class="d-block w-100" alt="..." style="width: 100%; height: 30vw; object-fit: cover;">
+      <img src="<?php echo "../".$img->getUrl()?>" class="d-block w-100" alt="..." style="width: 100%; height: 30vw; object-fit: cover;">
     </div>
     <?php } ?>
 
@@ -57,7 +57,7 @@
                <div class="row mt-3">
                       <div class="card">
                       <div class="card-body">
-                      <h4 class="card-title"><img src="https://pbs.twimg.com/media/E0e2SE4XsAgxVdm.jpg" alt="Bootstrap" width="32" height="32" class="rounded-circle border border-white me-3">
+                      <h4 class="card-title"><img src="https://images.squarespace-cdn.com/content/v1/5723b737c2ea51b309ec0ca1/1522426443508-FEPA6TY38ZQVWWQ240QJ/Throw_Ball.gif%C3%A7" alt="Bootstrap" width="32" height="32" class="rounded-circle border border-white me-3">
                       <STRong><?php echo $public->getUser()->getData()->getName() ?>
                       <?php echo $public->getUser()->getData()->getSurname() ?></STRong></h4>
                       <h5 class="card-title"><i class="bi bi-geo-alt"></i><strong> <?php echo $public->getUser()->getData()->getLocation()->getCountry() ?>
@@ -77,8 +77,13 @@
                           </div>
                   </div> <!-- DESCRIPCION -->
 </div>
-          <div class="col-6"> <!-- UBICACION Y KEEPER -->
-                        <?php if($public->getUser()->getUsername() != $logUser->getUsername()){ ?>
+          <div class="col-6"> <!-- FORMULARIO FECHAS -->
+                    <i class="bi bi-calendar-date me-2" width="1em" height="1em"> <?php echo $public->getOpenDate() ?></i>
+                              ---->   
+                          <i class="bi bi-calendar-date me-2" width="1em" height="1em"> <?php echo $public->getCloseDate() ?></i>
+                          <br><br>
+                        <?php if(!empty($logUser)){ 
+                        if($public->getUser()->getUsername() != $logUser->getUsername()){ ?>
                         <div class="card border-success mb-3" style="max-width: 24rem;">
                         <div class="card-header bg-transparent border-success"><strong>$<?php echo $public->getRemuneration() ?> por noche</strong></div>
                         <div class="card-body text-success">
@@ -93,8 +98,8 @@
                         <div class="card-footer bg-transparent border-success"><button type="submit" class="btn btn-primary">Comprobar disponibilidad</button></div></form>
                         </div> 
                         </div>
-                          <?php } ?>
-            </div> <!-- UBICACION Y KEEPER -->
+                          <?php }} ?>
+            </div> <!-- FORMULARIO FECHAS -->
 </div>
 
     <br><br><br>
@@ -156,7 +161,7 @@
                     </div>
                     </div>
                     <div class="form-floating mb-3">
-                      <textarea class="form-control" id="review" placeholder="Come mucho" name="review" onkeypress="if (event.keyCode == 13) Send()" required></textarea>
+                      <textarea class="form-control" rows="1" id="review" placeholder="Come mucho" name="review" onkeypress="if (event.keyCode == 13) Send()" required></textarea>
                       <label for="review">review</label>
                       <div class="invalid-feedback">
                         Enter any observation, special care or details.

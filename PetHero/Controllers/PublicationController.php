@@ -28,8 +28,10 @@ use \Controllers\PetController as PetController;
         public function Add($title,$description,$openD,$closeD,$remuneration,$images){
             $this->homeController->isLogged();
             $this->homeController->isKeeper();
+
                 $public = new Publication();
                 $logUser = $_SESSION["logUser"];
+                if(($this->publicDAO->ValidateDAllPublications($openD, $closeD, $logUser))==0){ 
                 $public->__fromRequest($openD, $closeD, $title, $description,0, $remuneration,$logUser);
                 $imgPublic = new ImgPublic();
                 $imgPublic->setPublication($public);
@@ -48,10 +50,13 @@ use \Controllers\PetController as PetController;
                     }
                 }
             }
-  */
+//////////  
+*/
             $this->publicDAO->NewPublication($imgPublic,$images);
             $this->homeController->ViewKeeperPanel("Publicacion creada exitosamente!");
-
+        }else{
+            $this->homeController->ViewAddPublication("Error: Las fechas ingresadas coinciden con otra publicacion suya");
+        }
         }
 
         public function ViewPublication($idPublic, $message=""){     
@@ -60,9 +65,13 @@ use \Controllers\PetController as PetController;
                 $imgPublic = new ImgPublic();
                 $imgPublic->setPublication($public);
             $public = $this->publicDAO->GetPublication($imgPublic);
-            $reviewList = $this->reviewDAO->GetAllByPublic($public->getid());
+            $reviewList = $this->reviewDAO->GetAllByPublic($public->getid()); 
+            $canReview = 0;
+                if(isset($_SESSION["logUser"])){
                 $logUser = $_SESSION["logUser"];
-            $canReview = $this->bookingDAO->CheckBookDone($logUser->getUsername(), $idPublic);
+                $canReview = $this->bookingDAO->CheckBookDone($logUser->getUsername(), $idPublic);
+                }
+            
             $ImgList = $this->publicDAO->GetAllByPublic($public->getid());
             require_once(VIEWS_PATH."PublicInd.php");
         }

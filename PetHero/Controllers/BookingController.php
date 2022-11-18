@@ -37,7 +37,7 @@ use \Controllers\PetController as PetController;
                 $this->petController->GetPetsByReservation($idPublic, $startD, $finishD, "Error: Todas sus mascotas deben ser del mismo tipo");
             }
         }
-
+/*
         public function EnterPaycode($idBook,$payCode){
         $this->homeController->isLogged();    
             $book = new Booking();
@@ -46,7 +46,7 @@ use \Controllers\PetController as PetController;
             $message = $this->bpDAO->UpdatePayCode($book);
         $this->homeController->ViewOwnerPanel($message);
         }
-
+*/
         public function CancelBook($idBook){
         $this->homeController->isLogged();
                 $book = new Booking();
