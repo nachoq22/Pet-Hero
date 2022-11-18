@@ -45,7 +45,6 @@ use \Model\PersonalData as PersonalData;
                 if(!empty($this->uRoleDAO->IsKeeper($ur))){
                     $_SESSION["isKeeper"] = true; 
                 }
-                
                 $this->homeController->Index("Successful: Se ha logueado correctamente");
             }else{
                 $this->homeController->Index("Error: Credenciales invalidas, reintente...");

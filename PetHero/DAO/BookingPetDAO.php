@@ -147,7 +147,6 @@ use \Model\Pet as Pet;
             }
         return $bp;
         }
-
         
 //-----------------------------------------------------
 // METHODS THAT OBTAIN TOTAL FROM THE DAYS OF STAY AND THE AMOUNT OF PET

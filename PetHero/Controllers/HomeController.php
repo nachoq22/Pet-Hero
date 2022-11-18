@@ -5,6 +5,7 @@ use \DAO\PetDAO as PetDAO;
 use \DAO\PublicationDAO as PublicationDAO; 
 use \DAO\BookingPetDAO as BookingPetDAO;
 use \DAO\ImgPublicDAO as ImgPublicDAO;
+use \DAO\CheckerDAO as CheckerDAO;
 use \Model\User as User;
 
     class HomeController{
@@ -13,6 +14,7 @@ use \Model\User as User;
         private $publicDAO;
         private $bpDAO;
         private $imgPublicDAO;
+        private $checkerDAO;
 
         public function __construct(){
             $this->userDAO = new UserDAO();
@@ -20,6 +22,13 @@ use \Model\User as User;
             $this->publicDAO = new PublicationDAO();
             $this->bpDAO = new BookingPetDAO();
             $this->imgPublicDAO = new ImgPublicDAO();
+            $this->checkerDAO = new CheckerDAO();
+        }
+
+        public function ViewChecker(){
+            //$this->isLogged();
+            $checker = $this->checkerDAO->Get(1);
+            require_once(VIEWS_PATH."ViewChecker.php");
         }
 
         public function Index($message = ""){

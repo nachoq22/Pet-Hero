@@ -54,11 +54,11 @@ use \Model\Checker as Checker;
                 if($row["payD"] != NULL){
                     $checker->__fromDBP($row["idChecker"],$row["refCode"],$row["emisionD"]
                                   ,$row["closeD"],$row["payD"] ,$row["finalPrice"]
-                                  ,$this->bpDAO->GetByBook($resultBD["idBook"])->getBooking());
+                                  ,$this->bpDAO->GetByBook($row["idBook"])->getBooking());
                 }
                 $checker->__fromDB($row["idChecker"],$row["refCode"],$row["emisionD"]
                                   ,$row["closeD"],$row["finalPrice"]
-                                  ,$this->bpDAO->GetByBook($resultBD["idBook"])->getBooking());
+                                  ,$this->bpDAO->GetByBook($row["idBook"])->getBooking());
             }
         return $checker;
         }
@@ -76,11 +76,11 @@ use \Model\Checker as Checker;
                 if($row["payD"] != NULL){
                     $checker->__fromDBP($row["idChecker"],$row["refCode"],$row["emisionD"]
                                   ,$row["closeD"],$row["payD"] ,$row["finalPrice"]
-                                  ,$this->bpDAO->GetByBook($resultBD["idBook"])->getBooking());
+                                  ,$this->bpDAO->GetByBook($row["idBook"])->getBooking());
                 }
                 $checker->__fromDB($row["idChecker"],$row["refCode"],$row["emisionD"]
                                   ,$row["closeD"],$row["finalPrice"]
-                                  ,$this->bpDAO->GetByBook($resultBD["idBook"])->getBooking());
+                                  ,$this->bpDAO->GetByBook($row["idBook"])->getBooking());
             }
         return $checker;
         }
@@ -98,11 +98,11 @@ use \Model\Checker as Checker;
                 if($row["payD"] != NULL){
                     $checker->__fromDBP($row["idChecker"],$row["refCode"],$row["emisionD"]
                                   ,$row["closeD"],$row["payD"] ,$row["finalPrice"]
-                                  ,$this->bpDAO->GetByBook($resultBD["idBook"])->getBooking());
+                                  ,$this->bpDAO->GetByBook($row["idBook"])->getBooking());
                 }
                 $checker->__fromDB($row["idChecker"],$row["refCode"],$row["emisionD"]
                                   ,$row["closeD"],$row["finalPrice"]
-                                  ,$this->bpDAO->GetByBook($resultBD["idBook"])->getBooking());
+                                  ,$this->bpDAO->GetByBook($row["idBook"])->getBooking());
             }
         return $checker;
         }
@@ -121,11 +121,11 @@ use \Model\Checker as Checker;
                 if($row["payD"] != NULL){
                     $checker->__fromDBP($row["idChecker"],$row["refCode"],$row["emisionD"]
                                   ,$row["closeD"],$row["payD"] ,$row["finalPrice"]
-                                  ,$this->bpDAO->GetByBook($resultBD["idBook"])->getBooking());
+                                  ,$this->bpDAO->GetByBook($row["idBook"])->getBooking());
                 }
                 $checker->__fromDB($row["idChecker"],$row["refCode"],$row["emisionD"]
                                   ,$row["closeD"],$row["finalPrice"]
-                                  ,$this->bpDAO->GetByBook($resultBD["idBook"])->getBooking());
+                                  ,$this->bpDAO->GetByBook($row["idBook"])->getBooking());
             array_push($checkerList,$checker);
             }
         return $checkerList;    

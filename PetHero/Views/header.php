@@ -1,3 +1,81 @@
+<div class="container">
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between  border-bottom">
+<?php if(!isset($_SESSION['logUser'])){?>  
+    <ul class="nav col-12 col-md-auto mb-2 justify-content-start mb-md-0">
+        <li> <a class="nav-link px-2 link-dark" href="<?php echo  FRONT_ROOT ?>"><i class="bi bi-house-door"></i></a></li>
+    </ul>
+<?php }else{
+    if(isset($_SESSION['logUser'])){
+        if(isset($_SESSION["isKeeper"])){?>
+      <ul class="nav col-12 col-md-auto mb-2 justify-content-start mb-md-0">
+        <li> <a class="nav-link px-2 link-dark" href="<?php echo  FRONT_ROOT ?>"><i class="bi bi-house-door"></i></a></li>
+        <li> <a class="btn btn-outline-info" href="<?php echo FRONT_ROOT."/Home/ViewOwnerPanel"?>" type="button"><i class="bi bi-person-vcard"></i></a></li>
+        <li> <a class="btn btn-outline-warning" href="<?php echo FRONT_ROOT."/Home/ViewKeeperPanel"?>" type="button"><i class="bi bi-person-vcard"></i></a></li>
+      </ul>
+<?php }else{?>
+      <ul class="nav col-12 col-md-auto mb-2 justify-content-start mb-md-0">
+        <li> <a class="nav-link px-2 link-dark" href="<?php echo  FRONT_ROOT ?>"><i class="bi bi-house-door"></i></a></li>
+        <li><a href="#" class="nav-link px-2 link-success">Be Keeper</a></li>
+        <li> <a class="btn btn-outline-success" href="<?php echo FRONT_ROOT."/Home/ViewOwnerPanel"?>" type="button"><i class="bi bi-person-rolodex"></i></a></li>
+      </ul>
+      <?php }
+          }
+      }?>
+
+      <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+      <form action=""class="w-100 me-3" role="search">
+          <div class="p-1 bg-light rounded rounded-pill shadow-sm">
+            <div class="input-group">
+              <input type="search" placeholder="What're you searching for?" aria-describedby="button-addon1" class="form-control border-0 bg-light">
+              <div class="input-group-append">
+                <button id="button-addon1" type="submit" class="btn btn-link text-danger"><i class="bi bi-search"></i></button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </ul>
+
+      <?php if(!isset($_SESSION['logUser'])){?>
+      <div class="flex-shrink-0 dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+				      <i class="bi bi-person-circle"></i>
+            </a>
+
+          <ul class="dropdown-menu text-small shadow" id="menuProfile">
+               <li><a class="dropdown-item" id="signUpItem" data-bs-toggle="modal" data-bs-target=".bs-modal-sm">Sign Up</a></li>
+              <li><a class="dropdown-item" id="loginItem" data-bs-toggle="modal" data-bs-target=".bs-modal-sm">Login</a></li>
+          </ul> 
+      </div>
+      <?php }else{
+        if(isset($_SESSION['logUser'])){
+          if(isset($_SESSION["isKeeper"])){?>
+            <div class="flex-shrink-0 dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-person-circle"></i>
+                  </a>
+                <ul class="dropdown-menu text-small shadow" id="menuProfile">
+                    <li><a class="dropdown-item" href="<?php echo FRONT_ROOT."/Home/ViewOwnerPanel"?>">Owner Panel</a></li>    
+                    <li><a class="dropdown-item" href="<?php echo FRONT_ROOT."/Home/ViewKeeperPanel"?>">Keeper Panel</a></li>     
+                    <li><a class="dropdown-item" href="<?php echo FRONT_ROOT."/Home/Logout"?>">Logout</a></li>
+                </ul>
+            </div>
+          <?php }else{?>
+            <div class="flex-shrink-0 dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-person-circle"></i>
+                  </a>
+                <ul class="dropdown-menu text-small shadow" id="menuProfile">
+                    <li><a class="dropdown-item" href="<?php echo FRONT_ROOT."/Home/ViewOwnerPanel"?>">Owner Panel</a></li>      
+                    <li><a class="dropdown-item" href="<?php echo FRONT_ROOT."/Home/Logout"?>">Logout</a></li>
+                </ul>
+            </div>
+            <?php }
+            }
+        }?>
+    </header>
+</div>
+
+<!--
 <header>
   <nav class="navbar navbar-expand-lg bg-light">
     <div class="container-fluid">
@@ -5,31 +83,20 @@
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+      <form class="d-flex" role="search" action="<?php echo FRONT_ROOT."/Home/Search" ?>" method="post" class="was-validated">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="seach" required>
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <ul class="navbar-nav mr-auto ml-auto mb-2 mb-lg-0">
 
           <li class="nav-link">
             <a class="btn btn-outline-success me-2" href="<?php echo FRONT_ROOT."/Home/ViewBeKeeper"?>"><i class="bi bi-person-badge"></i></a>
           </li>
-          <li class="nav-link">
-            <a class="btn btn-outline-danger me-2" href="<?php echo FRONT_ROOT."/Home/ViewAddPublication"?>" type="button"><i class="bi bi-file-earmark-easel"></i></a>
-          </li>
-          <li class="nav-link">
-            <a class="btn btn-outline-warning me-2" href="<?php echo FRONT_ROOT."/Pet/GetPetsByReservation"?>" type="button"><i class="bi bi-pencil-square"></i></a>
-          </li>
-          <li class="nav-link">
-            <a class="btn btn-dark me-2" href="<?php echo FRONT_ROOT."/Pet/ViewPetList"?>" type="button"><i class="bi bi-bug-fill"></i></a>
-          </li>
-          <li class="nav-link">
-            <a class="btn btn-outline-primary me-2" href="<?php echo FRONT_ROOT."/Home/ViewOwnerPanel"?>" type="button"><i class="bi bi-person-rolodex"></i></a>
-          </li>
-          <li class="nav-link">
-            <a class="btn btn-outline-info me-2" href="<?php echo FRONT_ROOT."/Home/ViewKeeperPanel"?>" type="button"><i class="bi bi-person-rolodex"></i></a>
-          </li>
+          
           <li class="nav-link">
             <a class="btn btn-outline-primary me-2" href="<?php echo FRONT_ROOT."/Home/Logout"?>" type="button"><i class="bi bi-person-rolodex"></i></a>
           </li>
-
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               ADDS Registers
@@ -41,7 +108,7 @@
             </ul>
           </li>
 
-<!-- DROPDOWN -->
+DROPDOWN
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 				      <i class="bi bi-person-circle"></i>
@@ -55,14 +122,13 @@
 
         </ul>
 
-        <form class="d-flex" role="search" action="<?php echo FRONT_ROOT."/Home/Search" ?>" method="post" class="was-validated">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="seach" required>
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
+        
       </div>
     </div>
   </nav>
 </header>
+-->
+
 
 <!-- Modal -->
 <div class="modal fade bs-modal-sm" aria-hidden="true" id="modalLoginRegister">
