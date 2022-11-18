@@ -52,22 +52,23 @@ use \Model\PersonalData as PersonalData;
         }
 
         public function BeKeeper($adress, $neighborhood, $city, $province, $country, $name,$surname,$sex,$dni){
+
                 $location = new Location();
                 $location->__fromRequest($adress, $neighborhood, $city, $province,$country);
                 $data = new PersonalData();
                 $data->__fromRequest($name,$surname,$sex,$dni,$location);  
     /*SETTING DE DATOS A UNA INSTANCIA USER DESDE LA SESSION*/
-                $user = new User();
-                $user->__fromRequest("Elcucarachin","Carlos1245","elcuca@gmail.com",$data);
+                $logUser = $_SESSION["logUser"];
+                $logUser->setData($data);
                 $uRole = new UserRole();
-                $uRole->setUser($user);     
+                $uRole->setUser($logUser);     
 
                 $message = $this->uRoleDAO->UtoKeeper($uRole);
                     if((strpos($message, "Error") !== false)){
                         $this->homeController->ViewBeKeeper($message);
-                         $_SESSION["isKeep"] = 1; 
                     }else{
-                        $this->homeController->Index($message);
+                        $_SESSION["isKeeper"] = true; 
+                        $this->homeController->ViewKeeperPanel($message);    
                     }
         }
 
