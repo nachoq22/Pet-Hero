@@ -36,5 +36,15 @@ use \Model\Booking as Booking;
             $message = $this->checkDAO->PayCheck($check);
         $this->homeC->ViewOwnerPanel($message);
         }
+        
+        public function ViewChecker($idBook){
+        $this->homeC->isLogged();
+            $checker = $this->checkDAO->GetByBook($idBook);
+            require_once(VIEWS_PATH."ViewChecker.php");
+        }
+
+        public function SendChecker(){
+            $this->checkDAO->SendChecker();
+        }
     }
 ?>

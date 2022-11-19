@@ -1,9 +1,12 @@
 <div class="container">
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between  border-bottom">
+      
 <?php if(!isset($_SESSION['logUser'])){?>  
     <ul class="nav col-12 col-md-auto mb-2 justify-content-start mb-md-0">
         <li> <a class="nav-link px-2 link-dark" href="<?php echo  FRONT_ROOT ?>"><i class="bi bi-house-door"></i></a></li>
-    </ul>
+        <li> <a class="nav-link px-2 link-info" href="<?php echo  FRONT_ROOT."/Home/ViewChat" ?>"><i class="bi bi-house-door"></i></a></li>
+        <li> <a class="nav-link px-2 link-info" href="<?php echo  FRONT_ROOT."/Checker/SendChecker" ?>"><i class="bi bi-house-door"></i></a></li>
+      </ul>
 <?php }else{
     if(isset($_SESSION['logUser'])){
         if(isset($_SESSION["isKeeper"])){?>

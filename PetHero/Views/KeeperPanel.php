@@ -174,7 +174,20 @@
                                 </td>
 
                                 <td>
-                                    <a class="btn btn-outline-warning me-2" href="<?php echo FRONT_ROOT."/Checker/GetById"?>" type="button"><i class="bi bi-pencil-square"></i></a>
+                                <?php if ((STRCMP($book->getBookState(),"Awaiting Payment") == 0) XOR 
+                                           (STRCMP($book->getBookState(),"Canceled") == 0) XOR
+                                           (STRCMP($book->getBookState(),"Expired") == 0) XOR
+                                           (STRCMP($book->getBookState(),"Out of Term") == 0) XOR
+                                           (STRCMP($book->getBookState(),"Finalized") == 0) XOR
+                                           (STRCMP($book->getBookState(),"Waiting Start") == 0) XOR 
+                                           (STRCMP($book->getBookState(),"In Progress") == 0)) { ?> 
+                                <div class="container-fluid d-flex">
+                                        <form action="<?php echo FRONT_ROOT."/Checker/ViewChecker" ?>" method="post">
+                                            <input type="hidden" class="visually-hidden" name="idBook" value= <?php echo $book->getId()?>>
+                                            <button class="btn btn-outline-warning" type="submit"><i class="bi bi-pencil-square"></i></button>
+                                        </form>
+                                    </div>
+                                    <?php } ?>
                                 </td>
 
                                 <td>
@@ -202,7 +215,7 @@
                                               (STRCMP($book->getBookState(),"Declined") == 0) XOR
                                               (STRCMP($book->getBookState(),"Out of Term") == 0) XOR
                                               (STRCMP($book->getBookState(),"Finalized") == 0)){ ?>
-                                    <a class="btn btn-outline-info me-2" href="<?php echo FRONT_ROOT."/Checker/GetById"?>" type="button"><i class="bi bi-file-spreadsheet"></i></a>
+                                    <a class="btn btn-outline-info me-2" href="<?php echo FRONT_ROOT."/Checker/ViewChecker"?>" type="button"><i class="bi bi-file-spreadsheet"></i></a>
                                     <?php } ?>
                                 </td>
                             </tr>        

@@ -5,8 +5,15 @@ use \DAO\QueryType as QueryType;
 
 use \DAO\ICheckerDAO as ICheckerDAO;
 use \DAO\BookingPetDAO as BookingPetDAO;
-use Exception;
 use \Model\Checker as Checker;
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+require 'Lib/PHPMailer/Exception.php';
+require 'Lib/PHPMailer/PHPMailer.php';
+require 'Lib/PHPMailer/SMTP.php';
 
     class CheckerDAO implements ICheckerDAO{
         private $connection;
@@ -205,7 +212,44 @@ use \Model\Checker as Checker;
             }
             return $message;
         }
+//-----------------------------------------------------
+//-----------------------------------------------------  
 
+        public function SendChecker(){
+            $mail = new PHPMailer(true);
+            try {
+                //Server settings
+                $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
+                $mail->isSMTP();                                            //Send using SMTP
+                $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
+                $mail->SMTPAuth   = true;    
+                $email = 'petHero25112022@gmail.com';                        //Enable SMTP authentication
+                $mail->Username   = $email;                     //SMTP username
+                $mail->Password   = 'cwomuwndpbenfvlw';                               //SMTP password
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+                $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+
+                //Recipients
+                $mail->setFrom($email, 'Pet Hero');
+                $mail->addAddress('misaelflores4190@gmail.com');     //Add a recipient
+
+                //Attachments
+                //$mail->addAttachment('/var/tmp/file.tar.gz');         //Add attachments
+                //$mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
+
+                //Content
+                //$mail->isHTML(true);  
+                $mail->CharSet = 'UTF-8';                                //Set email format to HTML
+                $mail->Subject = 'Checker Disponible Pet Hero';
+                $mail->Body    = 'Se adjunta Checker Correspondiente al 50% del pago de su reserva';
+                $mail->AltBody = 'Checker correspondiente a su reserva';
+
+                $mail->send();
+                echo 'Message has been sent';
+            } catch (Exception $e) {
+                echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+            }
+        }
 
 //======================================================================
 // DELETE METHODS
