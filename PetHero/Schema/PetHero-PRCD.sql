@@ -526,7 +526,16 @@ BEGIN
 END;
 $$
 
-
+DELIMITER $$
+CREATE PROCEDURE Publication_NIDate(IN openD DATE, IN closeD DATE, IN idUser int)
+BEGIN
+	SELECT COUNT(idPublic) as rta
+    FROM publication
+    WHERE (publication.idUser = idUser) AND ((publication.openD > openD AND publication.openD < closeD) OR 
+											(publication.openD < openD AND publication.closeD > openD));
+END;
+$$
+    
 DELIMITER $$
 CREATE PROCEDURE Publication_Add(IN openD DATE, IN closeD DATE, IN title VARCHAR(50),
                          IN description VARCHAR(1000), IN popularity DEC(2,1), IN remuneration DEC(10,2),
@@ -855,6 +864,84 @@ BEGIN
 END;
 $$
 
+/*********************************PROCEDURES CHAT*******************************************/
+DELIMITER $$
+CREATE PROCEDURE Chat_GetAll()
+BEGIN
+    SELECT * 
+    FROM Chat;
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE Chat_GetById(IN idChat INT)
+BEGIN
+    SELECT * 
+    FROM Chat
+    WHERE (Chat.idChat = idChat);
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE Chat_Add(IN idOwner INT, IN idKeeper INT)
+BEGIN
+    INSERT INTO Chat
+        (Chat.idOwner, Chat.idKeeper)
+    VALUES
+        (idOwner, idKeeper);
+END;
+$$
+
+
+DELIMITER $$
+CREATE PROCEDURE Chat_Delete(IN idChat INT)
+BEGIN
+    DELETE 
+    FROM Chat
+    WHERE (Chat.idReview = idReview);
+END;
+$$
+
+
+/*********************************PROCEDURES MESSAGECHAT*******************************************/
+
+DELIMITER $$
+CREATE PROCEDURE MessageChat_GetAll()
+BEGIN
+    SELECT * 
+    FROM MessageChat;
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE MessageChat_GetById(IN idMessageChat INT)
+BEGIN
+    SELECT * 
+    FROM MessageChat
+    WHERE (MessageChat.idMessageChat = idMessageChat);
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE MessageChat_Add(IN message VARCHAR(500), IN dateTime DATETIME, IN idChat INT, IN idSender INT)
+BEGIN
+    INSERT INTO MessageChat
+        (MessageChat.message, MessageChat.dateTime, MessageChat.idChat, MessageChat.idSender)
+    VALUES
+        (message, dateTime, idChat, idSender);
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE MessageChat_Delete(IN idMessageChat INT)
+BEGIN
+    DELETE 
+    FROM MessageChat
+    WHERE (MessageChat.idMessageChat = idMessageChat);
+END;
+$$
+
+
 
 
                 /*********************************TEST PROCEDURES*******************************************/
@@ -912,8 +999,8 @@ Call PetType_Add("Cacatuos");
 /*Call PetType_Delete(6);*/
 
 /*********************************TEST PET*******************************************/
-Call Pet_GetAll();
-Call Pet_GetById(2);
+#Call Pet_GetAll();
+#Call Pet_GetById(2);
 Call Pet_GetByUser(2);
 /*CALL Size_Add(name,breed,profileIMG,vaccinationPlanIMG,observation,idSize,idPetType,idUser);*/
 /*Call Pet_Add("Salchichon","Suricatta",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Salchichon",(NOW() + 0),".jpg")
@@ -923,7 +1010,7 @@ Call Pet_GetByUser(2);
 
 /*********************************TEST PUBLICATION*******************************************/
 CALL Publication_GetAll();
-CALL Publication_GetById(1);
+#CALL Publication_GetById(1);
 CALL Publication_GetByUser(1);
 CALL Publication_Search("playa");
 /*CALL Publication_Add(openD,closeD,title,description,popularity,remuneration,idUser);*/
@@ -932,7 +1019,7 @@ de perros de 24 años que le gusta salir a correr todos los dias, por lo que su 
 /*CALL Publication_Delete(2);*/
 CALL Publication_DateCheck("2022-10-31", "2022-11-10", 1);
 #CALL Publication_UpdatePopularity(1, 3);
-
+CALL Publication_NIDate("2022-12-15","2023-01-12" ,1);
 
 
 /*********************************TEST IMAGES*******************************************/
@@ -944,8 +1031,8 @@ CALL ImgPublic_GetByPublic(1);
 /*CALL ImgPublic_Delete(1);*/
 
 /*********************************TEST BOOKING*******************************************/
-CALL Booking_GetAll();
-CALL Booking_GetById(1);
+#CALL Booking_GetAll();
+#CALL Booking_GetById(1);
 CALL Booking_GetByUser(4);
 /*CREATE PROCEDURE Booking_GetBookigPay(IN startD DATE,IN finishD DATE, IN remuneration DEC(10,2))*/
 CALL Booking_GetBookigPay('2022-11-06','2022-11-10',50);
@@ -964,8 +1051,8 @@ CALL Booking_CheckRange("2022-11-21", "2022-12-14", 1); #ARRANCA DESPUES TERMINA
 
 /*********************************TEST BOOKING PET*******************************************/
 CALL BP_GetAll();
-CALL BP_GetById(1);
-CALL BP_GetByBook(1);
+#CALL BP_GetById(1);
+CALL BP_GetByBook(4);
 /*CALL BookingPet_Add(IN idBooking INT, IN idPet INT);*/
 /*CALL BP_GetPetPay(remuneration,idBooking);*/
 CALL BP_GetPetPay(500,2);
@@ -981,10 +1068,24 @@ CALL Checker_GetByBooking(1);
 /*CALL Checker_Delete(1);*/
 
 /*********************************TEST REVIEW*******************************************/
-CALL Review_GetAll();
+#CALL Review_GetAll();
 CALL Review_GetById(1);
 CALL Review_GetByPublic(3);
 /*CALL Review_Add(IN createD DATE, IN commentary VARCHAR(500), IN stars INT,
                             IN idUser INT, IN idPublication INT)*/
 #CALL Review_Add("2022-11-01", "Muy bueno, excelente servicio", 5, 4, 2);
 /*CALL Review_Delete(1);*/
+
+
+/*********************************TEST CHAT*******************************************/
+CALL Chat_GetAll();
+CALL Chat_GetById(1);
+CALL Chat_Add(1,6);
+/*CALL Chat_Delete(1);*/
+
+
+/*********************************TEST MESSAGECHAT*******************************************/
+CALL MessageChat_GetAll();
+CALL MessageChat_GetById(1);
+CALL MessageChat_Add("Te agradezco por todo, un saludo enorme", "2022-12-12 22:55:40", 7, 8);
+/*CALL MessageChat_Delete(1);*/

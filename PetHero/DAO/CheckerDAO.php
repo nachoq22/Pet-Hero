@@ -151,16 +151,18 @@ require 'Lib/PHPMailer/SMTP.php';
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
-
 //-----------------------------------------------------
 // METHOD TO CREATE A CHECKER AND UPDATE A BOOKING
 //-----------------------------------------------------      
         public function NewChecker(Checker $checker,$rta){
             $message = "Successful: Se ha creado el checker y actualizado la reserva.";
+                   
                 $bp = $this->bpDAO->GetByBook($checker->getBooking()->getId()); 
+                
                 try{
                     if($rta == 1){
                         try{
+
                         $totally = $this->bpDAO->GetTotally($bp->getBooking());
                         }catch(Exception $e){
                                 $message = "Error: Ha ocurrido un error inesperado, intente mas tarde.";

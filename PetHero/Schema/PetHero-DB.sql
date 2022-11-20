@@ -203,7 +203,7 @@ CREATE TABLE IF NOT EXISTS Publication(
 	openD DATE NOT NULL,
 	closeD DATE NOT NULL,
 	title VARCHAR(50) NOT NULL,
-	description VARCHAR(200) NOT NULL,
+	description VARCHAR(500) NOT NULL,
 	popularity DEC(2,1) CHECK (popularity >= 0 AND popularity <=5),
 	remuneration DEC(10,2) NOT NULL,
 		idUser INT NOT NULL,
@@ -239,25 +239,25 @@ CREATE TABLE IF NOT EXISTS ImgPublic(
 			REFERENCES Publication(idPublic)
 );
 
-INSERT INTO ImgPublic VALUES (0,"..\\Views\\Img\\IMGPublic\\11223344-IMGPublic20221115213311.jpg",1);
-INSERT INTO ImgPublic VALUES (0,"..\\Views\\Img\\IMGPublic\\55667788-IMGPublic20221115213311.jpg",1);
-INSERT INTO ImgPublic VALUES (0,"..\\Views\\Img\\IMGPublic\\11447788-IMGPublic20221115213311.jpg",1);
+INSERT INTO ImgPublic VALUES (0,"Views\\Img\\IMGPublic\\11223344-IMGPublic20221115213311.jpg",1);
+INSERT INTO ImgPublic VALUES (0,"Views\\Img\\IMGPublic\\55667788-IMGPublic20221115213311.jpg",1);
+INSERT INTO ImgPublic VALUES (0,"Views\\Img\\IMGPublic\\11447788-IMGPublic20221115213311.jpg",1);
 
-INSERT INTO ImgPublic VALUES (0,"..\\Views\\Img\\IMGPublic\\44776633-IMGPublic20221115213322.jpg",2);
-INSERT INTO ImgPublic VALUES (0,"..\\Views\\Img\\IMGPublic\\11774499-IMGPublic20221115213322.jpg",2);
-INSERT INTO ImgPublic VALUES (0,"..\\Views\\Img\\IMGPublic\\33556688-IMGPublic20221115213322.jpg",2);
+INSERT INTO ImgPublic VALUES (0,"Views\\Img\\IMGPublic\\44776633-IMGPublic20221115213322.jpg",2);
+INSERT INTO ImgPublic VALUES (0,"Views\\Img\\IMGPublic\\11774499-IMGPublic20221115213322.jpg",2);
+INSERT INTO ImgPublic VALUES (0,"Views\\Img\\IMGPublic\\33556688-IMGPublic20221115213322.jpg",2);
 
-INSERT INTO ImgPublic VALUES (0,"..\\Views\\Img\\IMGPublic\\2321547139-IMGPublic202211152133.jpg",3);
-INSERT INTO ImgPublic VALUES (0,"..\\Views\\Img\\IMGPublic\\8189340865-IMGPublic202211152133.jpg",3);
-INSERT INTO ImgPublic VALUES (0,"..\\Views\\Img\\IMGPublic\\6327715270-IMGPublic202211152133.jpg",3);
+INSERT INTO ImgPublic VALUES (0,"Views\\Img\\IMGPublic\\2321547139-IMGPublic202211152133.jpg",3);
+INSERT INTO ImgPublic VALUES (0,"Views\\Img\\IMGPublic\\8189340865-IMGPublic202211152133.jpg",3);
+INSERT INTO ImgPublic VALUES (0,"Views\\Img\\IMGPublic\\6327715270-IMGPublic202211152133.jpg",3);
 
-INSERT INTO ImgPublic VALUES (0,"..\\Views\\Img\\IMGPublic\\6745476559-IMGPublic202211152144.jpg",4);
-INSERT INTO ImgPublic VALUES (0,"..\\Views\\Img\\IMGPublic\\5300927809-IMGPublic202211152144.jpg",4);
-INSERT INTO ImgPublic VALUES (0,"..\\Views\\Img\\IMGPublic\\9858419706-IMGPublic202211152144.jpg",4);
+INSERT INTO ImgPublic VALUES (0,"Views\\Img\\IMGPublic\\6745476559-IMGPublic202211152144.jpg",4);
+INSERT INTO ImgPublic VALUES (0,"Views\\Img\\IMGPublic\\5300927809-IMGPublic202211152144.jpg",4);
+INSERT INTO ImgPublic VALUES (0,"Views\\Img\\IMGPublic\\9858419706-IMGPublic202211152144.jpg",4);
 
-INSERT INTO ImgPublic VALUES (0,"..\\Views\\Img\\IMGPublic\\2284550973-IMGPublic202211152155.jpg",5);
-INSERT INTO ImgPublic VALUES (0,"..\\Views\\Img\\IMGPublic\\3551448123-IMGPublic202211152155.jpg",5);
-INSERT INTO ImgPublic VALUES (0,"..\\Views\\Img\\IMGPublic\\3256367687-IMGPublic202211152155.jpg",5);
+INSERT INTO ImgPublic VALUES (0,"Views\\Img\\IMGPublic\\2284550973-IMGPublic202211152155.jpg",5);
+INSERT INTO ImgPublic VALUES (0,"Views\\Img\\IMGPublic\\3551448123-IMGPublic202211152155.jpg",5);
+INSERT INTO ImgPublic VALUES (0,"Views\\Img\\IMGPublic\\3256367687-IMGPublic202211152155.jpg",5);
 
 
 
@@ -286,6 +286,7 @@ INSERT INTO Booking VALUES (0,DATE(NOW()),
 
 INSERT INTO Booking VALUES (0,"2022-12-12","2022-12-17","Waiting Start","65667469864268",1,6);
 INSERT INTO Booking VALUES (0,"2023-01-10","2023-01-20","Waiting Start","79624905898821",2,7);
+INSERT INTO Booking VALUES (0,"2021-11-10","2021-12-12","Finalized","79624905898821",3,1);
 
 
 /*********************************BOOKING PET*******************************************/
@@ -304,15 +305,15 @@ INSERT INTO BookingPet VALUES (0,2,5);
 
 /*********************************CHECKER*******************************************/
 CREATE TABLE IF NOT EXISTS Checker(
-	idChecker INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-	refCode VARCHAR(20) UNIQUE,
-	emisionD DATE NOT NULL,
-	closeD DATE NOT NULL,
-	payD DATE,
-	finalPrice DEC(10,2) NOT NULL,
-		idBook INT NOT NULL,
-			CONSTRAINT fk_checkerBook FOREIGN KEY(idBook)
-				REFERENCES Booking(idBook)
+    idChecker INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+    refCode VARCHAR(20) UNIQUE,
+    emisionD DATE NOT NULL,
+    closeD DATE NOT NULL,
+    payD DATE,
+    finalPrice DEC(10,2) NOT NULL,
+        idBook INT NOT NULL,
+            CONSTRAINT fk_checkerBook FOREIGN KEY(idBook)
+                REFERENCES Booking(idBook)
 );
 
 INSERT INTO Checker VALUES (0,"111999a17a98w2364er","2022-10-15","2022-10-18","2022-10-16",21000,1);
@@ -331,3 +332,43 @@ CREATE TABLE IF NOT EXISTS Review(
 			CONSTRAINT fk_reviewUser FOREIGN KEY(idUser)
 				REFERENCES User(idUser)
 );
+
+
+/*********************************CHAT*******************************************/
+CREATE TABLE IF NOT EXISTS Chat(
+	idChat INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+		idOwner INT NOT NULL,
+		idKeeper INT NOT NULL,
+	CONSTRAINT fk_chatOwner FOREIGN KEY (idOwner)
+		REFERENCES User(idUser),
+	CONSTRAINT fk_chatKeeper FOREIGN KEY (idKeeper) 
+		REFERENCES User(idUser)
+);
+
+INSERT INTO Chat VALUES (1,1,3); 
+INSERT INTO Chat VALUES (2,4,2); 
+INSERT INTO Chat VALUES (3,5,2); 
+INSERT INTO Chat VALUES (4,2,7); 
+
+
+
+/*********************************MESSAGE*******************************************/
+CREATE TABLE IF NOT EXISTS MessageChat(
+	idMessageChat INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+	message VARCHAR(500),
+	dateTime DATE NOT NULL,
+		idChat INT NOT NULL,
+		idSender INT NOT NULL,
+	CONSTRAINT fk_messageChat FOREIGN KEY (idChat)
+		REFERENCES Chat(idChat),
+	CONSTRAINT fk_messageSender FOREIGN KEY (idSender)
+		REFERENCES User(idUser)
+);
+
+INSERT INTO MessageChat VALUES (1,"Buenas tardes","2022-12-12 22:55:40",4,1); 
+INSERT INTO MessageChat VALUES (2,"Buenas!!","2022-12-12 22:56:40",4,2); 
+INSERT INTO MessageChat VALUES (3,"Tengo una consulta","2022-12-12 22:57:40",4,1); 
+INSERT INTO MessageChat VALUES (4,"Si, digame","2022-12-12 22:57:48",4,2); 
+INSERT INTO MessageChat VALUES (5,"podria ir llevarle el perro a las 8:00 de la mañana?","2022-12-12 22:58:05",4,1); 
+INSERT INTO MessageChat VALUES (6,"No hay problema, a cualquier hora me viene bien","2022-12-12 22:58:25",4,2); 
+INSERT INTO MessageChat VALUES (7,"Perfecto! ya mismo hago la reserva","2022-12-12 22:58:40",4,1); 

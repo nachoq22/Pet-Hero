@@ -26,11 +26,10 @@ use \Model\PersonalData as PersonalData;
                 $uRole->setUser($user);
             $message = $this->uRoleDAO->Register($uRole);
                 if(strpos($message,"Error")!==false){
-                    $_SESSION["logUser"] = $user;
-                    $_SESSION["isKeeper"] = true; 
-                    $this->homeController->ViewOwnerPanel($message); 
-                }else{
                     $this->homeController->Index($message); 
+                }else{
+                    $_SESSION["logUser"] = $user;
+                    $this->homeController->ViewOwnerPanel($message); 
                 }           
         } 
 
@@ -42,9 +41,10 @@ use \Model\PersonalData as PersonalData;
                 $_SESSION["logUser"] = $user;
                 $ur = new UserRole();
                 $ur->setUser($user);
-                if(!empty($this->uRoleDAO->IsKeeper($ur))){
+                if(!empty($this->uRoleDAO->IsKeeper($ur->getUser()->getUsername()))){
                     $_SESSION["isKeeper"] = true; 
                 }
+                
                 $this->homeController->Index("Successful: Se ha logueado correctamente");
             }else{
                 $this->homeController->Index("Error: Credenciales invalidas, reintente...");
@@ -52,23 +52,24 @@ use \Model\PersonalData as PersonalData;
         }
 
         public function BeKeeper($adress, $neighborhood, $city, $province, $country, $name,$surname,$sex,$dni){
-
+                $this->homeController->isLogged();
                 $location = new Location();
                 $location->__fromRequest($adress, $neighborhood, $city, $province,$country);
                 $data = new PersonalData();
                 $data->__fromRequest($name,$surname,$sex,$dni,$location);  
     /*SETTING DE DATOS A UNA INSTANCIA USER DESDE LA SESSION*/
-                $logUser = $_SESSION["logUser"];
-                $logUser->setData($data);
+                $user = $_SESSION["logUser"];
+                $user->setData($data);
                 $uRole = new UserRole();
-                $uRole->setUser($logUser);     
+                $uRole->setUser($user);     
 
                 $message = $this->uRoleDAO->UtoKeeper($uRole);
                     if((strpos($message, "Error") !== false)){
-                        $this->homeController->ViewBeKeeper($message);
+                        
+                        $this->homeController->ViewBeKeeper($message);  
                     }else{
-                        $_SESSION["isKeeper"] = true; 
-                        $this->homeController->ViewKeeperPanel($message);    
+                        $_SESSION["isKeeper"] = 1; 
+                        $this->homeController->ViewKeeperPanel($message); 
                     }
         }
 

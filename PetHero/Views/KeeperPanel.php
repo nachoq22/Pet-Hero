@@ -1,4 +1,15 @@
 <body>
+<?php if (!empty($message)){ 
+    if(strpos($message, "Error") !== false){?>
+    <div class="alert alert-danger" role="alert">
+      <?php echo $message; ?>
+    </div>
+<?php }else{ ?>
+<div class="alert alert-success" role="alert">
+      <?php echo $message; ?>
+    </div>
+<?php } ?>
+<?php } ?>
 <div class="container-fluid">
     <div class="row">
         
@@ -78,7 +89,7 @@
                                 <div class="card h-100">
                                 <?php foreach ($imgByPublic as $imgP) { ?> 
                                             <?php if ($imgP->getPublication()->getid() == $public->getid()) { ?> 
-                                    <img src="<?php echo $imgP->getUrl()?>" class="card-img-top" 
+                                    <img src="<?php echo "../".$imgP->getUrl()?>" class="card-img-top" 
                                     style="width: 100%; height: 10vw; object-fit: cover;" alt="...">
                                     <?php } ?>
                                         <?php } ?>
@@ -117,7 +128,7 @@
                                     <div class="col-2">
                                         <?php foreach ($imgList as $img) { ?> 
                                             <?php if ($img->getPublication()->getId() == $book->getPublication()->getId()) { ?> 
-                                            <img src="<?php echo $img->getUrl()?>" class="rounded-circle" alt="" 
+                                            <img src="<?php echo "../".$img->getUrl()?>" class="rounded-circle" alt="" 
                                             style="width: 45px; height: 45px"/>
                                             <?php } ?>
                                         <?php } ?>
@@ -162,12 +173,16 @@
 
                                 <td>
                                     <div class="row">
-                                        <?php foreach ($bPetsList as $pet) { ?>   
-                                            <?php if ($pet->getBooking()->getId() == $book->getId()) { ?>           
+                                    <?php foreach ($bPetsList as $pet) { ?>
+                                            <?php if ($pet->getBooking()->getId() == $book->getId()) { ?>
                                             <div class="col-2">
-                                                    <img src="<?php echo $pet->getPet()->getProfileIMG()?>" class="rounded-circle" alt="" 
-                                                    style="width: 45px; height: 45px;"/>
-                                            </div>
+                                            <div class="container-fluid d-flex">
+
+                                                    <form action="<?php echo FRONT_ROOT."/Pet/ViewPetProfile"?>" method="post">
+                                                <input type="hidden" name="idPet" value=<?php echo $pet->getPet()->getId() ?>>
+                                                    <button type="submit" style="border-left-width: 0px;border-top-width: 0px;border-right-width: 0px;height: 0px;padding-right: 0px;padding-left: 0px;border-bottom-width: 0px;padding-bottom: 0px;padding-top: 0px;"><img src="<?php echo $pet->getPet()->getProfileIMG()?>" class="rounded-circle" alt="" 
+                                                    style="width: 45px; height: 45px;"/></button>
+                                            </form>
                                             <?php } ?>
                                         <?php } ?>
                                     </div>

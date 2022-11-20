@@ -26,7 +26,7 @@ use \Model\ImgPublic as ImgPublic;
             $idR = random_int(1,100000000);
             $path= "Views\Img\IMGPublic\\".$idR."-IMGPublic".date("YmdHis").".jpg"; 
             $path = str_replace(' ', '-', $path); 
-            $pathDB =  "..\\".$path; 
+            $pathDB = $path; 
             move_uploaded_file($tmp_name,$path);
         return $pathDB;
         }
@@ -172,6 +172,10 @@ use \Model\ImgPublic as ImgPublic;
         
         public function ValidateOnWeek($startD){
             return $this->publicDAO->ValidateOnWeek($startD);
+        }
+
+        public function ValidateDAllPublications($openD, $closeD, $user){
+            return $this->publicDAO->ValidateDAllPublications($openD, $closeD, $user);
         }
 
     }

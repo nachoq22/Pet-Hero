@@ -198,7 +198,7 @@ use \Model\Publication as Publication;
             return $rta;
         }
         //////////////////////////////////////
-
+        //ESTO SIRVE PARA VALIDAR QUE LA FECHA DE RESERVA SEA CON UNA SEMANA DE ANTICIPACION
         public function ValidateOnWeek($startD){
             $rta = 0;
             $limitD = DATE("Y-m-d",STRTOTIME(DATE("Y-m-d") ."+ 7 days"));
@@ -207,6 +207,22 @@ use \Model\Publication as Publication;
             }
             return $rta;
         }
+        //////////////////////////////////////
+        //ESTO SIRVE PARA VALIDAR QUE LA FECHA DE UNA NUEVA PUBLICACION SEA COMPATIBLE CON EL RESTO DE PUBLICACIONES DEL MISMO KEEPER
+        public function ValidateDAllPublications($openD, $closeD, $user){
+            $rta = NULL;
+            $query = "Call Publication_NIDate(?,?,?)";
+            $parameters["openD"] = $openD;
+            $parameters["closeD"] = $closeD;
+            $parameters["idUser"] = $this->userDAO->DGetByUsername($user->getUsername())->getId();
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
 
+            foreach($resultBD as $row){
+                $rta = $row["rta"];
+            }
+            return $rta;
+        }
+        //////////////////////////////////////
     }
 ?>

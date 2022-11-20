@@ -1,12 +1,9 @@
 <div class="container">
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between  border-bottom">
-      
-<?php if(!isset($_SESSION['logUser'])){?>  
+    <?php if(!isset($_SESSION['logUser'])){?>
     <ul class="nav col-12 col-md-auto mb-2 justify-content-start mb-md-0">
-        <li> <a class="nav-link px-2 link-dark" href="<?php echo  FRONT_ROOT ?>"><i class="bi bi-house-door"></i></a></li>
-        <li> <a class="nav-link px-2 link-info" href="<?php echo  FRONT_ROOT."/Home/ViewChat" ?>"><i class="bi bi-house-door"></i></a></li>
-        <li> <a class="nav-link px-2 link-info" href="<?php echo  FRONT_ROOT."/Checker/SendChecker" ?>"><i class="bi bi-house-door"></i></a></li>
-      </ul>
+        <li> <a class="nav-link px-2 link-dark" href="<?php echo  FRONT_ROOT ?>"><h4 class="card-title"><img src="https://images.squarespace-cdn.com/content/v1/5723b737c2ea51b309ec0ca1/1522426443508-FEPA6TY38ZQVWWQ240QJ/Throw_Ball.gif%C3%A7" alt="Bootstrap" width="32" height="32" class="rounded-circle border border-white me-3"></a></li>
+    </ul>
 <?php }else{
     if(isset($_SESSION['logUser'])){
         if(isset($_SESSION["isKeeper"])){?>
@@ -18,7 +15,7 @@
 <?php }else{?>
       <ul class="nav col-12 col-md-auto mb-2 justify-content-start mb-md-0">
         <li> <a class="nav-link px-2 link-dark" href="<?php echo  FRONT_ROOT ?>"><i class="bi bi-house-door"></i></a></li>
-        <li><a href="#" class="nav-link px-2 link-success">Be Keeper</a></li>
+        <li><a href="<?php echo FRONT_ROOT."/Home/ViewBeKeeper"?>" class="nav-link px-2 link-success">Be Keeper</a></li>
         <li> <a class="btn btn-outline-success" href="<?php echo FRONT_ROOT."/Home/ViewOwnerPanel"?>" type="button"><i class="bi bi-person-square"></i></a></li>
       </ul>
       <?php }
@@ -26,10 +23,10 @@
       }?>
 
       <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-      <form action=""class="w-100 me-3" role="search">
+      <form class="w-100 me-3" role="search" action="<?php echo FRONT_ROOT."/Home/Search" ?>" method="post" class="was-validated">
           <div class="p-1 bg-light rounded rounded-pill shadow-sm">
             <div class="input-group">
-              <input type="search" placeholder="What're you searching for?" aria-describedby="button-addon1" class="form-control border-0 bg-light">
+              <input type="search" placeholder="What're you searching for?" aria-describedby="button-addon1" name="seach" class="form-control border-0 bg-light" required>
               <div class="input-group-append">
                 <button id="button-addon1" type="submit" class="btn btn-link text-danger"><i class="bi bi-search"></i></button>
               </div>
@@ -45,8 +42,8 @@
             </a>
 
           <ul class="dropdown-menu text-small shadow" id="menuProfile">
-               <li><a class="dropdown-item" id="signUpItem" data-bs-toggle="modal" data-bs-target=".bs-modal">Sign Up</a></li>
-               <li><a class="dropdown-item" id="loginItem" data-bs-toggle="modal" data-bs-target=".bs-modal">Login</a></li>
+               <li><a class="dropdown-item" id="signUpItem" data-bs-toggle="modal" data-bs-target=".bs-modal" role="button">Sign Up</a></li>
+              <li><a class="dropdown-item" id="loginItem" data-bs-toggle="modal" data-bs-target=".bs-modal" role="button">Login</a></li>
           </ul> 
       </div>
       <?php }else{
@@ -169,7 +166,7 @@ DROPDOWN
                     </div>
             </div>
 			<div class="form-floating mb-3">
-                <input type="text" class="form-control" id="password" placeholder="Jorge" name="password" required>
+                <input type="password" class="form-control" id="password" placeholder="Jorge" name="password" required>
                 	<label for="password">Password</label>
                     <div class="invalid-feedback">
                             Please enter your Password.
@@ -200,7 +197,7 @@ DROPDOWN
                     </div>
             </div>
 			<div class="d-flex">
-				<button type="submit" class="w-50 mb-2 btn btn-sm rounded-3 btn-primary">Sign up</button>
+				<button type="submit" class="w-50 mb-2 btn btn-sm rounded-3 btn-primary">Login</button>
 				<button type="reset" class="w-50 mb-2 btn btn-sm rounded-3 btn-primary">Reset</button>
 			</div>
           </form>

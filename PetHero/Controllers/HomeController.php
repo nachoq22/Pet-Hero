@@ -80,7 +80,7 @@ use \Model\User as User;
             require_once(VIEWS_PATH."KeeperPanel.php");
         }     
 
-        public function ViewAddPublication(){
+        public function ViewAddPublication($message = ""){
             $this->isLogged();
             $this->isKeeper();
             require_once(VIEWS_PATH."AddPublication.php");
