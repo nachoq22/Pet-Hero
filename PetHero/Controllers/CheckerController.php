@@ -22,8 +22,8 @@ use \Model\Booking as Booking;
                 $book->setId($idBook);
                 $check = new Checker();    
                 $check->setBooking($book);
-            $this->checkDAO->NewChecker($check,$rta);
-            $this->homeC->ViewKeeperPanel();
+            $message = $this->checkDAO->NewChecker($check,$rta);
+            $this->homeC->ViewKeeperPanel($message);
         }
 
         public function PayCheck($idBook,$payCode){
@@ -41,10 +41,6 @@ use \Model\Booking as Booking;
         $this->homeC->isLogged();
             $checker = $this->checkDAO->GetByBook($idBook);
             require_once(VIEWS_PATH."ViewChecker.php");
-        }
-
-        public function SendChecker(){
-            $this->checkDAO->SendChecker();
         }
     }
 ?>

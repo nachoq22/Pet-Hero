@@ -36,7 +36,7 @@
 
             foreach($resultBD as $row){
                 $chat = new chat();
-                $chat->__fromBD($row["idChat"],$this->userDAO->Get($row["idPublic"]),$this->userDAO->Get($row["idKeeper"]));
+                $chat->__fromBD($row["idChat"],$this->userDAO->DGet($row["idPublic"]),$this->userDAO->DGet($row["idKeeper"]));
 
                 array_push($chatList,$chat);
             }
@@ -53,7 +53,7 @@
             foreach($resultBD as $row){
                 $chat = new Chat();
 
-                $chat->__fromBD($row["idChat"],$this->userDAO->Get($row["idPublic"]),$this->userDAO->Get($row["idKeeper"]));
+                $chat->__fromBD($row["idChat"],$this->userDAO->DGet($row["idPublic"]),$this->userDAO->DGet($row["idKeeper"]));
             }
             return $chat;
         }

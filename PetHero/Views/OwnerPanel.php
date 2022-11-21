@@ -126,7 +126,7 @@
                                         <div class="col-2">
                                         <?php foreach ($imgList as $img) { ?> 
                                             <?php if ($img->getPublication()->getId() == $book->getPublication()->getId()) { ?> 
-                                            <img src="<?php echo $img->getUrl()?>" class="rounded-circle" alt="" 
+                                            <img src="<?php echo '../'.$img->getUrl()?>" class="rounded-circle" alt="" 
                                             style="width: 45px; height: 45px"/>
                                             <?php } ?>
                                         <?php } ?>

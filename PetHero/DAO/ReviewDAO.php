@@ -7,6 +7,7 @@ use \DAO\IReviewDAO as IReviewDAO;
 use \DAO\PublicationDAO as PublicationDAO;
 use \DAO\UserDAO as UserDAO;
 use \Model\Review as Review;
+use PHPMailer\PHPMailer\Exception;
 
     class ReviewDAO implements IReviewDAO{
         private $connection;
@@ -97,13 +98,18 @@ use \Model\Review as Review;
 // METHOD DEDICATED TO CREATING A REVIEW
 //-----------------------------------------------------
         public function NewReview(Review $review){
+            $message = "Successful: Su review se ha creado con exito,estamos para mejorar.";
+            try{
                 $public = $this->publicDAO->Get($review->getPublication()->getId());
                 $review->setPublication($public);
                 $user = $this->userDAO->DGetByUsername($review->getUser()->getUsername());
                 $review->setUser($user);
             $this->Add($review);
             $this->UpdatePopularity($public, $this->CalculateScore($public));
-
+            }catch(Exception $e){
+                $message = "Error: No se ha podido crear su review,reintente mas tarde.";
+            }
+        return $message;
         }
 
 //======================================================================

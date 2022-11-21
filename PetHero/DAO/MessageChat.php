@@ -41,7 +41,8 @@
 
             foreach($resultBD as $row){
                 $messageChat = new MessageChat();
-                $messageChat->__fromDB($row["idMessageChat"],$row["message"],$row["dateTime"],$this->chatDAO->GetById($row["idChat"]),$this->userDAO->Get($row["idSender"]));
+                $messageChat->__fromDB($row["idMessageChat"],$row["message"],$row["dateTime"]
+                ,$this->chatDAO->GetById($row["idChat"]),$this->userDAO->DGet($row["idSender"]));
 
                 array_push($chatList,$messageChat);
             }
@@ -58,7 +59,8 @@
             foreach($resultBD as $row){
                 $messageChat = new MessageChat();
 
-                $messageChat->__fromDB($row["idMessageChat"],$row["message"],$row["dateTime"],$this->chatDAO->GetById($row["idChat"]),$this->userDAO->Get($row["idSender"]));
+                $messageChat->__fromDB($row["idMessageChat"],$row["message"],$row["dateTime"],
+                $this->chatDAO->GetById($row["idChat"]),$this->userDAO->DGet($row["idSender"]));
             }
             return $chat;
         }
