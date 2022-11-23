@@ -15,9 +15,17 @@
         <h6>Barrio: <?php echo $public->getUser()->getData()->getLocation()->getNeighborhood() ?> </h6>
     </div>
     <div class="col-5">
-      
+      <br>
+      <?php if(!empty($logUser)){ 
+      if($public->getUser()->getUsername() != $logUser->getUsername()){  ?>
+        <form action="<?php echo FRONT_ROOT."/Chat/AddChat"?>" method="post">
+        <input type="hidden" value="<?php echo $public->getUser()->getId()?>" id="idKeeper" name="idKeeper"> 
+        <button type="submit" class="btn btn-outline-success" href="<?php echo FRONT_ROOT."/Chat/AddChat"?>" type="button">
+        <i class="bi bi-chat-right-text-fill"></i> Send Message</form>
+        <?php }} ?>
     </div>
   </div> <!-- TITULO Y VALORACION -->
+
   <div class="row"> <!-- CAROUSEL  -->
   <div class="col-2">
         

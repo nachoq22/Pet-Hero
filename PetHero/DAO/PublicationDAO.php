@@ -145,6 +145,7 @@ use \Model\Publication as Publication;
                 $public->setUser($user);
             $idLastP = $this->Add($public);
             $publicN = $this->Get($idLastP);
+
         return $publicN;
         }
         

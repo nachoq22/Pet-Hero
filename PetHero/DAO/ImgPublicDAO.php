@@ -142,6 +142,8 @@ use \Model\ImgPublic as ImgPublic;
 //-----------------------------------------------------        
         public function NewPublication(ImgPublic $public,$images){
 #SE GUARDA LA PUBLICACION Y SE ACTUALIZA POR NUEVA CON ID PARA ASIGNAR A LAS IMG
+$message = "Sucessful: se ha guardado correctamente";
+            if(strlen($public->getPublication()->getTitle())<50){ 
             $publicN = $this->publicDAO->NewPublication($public->getPublication());
                 $public->setPublication($publicN);
 #PARA OBTENER LOS VALORES DE TMP_NAME                
@@ -154,7 +156,12 @@ use \Model\ImgPublic as ImgPublic;
                     }
                 }
             }
+        }else{
+            $message = "Error: Datos ingresados invalidos, reintente nuevamente";
         }
+        return $message;
+
+    }
 
 //======================================================================
 // DELETE METHODS

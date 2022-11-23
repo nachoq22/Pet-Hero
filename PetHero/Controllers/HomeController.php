@@ -2,10 +2,13 @@
 namespace Controllers;
 use \DAO\UserDAO as UserDAO;
 use \DAO\PetDAO as PetDAO;
+use \DAO\ChatDAO as ChatDAO;
+use \DAO\MessageChatDAO as MessageChatDAO;
 use \DAO\PublicationDAO as PublicationDAO; 
 use \DAO\BookingPetDAO as BookingPetDAO;
 use \DAO\ImgPublicDAO as ImgPublicDAO;
 use \Model\User as User;
+use \Model\Chat as Chat;
 
     class HomeController{
         private $userDAO;
@@ -13,6 +16,8 @@ use \Model\User as User;
         private $publicDAO;
         private $bpDAO;
         private $imgPublicDAO;
+        private $chatDAO;
+        private $messageChatDAO;
 
         public function __construct(){
             $this->userDAO = new UserDAO();
@@ -20,6 +25,8 @@ use \Model\User as User;
             $this->publicDAO = new PublicationDAO();
             $this->bpDAO = new BookingPetDAO();
             $this->imgPublicDAO = new ImgPublicDAO();
+            $this->chatDAO = new ChatDAO();
+            $this->messageChatDAO = new MessageChatDAO();
         }
 
         public function Index($message = ""){
@@ -92,6 +99,25 @@ use \Model\User as User;
             require_once(VIEWS_PATH."AddReview.php");
         }
 
+        public function ViewPanelChat(Chat $chat, $messageList){
+            $this->isLogged();
+            $user=new User();
+            $user=$_SESSION["logUser"];
+            require_once(VIEWS_PATH."ViewChat.php");
+        }
+
+        public function ViewPanelChatHome(){
+            $this->isLogged();
+            $user=new User();
+            $user=$_SESSION["logUser"];
+            $chatList = $this->chatDAO->ChatByUser($user->getUsername());
+            $messageAllList = $this->messageChatDAO->GetByAllChats($chatList);
+
+            require_once(VIEWS_PATH."ViewChatPanel.php");
+        }
+
+
+        //METODOS PARA COMPROBAR SESIONES
         public function isLogged(){
             if(!isset($_SESSION["logUser"])){
                 $this->Index("Error: No ha iniciado Session");  
@@ -103,6 +129,8 @@ use \Model\User as User;
                 $this->Index("Error: No posee permisos para ingresar");  
             }
         }
+
+        
 
 //METODOS ANTIGUOS
 /*
