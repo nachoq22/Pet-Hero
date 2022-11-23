@@ -883,12 +883,31 @@ END;
 $$
 
 DELIMITER $$
+CREATE PROCEDURE Chat_GetByUsers(IN idUser1 INT, IN idUser2 INT)
+BEGIN
+	SELECT * 
+    FROM Chat
+    WHERE (Chat.idOwner = idUser1 AND Chat.idKeeper = idUser2) OR (Chat.idOwner = idUser2 AND chat.idKeeper = idUser1);
+END;
+$$
+
+DELIMITER $$ 
+CREATE PROCEDURE Chat_GetByUser(IN idUser INT)
+BEGIN
+	SELECT * 
+    FROM Chat
+	WHERE (Chat.idOwner = idUser XOR Chat.idKeeper=idUser);
+END;
+$$
+
+DELIMITER $$
 CREATE PROCEDURE Chat_Add(IN idOwner INT, IN idKeeper INT)
 BEGIN
     INSERT INTO Chat
         (Chat.idOwner, Chat.idKeeper)
     VALUES
         (idOwner, idKeeper);
+	SELECT LAST_INSERT_ID() as LastID;
 END;
 $$
 
@@ -930,6 +949,24 @@ BEGIN
     VALUES
         (message, dateTime, idChat, idSender);
 END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE MessageChat_GetAllMsgByChat(IN idChat INT)
+BEGIN
+	SELECT *
+    FROM MessageChat
+    WHERE (MessageChat.idChat = idChat);
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE MessageChat_GetLastMsgByChat(IN idChat INT)
+BEGIN
+	SELECT * 
+    FROM MessageChat
+    WHERE MessageChat.idChat = idChat ORDER BY MessageChat.dateTime DESC LIMIT 1;
+END; 
 $$
 
 DELIMITER $$
@@ -1038,7 +1075,7 @@ CALL Booking_GetByUser(4);
 CALL Booking_GetBookigPay('2022-11-06','2022-11-19',3500);
 /*CALL Booking_Add(IN openDate DATE, IN closeDate DATE, IN payState VARCHAR(25), IN payCode VARCHAR(10),
                          IN idPublication INT, IN idUser INT)*/
-CALL Booking_Add("2022-10-15","2022-11-15","In Review",1, 1);
+#CALL Booking_Add("2022-10-15","2022-11-15","In Review",1, 1);
 CALL Booking_CheckRange("2022-09-17", "2022-09-22", 1); /*ARRANCA ANTES TERMINA ANTES ANDA BIEN */
 CALL Booking_CheckRange("2022-09-17", "2022-11-13", 1); #ARRANCA ANTES TERMINA EN EL MEDIO -CONTEMPLA
 CALL Booking_CheckRange("2022-08-17", "2022-12-19", 1); #ARRANCA ANTES TERMINA DESPUES -CONTEMPLA
@@ -1080,6 +1117,8 @@ CALL Review_GetByPublic(3);
 /*********************************TEST CHAT*******************************************/
 CALL Chat_GetAll();
 CALL Chat_GetById(1);
+CALL Chat_GetByUsers(6,1);
+CALL Chat_GetByUser(4);
 CALL Chat_Add(1,6);
 /*CALL Chat_Delete(1);*/
 
@@ -1087,5 +1126,7 @@ CALL Chat_Add(1,6);
 /*********************************TEST MESSAGECHAT*******************************************/
 CALL MessageChat_GetAll();
 CALL MessageChat_GetById(1);
-CALL MessageChat_Add("Te agradezco por todo, un saludo enorme", "2022-12-12 22:55:40", 7, 8);
+CALL MessageChat_Add("Te agradezco por todo, un saludo enorme", "2023-12-12 23:55:40", 7, 8);
+CALL MessageChat_GetAllMsgByChat(2);
 /*CALL MessageChat_Delete(1);*/
+CALL MessageChat_GetLastMsgByChat(7);

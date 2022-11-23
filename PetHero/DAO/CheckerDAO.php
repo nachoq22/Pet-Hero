@@ -5,8 +5,15 @@ use \DAO\QueryType as QueryType;
 
 use \DAO\ICheckerDAO as ICheckerDAO;
 use \DAO\BookingPetDAO as BookingPetDAO;
-use Exception;
 use \Model\Checker as Checker;
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+require 'Lib/PHPMailer/Exception.php';
+require 'Lib/PHPMailer/PHPMailer.php';
+require 'Lib/PHPMailer/SMTP.php';
 
     class CheckerDAO implements ICheckerDAO{
         private $connection;
@@ -131,6 +138,19 @@ use \Model\Checker as Checker;
         return $checkerList;    
         }
 
+        public function GetAllByBooks($bookList){
+            $checkerList = array();
+            foreach($bookList as $book){
+                $checker = new Checker();
+                $checkerAux = $this->GetByBook($book->getId());
+                if(!empty($checkerAux)){
+                    $checker = $checkerAux;
+                    array_push($checkerList,$checker);
+                }
+            }
+        return $checkerList;    
+        }
+
 //======================================================================
 // INSERT METHODS
 //======================================================================
@@ -149,7 +169,7 @@ use \Model\Checker as Checker;
 //-----------------------------------------------------      
         public function NewChecker(Checker $checker,$rta){
             $message = "Successful: Se ha creado el checker y actualizado la reserva.";
-                   
+       
                 $bp = $this->bpDAO->GetByBook($checker->getBooking()->getId()); 
                 
                 try{
@@ -169,6 +189,15 @@ use \Model\Checker as Checker;
                             $this->Add($checker);
                         }catch(Exception $e){
                                 $message = "Error: No se ha podido generar el checker, intente mas tarde.";
+                            return $message;
+                        }
+                        try{
+                            if(strcmp($checker->getBooking()->getUser()->getEmail(),"misaelflores4190@gmail.com")==0 
+                            XOR strcmp($checker->getBooking()->getUser()->getEmail(),"ignaciorios_g@hotmail.com")==0){
+                               $message = $this->SendChecker($checker);
+                            }
+                        }catch(Exception $e){
+                            $message = "Error: No se ha podido enviar el checker, intente mas tarde.";
                             return $message;
                         }      
                         $this->bpDAO->NewState($bp->getBooking(),$rta);
@@ -207,7 +236,298 @@ use \Model\Checker as Checker;
             }
             return $message;
         }
+//-----------------------------------------------------
+//-----------------------------------------------------  
 
+        private function SendChecker(Checker $checker){
+            $mail = new PHPMailer(true);
+            try {
+                //Server settings
+                //$mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
+                $mail->SMTPDebug = SMTP::DEBUG_OFF;                      //Enable verbose debug output
+                $mail->isSMTP();                                            //Send using SMTP
+                $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
+                $mail->SMTPAuth   = true;    
+                $email = 'petHero25112022@gmail.com';                        //Enable SMTP authentication
+                $mail->Username   = $email;                     //SMTP username
+                $mail->Password   = 'cwomuwndpbenfvlw';                               //SMTP password
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+                $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+                //Recipients
+                $mail->setFrom($email, 'Pet Hero');
+                $mail->addAddress($checker->getBooking()->getUser()->getEmail());     //Add a recipient
+                //Attachments
+                //$mail->addAttachment('/var/tmp/file.tar.gz');         //Add attachments
+                //$mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
+
+                //Content
+                //$mail->isHTML(true);  
+                
+                $plantilla = '
+                <!DOCTYPE html>
+                        <html>
+                        <head>
+                            <title>Pet-Hero</title>
+                        </head>    
+                    <body style="margin: 0; padding: 0;">
+                <div class="parent" style="display: grid;
+                                    grid-template-columns: repeat(4, 1fr);
+                                    grid-template-rows: repeat(3, 1fr);
+                                    grid-column-gap: 0px;
+                                    grid-row-gap: 0px; margin: 0;
+                                    padding: 0;">
+                    <div class="div1" style="grid-area: 1 / 1 / 2 / 5; margin: 0;
+                    padding: 0;">
+                        <h2 style="
+                        @import url("https://fonts.googleapis.com/css2?family=Mr+Dafoe&display=swap");
+                        font-family: "Mr Dafoe";
+                        margin: 0;
+                        font-size: 5.5em;
+                        margin-top: -0.6em;
+                        color: white;
+                        text-shadow: 0 0 0.05em #fff, 0 0 0.2em #fe05e1, 0 0 0.3em #fe05e1;
+                        transform: rotate(-7deg);">PET HERO</h2>
+                        <h1 style="font-size: 30px;
+                        text-align: center;
+                        text-shadow: 0 0 0.05em #fff, 0 0 0.2em #480b41, 0 0 0.3em #480b41;"
+                        >Checker</h1>
+                        <table class="tableStyle" style="font-family: "Lucida Console", Monaco, monospace;
+                                width: 100%;
+                                text-align: center;
+                                border-collapse: collapse;">
+                            <thead style="background: #59238C;
+                            background: -moz-linear-gradient(top, #825aa9 0%, #693997 66%, #59238C 100%);
+                            background: -webkit-linear-gradient(top, #825aa9 0%, #693997 66%, #59238C 100%);
+                            background: linear-gradient(to bottom, #825aa9 0%, #693997 66%, #59238C 100%);
+                            border-bottom: 2px solid #444444;">
+                                <tr>
+                                    <th style="border: 1px solid #281E4C;
+                                    padding: 3px 2px; font-size: 15px;
+                                    font-weight: bold;
+                                    color: #FFFFFF;
+                                    text-align: center;
+                                    border-left: 2px solid #D0E4F5;">Reference Code</th>
+                                    <th style="border: 1px solid #281E4C;
+                                    padding: 3px 2px; font-size: 15px;
+                                    font-weight: bold;
+                                    color: #FFFFFF;
+                                    text-align: center;
+                                    border-left: 2px solid #D0E4F5; ">Emision Date</th>
+                                    <th style="border: 1px solid #281E4C;
+                                    padding: 3px 2px; font-size: 15px;
+                                    font-weight: bold;
+                                    color: #FFFFFF;
+                                    text-align: center;
+                                    border-left: 2px solid #D0E4F5;">Close Date</th>
+                                    <th style="border: 1px solid #281E4C;
+                                    padding: 3px 2px; font-size: 15px;
+                                    font-weight: bold;
+                                    color: #FFFFFF;
+                                    text-align: center;
+                                    border-left: 2px solid #D0E4F5;">Pay Date</th>
+                                    <th style="border: 1px solid #281E4C;
+                                    padding: 3px 2px; font-size: 15px;
+                                    font-weight: bold;
+                                    color: #FFFFFF;
+                                    text-align: center;
+                                    border-left: 2px solid #D0E4F5;">Checker Price</th>
+                                    <th style="border: 1px solid #281E4C;
+                                    padding: 3px 2px; font-size: 15px;
+                                    font-weight: bold;
+                                    color: #FFFFFF;
+                                    text-align: center;
+                                    border-left: 2px solid #D0E4F5;">Final Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="font-size: 12px;">
+                                        '.$checker->getRefCode().'
+                                    </td>
+                                    <td style="font-size: 12px;">
+                                        '.$checker->getEmissionDate().'
+                                    </td>
+                                    <td style="font-size: 12px;">
+                                        '.$checker->getCloseDate().'
+                                    </td> 
+                                    <td style="font-size: 12px;">';
+                                    if (!empty($checker->getPayDate())) {
+                                    $plantilla .= $checker->getPayDate();
+                                        }
+                                    $plantilla .= '</td>
+                                    <td style="font-size: 12px;">
+                                        '. $checker->getFinalPrice().'
+                                    </td>
+                                    <td style="font-size: 12px;">
+                                        '.$checker->getFinalPrice() * 2 .'
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="div2" style="grid-area: 2 / 3 / 4 / 5; margin: 0;
+                    padding: 0;">
+                        <div class="caja" style=" display: flex;
+                        flex-flow: column wrap;
+                        justify-content: center;
+                        align-items: center;">
+                            <div class="box" style=" width: 500px;
+                            height: 500px;
+                            background: #CCC;
+                            overflow: hidden;">
+                                <img style="width: 100%;
+                                height: auto; height: 100%;
+                                object-fit: cover;
+                                object-position: center center;" src="https://www.ocu.org/-/media/ta/images/qr-code.png?rev=2e1cc496-40d9-4e21-a7fb-9e2c76d6a288&hash=AF7C881FCFD0CBDA00B860726B5E340B&mw=960" alt="Cargando imagen...">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="div3" style="grid-area: 2 / 1 / 3 / 2; margin: 0;
+                    padding: 0;">
+                        <H1 style="font-size: 30px;
+                        text-align: center;
+                        text-shadow: 0 0 0.05em #fff, 0 0 0.2em #480b41, 0 0 0.3em #480b41;" >Keeper</H1>
+                        <p style="
+                        font-size: 20px;
+                        text-align: center;
+                        height: 20px;
+                        font-family:"Niconne", cursive;
+                        ">Name:
+                            '. $checker->getBooking()->getPublication()->getUser()->getData()->getName().'
+                        </p>
+                        <p style="font-size: 20px;
+                        text-align: center;
+                        height: 20px;
+                        line-height: 20px;
+                        font-family: "Niconne", cursive;">Surname:
+                            '.$checker->getBooking()->getPublication()->getUser()->getData()->getSurname().'
+                        </p>
+                        <p style="font-size: 20px;
+                        text-align: center;
+                        height: 20px;
+                        line-height: 20px;
+                        font-family: "Niconne", cursive;">Dni:
+                            '. $checker->getBooking()->getPublication()->getUser()->getData()->getDni().'
+                        </p>
+                    </div>
+                    <div class="div4" style="grid-area: 2 / 2 / 3 / 3; margin: 0;
+                    padding: 0;">
+                        <H1 style="font-size: 30px;
+                        text-align: center;
+                        text-shadow: 0 0 0.05em #fff, 0 0 0.2em #480b41, 0 0 0.3em #480b41;" >Owner</H1>
+                        <p style="font-size: 20px;
+                        text-align: center;
+                        height: 20px;
+                        line-height: 20px;
+                        font-family: "Niconne", cursive;">Username:
+                            '. $checker->getBooking()->getUser()->getUsername().'
+                        </p>
+                        <p>Name:
+                            '.$checker->getBooking()->getUser()->getData()->getName().'
+                        </p>
+                        <p sstyle="font-size: 20px;
+                        text-align: center;
+                        height: 20px;
+                        line-height: 20px;
+                        font-family: "Niconne", cursive;">Surname:
+                        '. $checker->getBooking()->getUser()->getData()->getSurname().'
+                        </p>
+                        <p style="font-size: 20px;
+                        text-align: center;
+                        height: 20px;
+                        line-height: 20px;
+                        font-family: "Niconne", cursive;">Dni:
+                        '. $checker->getBooking()->getUser()->getData()->getDni().'
+                        </p>
+                    </div>
+                    <div class="div5" style="grid-area: 3 / 2 / 4 / 3; margin: 0;
+                    padding: 0;">
+                        <H1 style="font-size: 30px;
+                        text-align: center;
+                        text-shadow: 0 0 0.05em #fff, 0 0 0.2em #480b41, 0 0 0.3em #480b41;" >Publication</H1>
+                        <p style="font-size: 20px;
+                        text-align: center;
+                        height: 20px;
+                        line-height: 20px;
+                        font-family:"Niconne", cursive;">Open Date:
+                        '. $checker->getBooking()->getPublication()->getOpenDate().'
+                        </p>
+                        <p style="font-size: 20px;
+                        text-align: center;
+                        height: 20px;
+                        line-height: 20px;
+                        font-family: "Niconne", cursive;">Close Date:
+                        '. $checker->getBooking()->getPublication()->getCloseDate().'
+                        </p>
+                        <p style="font-size: 20px;
+                        text-align: center;
+                        height: 20px;
+                        line-height: 20px;
+                        font-family: "Niconne", cursive;">Remuneration:
+                        '. $checker->getBooking()->getPublication()->getRemuneration().'
+                        </p>
+                        <p style="font-size: 20px;
+                        text-align: center;
+                        height: 20px;
+                        line-height: 20px;
+                        font-family: "Niconne", cursive;">Location:
+                        '. $checker->getBooking()->getPublication()->getUser()->getData()->getLocation()->getCity().'
+                        </p>
+                    </div>
+                    <div class="div6" style="grid-area: 3 / 1 / 4 / 2; margin: 0;
+                    padding: 0;">
+                        <H1 style="font-size: 30px;
+                        text-align: center;
+                        text-shadow: 0 0 0.05em #fff, 0 0 0.2em #480b41, 0 0 0.3em #480b41;" >Booking</H1>
+                        <p style="font-size: 20px;
+                        text-align: center;
+                        height: 20px;
+                        line-height: 20px;
+                        font-family: "Niconne", cursive;">Start Date:
+                        '. $checker->getBooking()->getStartD().'
+                        </p>
+                        <p style="font-size: 20px;
+                        text-align: center;
+                        height: 20px;
+                        line-height: 20px;
+                        font-family: "Niconne", cursive;">Finish Date:
+                        '.$checker->getBooking()->getFinishD().'
+                        </p>
+                        <p style="font-size: 20px;
+                        text-align: center;
+                        height: 20px;
+                        line-height: 20px;
+                        font-family: "Niconne", cursive;">Bookstate:
+                        '. $checker->getBooking()->getBookState().'
+                        </p>
+                        <p style="font-size: 20px;
+                        text-align: center;
+                        height: 20px;
+                        line-height: 20px;
+                        font-family: "Niconne", cursive;">Paycode:';
+                            if (!empty($checker->getBooking()->getPayCode())) {
+
+                                $plantilla.= $checker->getBooking()->getPayCode();
+                            }
+                        $plantilla.= '   
+                        </p>
+                    </div>
+                </div>
+                <body>
+                </html>';           
+                $mail->CharSet = 'UTF-8';                                //Set email format to HTML
+                $mail->Subject = 'Checker Disponible Pet Hero';
+                $mail->isHTML(true);
+                $mail->Body    = $plantilla;
+                $mail->AltBody = 'Checker correspondiente a su reserva';
+                $mail->send();
+                $message = "Successful: El checker ha sido enviado a la casilla de correo correspondiente";
+            } catch (Exception $e) {
+                $message = "Error: No se ha podido enviar el checker";
+                return $message;
+             }
+             return $message;
+        }
 
 //======================================================================
 // DELETE METHODS

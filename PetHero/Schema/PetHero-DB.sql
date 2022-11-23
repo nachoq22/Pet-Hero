@@ -10,6 +10,7 @@ DROP DATABASE IF EXISTS petHero;
 /*********************************DATABASE*******************************************/
 
 CREATE DATABASE IF NOT EXISTS petHero;
+
 USE petHero;
 
 /*********************************LOCATION*******************************************/
@@ -356,7 +357,7 @@ INSERT INTO Chat VALUES (4,2,7);
 CREATE TABLE IF NOT EXISTS MessageChat(
 	idMessageChat INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
 	message VARCHAR(500),
-	dateTime DATE NOT NULL,
+	dateTime DATETIME NOT NULL,
 		idChat INT NOT NULL,
 		idSender INT NOT NULL,
 	CONSTRAINT fk_messageChat FOREIGN KEY (idChat)

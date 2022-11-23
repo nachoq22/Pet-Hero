@@ -31,7 +31,9 @@ use \Controllers\PetController as PetController;
 
                 $public = new Publication();
                 $logUser = $_SESSION["logUser"];
-                if(($this->publicDAO->ValidateDAllPublications($openD, $closeD, $logUser))==0){ 
+                //if($closeD>DATE("Y-m-d") && $openD>DATE("Y-m-d")){
+                if(($this->publicDAO->ValidateDAllPublications($openD, $closeD, $logUser))==0 &&
+                ($closeD>DATE("Y-m-d") && $openD>DATE("Y-m-d") && $closeD>$openD)){ 
                 $public->__fromRequest($openD, $closeD, $title, $description,0, $remuneration,$logUser);
                 $imgPublic = new ImgPublic();
                 $imgPublic->setPublication($public);
@@ -52,11 +54,12 @@ use \Controllers\PetController as PetController;
             }
 //////////  
 */
-            $this->publicDAO->NewPublication($imgPublic,$images);
-            $this->homeController->ViewKeeperPanel("Publicacion creada exitosamente!");
+            $message = $this->publicDAO->NewPublication($imgPublic,$images);
+            $this->homeController->ViewKeeperPanel($message);
         }else{
-            $this->homeController->ViewAddPublication("Error: Las fechas ingresadas coinciden con otra publicacion suya");
+            $this->homeController->ViewAddPublication("Error: Las fechas ingresadas coinciden con otra publicacion suya o son invalidas");
         }
+
         }
 
         public function ViewPublication($idPublic, $message=""){     
@@ -78,18 +81,18 @@ use \Controllers\PetController as PetController;
 
         public function ValidateDateFP($idPublic, $startD, $finishD){
             $this->homeController->isLogged();
-            if($startD<$finishD){
-                if($this->publicDAO->ValidateOnWeek($startD)==1){
-                    if($this->publicDAO->ValidateDP($startD, $finishD, $idPublic) == 1){
-                        $this->petController->GetPetsByReservation($idPublic, $startD, $finishD);
+                if($startD<$finishD){
+                    if($this->publicDAO->ValidateOnWeek($startD)==1){
+                        if($this->publicDAO->ValidateDP($startD, $finishD, $idPublic) == 1){
+                            $this->petController->GetPetsByReservation($idPublic, $startD, $finishD);
+                        }else{
+                            $this->ViewPublication($idPublic, "Error: Las fechas ingresadas no entran en el rango de establecidas por el Keeper");
+                        }
                     }else{
-                        $this->ViewPublication($idPublic, "Error: Las fechas ingresadas no entran en el rango de establecidas por el Keeper");
+                        $this->ViewPublication($idPublic, "Error: Las reservas deben tener 1 semana de aniticipacion");
                     }
                 }else{
-                    $this->ViewPublication($idPublic, "Error: Las reservas deben tener 1 semana de aniticipacion");
-                }
-            }else{
-                $this->ViewPublication($idPublic, "Error: La fecha de finalizacion debe ser despues de la de inicio");}
-        }
+                    $this->ViewPublication($idPublic, "Error: La fecha de finalizacion debe ser despues de la de inicio");}
+            }
     }
 ?>
