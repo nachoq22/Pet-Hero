@@ -10,6 +10,7 @@ class PetTypeController{
         $this->typeDAO = new petTypeDAO();
     }
 
+    //AGREGAR UN NUEVO TIPO DE MASCOTA//
     public function AddPetType($name){
             $petType = new PetType();
             $petType->setName($name);

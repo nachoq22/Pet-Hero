@@ -19,6 +19,7 @@ use \Model\PersonalData as PersonalData;
             $this->homeController = new HomeController();
         }
 
+        //FUNCION PARA REGISTRAR A UN NUEVO USUARIO//
         public function Register($username, $email, $password){
                 $user = new User();
                 $user->__fromRegister($username,$password,$email);
@@ -33,6 +34,7 @@ use \Model\PersonalData as PersonalData;
                 }           
         } 
 
+        //FUNCION PARA LOGEARSE//
         public function Login($username, $password){            
                 $user = new User();
                 $user->__fromLogin($username,$password);
@@ -51,6 +53,7 @@ use \Model\PersonalData as PersonalData;
             }
         }
 
+        //FUNCION PARA ASIGNARLE A UN USUARIO EL ROL KEEPER//
         public function BeKeeper($adress, $neighborhood, $city, $province, $country, $name,$surname,$sex,$dni){
                 $this->homeController->isLogged();
                 $location = new Location();
@@ -73,6 +76,7 @@ use \Model\PersonalData as PersonalData;
                     }
         }
 
+        //FUNCION PARA ELIMINAR UN USER
         public function DeleteUser($id){
             echo $id;
             $this->userDAO->Delete($id);

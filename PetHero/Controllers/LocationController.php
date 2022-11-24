@@ -16,6 +16,7 @@ use \Model\Location as Location;
             $locationList=$this->locationDAO->GetAll();
         }
 
+        //AGREGAR UNA NUEVA UBICACION//
         public function Add($adress, $neighborhood, $city, $province, $country){
                 $location = new Location();
                 $location->__fromRequest($adress, $neighborhood, $city, $province, $country);

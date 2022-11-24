@@ -1084,7 +1084,7 @@ CALL ImgPublic_GetByPublic(1);
 CALL Booking_GetBookigPay('2022-11-06','2022-11-19',3500);
 /*CALL Booking_Add(IN openDate DATE, IN closeDate DATE, IN payState VARCHAR(25), IN payCode VARCHAR(10),
                          IN idPublication INT, IN idUser INT)*/
-CALL Booking_Add("2022-10-15","2022-11-15","In Review",1, 1);
+#CALL Booking_Add("2022-10-15","2022-11-15","In Review",1, 1);
 CALL Booking_CheckRange("2022-09-17", "2022-09-22", 1); /*ARRANCA ANTES TERMINA ANTES ANDA BIEN */
 CALL Booking_CheckRange("2022-09-17", "2022-11-13", 1); #ARRANCA ANTES TERMINA EN EL MEDIO -CONTEMPLA
 CALL Booking_CheckRange("2022-08-17", "2022-12-19", 1); #ARRANCA ANTES TERMINA DESPUES -CONTEMPLA
@@ -1127,7 +1127,7 @@ CALL Checker_GetByBooking(1);
 #CALL Chat_GetAll();
 CALL Chat_GetById(1);
 CALL Chat_GetByUsers(6,1);
-CALL Chat_GetByUser(2);
+CALL Chat_GetByUser(4);
 CALL Chat_Add(1,6);
 /*CALL Chat_Delete(1);*/
 

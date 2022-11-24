@@ -2,7 +2,8 @@
 <div class="container px-4 py-5" id="custom-cards">
     <h2 class="pb-2 border-bottom">Publicaciones encontradas</h2>
 	
-      
+
+<!-- AQUI APARECERAN TODAS LAS PUBLICACIONES QUE COINCIDAN CON NUESTRO CRITERIO DE BUSQUEDA -->
 	<div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-3 py-2">
     <?php foreach ($publicList as $public) { ?>
     <div class="col">

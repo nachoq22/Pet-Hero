@@ -22,6 +22,7 @@
             $this->userDAO = new UserDAO();
         }
 
+        //FUNCION PARA AGREGAR UN CHAT//
         public function AddChat($idKeeper){
             $owner = new User();
             $owner = $_SESSION["logUser"]; //comprobar si esta logeado o no
@@ -39,19 +40,9 @@
                 $messageList = $this->messageChatDAO->GetAllMsgByChat($chat->getIdChat());
                 $this->homeController->ViewPanelChat($chat, $messageList);
             }
-            /*
-            $owner = new User();
-            $owner->setUsername("marsexpress");
-            $keeper = new User();
-            $keeper->setId(7);
-            
-            $chat = new Chat();
-            $chat->__fromRequest($owner, $keeper);
-            $chat = $this->chatDAO->ChatByUsers($chat);
-            $messageList = $this->messageChatDAO->GetAllMsgByChat($chat->getIdChat());
-            $this->homeController->ViewPanelChat($chat, $messageList);*/
         }
 
+        //FUNCION PARA ENVIAR UN MENSAJE//
         public function AddMessage($message, $chatId, $previewPage){
             $messageChat = new MessageChat();
             $user = new User();
