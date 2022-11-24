@@ -1015,8 +1015,10 @@ Call User_GetByUsername("planetar");
 /*CALL User_Add(username,password,varResp);*/
 CALL User_IsExist("planetar","achternaga@wificon.eu");
 CALL User_Login("planetar","orylOSad");
+
 /*CALL User_Add(username,password,email,idData);*/
 Call User_Add("Pablo","Tringuin","triguillo@gmail.com");
+Call User_Add("Pablo","Caño","triguillo@gmail.com");
 /*CALL User_Add(username,password,email);*/
 Call User_Register("Eduardo","Manitas","manitasDeManteca@gmail.com");
 /*Call User_Delete(6);*/

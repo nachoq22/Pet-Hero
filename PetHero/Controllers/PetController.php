@@ -1,23 +1,20 @@
 <?php
 namespace Controllers;
 use \DAO\PetDAO as PetDAO;
-use \DAO\UserDAO as UserDAO;
 
 use \Model\Pet as Pet;
 use \Model\Size as Size;
 use \Model\PetType as PetType;
-use \Model\User as User;
+
 
 use \Controllers\HomeController as HomeController;
 
         class PetController{
             private $petDAO;
-            private $userDAO;
             private $homeController;
 
         public function __construct(){
             $this->petDAO = new PetDAO();
-            $this->userDAO = new UserDAO();
             $this->homeController = new HomeController();
         }
 
@@ -25,7 +22,6 @@ use \Controllers\HomeController as HomeController;
         // FUNCIONES DE VIEWS
         //======================================================================
         public function ViewPetList(){
-            //$petList = $this->petDAO->GetAllByUser($_SESSION["loggedUser"]->getName());
             $petList = $this->petDAO->GetAll();
             require_once(VIEWS_PATH."PetList.php");
         }
@@ -58,7 +54,7 @@ use \Controllers\HomeController as HomeController;
             $this->homeController->ViewOwnerPanel($message);      
         } 
 
-        //RECUPERAR LOS PETS MEDIANTE UNA RESERVACION//
+        //RECUPERAR LOS PETS MEDIANTE QUE SE USARAN PARA CREAR UNA RESERVACION//
         public function GetPetsByReservation($idPublic, $startD, $finishD, $message=""){
             $this->homeController->isLogged();
             $logUser = $_SESSION["logUser"];

@@ -45,18 +45,7 @@
                             </a>
                         </li>
 
-                        <!--
-                    <li>
-                        <a href="#" class="nav-link py-3 px-2" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Products">
-                            <i class="bi-heart fs-1"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link py-3 px-2" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Customers">
-                            <i class="bi-people fs-1"></i>
-                        </a>
-                    </li>
--->
+
                     </ul>
                 </div>
             </div>

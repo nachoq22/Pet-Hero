@@ -29,27 +29,27 @@ use \Model\Chat as Chat;
             $this->messageChatDAO = new MessageChatDAO();
         }
 
-        //FUNCION QUE LLEVA AL HOME, SE MUESTRAN TODAS LAS PUBLICACIONES//
+        //METODO QUE LLEVA AL HOME, SE MUESTRAN TODAS LAS PUBLICACIONES//
         public function Index($message = ""){  
             $publicList = $this->publicDAO->GetAll();
             $imgByPublic =  $this->imgPublicDAO->GetAccordingPublic($publicList);
             require_once(VIEWS_PATH."Home.php");
         }
 
-        //FUNCTION PARA DESLOGEARSE DE LA PAGINA//
+        //METODO PARA DESLOGEARSE DE LA PAGINA//
         public function Logout(){
             session_destroy();
             $this->Index("Successful: Te has deslogueado con exito");
         }
 
-        //FUNCION PARA BUSCAR DETERMINADAS PUBLICACIONES CON PALABRAS ESPECIFICAS//
+        //METODO PARA BUSCAR DETERMINADAS PUBLICACIONES CON PALABRAS ESPECIFICAS//
         public function Search($search){
             $publicList = $this->publicDAO->Search($search);
             $imgByPublic =  $this->imgPublicDAO->GetAccordingPublic($publicList);
             require_once(VIEWS_PATH."Search.php");
         }
 
-        //FUNCTION PARA IR AL OWNER PANEL, DONDE SE MOSTRARAN MASCOTAS Y RESERVAS//
+        //METODO PARA IR AL OWNER PANEL, DONDE SE MOSTRARAN MASCOTAS Y RESERVAS//
         public function ViewOwnerPanel($message=""){
         $this->isLogged();
                 $this->bpDAO->UpdateAllStates();

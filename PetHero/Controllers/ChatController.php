@@ -22,7 +22,7 @@
             $this->userDAO = new UserDAO();
         }
 
-        //FUNCION PARA AGREGAR UN CHAT//
+        //METODO PARA AGREGAR UN CHAT//
         public function AddChat($idKeeper){
             $owner = new User();
             $owner = $_SESSION["logUser"]; //comprobar si esta logeado o no
@@ -42,7 +42,7 @@
             }
         }
 
-        //FUNCION PARA ENVIAR UN MENSAJE//
+        //METODO PARA ENVIAR UN MENSAJE//
         public function AddMessage($message, $chatId, $previewPage){
             $messageChat = new MessageChat();
             $user = new User();
@@ -54,7 +54,6 @@
             $messageChat->__fromRequest($message, Date("Y-m-d H:i:s"), $chat, $user);
             $this->messageChatDAO->NewMsg($messageChat);
             $messageList = $this->messageChatDAO->GetAllMsgByChat($chat->getIdChat());
-            //$this->homeController->ViewPanelChat($chat, $messageList);
             if(strcmp($previewPage,"chatV")==0){
                 require_once(VIEWS_PATH."ViewChat.php");
             }else{

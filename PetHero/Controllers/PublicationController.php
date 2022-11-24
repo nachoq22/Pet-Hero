@@ -33,9 +33,9 @@ use \Controllers\PetController as PetController;
                 $public = new Publication();
                 $logUser = $_SESSION["logUser"];
 
-                if(($this->publicDAO->ValidateDAllPublications($openD, $closeD, $logUser))==0 &&
-                ($closeD>DATE("Y-m-d") && $openD>DATE("Y-m-d") && $closeD>$openD)){ 
-                $public->__fromRequest($openD, $closeD, $title, $description,0, $remuneration,$logUser);
+                if(($this->publicDAO->ValidateDAllPublications($openD, $closeD, $logUser))==0 &&     //VALIDA QUE LAS FECHAS NO COINCIDAN CON LAS DE OTRAS PUBLICACIONES SUYAS//
+                ($closeD>DATE("Y-m-d") && $openD>DATE("Y-m-d") && $closeD>$openD)){                  //VALIDA QUE LAS FECHAS SEAN DESPUES DE LA FECHA ACTUAL Y VAIDA QUE LA FECHA   
+                $public->__fromRequest($openD, $closeD, $title, $description,0, $remuneration,$logUser);  //DE FINALIZACION SEA DESPUES QUE LA DE INICIO//
                 $imgPublic = new ImgPublic();
                 $imgPublic->setPublication($public);
 
