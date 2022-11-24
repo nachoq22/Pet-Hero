@@ -1,3 +1,4 @@
+<!-- MENSAJE DEL SISTEMA -->
 <?php if (!empty($message)){?>
   <div class="alert alert-light" role="alert">
     <?php echo $message; ?>
@@ -5,8 +6,9 @@
 <?php }?>
 
 <body>
-<form action="<?php echo FRONT_ROOT."/Publication/Add" ?>" method="post" enctype="multipart/form-data" class="was-validated">
 
+<!-- FORMULARIO -->
+<form action="<?php echo FRONT_ROOT."/Publication/Add" ?>" method="post" enctype="multipart/form-data" class="was-validated">
     <div class="row g-3 mb-3">
         <div class="col">       
             <div class="form-floating mb-3">
@@ -71,18 +73,7 @@
         <button type="submit" class="btn btn-primary">Submit</button>
     </div>
 </form>
+<!-- FORMULARIO -->
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 </body>
-
-<!-- PARA REVISAR
-            <div class="form-floating mb-3">
-                <div class="input-group mb-3">
-                    <span class="input-group-text">$</span>
-                    <input type="number" class="form-control" name="remuneration" required>
-                    <span class="input-group-text">0.00</span>
-                        <div class="invalid-feedback">
-                            Please enter a Valid Remuneration.
-                        </div>
-                </div>
-            </div>
--->

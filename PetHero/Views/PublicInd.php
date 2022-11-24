@@ -1,3 +1,4 @@
+<!-- MENSAJE DEL SISTEMA -->
 <body>
 <?php if (!empty($message)){?>
     <div class="alert alert-danger" role="alert">
@@ -5,9 +6,10 @@
     </div>
 <?php } ?>
 
+
+
   <div class="row"> <!-- TITULO Y VALORACION -->
-    <div class="col-2">
-        
+    <div class="col-2">  
     </div>
     <div class="col-5">
         <h1><?php echo $public->getTitle() ?></h1>
@@ -16,19 +18,24 @@
     </div>
     <div class="col-5">
       <br>
-      <?php if(!empty($logUser)){ 
+
+      <!-- ENVIAR MENSAJE AL KEEPER DE LA PUBLICACION -->
+      <?php if(!empty($logUser)){  
       if($public->getUser()->getUsername() != $logUser->getUsername()){  ?>
         <form action="<?php echo FRONT_ROOT."/Chat/AddChat"?>" method="post">
         <input type="hidden" value="<?php echo $public->getUser()->getId()?>" id="idKeeper" name="idKeeper"> 
         <button type="submit" class="btn btn-outline-success" href="<?php echo FRONT_ROOT."/Chat/AddChat"?>" type="button">
         <i class="bi bi-chat-right-text-fill"></i> Send Message</form>
         <?php }} ?>
+        <!-- ENVIAR MENSAJE AL KEEPER DE LA PUBLICACION -->
+
     </div>
   </div> <!-- TITULO Y VALORACION -->
 
-  <div class="row"> <!-- CAROUSEL  -->
-  <div class="col-2">
-        
+
+
+  <div class="row"> <!-- CAROUSEL DE IMAGENES  -->
+  <div class="col-2">  
     </div> 
     <div class="col-7">
     <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
@@ -38,7 +45,6 @@
       <img src="<?php echo "../".$img->getUrl()?>" class="d-block w-100" alt="..." style="width: 100%; height: 30vw; object-fit: cover;">
     </div>
     <?php } ?>
-
   </div>
   <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -53,12 +59,12 @@
     <div class="col-3">
       
     </div>
-  </div><!-- CAROUSEL  -->
+  </div><!-- CAROUSEL DE IMAGENES  -->
   <br><br>
 
 
 
-  <div class="row"> <!-- UBICACION Y KEEPER -->
+  <div class="row"> <!-- UBICACION, KEEPER Y DESCRIPCION -->
         <div class="col-2">
         </div>
         <div class="col-4">
@@ -105,13 +111,13 @@
                         </div>
                         <div class="card-footer bg-transparent border-success"><button type="submit" class="btn btn-primary">Comprobar disponibilidad</button></div></form>
                         </div> 
-                        </div>
+                        </div> <!-- FORMULARIO FECHAS -->
                           <?php }} ?>
-            </div> <!-- FORMULARIO FECHAS -->
+            </div> <!-- UBICACION, KEEPER Y DESCRIPCION -->
 </div>
 
     <br><br><br>
-    <div class="row mt-3">   <!-- Escribir Reseña -->
+    <div class="row mt-3">   <!-- ESCRIBIR REVIEW -->
       <div class="col-2">  
         <?php if($canReview == 1){ ?>  
       </div>
@@ -120,7 +126,7 @@
           <div class="card-body">
           <div class="row">
             <div class="col">
-              <p>Nachoq22</p>
+              <p>Nachoq22</p> 
             </div>
             <div class="col">
               <style>#form {
@@ -155,15 +161,15 @@
                 <div class="form-floating mb-3">
                     <input type="hidden" name="idPublic" value=<?php echo $public->getid() ?>>     
                     <p class="clasificacion">
-                      <input id="radio1" type="radio" name="estrellas" value="5" ><!--
+                      <input id="radio1" type="radio" name="estrellas" value="5" ><!--  CALIFICAR A LA PUBLICAION ★
                       --><label for="radio1"> ★</label><!--
-                      --><input id="radio2" type="radio" name="estrellas" value="4"><!--
+                      --><input id="radio2" type="radio" name="estrellas" value="4"><!-- ★★
                       --><label for="radio2"> ★</label><!--
-                      --><input id="radio3" type="radio" name="estrellas" value="3"><!--
+                      --><input id="radio3" type="radio" name="estrellas" value="3"><!-- ★★★
                       --><label for="radio3"> ★</label><!--
-                      --><input id="radio4" type="radio" name="estrellas" value="2"><!--
+                      --><input id="radio4" type="radio" name="estrellas" value="2"><!-- ★★★★
                       --><label for="radio4"> ★</label><!--
-                      --><input id="radio5" type="radio" name="estrellas" value="1"><!--
+                      --><input id="radio5" type="radio" name="estrellas" value="1"><!-- CALIFICAR A LA PUBLICAION ★★★★★
                       --><label for="radio5"> ★</label>
                     </p>
                     </div>
@@ -183,9 +189,11 @@
       <?php } ?>
     <div class="col-6">
     </div>
-  </div> <!-- Escribir Reseña -->
+  </div> <!-- ESCRIBIR REVIEW -->
+
+  <!-- RESEÑAS -->
     <?php foreach ($reviewList as $review){?>
-  <div class="row mt-3"> <!-- RESEÑAS -->
+  <div class="row mt-3"> 
     <div class="col-2">   
     </div>
     <div class="col-4">
@@ -199,9 +207,9 @@
     </div>
     <div class="col-6">
     </div>
-  </div> <!-- RESEÑAS -->
+  </div> 
   <?php } ?>
-
+  <!-- RESEÑAS -->
 
 <br><br><br>
 

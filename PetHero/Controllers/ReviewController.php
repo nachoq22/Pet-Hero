@@ -16,6 +16,7 @@ use \Controllers\PublicationController as PublicationController;
             $this->publicationController = new PublicationController();
         }
 
+        //FUNCION PARA AGREGAR UNA NUEVA REVIEW//
         public function Add($idPublic,$stars,$commentary){
             $public = new Publication();
                 $public->setId($idPublic);

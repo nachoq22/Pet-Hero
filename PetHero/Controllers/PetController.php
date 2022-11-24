@@ -21,6 +21,9 @@ use \Controllers\HomeController as HomeController;
             $this->homeController = new HomeController();
         }
 
+        //======================================================================
+        // FUNCIONES DE VIEWS
+        //======================================================================
         public function ViewPetList(){
             //$petList = $this->petDAO->GetAllByUser($_SESSION["loggedUser"]->getName());
             $petList = $this->petDAO->GetAll();
@@ -37,6 +40,7 @@ use \Controllers\HomeController as HomeController;
             $petDAO=$this->petDAO->GetAll();
         }
 
+        //FUNCION PARA AGREGAR UNA NUEVA MASCOTA//
         public function Add($name, $breed, $type, $size, $observation,$ImagenP,$ImagenV){
             $this->homeController->isLogged();
             $sizeOBJ = new Size();
@@ -54,6 +58,7 @@ use \Controllers\HomeController as HomeController;
             $this->homeController->ViewOwnerPanel($message);      
         } 
 
+        //RECUPERAR LOS PETS MEDIANTE UNA RESERVACION//
         public function GetPetsByReservation($idPublic, $startD, $finishD, $message=""){
             $this->homeController->isLogged();
             $logUser = $_SESSION["logUser"];

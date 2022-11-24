@@ -320,10 +320,10 @@ use \Model\Pet as Pet;
             }
         return $rta;
         }
-        /////////////////////
+/////////////////////
 
         
-//ESTO SIRVE PARA COMPARAR EL TIPO DE MASCOTAS DE NUESTRO BOOKING CON EL TIPO DE LAS MASCOTAS DE LOS BOOKING QUE COINCIDAN CON NUESTRA FECHA INTRODUCIDA
+//ESTO SIRVE PARA COMPARAR EL TIPO DE MASCOTAS DE NUESTRO BOOKING CON EL TIPO DE LAS MASCOTAS DE LOS BOOKING QUE COINCIDAN CON NUESTRA FECHA INTRODUCIDA//
         public function ValidateTypesOnBookings(Booking $booking, $idList){
             $matches = $this->bookDAO->GetAllMatchingDatesByPublic($booking); 
             $petList = $this->GetAllPetsbyBooking($idList);
@@ -341,6 +341,6 @@ use \Model\Pet as Pet;
             }
             return $rta;
         }
-        ////////////////////////////
+
     }
 ?>

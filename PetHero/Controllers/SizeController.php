@@ -15,6 +15,7 @@ use \Model\Size as Size;
             $sizeList=$this->sizeDAO->GetAll();
         }
 
+        //AGREGAR UN SIZE//
         public function Add($name){
             $size = new Size();
             $size->__fromRequest($name);

@@ -159,8 +159,11 @@ use \Model\Publication as Publication;
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
         }
+        
 
-        // ESTO SIRVE PARA BUSCAR MEDIANTE LA BARRA DE BUSQUEDA UNA PUBLICACION POR MEDIO DEL TITULO O DESCRIPCION 
+//-----------------------------------------------------
+// ESTO SIRVE PARA BUSCAR MEDIANTE LA BARRA DE BUSQUEDA UNA PUBLICACION POR MEDIO DEL TITULO O DESCRIPCION 
+//-----------------------------------------------------
         public function Search($phrase){
             $publicList = array();    
             $query = "CALL Publication_Search(?)";
@@ -180,9 +183,11 @@ use \Model\Publication as Publication;
             }
             return $publicList;
         }
-        ///////////////////////////////////////////
 
-        //ESTO SIRVE PARA VERIFICAR QUE LA FECHA QUE INGRESA EL USUARIO COINCIDA CON LAS DISPONIBLES POR EL KEEPER
+
+//-----------------------------------------------------
+// ESTO SIRVE PARA VERIFICAR QUE LA FECHA QUE INGRESA EL USUARIO COINCIDA CON LAS DISPONIBLES POR EL KEEPER
+//-----------------------------------------------------
         public function ValidateDP($startD, $finishD, $idPublic){
             $rta = NULL;
             $query = "CALL Publication_DateCheck(?,?,?)";
@@ -198,8 +203,11 @@ use \Model\Publication as Publication;
                 }
             return $rta;
         }
-        //////////////////////////////////////
-        //ESTO SIRVE PARA VALIDAR QUE LA FECHA DE RESERVA SEA CON UNA SEMANA DE ANTICIPACION
+
+
+//-----------------------------------------------------
+// ESTO SIRVE PARA VALIDAR QUE LA FECHA DE RESERVA SEA CON UNA SEMANA DE ANTICIPACION
+//-----------------------------------------------------
         public function ValidateOnWeek($startD){
             $rta = 0;
             $limitD = DATE("Y-m-d",STRTOTIME(DATE("Y-m-d") ."+ 7 days"));
@@ -208,8 +216,11 @@ use \Model\Publication as Publication;
             }
             return $rta;
         }
-        //////////////////////////////////////
-        //ESTO SIRVE PARA VALIDAR QUE LA FECHA DE UNA NUEVA PUBLICACION SEA COMPATIBLE CON EL RESTO DE PUBLICACIONES DEL MISMO KEEPER
+
+
+//-----------------------------------------------------
+// ESTO SIRVE PARA VALIDAR QUE LA FECHA DE UNA NUEVA PUBLICACION SEA COMPATIBLE CON EL RESTO DE PUBLICACIONES DEL MISMO KEEPER
+//-----------------------------------------------------
         public function ValidateDAllPublications($openD, $closeD, $user){
             $rta = NULL;
             $query = "Call Publication_NIDate(?,?,?)";
@@ -224,6 +235,6 @@ use \Model\Publication as Publication;
             }
             return $rta;
         }
-        //////////////////////////////////////
+
     }
 ?>

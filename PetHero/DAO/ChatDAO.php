@@ -11,13 +11,17 @@
 
         private $userDAO;
 
-        //DAO INJECTION
+//======================================================================
+// DAOs INJECTION
+//======================================================================
         public function __construct()
         {
             $this->userDAO = new UserDAO();
         }
 
-        //Add
+//======================================================================
+// INSERT METHODS
+//======================================================================
         public function Add(Chat $chat){
             $idLastP = 0;
             $query = "CALL Chat_Add(?,?)";
@@ -45,6 +49,10 @@
             return $chat;
         }
 
+
+//======================================================================
+// SELECT METHODS
+//======================================================================
         public function GetAll()
         {
             $chatList = array();    
@@ -61,8 +69,6 @@
             }
             return $chatList;
         }
-
-        
 
         public function GetById($idChat){
             $chat = null;
