@@ -58,7 +58,11 @@ use \Controllers\HomeController as HomeController;
             $this->homeController->isLogged();
             $logUser = $_SESSION["logUser"];
             $petList = $this->petDAO->GetAllByUsername($logUser->getUsername());
+            if(!empty($petList)){
             require_once(VIEWS_PATH."AddBooking.php");
+            }else{
+                $this->homeController->ViewOwnerPanel("Error: antes de hacer una reserva debe tener al menos una mascota registrada");
+            }
         }
     }
 ?>

@@ -138,6 +138,19 @@ require 'Lib/PHPMailer/SMTP.php';
         return $checkerList;    
         }
 
+        public function GetAllByBooks($bookList){
+            $checkerList = array();
+            foreach($bookList as $book){
+                $checker = new Checker();
+                $checkerAux = $this->GetByBook($book->getId());
+                if(!empty($checkerAux)){
+                    $checker = $checkerAux;
+                    array_push($checkerList,$checker);
+                }
+            }
+        return $checkerList;    
+        }
+
 //======================================================================
 // INSERT METHODS
 //======================================================================
@@ -181,7 +194,7 @@ require 'Lib/PHPMailer/SMTP.php';
                         try{
                             if(strcmp($checker->getBooking()->getUser()->getEmail(),"misaelflores4190@gmail.com")==0 
                             XOR strcmp($checker->getBooking()->getUser()->getEmail(),"ignaciorios_g@hotmail.com")==0){
-                                $this->SendChecker($checker);
+                               $message = $this->SendChecker($checker);
                             }
                         }catch(Exception $e){
                             $message = "Error: No se ha podido enviar el checker, intente mas tarde.";
@@ -190,6 +203,7 @@ require 'Lib/PHPMailer/SMTP.php';
                         $this->bpDAO->NewState($bp->getBooking(),$rta);
                     }else{
                         $this->bpDAO->NewState($bp->getBooking(),$rta);
+                        $message = "Successful: la reserva se ha cancelado con exito";
                     }
                 }catch(Exception $e){
                     $message = "Error: No se ha podido actualizar la reserva, intente mas tarde.";
@@ -202,7 +216,7 @@ require 'Lib/PHPMailer/SMTP.php';
 // METHOD TO UPDATE A CHECKER AND BOOKING
 //-----------------------------------------------------  
         private function SetPayDChecker(Checker $checker){
-            $query = "CALL Checker_Add(?)";
+            $query = "CALL Checker_SetPayD(?,?)";
             $parameters["idChecker"] = $checker->getEmissionDate();
             $parameters["payD"] = $checker->getPayDate();
             $this->connection = Connection::GetInstance();
@@ -508,10 +522,12 @@ require 'Lib/PHPMailer/SMTP.php';
                 $mail->Body    = $plantilla;
                 $mail->AltBody = 'Checker correspondiente a su reserva';
                 $mail->send();
-                echo 'Message has been sent';
+                $message = "Successful: El checker ha sido enviado a la casilla de correo correspondiente";
             } catch (Exception $e) {
-                echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-            }
+                $message = "Error: No se ha podido enviar el checker";
+                return $message;
+             }
+             return $message;
         }
 
 //======================================================================

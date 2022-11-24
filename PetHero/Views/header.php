@@ -11,12 +11,15 @@
         <li> <a class="nav-link px-2 link-dark" href="<?php echo  FRONT_ROOT ?>"><i class="bi bi-house-door"></i></a></li>
         <li> <a class="btn btn-outline-info" href="<?php echo FRONT_ROOT."/Home/ViewOwnerPanel"?>" type="button"><i class="bi bi-person-square"></i></a></li>
         <li> <a class="btn btn-outline-warning" href="<?php echo FRONT_ROOT."/Home/ViewKeeperPanel"?>" type="button"><i class="bi bi-person-square"></i></a></li>
+        <li> <a class="btn btn-outline-success" href="<?php echo FRONT_ROOT."/Home/ViewPanelChatHome"?>" type="button"><i class="bi bi-chat-text"></i></a></li>
+
       </ul>
 <?php }else{?>
       <ul class="nav col-12 col-md-auto mb-2 justify-content-start mb-md-0">
         <li> <a class="nav-link px-2 link-dark" href="<?php echo  FRONT_ROOT ?>"><i class="bi bi-house-door"></i></a></li>
         <li><a href="<?php echo FRONT_ROOT."/Home/ViewBeKeeper"?>" class="nav-link px-2 link-success">Be Keeper</a></li>
         <li> <a class="btn btn-outline-success" href="<?php echo FRONT_ROOT."/Home/ViewOwnerPanel"?>" type="button"><i class="bi bi-person-square"></i></a></li>
+        <li> <a class="btn btn-outline-success" href="<?php echo FRONT_ROOT."/Home/ViewPanelChatHome"?>" type="button"><i class="bi bi-chat-text"></i></a></li>
       </ul>
       <?php }
           }

@@ -115,17 +115,25 @@ use \Model\UserRole as UserRole;
 
         public function Register(UserRole $ur){
             $message= "Error: Y existe un usuarios con ese Username.";
-            if(($this->userDAO->IsUser($ur->getUser()))==0){
+            if(strlen($ur->getUser()->getUsername())<50 && strlen($ur->getUser()->getPassword())<50 
+            && strlen($ur->getUser()->getEmail())<50){ 
+                if(($this->userDAO->IsUser($ur->getUser()))==0){
                 $message= "Sucessful: Se ha registrado satisfactoriamente.";
                 try{
+                    
+                        echo $ur->getUser()->getUsername();
                     $user = $this->userDAO->AddRet($ur->getUser());
                     $ur->setUser($user);
                     $ur->setRole($this->roleDAO->Get(1));
                     $this->Add($ur);
+                    
                 }catch(Exception $e){
                     $message = "Error: No se ha podido procesar su solicitud, reintente mas tarde.";
                 return $message; 
                 }
+            }
+            }else{
+                $message = "Error: Alguno de los datos ingresados son invalidos, reintente con otros";
             }
             return $message; 
         }

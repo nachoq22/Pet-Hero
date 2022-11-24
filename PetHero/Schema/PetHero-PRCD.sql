@@ -809,6 +809,15 @@ END;
 $$
 
 DELIMITER $$
+CREATE PROCEDURE Checker_SetPayD(IN idChecker INT, IN payD DATE)
+BEGIN
+	UPDATE Checker
+    SET Checker.payD = payD
+    WHERE Checker.idChecker = idChecker;
+END;
+$$
+
+DELIMITER $$
 CREATE PROCEDURE Checker_Delete(IN idChecker INT)
 BEGIN
     DELETE 
@@ -883,12 +892,31 @@ END;
 $$
 
 DELIMITER $$
+CREATE PROCEDURE Chat_GetByUsers(IN idUser1 INT, IN idUser2 INT)
+BEGIN
+	SELECT * 
+    FROM Chat
+    WHERE (Chat.idOwner = idUser1 AND Chat.idKeeper = idUser2) OR (Chat.idOwner = idUser2 AND chat.idKeeper = idUser1);
+END;
+$$
+
+DELIMITER $$ 
+CREATE PROCEDURE Chat_GetByUser(IN idUser INT)
+BEGIN
+	SELECT * 
+    FROM Chat
+	WHERE (Chat.idOwner = idUser XOR Chat.idKeeper=idUser);
+END;
+$$
+
+DELIMITER $$
 CREATE PROCEDURE Chat_Add(IN idOwner INT, IN idKeeper INT)
 BEGIN
     INSERT INTO Chat
         (Chat.idOwner, Chat.idKeeper)
     VALUES
         (idOwner, idKeeper);
+	SELECT LAST_INSERT_ID() as LastID;
 END;
 $$
 
@@ -930,6 +958,24 @@ BEGIN
     VALUES
         (message, dateTime, idChat, idSender);
 END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE MessageChat_GetAllMsgByChat(IN idChat INT)
+BEGIN
+	SELECT *
+    FROM MessageChat
+    WHERE (MessageChat.idChat = idChat);
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE MessageChat_GetLastMsgByChat(IN idChat INT)
+BEGIN
+	SELECT * 
+    FROM MessageChat
+    WHERE MessageChat.idChat = idChat ORDER BY MessageChat.dateTime DESC LIMIT 1;
+END; 
 $$
 
 DELIMITER $$
@@ -1033,7 +1079,7 @@ CALL ImgPublic_GetByPublic(1);
 /*********************************TEST BOOKING*******************************************/
 #CALL Booking_GetAll();
 #CALL Booking_GetById(1);
-CALL Booking_GetByUser(4);
+#CALL Booking_GetByUser(4);
 /*CREATE PROCEDURE Booking_GetBookigPay(IN startD DATE,IN finishD DATE, IN remuneration DEC(10,2))*/
 CALL Booking_GetBookigPay('2022-11-06','2022-11-10',50);
 /*CALL Booking_Add(IN openDate DATE, IN closeDate DATE, IN payState VARCHAR(25), IN payCode VARCHAR(10),
@@ -1050,7 +1096,7 @@ CALL Booking_CheckRange("2022-11-21", "2022-12-14", 1); #ARRANCA DESPUES TERMINA
 /*CALL Booking_Delete(2);*/
 
 /*********************************TEST BOOKING PET*******************************************/
-CALL BP_GetAll();
+#CALL BP_GetAll();
 #CALL BP_GetById(1);
 CALL BP_GetByBook(4);
 /*CALL BookingPet_Add(IN idBooking INT, IN idPet INT);*/
@@ -1060,8 +1106,8 @@ CALL BP_GetPetPay(500,2);
 /*CALL BookingPet_Delete(1);*/
 
 /*********************************TEST CHECKER*******************************************/
-CALL Checker_GetAll();
-CALL Checker_GetById(1);
+#CALL Checker_GetAll();
+#CALL Checker_GetById(1);
 CALL Checker_GetByBooking(1);
 /*CALL Checker_AddChecker_Add(IN emisionD DATE, IN closeD DATE, IN finalPrice INT, IN idBook INT);*/
 #CALL Checker_Add("2022-11-05", "2022-12-05", 2000, 1);
@@ -1069,8 +1115,8 @@ CALL Checker_GetByBooking(1);
 
 /*********************************TEST REVIEW*******************************************/
 #CALL Review_GetAll();
-CALL Review_GetById(1);
-CALL Review_GetByPublic(3);
+#CALL Review_GetById(1);
+#CALL Review_GetByPublic(3);
 /*CALL Review_Add(IN createD DATE, IN commentary VARCHAR(500), IN stars INT,
                             IN idUser INT, IN idPublication INT)*/
 #CALL Review_Add("2022-11-01", "Muy bueno, excelente servicio", 5, 4, 2);
@@ -1078,14 +1124,18 @@ CALL Review_GetByPublic(3);
 
 
 /*********************************TEST CHAT*******************************************/
-CALL Chat_GetAll();
+#CALL Chat_GetAll();
 CALL Chat_GetById(1);
+CALL Chat_GetByUsers(6,1);
+CALL Chat_GetByUser(2);
 CALL Chat_Add(1,6);
 /*CALL Chat_Delete(1);*/
 
 
 /*********************************TEST MESSAGECHAT*******************************************/
-CALL MessageChat_GetAll();
+#CALL MessageChat_GetAll();
 CALL MessageChat_GetById(1);
-CALL MessageChat_Add("Te agradezco por todo, un saludo enorme", "2022-12-12 22:55:40", 7, 8);
+CALL MessageChat_Add("Te agradezco por todo, un saludo enorme", "2023-12-12 23:55:40", 7, 8);
+CALL MessageChat_GetAllMsgByChat(2);
 /*CALL MessageChat_Delete(1);*/
+CALL MessageChat_GetLastMsgByChat(7);
