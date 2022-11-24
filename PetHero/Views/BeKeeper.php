@@ -92,7 +92,7 @@
                     
             </div>
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="dni" placeholder="66114488" name="dni" required>
+                <input type="number" min="1" step="1" class="form-control" id="dni" placeholder="66114488" name="dni"  required>
                 <label for="dni">DNI</label>
                     <div class="invalid-feedback">
                         Please enter a DNI.

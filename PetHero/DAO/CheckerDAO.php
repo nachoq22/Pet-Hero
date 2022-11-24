@@ -176,7 +176,7 @@ require 'Lib/PHPMailer/SMTP.php';
                     if($rta == 1){
                         try{
 
-                        $totally = $this->bpDAO->GetTotally($bp->getBooking());
+                        $totally = $this->bpDAO->GetTotally($bp->getBooking());             //SE OBTIENE EL 50% DEL MONTO TOTAL A PAGAR//
                         }catch(Exception $e){
                                 $message = "Error: Ha ocurrido un error inesperado, intente mas tarde.";
                             return $message;
@@ -185,7 +185,7 @@ require 'Lib/PHPMailer/SMTP.php';
                             $openD = DATE("Y-m-d");
                             $closeD = DATE("Y-m-d",STRTOTIME($openD."+ 3 days"));
                             $refCode = $this->GenRefCode();
-                            $checker->__fromRequest($refCode,$openD,$closeD,$totally,$bp->getBooking());
+                            $checker->__fromRequest($refCode,$openD,$closeD,$totally,$bp->getBooking());     //SE SETEAN LAS FECHAS, SE GENERA UN CODIGO UNICO Y SE GUARDA EL CHECKER//
                             $this->Add($checker);
                         }catch(Exception $e){
                                 $message = "Error: No se ha podido generar el checker, intente mas tarde.";
@@ -193,14 +193,14 @@ require 'Lib/PHPMailer/SMTP.php';
                         }
                         try{
                             if(strcmp($checker->getBooking()->getUser()->getEmail(),"misaelflores4190@gmail.com")==0 
-                            XOR strcmp($checker->getBooking()->getUser()->getEmail(),"ignaciorios_g@hotmail.com")==0){
+                            XOR strcmp($checker->getBooking()->getUser()->getEmail(),"ignaciorios_g@hotmail.com")==0){   //SI EL OWNER USA ALGUNO DE ESTOS 2 MAILS, SE ENVIA EL CHECKER POR MAIL//
                                $message = $this->SendChecker($checker);
                             }
                         }catch(Exception $e){
                             $message = "Error: No se ha podido enviar el checker, intente mas tarde.";
                             return $message;
                         }      
-                        $this->bpDAO->NewState($bp->getBooking(),$rta);
+                        $this->bpDAO->NewState($bp->getBooking(),$rta);                     //SE ACTUALIZA EL ESTADO DE LA RESERVA//
                     }else{
                         $this->bpDAO->NewState($bp->getBooking(),$rta);
                         $message = "Successful: la reserva se ha cancelado con exito";

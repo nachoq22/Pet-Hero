@@ -82,7 +82,7 @@
 
 
                     if (strcmp($user->getUsername(), $chat->getOwner()->getUsername()) == 0) { ?> <!-- DEPENDIENDO SI EL USUARIO LOGEADO COINCIDE CON EL OWNER O KEEPER DEL CHAT
-                                                                                                    SE UBICARA DE UN LADO O DEL OTRO -->
+                                                                                                    VA A CREAR UN TAB CON CONTENIDO SEGUN CORRESPONDA -->
 
 
                     <!-- SI EL USUARIO ES EL OWNER DEL CHAT -->    
@@ -123,8 +123,8 @@
                                         foreach ($msgList as $message) {
                                             if (!empty($msgList)) {    ?>
                                                 <?php if ($chat->getIdChat() == $message->getChat()->getIdChat()) {  ?>
-                                                    <?php if (strcmp($user->getUsername(), $message->getSender()->getUsername()) != 0) { ?>
-                                                        <div class="d-flex align-items-baseline mb-4">
+                                                    <?php if (strcmp($user->getUsername(), $message->getSender()->getUsername()) != 0) { ?> <!-- DEPENDIENDO SI EL USUARIO ES EL EMISOR O RECEPTOR -->
+                                                        <div class="d-flex align-items-baseline mb-4">                                      <!-- SE UBICARA EL MENSAJE DE UN LADO O DE OTRO -->
                                                             <div class="position-relative avatar">
                                                                 <img src="https://images.squarespace-cdn.com/content/v1/5723b737c2ea51b309ec0ca1/1522426406915-UYRKL6LRW48TCO2H1MPY/Cat_Mouse_2.gif" class="img-fluid rounded-circle" alt="">
                                                             </div>
@@ -170,7 +170,8 @@
                                         <?php } ?>
                                     <?php } ?>
                                 </div>
-
+                                
+                                <!-- FORMULARIO PARA ENVIAR UN MENSAJE -->
                                 <div class="card-footer bg-white position-absolute w-100 bottom-0 m-0 p-1">
                                     <div class="input-group">
                                         <form action="<?php echo FRONT_ROOT . "/Chat/AddMessage" ?>">
@@ -233,9 +234,9 @@
                                     foreach ($messageAllList as $msgList) {
                                         foreach ($msgList as $message) {
                                             if (!empty($msgList)) { ?>
-                                                <?php if ($chat->getIdChat() == $message->getChat()->getIdChat()) {  ?>
-                                                    <?php if (strcmp($user->getUsername(), $message->getSender()->getUsername()) != 0) { ?>
-                                                        <div class="d-flex align-items-baseline mb-4">
+                                                <?php if ($chat->getIdChat() == $message->getChat()->getIdChat()) {  ?>                         
+                                                    <?php if (strcmp($user->getUsername(), $message->getSender()->getUsername()) != 0) { ?>         <!-- DEPENDIENDO SI EL USUARIO ES EL EMISOR O RECEPTOR -->
+                                                        <div class="d-flex align-items-baseline mb-4">                                              <!-- SE UBICARA EL MENSAJE DE UN LADO O DE OTRO -->
                                                             <div class="position-relative avatar">
                                                                 <img src="https://images.squarespace-cdn.com/content/v1/5723b737c2ea51b309ec0ca1/1522426406915-UYRKL6LRW48TCO2H1MPY/Cat_Mouse_2.gif" class="img-fluid rounded-circle" alt="">
                                                             </div>

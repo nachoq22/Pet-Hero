@@ -43,7 +43,7 @@ use \Model\PersonalData as PersonalData;
                 $_SESSION["logUser"] = $user;
                 $ur = new UserRole();
                 $ur->setUser($user);
-                if(!empty($this->uRoleDAO->IsKeeper($ur->getUser()->getUsername()))){
+                if(!empty($this->uRoleDAO->IsKeeper($ur->getUser()->getUsername()))){       //SE COMRPUEBA QUE SI EL USUARIO ES KEEPER SE LEVANTA UNA VARIABLE GLOBAL//
                     $_SESSION["isKeeper"] = true; 
                 }
                 
@@ -60,7 +60,6 @@ use \Model\PersonalData as PersonalData;
                 $location->__fromRequest($adress, $neighborhood, $city, $province,$country);
                 $data = new PersonalData();
                 $data->__fromRequest($name,$surname,$sex,$dni,$location);  
-    /*SETTING DE DATOS A UNA INSTANCIA USER DESDE LA SESSION*/
                 $user = $_SESSION["logUser"];
                 $user->setData($data);
                 $uRole = new UserRole();
@@ -74,12 +73,6 @@ use \Model\PersonalData as PersonalData;
                         $_SESSION["isKeeper"] = 1; 
                         $this->homeController->ViewKeeperPanel($message); 
                     }
-        }
-
-        //FUNCION PARA ELIMINAR UN USER
-        public function DeleteUser($id){
-            echo $id;
-            $this->userDAO->Delete($id);
         }
     }
 ?>
