@@ -15,15 +15,15 @@
 		<div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
 			<div class="carousel-inner">
 				<div class="carousel-item active" data-bs-interval="10000">
-					<img src="Views\Img\IMGPublic\11223344-IMGPublic20221115213311.jpg"
+					<img src="https://www.hogarmania.com/archivos/201907/pasear-perro-XxXx80.jpg"
 						class="d-block w-100" style="width: 100%; height: 40vw; object-fit: cover;" alt="...">
 				</div>
 				<div class="carousel-item" data-bs-interval="2000">
-					<img src="https://cdn.redcanina.es/wp-content/uploads/2019/05/27123116/casas-para-perros-redcanina.jpg"
+					<img src="https://cdn.wamiz.fr/cdn-cgi/image/format=auto,quality=80,width=1200,height=900,fit=cover/article/main-picture/61fbe5bedab81812941910.png"
 						class="d-block w-100" style="width: 100%; height: 40vw; object-fit: cover;" alt="...">
 				</div>
                 <div class="carousel-item" data-bs-interval="2000">
-					<img src="https://static1.laverdad.es/www/multimedia/201707/21/media/cortadas/perretes-ksGC-U40396701700H5H-624x385@La%20Verdad.jpg"
+					<img src="https://images.ctfassets.net/gxwgulxyxxy1/4gwMDV1dxGvZRwguxSUBfS/4868ea3358b99376cde22e23debba570/southeast-petfriendly-beach-holidays.jpg"
 						class="d-block w-100" style="width: 100%; height: 40vw; object-fit: cover;" alt="...">
 				</div>
                 

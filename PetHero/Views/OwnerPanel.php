@@ -180,12 +180,10 @@
                                         <?php } ?>
                                     </div>
                                 </td>
-                                <td>
-                                    <a class="btn btn-outline-warning me-2" href="<?php echo FRONT_ROOT."/Checker/GetById"?>" type="button"><i class="bi bi-pencil-square"></i></a>
-                                </td>
+                                
                                 <td>
                                 <?php if(STRCMP($book->getBookState(),"Awaiting Payment") == 0){?>   
-                                    <form action="<?php echo FRONT_ROOT."/Booking/EnterPaycode" ?>" method="post" name="sendPayC">
+                                    <form action="<?php echo FRONT_ROOT."/Checker/PayCheck" ?>" method="post" name="sendPayC">
                                         <div class="form-floating mb-3">   
                                             <input type="hidden" name="idBook" value=<?php echo $book->getId() ?>>  
                                             <input type="number" class="form-control" id="payCode" 
@@ -207,7 +205,6 @@
                                             (STRCMP($book->getBookState(),"Declined") == 0) XOR
                                             (STRCMP($book->getBookState(),"Out of Term") == 0) XOR
                                             (STRCMP($book->getBookState(),"Finalized") == 0)){ ?>
-                                    <a class="btn btn-outline-info me-2" href="<?php echo FRONT_ROOT."/Checker/GetById"?>" type="button"><i class="bi bi-file-spreadsheet"></i></a>
                                 <?php } ?>
                                 </td>
                             </tr>

@@ -406,9 +406,7 @@
                                                 "Finalized"
                                             ) == 0)
                                     ) { ?>
-                                        <a class="btn btn-outline-info me-2"
-                                            href="<?php echo FRONT_ROOT . "/Booking/View" ?>" type="button"><i
-                                                class="bi bi-file-spreadsheet"></i></a>
+                                        
                                         <?php } ?>
                                     </td>
                                 </tr>
