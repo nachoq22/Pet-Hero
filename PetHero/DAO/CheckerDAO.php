@@ -203,6 +203,7 @@ require 'Lib/PHPMailer/SMTP.php';
                         $this->bpDAO->NewState($bp->getBooking(),$rta);
                     }else{
                         $this->bpDAO->NewState($bp->getBooking(),$rta);
+                        $message = "Successful: la reserva se ha cancelado con exito";
                     }
                 }catch(Exception $e){
                     $message = "Error: No se ha podido actualizar la reserva, intente mas tarde.";
@@ -215,7 +216,7 @@ require 'Lib/PHPMailer/SMTP.php';
 // METHOD TO UPDATE A CHECKER AND BOOKING
 //-----------------------------------------------------  
         private function SetPayDChecker(Checker $checker){
-            $query = "CALL Checker_Add(?)";
+            $query = "CALL Checker_SetPayD(?,?)";
             $parameters["idChecker"] = $checker->getEmissionDate();
             $parameters["payD"] = $checker->getPayDate();
             $this->connection = Connection::GetInstance();
