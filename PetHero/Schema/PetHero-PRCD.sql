@@ -1018,7 +1018,7 @@ CALL User_Login("planetar","orylOSad");
 
 /*CALL User_Add(username,password,email,idData);*/
 Call User_Add("Pablo","Tringuin","triguillo@gmail.com");
-Call User_Add("Pablo","Caño","triguillo@gmail.com");
+Call User_Add("Pablito","Caño","triiiguillo@gmail.com");
 /*CALL User_Add(username,password,email);*/
 Call User_Register("Eduardo","Manitas","manitasDeManteca@gmail.com");
 /*Call User_Delete(6);*/
@@ -1042,6 +1042,7 @@ Call Size_Add("Big-Extra");
 /*********************************TEST PETTYPE*******************************************/
 Call PetType_GetAll();
 Call PetType_GetById(2);
+Call PetType_GetByName("Dog");
 /*CALL PetType_Add(name);*/
 Call PetType_Add("Cacatuos");
 /*Call PetType_Delete(6);*/
