@@ -303,6 +303,7 @@ CREATE TABLE IF NOT EXISTS BookingPet(
 
 INSERT INTO BookingPet VALUES (0,1,4); 
 INSERT INTO BookingPet VALUES (0,2,5); 
+INSERT INTO BookingPet VALUES (0,3,5); 
 
 /*********************************CHECKER*******************************************/
 CREATE TABLE IF NOT EXISTS Checker(
