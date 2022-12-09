@@ -1135,7 +1135,7 @@ CALL Chat_Add(1,6);
 /*********************************TEST MESSAGECHAT*******************************************/
 #CALL MessageChat_GetAll();
 CALL MessageChat_GetById(1);
-CALL MessageChat_Add("Te agradezco por todo, un saludo enorme", "2023-12-12 23:55:40", 7, 8);
+#CALL MessageChat_Add("Te agradezco por todo, un saludo enorme", "2023-12-12 23:55:40", 7, 8);
 CALL MessageChat_GetAllMsgByChat(2);
 /*CALL MessageChat_Delete(1);*/
 CALL MessageChat_GetLastMsgByChat(7);
