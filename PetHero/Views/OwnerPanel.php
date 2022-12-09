@@ -18,9 +18,12 @@
         
         <div class="col-sm-auto bg-light sticky-top">
             <div class="d-flex flex-sm-column flex-row flex-nowrap bg-light align-items-center sticky-top">
-                <a class="d-block p-3 link-dark text-decoration-none" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Icon-only">
-                    <i class="bi-bootstrap fs-1"></i>
-                </a>
+            <a class="d-block p-3 link-dark text-decoration-none" title="" data-bs-toggle="tooltip"
+                        data-bs-placement="right" data-bs-original-title="Icon-only">
+                        <img class="img-fluid" style="height: 90px; width: fit-content;"
+                            src="https://images.squarespace-cdn.com/content/v1/5723b737c2ea51b309ec0ca1/1522426438102-68EK89NNSIVWSHHSFT73/Pug_walking.gif?format=500w"
+                            alt="">
+                    </a>
                 
                 <ul class="nav nav-pills nav-flush flex-sm-column flex-row flex-nowrap mb-auto mx-auto text-center align-items-center" 
                         role="tablist" id="pills-tab" aria-orientation="vertical">

@@ -120,8 +120,6 @@ use \Model\UserRole as UserRole;
                 if(($this->userDAO->IsUser($ur->getUser()))==0){
                 $message= "Sucessful: Se ha registrado satisfactoriamente.";
                 try{
-                    
-                        echo $ur->getUser()->getUsername();
                     $user = $this->userDAO->AddRet($ur->getUser());
                     $ur->setUser($user);
                     $ur->setRole($this->roleDAO->Get(1));
