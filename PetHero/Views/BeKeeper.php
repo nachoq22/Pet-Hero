@@ -1,3 +1,4 @@
+<!-- MENSAJE DEL SISTEMA -->
 <body>
 <?php if (!empty($message)){?>
   <div class="alert alert-light" role="alert">
@@ -5,7 +6,7 @@
   </div>
 <?php }?>
 
-
+<!-- FORMULARIO -->
 <form action="<?php echo FRONT_ROOT."/User/BeKeeper" ?>" method="post" enctype="multipart/form-data" class="was-validated">
     <div class="row g-3">
 
@@ -88,14 +89,10 @@
                     <input class="form-check-input" type="radio" name="sex" id="sexF" value="F" required>
                     <label class="form-check-label" for="sexF"><i class="bi bi-gender-female"></i></label>
                 </div>
-                <!--<div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="sex?" id="sex?" disabled>
-                    <label class="form-check-label" for="sex?"><i class="bi bi-gender-trans"></i></label>
-                </div> -->
                     
             </div>
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="dni" placeholder="66114488" name="dni" required>
+                <input type="number" min="1" step="1" class="form-control" id="dni" placeholder="66114488" name="dni"  required>
                 <label for="dni">DNI</label>
                     <div class="invalid-feedback">
                         Please enter a DNI.
@@ -108,5 +105,8 @@
         <button type="submit" class="btn btn-primary">Submit</button>
     </div>
 </form>
+<!-- FORMULARIO -->
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 </body>

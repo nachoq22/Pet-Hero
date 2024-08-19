@@ -1015,8 +1015,10 @@ Call User_GetByUsername("planetar");
 /*CALL User_Add(username,password,varResp);*/
 CALL User_IsExist("planetar","achternaga@wificon.eu");
 CALL User_Login("planetar","orylOSad");
+
 /*CALL User_Add(username,password,email,idData);*/
 Call User_Add("Pablo","Tringuin","triguillo@gmail.com");
+Call User_Add("Pablito","Caño","triiiguillo@gmail.com");
 /*CALL User_Add(username,password,email);*/
 Call User_Register("Eduardo","Manitas","manitasDeManteca@gmail.com");
 /*Call User_Delete(6);*/
@@ -1040,6 +1042,7 @@ Call Size_Add("Big-Extra");
 /*********************************TEST PETTYPE*******************************************/
 Call PetType_GetAll();
 Call PetType_GetById(2);
+Call PetType_GetByName("Dog");
 /*CALL PetType_Add(name);*/
 Call PetType_Add("Cacatuos");
 /*Call PetType_Delete(6);*/
@@ -1127,7 +1130,7 @@ CALL Checker_GetByBooking(1);
 #CALL Chat_GetAll();
 CALL Chat_GetById(1);
 CALL Chat_GetByUsers(6,1);
-CALL Chat_GetByUser(2);
+CALL Chat_GetByUser(4);
 CALL Chat_Add(1,6);
 /*CALL Chat_Delete(1);*/
 

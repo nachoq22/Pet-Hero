@@ -24,44 +24,6 @@ use \Model\User as User;
 // SELECT METHODS
 //======================================================================
 
-/* 
-GET ALL COMMENTS FUNCTIONS
-        public function GetAll(){
-            $userList = array();
-
-            $query = "CALL User_GetAll()";
-            $this->connection = Connection::GetInstance();
-            $resultBD = $this->connection->Execute($query,array(),QueryType::StoredProcedure);
-            
-            foreach($resultBD as $row){
-                $user = new User();
-                $user->__fromDBnoKeeper($row["idUser"],$row["username"]
-                                       ,$row["password"],$row["email"]);
-
-                array_push($userList,$user);
-            }
-            return $userList;
-        }
-
-        public function GetAllisKeeper(){
-            $userList = array();
-
-            $query = "CALL User_GetAll()";
-            $this->connection = Connection::GetInstance();
-            $resultBD = $this->connection->Execute($query,array(),QueryType::StoredProcedure);
-            
-            foreach($resultBD as $row){
-                $user = new User();
-                $user->__fromDBisKeeper($row["idUser"],$row["username"]
-                                       ,$row["password"],$row["email"]
-                                       ,$this->dataDAO->Get($row["idData"]));
-
-                 array_push($userList,$user);
-            }
-            return $userList;
-        }
-*/
-
         public function DefGetAll(){
             $userList = array();
 
@@ -83,41 +45,6 @@ GET ALL COMMENTS FUNCTIONS
             return $userList;
         }
 
-/* 
-GET COMMENTS FUNCTIONS
-        public function Get($id){
-            $user = null;
-
-            $query = "CALL User_GetById(?)";
-            $parameters["idUser"] = $id;
-            $this->connection = Connection::GetInstance();
-            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
-
-            foreach($resultBD as $row){
-                $user = new User();
-                $user->__fromDBnoKeeper($row["idUser"],$row["username"]
-                               ,$row["password"],$row["email"]);
-            }
-            return $user;
-        }
-
-        public function GetisKeeper($id){
-            $user = null;
-
-            $query = "CALL User_GetById(?)";
-            $parameters["idUser"] = $id;
-            $this->connection = Connection::GetInstance();
-            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
-
-            foreach($resultBD as $row){
-                $user = new User();
-                $user->__fromDBisKeeper($row["idUser"],$row["username"]
-                                       ,$row["password"],$row["email"]
-                                       ,$this->dataDAO->Get($row["idData"]));
-            }
-            return $user;
-        }
-*/
 
         public function DGet($id){
             $user = null;
@@ -140,40 +67,6 @@ GET COMMENTS FUNCTIONS
             return $user;
         }
 
-/* GET COMMENTS FUNCTIONS
-        public function GetByUsername($username){
-            $user = null;
-
-            $query = "CALL User_GetByUsername(?)";
-            $parameters["username"] = $username;
-            $this->connection = Connection::GetInstance();
-            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
-
-            foreach($resultBD as $row){
-                $user = new User();
-                $user->__fromDBnoKeeper($row["idUser"],$row["username"]
-                                       ,$row["password"],$row["email"]);
-            }
-            return $user;
-        }
-
-        public function GetByUsernameisKeeper($username){
-            $user = null;
-
-            $query = "CALL User_GetByUsername(?)";
-            $parameters["username"] = $username;
-            $this->connection = Connection::GetInstance();
-            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
-
-            foreach($resultBD as $row){
-                $user = new User();
-                $user->__fromDBisKeeper($row["idUser"],$row["username"]
-                                       ,$row["password"],$row["email"]
-                                       ,$this->dataDAO->Get($row["idData"]));
-            }
-            return $user;
-        }
-*/
 
         public function DGetByUsername($username){
             $user = null;

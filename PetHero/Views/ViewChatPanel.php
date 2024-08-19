@@ -27,9 +27,9 @@
     }
 </style>
 
+
 <body>
     <div class="row">
-
         <div class="col-md-4 border-right gy-3">
             <div class="d-flex align-items-start">
                 <div class="nav flex-column nav-pills me-3 gap-2" id="v-pills-tab" role="tablist" aria-orientation="vertical">
@@ -73,17 +73,20 @@
         <div class="col-md-8">
             <div class="tab-content" id="v-pills-tabContent">
 
-                <!-- Linkear con la etiqueta de arriba y se llenen los chats correspondientes -->
+
+
+                <!-- A CONTINUACION SE MOSTRARAN TODOS LOS MENSAJES DEL CHAT CORRESPONDIENTE -->
 
                 <?php foreach ($chatList as $chat) {
 
 
 
-                    if (strcmp($user->getUsername(), $chat->getOwner()->getUsername()) == 0) { ?>
+                    if (strcmp($user->getUsername(), $chat->getOwner()->getUsername()) == 0) { ?> <!-- DEPENDIENDO SI EL USUARIO LOGEADO COINCIDE CON EL OWNER O KEEPER DEL CHAT
+                                                                                                    VA A CREAR UN TAB CON CONTENIDO SEGUN CORRESPONDA -->
 
 
+                    <!-- SI EL USUARIO ES EL OWNER DEL CHAT -->    
                         <div class="tab-pane fade" id="v-pills-<?php echo $chat->getKeeper()->getUsername(); ?>" role="tabpanel" aria-labelledby="v-pills-<?php echo $chat->getKeeper()->getUsername(); ?>-tab" tabindex="0">
-
                             <div class="card mx-auto">
                                 <div class="card-header bg-transparent">
                                     <div class="navbar navbar-expand p-0">
@@ -120,8 +123,8 @@
                                         foreach ($msgList as $message) {
                                             if (!empty($msgList)) {    ?>
                                                 <?php if ($chat->getIdChat() == $message->getChat()->getIdChat()) {  ?>
-                                                    <?php if (strcmp($user->getUsername(), $message->getSender()->getUsername()) != 0) { ?>
-                                                        <div class="d-flex align-items-baseline mb-4">
+                                                    <?php if (strcmp($user->getUsername(), $message->getSender()->getUsername()) != 0) { ?> <!-- DEPENDIENDO SI EL USUARIO ES EL EMISOR O RECEPTOR -->
+                                                        <div class="d-flex align-items-baseline mb-4">                                      <!-- SE UBICARA EL MENSAJE DE UN LADO O DE OTRO -->
                                                             <div class="position-relative avatar">
                                                                 <img src="https://images.squarespace-cdn.com/content/v1/5723b737c2ea51b309ec0ca1/1522426406915-UYRKL6LRW48TCO2H1MPY/Cat_Mouse_2.gif" class="img-fluid rounded-circle" alt="">
                                                             </div>
@@ -167,7 +170,8 @@
                                         <?php } ?>
                                     <?php } ?>
                                 </div>
-
+                                
+                                <!-- FORMULARIO PARA ENVIAR UN MENSAJE -->
                                 <div class="card-footer bg-white position-absolute w-100 bottom-0 m-0 p-1">
                                     <div class="input-group">
                                         <form action="<?php echo FRONT_ROOT . "/Chat/AddMessage" ?>">
@@ -191,6 +195,7 @@
 
                     <?php } else { ?>
 
+                        <!-- SI EL USUARIO ES EL KEEPER DEL CHAT -->  
                         <div class="tab-pane fade" id="v-pills-<?php echo $chat->getOwner()->getUsername() ?>" role="tabpanel" aria-labelledby="v-pills-<?php echo $chat->getOwner()->getUsername(); ?>-tab" tabindex="0">
 
 
@@ -229,9 +234,9 @@
                                     foreach ($messageAllList as $msgList) {
                                         foreach ($msgList as $message) {
                                             if (!empty($msgList)) { ?>
-                                                <?php if ($chat->getIdChat() == $message->getChat()->getIdChat()) {  ?>
-                                                    <?php if (strcmp($user->getUsername(), $message->getSender()->getUsername()) != 0) { ?>
-                                                        <div class="d-flex align-items-baseline mb-4">
+                                                <?php if ($chat->getIdChat() == $message->getChat()->getIdChat()) {  ?>                         
+                                                    <?php if (strcmp($user->getUsername(), $message->getSender()->getUsername()) != 0) { ?>         <!-- DEPENDIENDO SI EL USUARIO ES EL EMISOR O RECEPTOR -->
+                                                        <div class="d-flex align-items-baseline mb-4">                                              <!-- SE UBICARA EL MENSAJE DE UN LADO O DE OTRO -->
                                                             <div class="position-relative avatar">
                                                                 <img src="https://images.squarespace-cdn.com/content/v1/5723b737c2ea51b309ec0ca1/1522426406915-UYRKL6LRW48TCO2H1MPY/Cat_Mouse_2.gif" class="img-fluid rounded-circle" alt="">
                                                             </div>
@@ -267,6 +272,7 @@
                                     <?php } ?>
                                 </div>
 
+                                <!-- FORMULARIO PARA ENVIAR UN MENSAJE -->
                                 <div class="card-footer bg-white position-absolute w-100 bottom-0 m-0 p-1">
                                     <div class="input-group">
                                         <form action="<?php echo FRONT_ROOT . "/Chat/AddMessage" ?>">

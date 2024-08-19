@@ -97,9 +97,6 @@ use \Model\UserRole as UserRole;
         return $rta;    
         }
 
-        /*public function NewIsKeeper($userName){
-            $user = $this->userDAO->DGetByUsername($userName->getUser()->getUsername());
-        }*/
 
 //======================================================================
 // INSERT METHODS

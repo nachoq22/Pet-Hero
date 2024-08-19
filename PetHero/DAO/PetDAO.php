@@ -123,7 +123,6 @@ use \Model\Pet as Pet;
         private function Add(Pet $pet,$fileP,$fileNameP,$fileV,$fileNameV){
                 $pet->setProfileIMG($this->imgPPProcess($fileNameP,$fileP,$pet->getName()));
                 $pet->setVaccinationPlanIMG($this->imgPVPProcess($fileNameV,$fileV,$pet->getName()));
-
             $query = "CALL Pet_Add(?,?,?,?,?,?,?,?)";
             $parameters["name"] = $pet->getName();
             $parameters["breed"] = $pet->getBreed();

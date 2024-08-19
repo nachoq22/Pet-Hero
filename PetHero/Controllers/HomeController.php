@@ -29,23 +29,27 @@ use \Model\Chat as Chat;
             $this->messageChatDAO = new MessageChatDAO();
         }
 
-        public function Index($message = ""){
+        //METODO QUE LLEVA AL HOME, SE MUESTRAN TODAS LAS PUBLICACIONES//
+        public function Index($message = ""){  
             $publicList = $this->publicDAO->GetAll();
             $imgByPublic =  $this->imgPublicDAO->GetAccordingPublic($publicList);
             require_once(VIEWS_PATH."Home.php");
         }
 
+        //METODO PARA DESLOGEARSE DE LA PAGINA//
         public function Logout(){
             session_destroy();
             $this->Index("Successful: Te has deslogueado con exito");
         }
 
+        //METODO PARA BUSCAR DETERMINADAS PUBLICACIONES CON PALABRAS ESPECIFICAS//
         public function Search($search){
             $publicList = $this->publicDAO->Search($search);
             $imgByPublic =  $this->imgPublicDAO->GetAccordingPublic($publicList);
             require_once(VIEWS_PATH."Search.php");
         }
 
+        //METODO PARA IR AL OWNER PANEL, DONDE SE MOSTRARAN MASCOTAS Y RESERVAS//
         public function ViewOwnerPanel($message=""){
         $this->isLogged();
                 $this->bpDAO->UpdateAllStates();
@@ -58,6 +62,9 @@ use \Model\Chat as Chat;
             require_once(VIEWS_PATH."OwnerPanel.php");
         }
 
+        //======================================================================
+        // VIEWS METHODS
+        //======================================================================
         public function ViewAddPet(){
             $this->isLogged();
             require_once(VIEWS_PATH."AddPet.php");
@@ -117,7 +124,9 @@ use \Model\Chat as Chat;
         }
 
 
-        //METODOS PARA COMPROBAR SESIONES
+        //======================================================================
+        // METODOS PARA COMPROBAR SESIONES
+        //======================================================================
         public function isLogged(){
             if(!isset($_SESSION["logUser"])){
                 $this->Index("Error: No ha iniciado Session");  
@@ -129,26 +138,6 @@ use \Model\Chat as Chat;
                 $this->Index("Error: No posee permisos para ingresar");  
             }
         }
-
-        
-
-//METODOS ANTIGUOS
-/*
-        public function ViewLogin(){
-            require_once(VIEWS_PATH."login.php");
-        }
-
-        public function ViewAddTemplates(){
-            require_once(VIEWS_PATH."AddForms.php");
-        }
-
-        public function ViewPersonalInfo(){
-            require_once(VIEWS_PATH."PersonalData.php");
-        }
-
-        public function ViewPetList(){
-            require_once(VIEWS_PATH."PetList.php");
-        }
-*/
     }
 ?>
+

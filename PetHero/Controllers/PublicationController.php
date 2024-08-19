@@ -25,43 +25,28 @@ use \Controllers\PetController as PetController;
             $this->bookingDAO = new BookingDAO();
         }
 
+        //FUNCION PARA CREAR UNA NUEVA PUBLICACION//
         public function Add($title,$description,$openD,$closeD,$remuneration,$images){
             $this->homeController->isLogged();
             $this->homeController->isKeeper();
 
                 $public = new Publication();
                 $logUser = $_SESSION["logUser"];
-                //if($closeD>DATE("Y-m-d") && $openD>DATE("Y-m-d")){
-                if(($this->publicDAO->ValidateDAllPublications($openD, $closeD, $logUser))==0 &&
-                ($closeD>DATE("Y-m-d") && $openD>DATE("Y-m-d") && $closeD>$openD)){ 
-                $public->__fromRequest($openD, $closeD, $title, $description,0, $remuneration,$logUser);
+
+                if(($this->publicDAO->ValidateDAllPublications($openD, $closeD, $logUser))==0 &&     //VALIDA QUE LAS FECHAS NO COINCIDAN CON LAS DE OTRAS PUBLICACIONES SUYAS//
+                ($closeD>DATE("Y-m-d") && $openD>DATE("Y-m-d") && $closeD>$openD)){                  //VALIDA QUE LAS FECHAS SEAN DESPUES DE LA FECHA ACTUAL Y VAIDA QUE LA FECHA   
+                $public->__fromRequest($openD, $closeD, $title, $description,0, $remuneration,$logUser);  //DE FINALIZACION SEA DESPUES QUE LA DE INICIO//
                 $imgPublic = new ImgPublic();
                 $imgPublic->setPublication($public);
-//PARA VER COMPOSISION GENERAL
-/*
-            echo "ESTO ES LO QUE TIENE: <br>";
-                print_r($images);
-                echo "<br>"; 
-                $n = 0;
-                $cant = COUNT($images["tmp_name"]);
- PARA OBTENER LOS VALORES DE TMP_NAME        
-            foreach($images as $k1=> $v1){
-                foreach($v1 as $k2 => $v2){
-                    if(strcmp($k1,"tmp_name") == 0){
-                        echo $images[$k1][$k2];
-                    }
-                }
-            }
-//////////  
-*/
+
             $message = $this->publicDAO->NewPublication($imgPublic,$images);
             $this->homeController->ViewKeeperPanel($message);
         }else{
             $this->homeController->ViewAddPublication("Error: Las fechas ingresadas coinciden con otra publicacion suya o son invalidas");
         }
-
         }
 
+        //FUNCION PARA VER UNA PUBLICACION INDIVIDUAL//
         public function ViewPublication($idPublic, $message=""){     
                 $public = new Publication();
                 $public->setId($idPublic);
@@ -79,11 +64,12 @@ use \Controllers\PetController as PetController;
             require_once(VIEWS_PATH."PublicInd.php");
         }
 
+        //FUNCION PARA VALIDAR DIFERENTES REQUISITOS DE FECHAS//
         public function ValidateDateFP($idPublic, $startD, $finishD){
             $this->homeController->isLogged();
-                if($startD<$finishD){
-                    if($this->publicDAO->ValidateOnWeek($startD)==1){
-                        if($this->publicDAO->ValidateDP($startD, $finishD, $idPublic) == 1){
+                if($startD<$finishD){                                                             //QUE LA FECHA DE INICIO SEA ANTES QUE LA DE FINALIZACION      
+                    if($this->publicDAO->ValidateOnWeek($startD)==1){                                    //QUE LA FECHA DE INICIO TENGA UNA SEMANA DE ANTICIPACION
+                        if($this->publicDAO->ValidateDP($startD, $finishD, $idPublic) == 1){                       //QUE LAS FECHAS COINCIDAN CON LAS ESTABLECIDAS POR EL KEEPER
                             $this->petController->GetPetsByReservation($idPublic, $startD, $finishD);
                         }else{
                             $this->ViewPublication($idPublic, "Error: Las fechas ingresadas no entran en el rango de establecidas por el Keeper");

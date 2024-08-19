@@ -19,6 +19,7 @@ use \Controllers\PetController as PetController;
             $this->petController = new PetController();
         }
 
+        //FUNCION PARA AGREGAR UNA RESERVA//
         public function Add($startD,$finishD,$idPublic,$petsId){
             $this->homeController->isLogged();
             if($this->bpDAO->ValidateTypes($petsId)==1){                 //Checkea si las mascotas de nuestro booking tienen todas el mismo pet Type
@@ -37,16 +38,8 @@ use \Controllers\PetController as PetController;
                 $this->petController->GetPetsByReservation($idPublic, $startD, $finishD, "Error: Todas sus mascotas deben ser del mismo tipo");
             }
         }
-/*
-        public function EnterPaycode($idBook,$payCode){
-        $this->homeController->isLogged();    
-            $book = new Booking();
-            $book->setId($idBook);
-            $book->setPayCode($payCode);
-            $message = $this->bpDAO->UpdatePayCode($book);
-        $this->homeController->ViewOwnerPanel($message);
-        }
-*/
+
+        //FUNCION PARA CANCELAR UNA RESERVA//
         public function CancelBook($idBook){
         $this->homeController->isLogged();
                 $book = new Booking();

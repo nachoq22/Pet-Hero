@@ -78,60 +78,6 @@
     </header>
 </div>
 
-<!--
-<header>
-  <nav class="navbar navbar-expand-lg bg-light">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="<?php echo  FRONT_ROOT ?>"><i class="bi bi-house-door"></i></a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <form class="d-flex" role="search" action="<?php echo FRONT_ROOT."/Home/Search" ?>" method="post" class="was-validated">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="seach" required>
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto ml-auto mb-2 mb-lg-0">
-
-          <li class="nav-link">
-            <a class="btn btn-outline-success me-2" href="<?php echo FRONT_ROOT."/Home/ViewBeKeeper"?>"><i class="bi bi-person-badge"></i></a>
-          </li>
-          
-          <li class="nav-link">
-            <a class="btn btn-outline-primary me-2" href="<?php echo FRONT_ROOT."/Home/Logout"?>" type="button"><i class="bi bi-person-rolodex"></i></a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              ADDS Registers
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="<?php echo FRONT_ROOT."/Home/ViewAddTemplates"?>">Add Location</a></li>
-              <li><a class="dropdown-item" href="#">Add Size</a></li>
-              <li><a class="dropdown-item" href="#">Add PetType</a></li>
-            </ul>
-          </li>
-
-DROPDOWN
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-				      <i class="bi bi-person-circle"></i>
-            </a>
-
-          <ul class="dropdown-menu" id="menuProfile">
-               <li><a class="dropdown-item" id="signUpItem" data-bs-toggle="modal" data-bs-target=".bs-modal-sm">Sign Up</a></li>
-              <li><a class="dropdown-item" id="loginItem" data-bs-toggle="modal" data-bs-target=".bs-modal-sm">Login</a></li>
-          </ul> 
-          </li>
-
-        </ul>
-
-        
-      </div>
-    </div>
-  </nav>
-</header>
--->
-
 
 <!-- Modal -->
 <div class="modal fade bs-modal" aria-hidden="true" id="modalLoginRegister">

@@ -60,44 +60,9 @@
             <div class="card-body p-4" style="height: 500px; overflow: auto;">
 
 
-                <!--<div class="d-flex align-items-baseline mb-4">
-                    <div class="position-relative avatar">
-                        <img src="https://nextbootstrap.netlify.app/assets/images/profiles/1.jpg"
-                            class="img-fluid rounded-circle" alt="">
-                    </div>
-                    <div class="pe-2">
-                        <div>
-                            <div class="card card-text d-inline-block p-2 px-3 m-1">
-                                Hi helh, are you available to chat?
-                            </div>
-                        </div>
-                        <div>
-                            <div class="small">01:10PM</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="d-flex align-items-baseline text-end justify-content-end mb-4">
-                    <div class="pe-2">
-                        <div>
-                            <div class="card card-text d-inline-block p-2 px-3 m-1">Sure</div>
-                        </div>
-                        <div>
-                            <div class="small">01:13PM</div>
-                        </div>
-                    </div>
-                    <div class="position-relative avatar">
-                        <img src="https://nextbootstrap.netlify.app/assets/images/profiles/2.jpg"
-                            class="img-fluid rounded-circle" alt="">
-                        <span
-                            class="position-absolute bottom-0 start-100 translate-middle p-1 bg-success border border-light rounded-circle">
-                            <span class="visually-hidden">New alerts</span>
-                        </span>
-                    </div>
-                </div> -->
-
+            <!-- POR CADA MENSAJE EN LA LISTA DARA UNA VUELTA AL FOREACH -->
                 <?php foreach($messageList as $message){ 
-                    if($chat->getKeeper()->getId()==$message->getSender()->getId()){ ?>
+                    if($chat->getKeeper()->getId()==$message->getSender()->getId()){ ?> <!-- ESTE IF CORROBORA SI EL QUE ENVIA EL MENSAJE ES EL OWNER O EL KEEPER -->
                     <div class="d-flex align-items-baseline mb-4">
                     <div class="position-relative avatar">
                         <img src="https://images.squarespace-cdn.com/content/v1/5723b737c2ea51b309ec0ca1/1522426406915-UYRKL6LRW48TCO2H1MPY/Cat_Mouse_2.gif"
@@ -114,7 +79,7 @@
                         </div>
                     </div>
                 </div>
-                <?php }else{?>
+                <?php }else{?>    <!-- DEPENDIENDO SI ENTRA EN EL IF O EL ELSE, EL MENSAJE SE MOSTRARÁ DEL LADO IZQUIERDO O DERECHO -->
                 <div class="d-flex align-items-baseline text-end justify-content-end mb-4">
                 <div class="pe-2">
                     <div>
@@ -134,8 +99,9 @@
             </div>
             <?php } ?>
             <?php } ?>
-
             </div>
+
+            <!-- FORMULARIO PARA MANDAR UN NUEVO MENSAJE -->
             <div class="card-footer bg-white position-absolute w-100 bottom-0 m-0 p-1">
                 <div class="input-group">
                     <form action="<?php echo FRONT_ROOT."/Chat/AddMessage"?>">
@@ -147,10 +113,10 @@
                         <i class="bi bi-send-fill"></i>
                         </button>
                     </div>
-            </form>
-                    
-                </div>
+            </form>        
             </div>
+            </div>
+            <!-- FORMULARIO PARA MANDAR UN NUEVO MENSAJE -->
 
         </div>
     </div>

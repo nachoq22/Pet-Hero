@@ -291,30 +291,7 @@ use \Model\Booking as Booking;
             }
         }
 
-//----------------------------------------------------------------------------------
-//----------------------------------------------------------------------------------
-        
-//======================================================================
-// DELETE METHODS
-//====================================================================== 
-    public function Delete($idBooking){
-        $query = "CALL booking_Delete(?)";
-        $parameters["idbooking"] = $idBooking;
-        $this->connection = Connection::GetInstance();
-        $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
-    }
-
-/*funcion para retornar diff de dias
-        public function countDays($initD,$finishD){
-            $days = 0;
-            For($i=$initD;$i<$finishD;$i = date("Y-m-d", strtotime($i ."+ 1 days"))){
-                $days +=1;
-            }
-        return $days;    
-        }
-*/
-
-        //ESTO SIRVE PARA ENCONTRAR TODOS LOS BOOKING EN LOS QUE COINCIDA LAS FECHAS CON LA NUESTRA (FUNCION LLAMADA DESDE BOOKINGPETDAO)
+//ESTO SIRVE PARA ENCONTRAR TODOS LOS BOOKING EN LOS QUE COINCIDA LAS FECHAS CON LA NUESTRA (FUNCION LLAMADA DESDE BOOKINGPETDAO)
         public function GetAllMatchingDatesByPublic(Booking $booking){
             $bookingList = array();    
             $query = "CALL Booking_CheckRange(?,?,?)";
@@ -333,9 +310,11 @@ use \Model\Booking as Booking;
             }
             return $bookingList;
         }
-        ////////
+ 
         
-        //ESTO COMPROBARA SI EL USUARIO HA COMPLETADO UN BOOKING CON LA PUBLICACION
+// -----------------------------------------------------
+// ESTO COMPROBARA SI EL USUARIO HA COMPLETADO UN BOOKING CON LA PUBLICACION
+//----------------------------------------------------- 
         public function CheckBookDone($username, $idPublic){
             $canReview = 0;
             try{
@@ -354,7 +333,23 @@ use \Model\Booking as Booking;
             }     
             return $canReview;
         }
+    
+//----------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------
+        
+//======================================================================
+// DELETE METHODS
+//====================================================================== 
+    public function Delete($idBooking){
+        $query = "CALL booking_Delete(?)";
+        $parameters["idbooking"] = $idBooking;
+        $this->connection = Connection::GetInstance();
+        $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
     }
-        //////////////////////////
+
+}
+
+        
+
 
 ?>

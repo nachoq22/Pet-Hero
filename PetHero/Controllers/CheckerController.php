@@ -16,6 +16,7 @@ use \Model\Booking as Booking;
             $this->homeC = new HomeController();
         }
 
+        //VERIFICA SI CONFIRMA O NO PARA CREAR UN CHECKER DE LA RESERVA Y LUEGO ACTUALIZARLA//
         public function ToResponse($idBook,$rta){
         $this->homeC->isLogged();    
                 $book = new Booking();
@@ -26,6 +27,7 @@ use \Model\Booking as Booking;
             $this->homeC->ViewKeeperPanel($message);
         }
 
+        //ACTUALIZA EL DIA QUE SE PAGÒ AL CHECKER//
         public function PayCheck($idBook,$payCode){
         $this->homeC->isLogged();    
             $book = new Booking();
@@ -37,6 +39,7 @@ use \Model\Booking as Booking;
         $this->homeC->ViewOwnerPanel($message);
         }
         
+        //VIEW DEL PDF//
         public function ViewChecker($idBook){
         $this->homeC->isLogged();
             $checker = $this->checkDAO->GetByBook($idBook);

@@ -13,14 +13,18 @@
         private $userDAO;
         private $chatDAO;
 
-        //DAO INJECTION
+//======================================================================
+// DAOs INJECTION
+//======================================================================
         public function __construct()
         {
             $this->userDAO = new UserDAO();
             $this->chatDAO = new ChatDAO();
         }
 
-        //Add
+//======================================================================
+// ADDS
+//======================================================================
         public function AddMsg(MessageChat $messagechat){
             $query = "CALL MessageChat_Add(?,?,?,?)";
             $parameters["message"] = $messagechat->getMessage();
@@ -42,6 +46,9 @@
             }
         }
 
+//======================================================================
+// SELECT METHODS
+//======================================================================
         public function GetAll()
         {
             $messageChatList = array();    
@@ -103,8 +110,6 @@
             }
             return $messageChat;
         }
-
-
 
         public function GetById($idChat){
             $chat = null;
