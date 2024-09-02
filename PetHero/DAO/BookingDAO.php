@@ -66,7 +66,13 @@ use \Model\Booking as Booking;
         return $bookList;
         }
 
-//* TODAS LAS BOOKINGS DE UN OWNER SEGUN USERNAME.
+/*
+* 🐘 D: Recupero todos los Bookings según el username de 
+*        un User(OWNER).
+!  Requerido por GetAllBooksByUsername de BookingPetDAO.
+* 🐘 A: Username del Owner.
+* 🐘 R: El listado de Bookings del username proporcionado.
+*/ 
         public function GetAllBooksByUsername($username){
             $user = $this->userDAO->DGetByUsername($username);
             $bookList = $this->GetAllByUser($user->getId());
@@ -74,6 +80,13 @@ use \Model\Booking as Booking;
         }
 
 //* TODAS LAS BOOKINGS DE UN KEEPER SEGUN USERNAME.
+/*
+* 🐘 D: Recupero todos los Bookings según el username de 
+*        un User(Keeper).
+!  Requerido por GetAllBooksByKeeper de BookingPetDAO.
+* 🐘 A: Username del Keeper.
+* 🐘 R: El listado de Bookings del username proporcionado.
+*/ 
         public function GetAllBooksByKeeper($username){
             $matches = array();
                 $bookings = $this->GetAll();
@@ -85,6 +98,13 @@ use \Model\Booking as Booking;
         return $matches;
         }
 
+/*
+* 🐘 D: Recupera un Booking segun ID.
+!     Requerido por el metodo GetPetsByBook 
+!     de BookingPetDAO.
+* 🐘 A: ID del Booking a filtrar.
+* 🐘 R: Booking filtrado.
+*/          
         public function Get($idBook){
             $booking = null;
 

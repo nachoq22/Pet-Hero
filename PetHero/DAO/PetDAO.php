@@ -98,6 +98,13 @@ use \Model\Pet as Pet;
         return $petList;
         }
 
+/*
+* 🐘 D: Recupera un Pet segun ID.
+!     Requerido por el metodo GetPetsByBook 
+!     de BookingPetDAO.
+* 🐘 A: ID del Pet a filtrar.
+* 🐘 R: Pet filtrado.
+*/     
         public function Get($id){
             $pet = null;
             $query = "CALL Pet_GetById(?)";
