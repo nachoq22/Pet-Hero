@@ -11,7 +11,7 @@ use \Model\Booking as Booking;
         private $finalPrice;
         private Booking $booking;
 
-        //CONSTRUCTORS
+//? CONSTRUCTORS
         public function __construct(){}
 
         public function __fromRequest($refCode,$emisionD, $closeD, $finalPrice, Booking $booking){
@@ -41,7 +41,7 @@ use \Model\Booking as Booking;
             $this->booking = $booking;
         }
 
-        //GETTERS
+//? GETTERS & SETTERS
         public function getId(){
             return $this->idChecker;
         }   
@@ -63,8 +63,7 @@ use \Model\Booking as Booking;
         public function getBooking(){
             return $this->booking;
         }
-
-        //SETTERS
+        
         public function setId($idChecker){
             $this->idChecker = $idChecker;
         }

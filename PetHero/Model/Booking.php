@@ -14,7 +14,7 @@ use \Model\User as User;
         private User $user;
 
 
-        //CONSTRUCTORS
+//? CONSTRUCTORS
         public function __construct(){}
 
         public function __fromRequest($startD, $finishD, $bookState, Publication $publication, User $user){
@@ -44,7 +44,7 @@ use \Model\User as User;
             $this->user = $user;
         }
 
-//GETTERS & SETTERS
+//? GETTERS & SETTERS
         public function getId(){
             return $this->idBook;
         }
