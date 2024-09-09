@@ -1,5 +1,6 @@
 <?php
 namespace DAO;
+
 use \DAO\Connection as Connection;
 use \DAO\QueryType as QueryType;
 
@@ -20,21 +21,21 @@ require 'Lib/PHPMailer/SMTP.php';
         private $tableName = 'Checker';
         private $bpDAO;
 
-//======================================================================
-// DAOs INJECTION
-//======================================================================
+//? ======================================================================
+//!                           DAOs INJECTION
+//? ======================================================================
         public function __construct(){
             $this->bpDAO = new BookingPetDAO();
         }
 
-//======================================================================
-// TOOLS METHODS
-//======================================================================
+//? ======================================================================
+//!                             TOOL METHOD
+//? ======================================================================
         private function GenRefCode(){
             $refCode = "";
             while(empty($refCode)){  
                 $pattern = "1234567890abcdefghijklmnopqrstuvwxyz";
-                $max = strlen($pattern)-1;
+                $max = strlen($pattern) - 1;
                 for($i = 0; $i < 20; $i++){
                     $refCode .= substr($pattern, mt_rand(0,$max), 1);
                     if(!empty($this->GetByRef($refCode))){
@@ -45,9 +46,9 @@ require 'Lib/PHPMailer/SMTP.php';
             return $refCode;
         }
 
-//======================================================================
-// SELECT METHODS
-//======================================================================
+//? ======================================================================
+//!                           SELECT METHODS
+//? ======================================================================
         public function Get($idChecker){
             $checker = null;
 
@@ -133,7 +134,7 @@ require 'Lib/PHPMailer/SMTP.php';
                 $checker->__fromDB($row["idChecker"],$row["refCode"],$row["emisionD"]
                                   ,$row["closeD"],$row["finalPrice"]
                                   ,$this->bpDAO->GetByBook($row["idBook"])->getBooking());
-            array_push($checkerList,$checker);
+                array_push($checkerList,$checker);
             }
         return $checkerList;    
         }
@@ -151,9 +152,9 @@ require 'Lib/PHPMailer/SMTP.php';
         return $checkerList;    
         }
 
-//======================================================================
-// INSERT METHODS
-//======================================================================
+//? ======================================================================
+// !                          INSERT METHODS
+//? ======================================================================
         private function Add(Checker $checker){
             $query = "CALL Checker_Add(?,?,?,?,?)";
             $parameters["refCode"] = $checker->getRefCode();
@@ -161,12 +162,27 @@ require 'Lib/PHPMailer/SMTP.php';
             $parameters["closeD"] = $checker->getcloseDate();
             $parameters["finalPrice"] = $checker->getFinalPrice();
             $parameters["idBook"] = $checker->getBooking()->getId();
+
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
-//-----------------------------------------------------
-// METHOD TO CREATE A CHECKER AND UPDATE A BOOKING
-//-----------------------------------------------------      
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××  
+//¬         MÉTODO PARA CREAR UN CHECKER Y ACTUALIZAR UNA RESERVA
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
+/*
+* D: Encargado de la creación del checker a partir de:
+?    1) Obtención del 50% del monto total a pagar. 
+?    2) Se genera un código de pago y establece la fecha actual 
+?       y la fecha limite para el pago
+?    3) Se establece la fecha actual y la fecha limite para el pago.
+?    4) Se envía el mail correspondiente con el checker en formato PDF.
+?    4) Se actualiza el estado de la reserva a la espera del pago.
+* A: Checker parcialmente cargado.
+* A2: INTEGER correspondiente a la respuesta del Keeper a la petición.
+* R: String con el mensaje correspondiente al estado de la operación.
+
+! REVISAR METODO, DEMASIADO COMPLEJO Y ENGORROSO.
+🐘*/      
         public function NewChecker(Checker $checker,$rta){
             $message = "Successful: Se ha creado el checker y actualizado la reserva.";
        
@@ -175,32 +191,38 @@ require 'Lib/PHPMailer/SMTP.php';
                 try{
                     if($rta == 1){
                         try{
-
-                        $totally = $this->bpDAO->GetTotally($bp->getBooking());             //SE OBTIENE EL 50% DEL MONTO TOTAL A PAGAR//
+                            //¬ SE OBTIENE EL 50% DEL MONTO TOTAL A PAGAR
+                            $totally = $this->bpDAO->GetTotally($bp->getBooking());  
                         }catch(Exception $e){
-                                $message = "Error: Ha ocurrido un error inesperado, intente mas tarde.";
-                            return $message;
+                            $message = "Error: Ha ocurrido un error inesperado, intente mas tarde.";
+                        return $message;
                         }
+
                         try{
+                            //¬ SE SETEAN LAS FECHAS, SE GENERA UN CÓDIGO ÚNICO Y SE GUARDA EL CHECKER//
                             $openD = DATE("Y-m-d");
                             $closeD = DATE("Y-m-d",STRTOTIME($openD."+ 3 days"));
                             $refCode = $this->GenRefCode();
-                            $checker->__fromRequest($refCode,$openD,$closeD,$totally,$bp->getBooking());     //SE SETEAN LAS FECHAS, SE GENERA UN CODIGO UNICO Y SE GUARDA EL CHECKER//
+                            $checker->__fromRequest($refCode,$openD,$closeD,$totally,$bp->getBooking());  
                             $this->Add($checker);
                         }catch(Exception $e){
-                                $message = "Error: No se ha podido generar el checker, intente mas tarde.";
-                            return $message;
+                            $message = "Error: No se ha podido generar el checker, intente mas tarde.";
+                        return $message;
                         }
+
                         try{
+                            //¬ SI EL OWNER USA ALGUNO DE ESTOS 2 MAILS, SE ENVÍA EL CHECKER POR MAIL
+                            $message = $this->SendChecker($checker);
                             if(strcmp($checker->getBooking()->getUser()->getEmail(),"misaelflores4190@gmail.com")==0 
-                            XOR strcmp($checker->getBooking()->getUser()->getEmail(),"ignaciorios_g@hotmail.com")==0){   //SI EL OWNER USA ALGUNO DE ESTOS 2 MAILS, SE ENVIA EL CHECKER POR MAIL//
-                               $message = $this->SendChecker($checker);
+                            XOR strcmp($checker->getBooking()->getUser()->getEmail(),"ignaciorios_g@hotmail.com")==0){   
                             }
                         }catch(Exception $e){
                             $message = "Error: No se ha podido enviar el checker, intente mas tarde.";
-                            return $message;
-                        }      
-                        $this->bpDAO->NewState($bp->getBooking(),$rta);                     //SE ACTUALIZA EL ESTADO DE LA RESERVA//
+                        return $message;
+                        } 
+
+                        //¬ SE ACTUALIZA EL ESTADO DE LA RESERVA
+                        $this->bpDAO->NewState($bp->getBooking(),$rta);                     
                     }else{
                         $this->bpDAO->NewState($bp->getBooking(),$rta);
                         $message = "Successful: la reserva se ha cancelado con exito";
@@ -212,9 +234,9 @@ require 'Lib/PHPMailer/SMTP.php';
         return $message;   
         }
 
-//-----------------------------------------------------
-// METHOD TO UPDATE A CHECKER AND BOOKING
-//-----------------------------------------------------  
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
+//¬             MÉTODOS PARA ACTUALIZAR UN CHECKER Y RESERVAR
+//* ×××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××× 
         private function SetPayDChecker(Checker $checker){
             $query = "CALL Checker_SetPayD(?,?)";
             $parameters["idChecker"] = $checker->getEmissionDate();
@@ -237,8 +259,10 @@ require 'Lib/PHPMailer/SMTP.php';
             }
             return $message;
         }
-//-----------------------------------------------------
-//-----------------------------------------------------  
+
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
+//¬                     MÉTODO PARA ENVIAR UN CHECKER
+//* ×××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××× 
 
         private function SendChecker(Checker $checker){
             $mail = new PHPMailer(true);
@@ -530,9 +554,9 @@ require 'Lib/PHPMailer/SMTP.php';
              return $message;
         }
 
-//======================================================================
-// DELETE METHODS
-//====================================================================== 
+//? ======================================================================
+//!                           DELETE METHODS
+//? ======================================================================
         public function Delete($idChecker){
             $query = "CALL Checker_Delete(?)";
             $parameters["idChecker"] = $idChecker;

@@ -1,5 +1,6 @@
 <?php
 namespace DAO;
+
 use \DAO\QueryType as QueryType;
 use \DAO\Connection as Connection;
 use \Exception as Exception;
@@ -64,34 +65,34 @@ use \Model\Pet as Pet;
         }
 
 /*
-* 🐘 D: Realiza la llamada del método 'GetAllBooksByUsername' 
+* D: Realiza la llamada del método 'GetAllBooksByUsername' 
 *        perteneciente a BookingDAO.
-* 🐘 A: Username del Owner.
-* 🐘 R: El listado de Bookings del username proporcionado.
-*/ 
+* A: Username del Owner.
+* R: El listado de Bookings del username proporcionado.
+🐘*/ 
         public function GetAllBooksByUsername($username){
             $bookList = $this->bookDAO->GetAllBooksByUsername($username);
         return $bookList;
         }
 
 /*
-* 🐘 D: Realiza la llamada del método 'GetAllBooksByKeeper' 
+* D: Realiza la llamada del método 'GetAllBooksByKeeper' 
 *        perteneciente a BookingDAO.
-* 🐘 A: Username del Keeper.
-* 🐘 R: El listado de Bookings del username proporcionado.
-*/ 
+* A: Username del Keeper.
+* R: El listado de Bookings del username proporcionado.
+🐘*/ 
         public function GetAllBooksByKeeper($username){
             $matches = $this->bookDAO->GetAllBooksByKeeper($username);
         return $matches;    
         }
  
 /*
-* 🐘 D: Recupera las Pets asociadas a cada Booking según ID.
+* D: Recupera las Pets asociadas a cada Booking según ID.
 *        Realiza llamada a los métodos Get de BookingDAO Y PetDAO
 *        como soporte.
-* 🐘 A: ID del Booking
-* 🐘 R: El listado de Pets según ID del Booking
-*/     
+* A: ID del Booking
+* R: El listado de Pets según ID del Booking
+🐘*/     
         public function GetPetsByBook($idBook){
             $bpetList = array();
 
@@ -109,12 +110,12 @@ use \Model\Pet as Pet;
         }
 
 /*
-* 🐘 D: Método de uso conjunto donde primero recupera todos los
+* D: Método de uso conjunto donde primero recupera todos los
 *        Booking según su username, para posteriormente aprovechar
 *        el ID de cada una para recuperar las Pets asociadas.
-* 🐘 A: Username del Owner.
-* 🐘 R: Listado de Pets según los Bookings filtrados por Username.
-*/    
+* A: Username del Owner.
+* R: Listado de Pets según los Bookings filtrados por Username.
+🐘*/    
         public function GetAllPetsBooks($username){
                 $booklist = $this->GetAllBooksByUsername($username);
                 $psBsList = array();
@@ -127,12 +128,12 @@ use \Model\Pet as Pet;
         }
 
 /*
-* 🐘 D: Método de uso conjunto donde primero recupera todos los
+* D: Método de uso conjunto donde primero recupera todos los
 *        Booking donde este asociado el Keeper, para luego usar
 *        los ID y recuperar las mascotas asociadas.
-* 🐘 A: Username del Keeper.
-* 🐘 R: Listado de Pets según los Bookings filtrados por Username.
-*/    
+* A: Username del Keeper.
+* R: Listado de Pets según los Bookings filtrados por Username.
+🐘*/    
         public function GetAllPetsByBooks($username){
                 $booklist = $this->GetAllBooksByKeeper($username);
                 $psBsList = array();
@@ -173,18 +174,18 @@ use \Model\Pet as Pet;
         return $bp;
         }
         
-//? =================================================================================
-//!  MÉTODOS QUE OBTIENEN EL TOTAL DE LOS DÍAS DE ESTANCIA Y LA CANTIDAD DE MASCOTA
-//? =================================================================================
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
+//¬  MÉTODOS QUE OBTIENEN EL TOTAL DE LOS DÍAS DE ESTANCIA Y LA CANTIDAD DE MASCOTA
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
 /*
-* 🐘 D: Obtiene el pago correspondientes al NUMERO de Pets
+* D: Obtiene el pago correspondientes al NUMERO de Pets
 *        que el Keeper deberá cuidar en ESTA Booking.
 *        TotalPagoPets = CantidadPets * RemuneraciónPublication
-!    Requerido por GetTotally para obtener el total final a pagar.
-* 🐘 A: Booking que aportara el ID para realizar el filtro
-*        y recuento de Pets asociados.
-* 🐘 R: Subtotal correspondiente al pago por x cantidad de Pets.
-*/    
+!     Requerido por GetTotally para obtener el total final a pagar.
+* A: Booking que aportara el ID para realizar el filtro
+*     y recuento de Pets asociados.
+* R: Subtotal correspondiente al pago por x cantidad de Pets.
+🐘*/    
         private function GetFPPet(Booking $book){
             $petPay = 0;
             $query = "CALL BP_GetPetPay(?,?)";
@@ -200,15 +201,15 @@ use \Model\Pet as Pet;
         }
 
 /*
-* 🐘 D: Método compuesto encargado de calcular el total
+* D: Método compuesto encargado de calcular el total
 *       y retornar la mitad de este para finalizar la emisión
 *       del checker a pagar por el Owner.
 !       Requerido por GetTotally de CheckerDAO para la emisión
 !       satisfactoria de un Checker.
-* 🐘 A: Booking que aportara el ID para realizar el filtro
+* A: Booking que aportara el ID para realizar el filtro
 *        y recuento de Pets asociados.
-* 🐘 R: Mitad del pago total.
-*/   
+* R: Mitad del pago total.
+🐘*/   
         public function GetTotally(Booking $book){
                 $book = $this->bookDAO->Get($book->getId());
             $subtotalBook = $this->bookDAO->GetFPBook($book);
@@ -230,9 +231,9 @@ use \Model\Pet as Pet;
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
 
-//? ======================================================================
-//!                 MÉTODO PARA CREAR UNA RESERVA CON MASCOTAS
-//? ======================================================================   
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
+//¬                 MÉTODO PARA CREAR UNA RESERVA CON MASCOTAS
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××  
         public function NewBooking(Booking $booking,$petList){
 //? 1) GUARDO Y RECUPERO BOOKING COMPLETO CON ID
             $message = "Successful: Se ha completado la reserva exitosamente";
@@ -278,30 +279,30 @@ use \Model\Pet as Pet;
         }
 
 /*
-* 🐘 D: Método que se sostiene de UpdateAllStates de
-*        BookingDAO para mantener los estados de las 
-*        Booking actualizados y en orden.
-* 🐘 A: No posee
-* 🐘 R: No posee.
-*/           
+* D: Método que se sostiene de UpdateAllStates de
+*     BookingDAO para mantener los estados de las 
+*     Booking actualizados y en orden.
+* A: No posee
+* R: No posee.
+🐘*/           
         public function UpdateAllStates(){
             $this->bookDAO->UpdateAllStates();
         }
 
-//? ======================================================================
-//!    MÉTODOS A CARGO DE LA VALIDACIÓN Y FIJACIÓN DEL CÓDIGO DE PAGO
-//? ====================================================================== 
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
+//¬    MÉTODOS A CARGO DE LA VALIDACIÓN Y FIJACIÓN DEL CÓDIGO DE PAGO
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
 /*
-* 🐘 D: Método encargado de comprobar que el paycode suministrado sea
+* D: Método encargado de comprobar que el paycode suministrado sea
 *       correcto.
 ?       Para poder realizar una simulacion correcta del funcionamiento,
 ?       Se tiene un listado de 'paycodes generados', ya que estos 
 ?       deberían ser suministrados por la entidad donde se pago el checker.
 !       Requerida por UpdatePayCode como condicion para actualizar el
 !       estado del Booking y asentar el paycode en la BDD.
-* 🐘 A: Booking del cual obtenemos el paycode.
-* 🐘 R: 1 si la comprobación es valida, 0 al ser falso.
-*/  
+* A: Booking del cual obtenemos el paycode.
+* R: 1 si la comprobación es valida, 0 al ser falso.
+🐘*/  
         public function CheckPayCode(Booking $book){
             $rta = 0;
             $bookA = $this->bookDAO->Get($book->getId());
@@ -317,12 +318,12 @@ use \Model\Pet as Pet;
         }
 
 /*
-* 🐘 D: Método encargado de actualizar el estado del Booking si previamente
+* D: Método encargado de actualizar el estado del Booking si previamente
 *        a este le fue agregado un paycode y a su vez es valido para comprobar
 *        el pago del Checker. Finalmente se asienta el paycode en la BDD.
-* 🐘 A: Booking del cual obtenemos el paycode.
-* 🐘 R: Mensaje afirmativo o negativo respecto a si el pago pudo ser comprobado.
-*/    
+* A: Booking del cual obtenemos el paycode.
+* R: Mensaje afirmativo o negativo respecto a si el pago pudo ser comprobado.
+🐘*/    
         public function UpdatePayCode(Booking $book){
             $message = "Error: El numero de pago ingresado no es valido";
             $rta = $this->CheckPayCode($book);
@@ -351,17 +352,17 @@ use \Model\Pet as Pet;
         }
 
 
-//? ======================================================================
-//!    MÉTODOS ENCARGADOS DE VALIDACIONES NECESARIAS PARA CREAR BOOKING
-//? ======================================================================       
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
+//¬    MÉTODOS ENCARGADOS DE VALIDACIONES NECESARIAS PARA CREAR BOOKING
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××      
 /*
-* 🐘 D: Método que retorna los Pets correspondientes a 
+* D: Método que retorna los Pets correspondientes a 
 *        determinado Booking según sus ID.
 !        Requerido por ValidateTypes, instancia previa a
 !        la validación de fecha para crear una Booking.
-* 🐘 A: IDs de Mascotas que serán vinculadas a un Booking.
-* 🐘 R: Lista de Pets recuperados.
-*/     
+* A: IDs de Mascotas que serán vinculadas a un Booking.
+* R: Lista de Pets recuperados.
+🐘*/     
         public function GetAllPetsbyBooking($idList) {
             $petList = array();
     
@@ -374,14 +375,14 @@ use \Model\Pet as Pet;
         }
 
 /*
-* 🐘 D: Método encargado de validar la siguiente condición:
-?        "Solo se podra tener 1 tipo de Pet por Booking"
-*        Recuperamos los Pets con el método GetAllPetsbyBooking
-*        Para posteriormente obtener un ancla del primer
-*        elemento (su petType).
-* 🐘 A: IDs de Mascotas que serán vinculadas a un Booking.
-* 🐘 R: 1 en caso de cumplir la condición previa, 0 en false.
-*/          
+* D: Método encargado de validar la siguiente condición:
+?    "Solo se podrá tener 1 tipo de Pet por Booking"
+*     Recuperamos los Pets con el método GetAllPetsbyBooking
+*     Para posteriormente obtener un ancla del primer
+*     elemento (su petType).
+* A: IDs de Mascotas que serán vinculadas a un Booking.
+* R: 1 en caso de cumplir la condición previa, 0 en false.
+🐘*/          
         public function ValidateTypes($idList){
             $petList= $this->GetAllPetsbyBooking($idList);
             $rta=0;
@@ -401,12 +402,12 @@ use \Model\Pet as Pet;
         }
 
 /*
-* 🐘 D: Método compuesto para validar los tipos de Pets la Booking a registrar
+* D: Método compuesto para validar los tipos de Pets la Booking a registrar
 *        con las de otras Bookings que coincidan en cuanto a fecha.
-* 🐘 A: Booking a almacenar.
-* 🐘 A2: IDs de Pets a vincular a la Booking anterior.
-* 🐘 R: 1 en caso de cumplir la condición previa, 0 en false.
-*/ 
+* A: Booking a almacenar.
+* A2: IDs de Pets a vincular a la Booking anterior.
+* R: 1 en caso de cumplir la condición previa, 0 en false.
+🐘 */ 
         public function ValidateTypesOnBookings(Booking $booking, $idList){
             $matches = $this->bookDAO->GetAllMatchingDatesByPublic($booking); 
             $petList = $this->GetAllPetsbyBooking($idList);

@@ -1,9 +1,9 @@
 <?php
 namespace DAO;
+
 use \DAO\Connection as Connection;
 use \DAO\QueryType as QueryType;
 use \Exception as Exception;
-
 use \DAO\IBookingDAO as IBookingDAO;
 use \DAO\PublicationDAO as PublicationDAO;
 use \DAO\UserDAO as UserDAO;
@@ -67,12 +67,11 @@ use \Model\Booking as Booking;
         }
 
 /*
-* 🐘 D: Recupero todos los Bookings según el username de 
-*        un User(OWNER).
-!  Requerido por GetAllBooksByUsername de BookingPetDAO.
-* 🐘 A: Username del Owner.
-* 🐘 R: El listado de Bookings del username proporcionado.
-*/ 
+*  D: Recupero todos los Bookings según el username de un User(OWNER).
+!     Requerido por GetAllBooksByUsername de BookingPetDAO.
+*  A: Username del Owner.
+*  R: El listado de Bookings del username proporcionado.
+🐘*/ 
         public function GetAllBooksByUsername($username){
             $user = $this->userDAO->DGetByUsername($username);
             $bookList = $this->GetAllByUser($user->getId());
@@ -81,12 +80,11 @@ use \Model\Booking as Booking;
 
 //* TODAS LAS BOOKINGS DE UN KEEPER SEGUN USERNAME.
 /*
-* 🐘 D: Recupero todos los Bookings según el username de 
-*        un User(Keeper).
-!  Requerido por GetAllBooksByKeeper de BookingPetDAO.
-* 🐘 A: Username del Keeper.
-* 🐘 R: El listado de Bookings del username proporcionado.
-*/ 
+* D: Recupero todos los Bookings según el username de un User(Keeper).
+!    Requerido por GetAllBooksByKeeper de BookingPetDAO.
+* A: Username del Keeper.
+* R: El listado de Bookings del username proporcionado.
+🐘*/ 
         public function GetAllBooksByKeeper($username){
             $matches = array();
                 $bookings = $this->GetAll();
@@ -99,12 +97,11 @@ use \Model\Booking as Booking;
         }
 
 /*
-* 🐘 D: Recupera un Booking segun ID.
-!     Requerido por el metodo GetPetsByBook 
-!     de BookingPetDAO.
-* 🐘 A: ID del Booking a filtrar.
-* 🐘 R: Booking filtrado.
-*/          
+* D: Recupera un Booking segun ID.
+!     Requerido por el metodo GetPetsByBook de BookingPetDAO.
+* A: ID del Booking a filtrar.
+* R: Booking filtrado.
+🐘*/          
         public function Get($idBook){
             $booking = null;
 
@@ -145,14 +142,16 @@ use \Model\Booking as Booking;
         }
 
 /*
-* 🐘 D: Método interno que obtiene el costo a abonar a partir de la
-*       la remuneración establecida por Publication y la diferencia
-*       de Dias entre finishD y startD. Por lo tanto, resumiendo:
-*          CostoTotal = duracionDiasDeReserva * remuneracion
-* 🐘 A: Una reserva que provee las fechas de inicio y final, como
-*        la Publicacion con la remuneracion.
-* 🐘 R: Valor a abonar, el cual se suministrara al Checker.
-*/
+* D: Método interno que obtiene el costo a abonar a partir de la
+*     la remuneración establecida por Publication y la diferencia
+*     de Dias entre finishD y startD. Por lo tanto, resumiendo:
+
+?          CostoTotal = duracionDiasDeReserva * remuneracion
+
+* A: Una reserva que provee las fechas de inicio y final, como
+*     la Publicacion con la remuneracion.
+* R: Valor a abonar, el cual se suministrara al Checker.
+🐘*/
         private function GetBookPay(Booking $book){
             $bookPay = 0;
 
@@ -198,14 +197,14 @@ use \Model\Booking as Booking;
 
 
 /*
-* 🐘 D: Método que trabaja conjunto a 'Add' para registrar un Booking.
-*       Realizando:
-*       💠 Recuperacion de la Publication vinculada.
-*       💠 Recuperacion del User que solicita la Booking.
-* 🐘 A: Una reserva que provee el ID de la Publication y el USERNAME
+* D: Método que trabaja conjunto a 'Add' para registrar un Booking.
+*    Realizando:
+*       💠 Recuperación de la Publication vinculada.
+*       💠 Recuperación del User que solicita la Booking.
+* A: Una reserva que provee el ID de la Publication y el USERNAME
 *        del user correspondiente.
-* 🐘 R: Se retorna el Booking registrado con datos completos.
-*/
+* R: Se retorna el Booking registrado con datos completos.
+🐘*/
         public function AddRet(Booking $booking){
                 $public = $this->publicDAO->Get($booking->getPublication()->getId());
                 $user = $this->userDAO->DGetByUsername($booking->getUser()->getUsername());
@@ -238,26 +237,26 @@ use \Model\Booking as Booking;
         }
 
 /*
-* 🐘 D: Método que conjunto a 'UpdateST' actualiza el estado del Booking 
-*       según las condiciones:
+* D: Método que conjunto a 'UpdateST' actualiza el estado del Booking 
+*     según las condiciones:
 ?      💠 Live
-*          ► In process 
+¬          ► In process 
 ?      💠 Before
-*          ► In Review (luego de crear la reserva)
-*          ► Awaiting Payment (luego de aceptar la reserva)
-*          ► Confirmed
+¬          ► In Review (luego de crear la reserva)
+¬          ► Awaiting Payment (luego de aceptar la reserva)
+¬          ► Confirmed
 ?      💠 Death
-*          ► Canceled (Cancelado mediante botón después de pago y antes 
-*            de que arranque la reserva)
-*          ► Declined
-*          ► Rechazed
-*          ► Expired (No hay respuesta de keeper luego de 3 dias de 
-*            creado la reserva)
-*          ► Out of Term (se vence el checker)
-*          ► Finalized
-* 🐘 A: Una Booking a la cual se le actualiza y asienta el cambio de ESTADO.
-* 🐘 R: No Posee.
-*/
+¬          ► Canceled (Cancelado mediante botón después de pago y antes 
+¬            de que arranque la reserva)
+¬          ► Declined
+¬          ► Rechazed
+¬          ► Expired (No hay respuesta de keeper luego de 3 dias de 
+¬            creado la reserva)
+¬          ► Out of Term (se vence el checker)
+¬          ► Finalized
+* A: Una Booking a la cual se le actualiza y asienta el cambio de ESTADO.
+* R: No Posee.
+🐘*/
         public function UpdateStSwtich(Booking $book,$stateNum){
             switch($stateNum){
                 case 0:
@@ -295,27 +294,27 @@ use \Model\Booking as Booking;
             }
         }
 
-//? ----------------------------------------------------------------------------------
-//! METHODS THAT WILL BE IMPLEMENTED IN EACH OWNER AND KEEPER PANEL FOR THE UPDATING 
-//! OF AUTOMATIC STATES ACCORDING TO PARTICULAR SITUATIONS.
-//? ----------------------------------------------------------------------------------
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
+//¬    MÉTODOS QUE SE IMPLEMENTARÁN EN CADA PANEL DE PROPIETARIO Y TENEDOR PARA LA 
+//¬    ACTUALIZACIÓN DE ESTADOS AUTOMÁTICOS SEGÚN SITUACIONES PARTICULARES.
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
 
 /*
-* 🐘 D: Método de actualización continua, donde recupera todas las reservas existentes
+* D: Método de actualización continua, donde recupera todas las reservas existentes
 *       para realizar cambios sobre sus correspondientes estados según: 
 ?      💠 UpdateToExpired
-*          ► CHEQUEA SI UN KEEPER NO RESPONDIÓ A UNA RESERVA EN UN MÁXIMO 
-*            DE 3 DIAS ANTES DE COMENZAR EL BOOKING, PROCEDE A CAMBIAR 
-*            ESTADO A EXPIRED,MURIENDO LÓGICAMENTE EL BOOKING.
+¬          ► CHEQUEA SI UN KEEPER NO RESPONDIÓ A UNA RESERVA EN UN MÁXIMO 
+¬            DE 3 DIAS ANTES DE COMENZAR EL BOOKING, PROCEDE A CAMBIAR 
+¬            ESTADO A EXPIRED,MURIENDO LÓGICAMENTE EL BOOKING.
 ?      💠 UpdateToInP
-*          ► CHEQUEA SI UN BOOKING COINCIDE SU FECHA DE INICIO CON LA 
-*            ACTUAL,PROCEDE A CAMBIAR ESTADO A IN PROGRESS.
+¬          ► CHEQUEA SI UN BOOKING COINCIDE SU FECHA DE INICIO CON LA 
+¬            ACTUAL,PROCEDE A CAMBIAR ESTADO A IN PROGRESS.
 ?      💠 UpdateToFinalized
-*          ► CHEQUEA SI UN BOOKING COINCIDE SU FECHA DE FIN CON LA ACTUAL,
-*            PROCEDE A CAMBIAR ESTADO A FINALIZED, MURIENDO EL BOOKING. 
-* 🐘 A: No posee.
-* 🐘 R: No Posee.
-*/
+¬          ► CHEQUEA SI UN BOOKING COINCIDE SU FECHA DE FIN CON LA ACTUAL,
+¬            PROCEDE A CAMBIAR ESTADO A FINALIZED, MURIENDO EL BOOKING. 
+* A: No posee.
+* R: No Posee.
+🐘 */
         public function UpdateAllStates(){
             $bookisList = $this->GetAll();
             if(!EMPTY($bookisList)){
@@ -326,13 +325,13 @@ use \Model\Booking as Booking;
         }
 
 /*
-* 🐘 D: Método interno que comprueba si un Keeper no respondio a la solicitud de
+* D: Método interno que comprueba si un Keeper no respondio a la solicitud de
 *        reserva en un maximo de 3 dias antes de la startD del Booking.
 *        Se comprueba si el estado anterior es consistente al flujo establecido.
 *        Se procede a cambiar el estado a 'EXPIRED',provocando muerte logica.
-* 🐘 A: Recibe las Booking disponibles en la BDD.
-* 🐘 R: No Posee.
-*/
+* A: Recibe las Booking disponibles en la BDD.
+* R: No Posee.
+🐘*/
         private function UpdateToExpired($bookList){
             foreach($bookList as $book){
                 if(STRCMP($book->getBookState(),"In Review") == 0){
@@ -345,12 +344,12 @@ use \Model\Booking as Booking;
         }
 
 /*
-* 🐘 D: Método interno que comprueba si el startD de un Booking coincide con la
+* D: Método interno que comprueba si el startD de un Booking coincide con la
 *        FECHA ACTUAL. Se comprueba si el estado anterior es consistente al 
 *        flujo establecido, se procederá a cambiar el estado a 'IN PROGRESS'.
-* 🐘 A: Recibe las Booking disponibles en la BDD.
-* 🐘 R: No Posee.
-*/
+* A: Recibe las Booking disponibles en la BDD.
+* R: No Posee.
+🐘 */
         private function UpdateToInP($bookList){
             foreach($bookList as $book){
                 if(STRCMP($book->getBookState(),"Waiting Start") == 0){
@@ -362,13 +361,13 @@ use \Model\Booking as Booking;
         }
 
 /*
-* 🐘 D: Método que comprueba si el finishD de un Booking coincide con la
+* D: Método que comprueba si el finishD de un Booking coincide con la
 *        FECHA ACTUAL. Se comprueba si el estado anterior es consistente al 
 *        flujo establecido, se procederá a cambiar el estado a 'FINALIZED'.
 *        Dando muerte lógica al Booking.
-* 🐘 A: Recibe las Booking disponibles en la BDD.
-* 🐘 R: No Posee.
-*/   
+* A: Recibe las Booking disponibles en la BDD.
+* R: No Posee.
+🐘*/   
         private function UpdateToFinalized($bookList){
             foreach($bookList as $book){
                 if(STRCMP($book->getBookState(),"In Progress") == 0){
@@ -381,15 +380,15 @@ use \Model\Booking as Booking;
         }
 
 /*
-* 🐘 D: Método que recupera los Bookings con estado 'Waiting Start'
+* D: Método que recupera los Bookings con estado 'Waiting Start'
 *        o 'In Progress', notando que son aquellos que coinciden con
 *        la FECHA ACTUAL TRANSITADA.
 !        Este método es invocado desde 'BOOKINGPETDAO'.
 ?        Es utilizado por el Keeper.
-* 🐘 A: Booking que suministra startD,finishD y idPublic para realizar
+* A: Booking que suministra startD,finishD y idPublic para realizar
 *        el filtro de las Bookings correctas
-* 🐘 R: Lista de Bookings filtradas que coinciden con la fecha actual.
-*/  
+* R: Lista de Bookings filtradas que coinciden con la fecha actual.
+🐘 */  
         public function GetAllMatchingDatesByPublic(Booking $booking){
             $bookingList = array();    
             $query = "CALL Booking_CheckRange(?,?,?)";
@@ -411,12 +410,12 @@ use \Model\Booking as Booking;
 
 
 /*
-* 🐘 D: Metodo encargado de comprobar que el Owner ha concluido su
+* D: Metodo encargado de comprobar que el Owner ha concluido su
 *       Booking de MANERA NATURAL para poder dejar una Review.
-* 🐘 A: Username correspondiente al owner que contrato el servicio.
-* 🐘 A2: ID de la Publication relacionada al Booking
-* 🐘 R: True en caso de permitir review, falso caso contrario.
-*/ 
+* A: Username correspondiente al owner que contrato el servicio.
+* A2: ID de la Publication relacionada al Booking
+* R: True en caso de permitir review, falso caso contrario.
+🐘 */ 
         public function CheckBookDone($username, $idPublic){
             $canReview = 0;
             try{
@@ -435,20 +434,16 @@ use \Model\Booking as Booking;
             }     
             return $canReview;
         }
-    
-//----------------------------------------------------------------------------------
-//----------------------------------------------------------------------------------
-        
+
 //? ======================================================================
 //!                         DELETE METHODS
 //? ====================================================================== 
 //* Borra una Booking segun ID.
-    public function Delete($idBooking){
-        $query = "CALL booking_Delete(?)";
-        $parameters["idbooking"] = $idBooking;
-        $this->connection = Connection::GetInstance();
-        $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
+        public function Delete($idBooking){
+            $query = "CALL booking_Delete(?)";
+            $parameters["idbooking"] = $idBooking;
+            $this->connection = Connection::GetInstance();
+            $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
+        }
     }
-
-}
 ?>

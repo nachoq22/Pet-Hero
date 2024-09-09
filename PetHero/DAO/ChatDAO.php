@@ -1,9 +1,10 @@
 <?php
-    namespace DAO;
-    use \Model\Chat as Chat;
-    use \DAO\IChatDAO as IChatDAO;
-    use \DAO\UserDAO as UserDAO;
-    use Exception as Exception;
+namespace DAO;
+
+use \Model\Chat as Chat;
+use \DAO\IChatDAO as IChatDAO;
+use \DAO\UserDAO as UserDAO;
+use Exception as Exception;
 
     class ChatDAO implements IChatDAO{
         private $connection;
@@ -11,17 +12,16 @@
 
         private $userDAO;
 
-//======================================================================
-// DAOs INJECTION
-//======================================================================
-        public function __construct()
-        {
+//? ======================================================================
+//!                           DAOs INJECTION
+//? ======================================================================
+        public function __construct(){
             $this->userDAO = new UserDAO();
         }
 
-//======================================================================
-// INSERT METHODS
-//======================================================================
+//? ======================================================================
+// !                          INSERT METHODS
+//? ======================================================================
         public function Add(Chat $chat){
             $idLastP = 0;
             $query = "CALL Chat_Add(?,?)";
@@ -34,27 +34,29 @@
             foreach($resultBD as $row){
                 $idLastP = $row["LastID"];
             }
+            
         return $idLastP;
         }
 
         public function NewChat(Chat $chat){
             try{
-            $owner = $this->userDAO->DGetByUsername($chat->getOwner()->getUsername());
-            $chat->setOwner($owner);
-            $idLastP = $this->Add($chat);
+                $owner = $this->userDAO->DGetByUsername($chat->getOwner()->getUsername());
+                $chat->setOwner($owner);
+                $idLastP = $this->Add($chat);
             }catch(Exception $e){
                 return "Error: no se pudo establecer conexion con el keeper";
             }
+
             $chat = $this->GetById($idLastP);
-            return $chat;
+
+        return $chat;
         }
 
 
-//======================================================================
-// SELECT METHODS
-//======================================================================
-        public function GetAll()
-        {
+//? ======================================================================
+//!                           SELECT METHODS
+//? ======================================================================
+        public function GetAll(){
             $chatList = array();    
 
             $query = "CALL Chat_GetAll()";
@@ -63,11 +65,12 @@
 
             foreach($resultBD as $row){
                 $chat = new chat();
-                $chat->__fromBD($row["idChat"],$this->userDAO->DGet($row["idOwner"]),$this->userDAO->DGet($row["idKeeper"]));
-
+                $chat->__fromBD($row["idChat"],$this->userDAO->DGet($row["idOwner"]),
+                                               $this->userDAO->DGet($row["idKeeper"]));
                 array_push($chatList,$chat);
             }
-            return $chatList;
+
+        return $chatList;
         }
 
         public function GetById($idChat){
@@ -79,10 +82,11 @@
 
             foreach($resultBD as $row){
                 $chat = new Chat();
-
-                $chat->__fromBD($row["idChat"],$this->userDAO->DGet($row["idOwner"]),$this->userDAO->DGet($row["idKeeper"]));
+                $chat->__fromBD($row["idChat"],$this->userDAO->DGet($row["idOwner"])
+                                              ,$this->userDAO->DGet($row["idKeeper"]));
             }
-            return $chat;
+
+        return $chat;
         }
 
         public function GetByUser($idUser){
@@ -96,15 +100,17 @@
             foreach($resultBD as $row){
                 $chatN = new Chat();
 
-                $chatN->__fromBD($row["idChat"],$this->userDAO->DGet($row["idOwner"]),$this->userDAO->DGet($row["idKeeper"]));
+                $chatN->__fromBD($row["idChat"],$this->userDAO->DGet($row["idOwner"])
+                                               ,$this->userDAO->DGet($row["idKeeper"]));
                 array_push($chatList, $chatN);
             }
-            return $chatList;
+
+        return $chatList;
         }
 
         public function ChatByUser($userName){
             $user = $this->userDAO->DGetByUsername($userName);
-            return $this->GetByUser($user->getId());
+        return $this->GetByUser($user->getId());
         }
 
         private function GetByUsers(Chat $chat){
@@ -118,18 +124,22 @@
 
             foreach($resultBD as $row){
                 $chatN = new Chat();
-
-                $chatN->__fromBD($row["idChat"],$this->userDAO->DGet($row["idOwner"]),$this->userDAO->DGet($row["idKeeper"]));
+                $chatN->__fromBD($row["idChat"],$this->userDAO->DGet($row["idOwner"])
+                                               ,$this->userDAO->DGet($row["idKeeper"]));
             }
-            return $chatN;
+
+        return $chatN;
         }
 
         public function ChatByUsers(Chat $chat){
             $owner = $this->userDAO->DGetByUsername($chat->getOwner()->getUsername());
             $chat->setOwner($owner);
-            return $this->GetByUsers($chat);
+        return $this->GetByUsers($chat);
         }
 
+//? ======================================================================
+//!                           DELETE METHODS
+//? ======================================================================
         public function Delete($idChat){
             $query = "CALL Chat_Delete(?)";
             $parameters["idChat"] = $idChat;
@@ -138,12 +148,25 @@
             $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
         }
 
+//? ======================================================================
+//!                           CHECK METHODS
+//? ======================================================================
+/*
+* D: Su principal función es comprobar la existencia de un chat previo
+*    entre 2 USERS (Owner y Keeper).
+!    Indispensable para el registro de un NUEVO CHAT, validación fundamental.
+!    Solicitado por ChatController a traves de ChatDAO.
+* A1: Chat que provee los usuarios a recuperar para comparar y validar.
+* R: INTEGER 1 en caso positivo de verificación, 0 caso contrario.
+🐘*/
         public function CheckChatExists(Chat $chat){
+            $chatExists = 0;
+
             $chatList = $this->GetAll();
             $owner = $this->userDAO->DGetByUsername($chat->getOwner()->getUsername());
-            $chatExists = 0;
+
             foreach($chatList as $chatf){
-                if($chatf->getOwner()->getId()==$owner->getId() && $chatf->getKeeper()->getId()==$chat->GetKeeper()->getId()){
+                if($chatf->getOwner()->getId() == $owner->getId() && $chatf->getKeeper()->getId()==$chat->GetKeeper()->getId()){
                     $chatExists = 1;
                     return $chatExists;
                 }
@@ -152,9 +175,8 @@
                     return $chatExists;
                 }
             }
+            
         return $chatExists;
         }
-    }
-        
+    } 
 ?>
-
