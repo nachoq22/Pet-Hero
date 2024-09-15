@@ -181,7 +181,7 @@ require 'Lib/PHPMailer/SMTP.php';
 * A2: INTEGER correspondiente a la respuesta del Keeper a la petición.
 * R: String con el mensaje correspondiente al estado de la operación.
 
-! REVISAR METODO, DEMASIADO COMPLEJO Y ENGORROSO.
+! REVISAR MÉTODO, DEMASIADO COMPLEJO Y ENGORROSO.
 🐘*/      
         public function NewChecker(Checker $checker,$rta){
             $message = "Successful: Se ha creado el checker y actualizado la reserva.";
@@ -237,14 +237,28 @@ require 'Lib/PHPMailer/SMTP.php';
 //* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
 //¬             MÉTODOS PARA ACTUALIZAR UN CHECKER Y RESERVAR
 //* ×××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××× 
+/*
+* D: Encargado de la actualización de la fecha en que se pago el Checker.
+!    Indispensable para la actualización completa de Checker y Reserva.
+* A: Checker totalmente cargado.
+* R: No posee.
+🐘*/
         private function SetPayDChecker(Checker $checker){
             $query = "CALL Checker_SetPayD(?,?)";
-            $parameters["idChecker"] = $checker->getEmissionDate();
+            $parameters["idChecker"] = $checker->getEmissionDate(); //! ERROR?
             $parameters["payD"] = $checker->getPayDate();
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
 
+/*
+* D: Encargado de la aplicación del método UpdatePayCode de BPDAO
+*    y posterior evaluación de retorno para posteriormente aplicar
+*    actualización de fecha de pago al checker.
+!    Funcionalidad indispensable.
+* A: Checker totalmente cargado.
+* R: String con mensaje afirmativo o negativo según resultado de la operación.
+🐘*/        
         public function PayCheck(Checker $checker){
             $message = $this->bpDAO->UpdatePayCode($checker->getBooking());
             try{
@@ -263,6 +277,42 @@ require 'Lib/PHPMailer/SMTP.php';
 //* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
 //¬                     MÉTODO PARA ENVIAR UN CHECKER
 //* ×××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××× 
+/*
+* D: Esta función tiene como objetivo principal enviar un correo electrónico 
+*    con los detalles del "checker" a un destinatario específico. 
+*    La información del checker se extrae de un objeto de la clase Checker y 
+*    se formatea en un correo electrónico HTML personalizado.
+*    El paso a paso es el siguiente:
+
+?    1) Configuración del Servidor de Correo:
+*    - Se establece el servidor de correo saliente en smtp.gmail.com.
+*    - Se habilitan las credenciales de autenticación (correo electrónico y contraseña) 
+*      para la cuenta de Gmail que se utilizará para enviar los correos.
+*    - Se configura el puerto de conexión y se habilita la encriptaron TLS 
+*      para garantizar la seguridad de la conexión.
+
+?    2) Destinatario:
+*    - Se obtiene la dirección de correo electrónico del destinatario a partir de la 
+*      información contenida en el objeto $checker. Esta dirección probablemente esté asociada 
+*      con el usuario que realizó la reserva.
+
+?    3) Preparación del Contenido del Correo:
+*    - Se crea una plantilla HTML con un diseño bien definido y atractivo.
+*    - Se reemplazan los marcadores de posición en la plantilla con los datos específicos 
+*      del checker, como el código de referencia, las fechas, los precios, los nombres de 
+*      los involucrados, etc.
+*    - Se configura el cuerpo del correo electrónico con la plantilla HTML y se establece un 
+*      texto alternativo (para clientes de correo que no soportan HTML).
+
+?    4) Envío del Correo:
+*    - Se utiliza la librería PHPMailer para enviar el correo electrónico. Esta librería se 
+*      encarga de gestionar la conexión al servidor SMTP, la autenticación y el envío del mensaje.
+
+!    Funcionalidad indispensable.
+~    Para mayores detalles, consultar documentación de la librería Ext 'PHPMailer'.
+* A: Checker totalmente cargado.
+* R: String con mensaje afirmativo o negativo según resultado de la operación.
+🐘*/       
 
         private function SendChecker(Checker $checker){
             $mail = new PHPMailer(true);

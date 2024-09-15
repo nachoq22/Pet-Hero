@@ -321,6 +321,8 @@ use \Model\Pet as Pet;
 * D: Método encargado de actualizar el estado del Booking si previamente
 *        a este le fue agregado un paycode y a su vez es valido para comprobar
 *        el pago del Checker. Finalmente se asienta el paycode en la BDD.
+!    Indispensable para funcionamiento de PayCheck() en CheckerDAO 
+!    para la actualizacion del checker.
 * A: Booking del cual obtenemos el paycode.
 * R: Mensaje afirmativo o negativo respecto a si el pago pudo ser comprobado.
 🐘*/    
