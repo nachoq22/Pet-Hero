@@ -14,16 +14,16 @@ use \Model\Publication as Publication;
 
         private $userDAO;
 
-//======================================================================
-// DAOs INJECTION
-//======================================================================
+//? ======================================================================
+//!                           DAOs INJECTION
+//? ======================================================================
         public function __construct(){
             $this->userDAO = new UserDAO();
         }
 
-//======================================================================
-// SELECT METHODS
-//======================================================================
+//? ======================================================================
+//!                           SELECT METHODS
+//? ======================================================================
         public function GetAll(){
             $publicList = array();    
 
@@ -113,9 +113,9 @@ use \Model\Publication as Publication;
         $public;
         }
 
-//======================================================================
-// INSERT METHODS
-//======================================================================
+//? ======================================================================
+// !                          INSERT METHODS
+//? ======================================================================
         public function Add(Publication $public){
             $idLastP = 0;
 
@@ -136,10 +136,10 @@ use \Model\Publication as Publication;
             }
         return $idLastP;
         }
-        
-//-----------------------------------------------------
-// METHOD DEDICATED TO CREATING A PUBLICATION
-//-----------------------------------------------------
+
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××  
+//¬         MÉTODO PARA REGISTRAR UNA PUBLICACION
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
         public function NewPublication(Publication $public){
                 $user = $this->userDAO->DGetByUsername($public->getUser()->getUsername());
                 $public->setUser($user);
@@ -149,9 +149,9 @@ use \Model\Publication as Publication;
         return $publicN;
         }
         
-//======================================================================
-// DELETE METHODS
-//======================================================================  
+//? ======================================================================
+//!                           DELETE METHODS
+//? ======================================================================
         public function Delete($idPublic){
             $query = "CALL Publication_Delete(?)";
             $parameters["idPublic"] = $idPublic;
@@ -161,9 +161,9 @@ use \Model\Publication as Publication;
         }
         
 
-//-----------------------------------------------------
-// ESTO SIRVE PARA BUSCAR MEDIANTE LA BARRA DE BUSQUEDA UNA PUBLICACION POR MEDIO DEL TITULO O DESCRIPCION 
-//-----------------------------------------------------
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××  
+//¬   BUSCAR PUBLICACION POR TITULO O DESCRIPCION A TRAVES DE SEARCHBAR
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
         public function Search($phrase){
             $publicList = array();    
             $query = "CALL Publication_Search(?)";
@@ -185,9 +185,9 @@ use \Model\Publication as Publication;
         }
 
 
-//-----------------------------------------------------
-// ESTO SIRVE PARA VERIFICAR QUE LA FECHA QUE INGRESA EL USUARIO COINCIDA CON LAS DISPONIBLES POR EL KEEPER
-//-----------------------------------------------------
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
+//¬   VERIFICACIÓN DE DISPONIBILIDAD DE FECHA INGRESADA DEL USER CON EL KEEPER
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
         public function ValidateDP($startD, $finishD, $idPublic){
             $rta = NULL;
             $query = "CALL Publication_DateCheck(?,?,?)";
@@ -204,10 +204,9 @@ use \Model\Publication as Publication;
             return $rta;
         }
 
-
-//-----------------------------------------------------
-// ESTO SIRVE PARA VALIDAR QUE LA FECHA DE RESERVA SEA CON UNA SEMANA DE ANTICIPACION
-//-----------------------------------------------------
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
+//¬   VERIFICACIÓN FECHA DE RESERVA = UNA SEMANA DE ANTICIPACION.
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
         public function ValidateOnWeek($startD){
             $rta = 0;
             $limitD = DATE("Y-m-d",STRTOTIME(DATE("Y-m-d") ."+ 7 days"));
@@ -218,9 +217,11 @@ use \Model\Publication as Publication;
         }
 
 
-//-----------------------------------------------------
-// ESTO SIRVE PARA VALIDAR QUE LA FECHA DE UNA NUEVA PUBLICACION SEA COMPATIBLE CON EL RESTO DE PUBLICACIONES DEL MISMO KEEPER
-//-----------------------------------------------------
+
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
+//¬   VERIFICA QUE LAS FECHA DE UNA PUBLICACION INGRESANTE NO INTERCALE CON OTRAS PROPIAS.
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
+
         public function ValidateDAllPublications($openD, $closeD, $user){
             $rta = NULL;
             $query = "Call Publication_NIDate(?,?,?)";

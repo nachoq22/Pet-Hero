@@ -16,9 +16,9 @@ use PHPMailer\PHPMailer\Exception;
         private $userDAO;
         private $publicDAO;
 
-//======================================================================
-// DAOs INJECTION
-//======================================================================
+//? ======================================================================
+//!                           SELECT METHODS
+//? ======================================================================
         public function __construct(){
             $this->userDAO = new UserDAO();
             $this->publicDAO = new PublicationDAO();
@@ -79,9 +79,9 @@ use PHPMailer\PHPMailer\Exception;
         return $review;
         }
 
-//======================================================================
-// INSERT METHODS
-//======================================================================
+//? ======================================================================
+// !                          INSERT METHODS
+//? ======================================================================
         private function Add(Review $review){
             $query = "CALL Review_Add(?,?,?,?,?)";
             $parameters["createD"] = $review->getCreateD();
@@ -94,9 +94,9 @@ use PHPMailer\PHPMailer\Exception;
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
 
-//-----------------------------------------------------
-// METHOD DEDICATED TO CREATING A REVIEW
-//-----------------------------------------------------
+//* ×××××××××××××××××××××××××××××××××××××××××××××××××
+//¬         MÉTODO PARA REGISTRAR UNA RESEÑA
+//* ×××××××××××××××××××××××××××××××××××××××××××××××××
         public function NewReview(Review $review){
             $message = "Successful: Su review se ha creado con exito,estamos para mejorar.";
             try{
@@ -112,9 +112,9 @@ use PHPMailer\PHPMailer\Exception;
         return $message;
         }
 
-//======================================================================
-// DELETE METHODS
-//======================================================================       
+//? ======================================================================
+//!                           DELETE METHODS
+//? ======================================================================      
         public function Delete($idReview){
             $query = "CALL Review_Delete(?)";
             $parameters["idReview"] = $idReview;

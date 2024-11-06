@@ -143,9 +143,9 @@ use \Model\Pet as Pet;
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
 
-//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××  
+//* ×××××××××××××××××××××××××××××××××××××××××××××××××
 //¬         MÉTODO PARA REGISTRAR UNA MASCOTA
-//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
+//* ×××××××××××××××××××××××××××××××××××××××××××××××××
         public function RegisterPet(Pet $pet,$fileP,$fileNameP,$fileV,$fileNameV){
             $message = "Successful: Se ha registrado correctamente su mascota";
             try{
