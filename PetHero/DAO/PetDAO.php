@@ -18,18 +18,18 @@ use \Model\Pet as Pet;
         private $sizeDAO;
         private $userDAO;
 
-//======================================================================
-// DAOs INJECTION
-//======================================================================
+//? ======================================================================
+//!                           DAOs INJECTION
+//? ======================================================================
         public function __construct(){
             $this->typeDAO = new PetTypeDAO();
             $this->sizeDAO = new SizeDAO();
             $this->userDAO = new UserDAO();
         }
 
-//======================================================================
-// METHODS TOOLS
-//======================================================================
+//? ======================================================================
+//!                             TOOL METHOD
+//? ======================================================================
         private function imgPPProcess($nameFile,$file,$petName){
             $path= "Views\Img\IMGPet\Profile\\".$petName.date("YmdHis").".jpg"; 
             $path = str_replace(' ', '-', $path); 
@@ -48,9 +48,9 @@ use \Model\Pet as Pet;
         return $pathDB;
         }       
 
-//======================================================================
-// SELECT METHODS
-//======================================================================
+//? ======================================================================
+//!                           SELECT METHODS
+//? ======================================================================
         public function GetAll(){
             $petList = array();
 
@@ -124,9 +124,9 @@ use \Model\Pet as Pet;
         return $pet;
         }
 
-//======================================================================
-// INSERT METHODS
-//======================================================================
+//? ======================================================================
+// !                          INSERT METHODS
+//? ======================================================================
         private function Add(Pet $pet,$fileP,$fileNameP,$fileV,$fileNameV){
                 $pet->setProfileIMG($this->imgPPProcess($fileNameP,$fileP,$pet->getName()));
                 $pet->setVaccinationPlanIMG($this->imgPVPProcess($fileNameV,$fileV,$pet->getName()));
@@ -143,9 +143,9 @@ use \Model\Pet as Pet;
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
 
-//-----------------------------------------------------
-// METHOD DEDICATED TO REGISTER A PET
-//-----------------------------------------------------
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××  
+//¬         MÉTODO PARA REGISTRAR UNA MASCOTA
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
         public function RegisterPet(Pet $pet,$fileP,$fileNameP,$fileV,$fileNameV){
             $message = "Successful: Se ha registrado correctamente su mascota";
             try{
@@ -160,9 +160,10 @@ use \Model\Pet as Pet;
             }
             return $message;
         }
-
         
-//DELETE METHODS
+//? ======================================================================
+//!                           DELETE METHODS
+//? ======================================================================
         public function Delete($id){
             $query = "CALL Pet_Delete(?)";
             $parameters["idPet"] = $id;
