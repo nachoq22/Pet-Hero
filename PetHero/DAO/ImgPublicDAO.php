@@ -12,16 +12,16 @@ use \Model\ImgPublic as ImgPublic;
         private $tableName = 'ImgPublic';
         private $publicDAO;
 
-//======================================================================
-// DAOs INJECTION
-//======================================================================
+//? ======================================================================
+//!                           DAOs INJECTION
+//? ======================================================================
         public function __construct(){
             $this->publicDAO = new PublicationDAO();
         }
 
-//======================================================================
-// METHODS TOOLS
-//======================================================================
+//? ======================================================================
+//!                             TOOL METHOD
+//? ======================================================================
         private function imgPuProcess($tmp_name){
             $idR = random_int(1,100000000);
             $path= "Views\Img\IMGPublic\\".$idR."-IMGPublic".date("YmdHis").".jpg"; 
@@ -31,9 +31,9 @@ use \Model\ImgPublic as ImgPublic;
         return $pathDB;
         }
 
-//======================================================================
-// SELECT METHODS
-//======================================================================
+//? ======================================================================
+//!                           SELECT METHODS
+//? ======================================================================
         public function GetAll(){
             $imgPublicList = array();    
 
@@ -125,9 +125,9 @@ use \Model\ImgPublic as ImgPublic;
             return $this->publicDAO->Get($public->getPublication()->getId());
         }
 
-//======================================================================
-// INSERT METHODS
-//======================================================================
+//? ======================================================================
+// !                          INSERT METHODS
+//? ======================================================================
         public function Add(ImgPublic $imgPublic){
             $query = "CALL ImgPublic_Add(?,?)";
             $parameters["uri"] = $imgPublic->getUrl();
@@ -135,18 +135,17 @@ use \Model\ImgPublic as ImgPublic;
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
-
-
-//-----------------------------------------------------
-// METHOD DEDICATED TO CREATE A PUBLICATION
-//-----------------------------------------------------        
+    
+//* ×××××××××××××××××××××××××××××××××××××××××××××××××
+//¬      METODO  QUE REGISTRA UNA PUBLICACION.
+//* ×××××××××××××××××××××××××××××××××××××××××××××××××  
         public function NewPublication(ImgPublic $public,$images){
-#SE GUARDA LA PUBLICACION Y SE ACTUALIZA POR NUEVA CON ID PARA ASIGNAR A LAS IMG
-$message = "Sucessful: se ha guardado correctamente";
+# SE GUARDA LA PUBLICACION Y SE ACTUALIZA POR NUEVA CON ID PARA ASIGNAR A LAS IMG
+            $message = "Sucessful: se ha guardado correctamente";
             if(strlen($public->getPublication()->getTitle())<50){ 
             $publicN = $this->publicDAO->NewPublication($public->getPublication());
                 $public->setPublication($publicN);
-#PARA OBTENER LOS VALORES DE TMP_NAME                
+# PARA OBTENER LOS VALORES DE TMP_NAME                
             foreach($images as $k1=> $v1){
                 foreach($v1 as $k2 => $v2){
                     if(strcmp($k1,"tmp_name") == 0){
@@ -163,9 +162,9 @@ $message = "Sucessful: se ha guardado correctamente";
 
     }
 
-//======================================================================
-// DELETE METHODS
-//======================================================================
+//? ======================================================================
+//!                           DELETE METHODS
+//? ======================================================================
         public function Delete($idImg){
             $query = "CALL ImgPublic_Delete(?)";
             $parameters["idImg"] = $idImg;
@@ -173,6 +172,9 @@ $message = "Sucessful: se ha guardado correctamente";
             $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
         }  
 
+//? ======================================================================
+//!                          VALIDATION METHODS
+//? ======================================================================
         public function ValidateDP($startD, $finishD, $idPublic){
             return $this->publicDAO->ValidateDP($startD, $finishD, $idPublic);
         }
@@ -184,6 +186,5 @@ $message = "Sucessful: se ha guardado correctamente";
         public function ValidateDAllPublications($openD, $closeD, $user){
             return $this->publicDAO->ValidateDAllPublications($openD, $closeD, $user);
         }
-
     }
 ?>
