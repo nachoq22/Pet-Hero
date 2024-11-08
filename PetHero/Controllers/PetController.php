@@ -18,25 +18,59 @@ use \Controllers\HomeController as HomeController;
             $this->homeController = new HomeController();
         }
 
-        //======================================================================
-        // FUNCIONES DE VIEWS
-        //======================================================================
+//? ======================================================================
+//!                          VIEW CONTROLLERS
+//? ======================================================================
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
+//¬                        VISTA PESTAÑA DE MASCOTAS
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
         public function ViewPetList(){
             $petList = $this->petDAO->GetAll();
             require_once(VIEWS_PATH."PetList.php");
         }
 
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
+//¬                        VISTA PANEL DE MASCOTA
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××        
         public function ViewPetProfile($idPet){
             $this->homeController->isLogged();
             $petaux = $this->petDAO->Get($idPet);
             require_once(VIEWS_PATH."PetProfile.php");
         }
 
+//! QUE HACE ESTE METODO???!!
+
         public function showListView(){
             $petDAO=$this->petDAO->GetAll();
         }
 
-        //FUNCION PARA AGREGAR UNA NUEVA MASCOTA//
+//? ======================================================================
+//!                          OPERATION CONTROLLERS
+//? ======================================================================
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
+//¬                           REGISTRAR MASCOTA
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
+/*
+* D: Controller que procesa la entrada de datos necesarios para el registro
+*    de una nueva PET.
+
+?      💠 isLogged
+¬          ► Verifica si un usuario ha iniciado sesión en una aplicación.
+?      💠 RegisterPet
+¬          ► Registra una nueva mascota.
+?      💠 ViewOwnerPanel
+¬          ► Invocación de HomeController para redireccion a "Owner Panel".
+
+* A: $name: nombre de la PET.
+*    $breed: raza de la PET.
+*    $type: tipo de PET.
+*    $size: tamaño de la PET.
+*    $observation: detalles adicionales de la PET.
+*    $ImagenP: imagen de perfil de la PET.
+*    $ImagenV: imagen del plan de vacunacion de la PET.
+
+* R: No Posee.
+🐘 */ 
         public function Add($name, $breed, $type, $size, $observation,$ImagenP,$ImagenV){
             $this->homeController->isLogged();
             $sizeOBJ = new Size();
@@ -54,7 +88,27 @@ use \Controllers\HomeController as HomeController;
             $this->homeController->ViewOwnerPanel($message);      
         } 
 
-        //RECUPERAR LOS PETS MEDIANTE QUE SE USARAN PARA CREAR UNA RESERVACION//
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
+//¬                   RECUPERA MASCOTAS PARA RESERVACIÓN
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
+/*
+* D: Controller que obtendra las mascotas para mostrar en el apartado de
+*    formulario para una nueva BOOKING.
+
+?      💠 isLogged
+¬          ► Verifica si un usuario ha iniciado sesión en una aplicación.
+?      💠 GetAllByUsername
+¬          ► Obtiene una Lista de PETs segun el username de un USER.
+?      💠 ViewOwnerPanel
+¬          ► Invocación de HomeController para redireccion a "Owner Panel".
+
+* A: $idPublic: id de la PUBLICATION. 
+*    $$startD: fecha de inicio de la BOOKING.
+*    $finishD: fecha de fin de la BOOKING.
+*    $message: mensaje a enviar en caso de no poseer mascotas registradas.
+
+* R: No Posee.
+🐘 */ 
         public function GetPetsByReservation($idPublic, $startD, $finishD, $message=""){
             $this->homeController->isLogged();
             $logUser = $_SESSION["logUser"];

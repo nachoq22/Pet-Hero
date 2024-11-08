@@ -16,7 +16,25 @@ use \Model\Booking as Booking;
             $this->homeC = new HomeController();
         }
 
-        //VERIFICA SI CONFIRMA O NO PARA CREAR UN CHECKER DE LA RESERVA Y LUEGO ACTUALIZARLA//
+//* ×××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
+//¬                             CREACIÓN CHECKER
+//* ×××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
+/*
+* D: Controller que procesa la entrada de datos necesarios para la emision
+*    de un CHECKER para pago.
+
+?      💠 isLogged
+¬          ► Verifica si un usuario ha iniciado sesión en una aplicación.
+?      💠 NewChecker
+¬          ► Registra un nuevo CHECKER si cumple con algunas condiciones.
+?      💠 ViewKeeperPanel
+¬          ► Invocación de HomeController para redireccion a "Keeper Panel".
+
+* A: $idBook: id de BOOKING que se asociara al CHECKER.
+*    $rta: Respuesta del Keeper a la petición de BOOKING.
+
+* R: No Posee.
+🐘 */
         public function ToResponse($idBook,$rta){
         $this->homeC->isLogged();    
                 $book = new Booking();
@@ -27,7 +45,25 @@ use \Model\Booking as Booking;
             $this->homeC->ViewKeeperPanel($message);
         }
 
-        //ACTUALIZA EL DIA QUE SE PAGÒ AL CHECKER//
+//* ×××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
+//¬                        ACTUALIZACIÓN PAGO CHECKER
+//* ×××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
+/*
+* D: Controller que procesa la entrada de datos necesarios para la emision
+*    de un CHECKER para pago.
+
+?      💠 isLogged
+¬          ► Verifica si un usuario ha iniciado sesión en una aplicación.
+?      💠 PayCheck
+¬          ► Establece el Paycode en el BOOKING y la Fecha del Pago su CHECKER.
+?      💠 ViewOwnerPanel
+¬          ► Invocación de HomeController para redireccion a "Owner Panel".
+
+* A: $idBook: id de BOOKING con CHECKER emitido.
+*    $payCode: Código recibido al realizar el Pago.
+
+* R: No Posee.
+🐘 */        
         public function PayCheck($idBook,$payCode){
         $this->homeC->isLogged();    
             $book = new Booking();
@@ -38,8 +74,10 @@ use \Model\Booking as Booking;
             $message = $this->checkDAO->PayCheck($check);
         $this->homeC->ViewOwnerPanel($message);
         }
-        
-        //VIEW DEL PDF//
+
+//* ×××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
+//¬                         VISTA PREVIA CHECKER PDF
+//* ×××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
         public function ViewChecker($idBook){
         $this->homeC->isLogged();
             $checker = $this->checkDAO->GetByBook($idBook);
