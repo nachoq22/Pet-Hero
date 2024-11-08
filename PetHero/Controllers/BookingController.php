@@ -18,36 +18,60 @@ use \Controllers\PetController as PetController;
             $this->petController = new PetController();
         }
 
+//? ======================================================================
+//!                         METHODS
+//? ====================================================================== 
+
+//* ×××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
+//¬                       AGREGAR RESERVA
+//* ×××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
 /*
-!                           ╔═══════════╗
-!                           ║  Métodos  ║
-!                           ╚═══════════╝
-*/
-/*
-?                       ╔═══════════════════╗
-?                       ║  Agregar Reserva  ║
-?                       ╚═══════════════════╝
-*/
+* D: Controller que procesa la entrada de datos necesarios para el registro
+*    de una nueva reserva. 
+
+?      💠 isLogged
+¬          ► Verifica si un usuario ha iniciado sesión en una aplicación.
+?      💠 ValidateTypes
+¬          ► Verifica que las mascotas entrantes son del mismo tipo.
+?      💠 ValidateTypesOnBookings
+¬          ► Verifica que las mascotas entrantes son compatible con cualquier 
+¬            otro booking en la misma fecha.
+?      💠 NewBooking
+¬          ► Registra el Booking.
+?      💠 ViewOwnerPanel
+¬          ► Invocacion de HomeController para redireccion a "Owner Panel".
+?      💠 GetPetsByReservation
+¬          ► Recupera las mascotas para la reservasion
+
+* A: $startD: Fecha de inicio del Booking.
+*    $finishD: Fecha de fin del Booking.
+*    $idPublic: id de la Publication
+*    $petsId: Lista con id de Pets.
+
+* R: No Posee.
+🐘 */
         public function Add($startD,$finishD,$idPublic,$petsId){
             $this->homeController->isLogged();
-            if($this->bpDAO->ValidateTypes($petsId)==1){                 //Checkea si las mascotas de nuestro booking tienen todas el mismo pet Type
+            if($this->bpDAO->ValidateTypes($petsId)==1){
                 $publication = new Publication();
                 $publication->setid($idPublic);
                 $logUser = $_SESSION["logUser"];
                 $book = new Booking();
                 $book->__fromRequest($startD,$finishD,"In Review",$publication,$logUser);
-                if($this->bpDAO->ValidateTypesOnBookings($book, $petsId)==1){               //Checkea si el tipo de mascota de nuestro booking es compatible con cualquier otro booking en la misma fecha
-                    $message = $this->bpDAO->NewBooking($book,$petsId);                                //Guarda nuestro booking
+                if($this->bpDAO->ValidateTypesOnBookings($book, $petsId)==1){
+                    $message = $this->bpDAO->NewBooking($book,$petsId);
                     $this->homeController->ViewOwnerPanel($message);
                 }else{
-                    $this->petController->GetPetsByReservation($idPublic, $startD, $finishD, "Error: Sus mascotas son incompatibles con las que cuidara el keeper en ese momento");  //Continuar en Petcontroller el message
+                    $this->petController->GetPetsByReservation($idPublic, $startD, $finishD, "Error: Sus mascotas son incompatibles con las que cuidara el keeper en ese momento");
                 }
             }else{
                 $this->petController->GetPetsByReservation($idPublic, $startD, $finishD, "Error: Todas sus mascotas deben ser del mismo tipo");
             }
         }
 
-        //FUNCION PARA CANCELAR UNA RESERVA//
+//* ×××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
+//¬                       CANCELAR RESERVA
+//* ×××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
         public function CancelBook($idBook){
         $this->homeController->isLogged();
                 $book = new Booking();
