@@ -5,8 +5,6 @@ use \DAO\ReviewDAO as ReviewDAO;
 use \DAO\BookingDAO as BookingDAO;
 use \Model\ImgPublic as ImgPublic;
 use \Model\Publication as Publication;
-use \Model\User as User;
-use \Model\Review as Review;
 use \Controllers\HomeController as HomeController;
 use \Controllers\PetController as PetController;
 
@@ -25,7 +23,35 @@ use \Controllers\PetController as PetController;
             $this->bookingDAO = new BookingDAO();
         }
 
-        //FUNCION PARA CREAR UNA NUEVA PUBLICACION//
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
+//¬                           REGISTRAR PUBLICACIÓN
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
+/*
+* D: Controller que procesa la entrada de datos necesarios para el registro
+*    de una nueva PUBLICATION.
+
+?      💠 isLogged
+¬          ► Verifica si un usuario ha iniciado sesión en una aplicación.
+?      💠 isKeeper
+¬          ► Verifica si un usuario que ha iniciado sesión es KEEPER.
+?      💠 ValidateDAllPublications
+¬          ► Verifica que las fechas no se superpongan con otros PUBLICATION.
+?      💠 NewPublication
+¬          ► Registra una nueva PUBLICATION.
+?      💠 ViewKeeperPanel
+¬          ► Invocación de HomeController para redireccion a "Keeper Panel".
+?      💠 ViewAddPublication
+¬          ► Invocación de HomeController para redireccion a "AddPublication".
+
+* A: $title: Titulo de la PUBLICATION.
+*    $description: Detalles adicionales de la PUBLICATION.
+*    $openD: Fecha inicio de la PUBLICATION.
+*    $closeD: Fecha fin de la PUBLICATION.
+*    $remuneration: Costo x dia de la PUBLICATION.
+*    $images: Lista de imagenes de la PUBLICATION.
+
+* R: No Posee.
+🐘 */ 
         public function Add($title,$description,$openD,$closeD,$remuneration,$images){
             $this->homeController->isLogged();
             $this->homeController->isKeeper();
@@ -33,9 +59,9 @@ use \Controllers\PetController as PetController;
                 $public = new Publication();
                 $logUser = $_SESSION["logUser"];
 
-                if(($this->publicDAO->ValidateDAllPublications($openD, $closeD, $logUser))==0 &&     //VALIDA QUE LAS FECHAS NO COINCIDAN CON LAS DE OTRAS PUBLICACIONES SUYAS//
-                ($closeD>DATE("Y-m-d") && $openD>DATE("Y-m-d") && $closeD>$openD)){                  //VALIDA QUE LAS FECHAS SEAN DESPUES DE LA FECHA ACTUAL Y VAIDA QUE LA FECHA   
-                $public->__fromRequest($openD, $closeD, $title, $description,0, $remuneration,$logUser);  //DE FINALIZACION SEA DESPUES QUE LA DE INICIO//
+                if(($this->publicDAO->ValidateDAllPublications($openD, $closeD, $logUser))==0 && 
+                ($closeD>DATE("Y-m-d") && $openD>DATE("Y-m-d") && $closeD>$openD)){                       //* VALIDA QUE LAS FECHAS SEAN DESPUES DE LA FECHA ACTUAL Y VALIDA QUE LA FECHA   
+                $public->__fromRequest($openD, $closeD, $title, $description,0, $remuneration,$logUser);  //* DE FINALIZACION SEA DESPUES QUE LA DE INICIO//
                 $imgPublic = new ImgPublic();
                 $imgPublic->setPublication($public);
 
@@ -46,7 +72,26 @@ use \Controllers\PetController as PetController;
         }
         }
 
-        //FUNCION PARA VER UNA PUBLICACION INDIVIDUAL//
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
+//¬                       VIEW PUBLICACIÓN INDIVIDUAL
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
+/*
+* D: Redirecciona hacia la vista de una PUBLICATION individual.
+
+?      💠 GetPublication
+¬          ► Obtiene toda la data de una PUBLICATION.
+?      💠 GetAllByPublic
+¬          ► Obtiene todas las REVIEW según una PUBLICATION.
+?      💠 CheckBookDone
+¬          ► Verifica si la BOOKING concluyo de manera Natural.
+?      💠 GetAllByPublic
+¬          ► Obtiene las IMG según una PUBLICATION.
+
+* A: $idPublic: id de la PUBLICATION.
+*    $message: mensaje derivado de ValidateDateFP para mostrar información.
+
+* R: No Posee.
+🐘 */         
         public function ViewPublication($idPublic, $message=""){     
                 $public = new Publication();
                 $public->setId($idPublic);
@@ -64,12 +109,35 @@ use \Controllers\PetController as PetController;
             require_once(VIEWS_PATH."PublicInd.php");
         }
 
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
+//¬                       DATE 
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
+/*
+* D: Redirecciona hacia la vista de una PUBLICATION individual.
+
+?      💠 isLogged
+¬          ► Verifica si un usuario ha iniciado sesión en una aplicación.
+?      💠 ValidateOnWeek
+¬          ► Verifica que la fecha de inicio tenga 1 semana de anticipacion.
+?      💠 ValidateDP
+¬          ► Verifica que el rango de fechas esten dentro del PUBLICATION.
+?      💠 GetPetsByReservation
+¬          ► A traves del PETCONTROLLER, redireccionamos a AddBooking.
+?      💠 ViewPublication
+¬          ► Redireccionamos a PublicInd, remitiendo un mensaje a mostrar.
+
+* A: $idPublic: id de la PUBLICATION.
+*    $startD: Fecha que se cree que iniciara la BOOKING.
+*    $finishD: Fecha que se cree que finalizara la BOOKING.
+
+* R: No Posee.
+🐘 */ 
         //FUNCION PARA VALIDAR DIFERENTES REQUISITOS DE FECHAS//
         public function ValidateDateFP($idPublic, $startD, $finishD){
             $this->homeController->isLogged();
-                if($startD<$finishD){                                                             //QUE LA FECHA DE INICIO SEA ANTES QUE LA DE FINALIZACION      
-                    if($this->publicDAO->ValidateOnWeek($startD)==1){                                    //QUE LA FECHA DE INICIO TENGA UNA SEMANA DE ANTICIPACION
-                        if($this->publicDAO->ValidateDP($startD, $finishD, $idPublic) == 1){                       //QUE LAS FECHAS COINCIDAN CON LAS ESTABLECIDAS POR EL KEEPER
+                if($startD<$finishD){    //* QUE LA FECHA DE INICIO SEA ANTES QUE LA DE FINALIZACION      
+                    if($this->publicDAO->ValidateOnWeek($startD)==1){    
+                        if($this->publicDAO->ValidateDP($startD, $finishD, $idPublic) == 1){
                             $this->petController->GetPetsByReservation($idPublic, $startD, $finishD);
                         }else{
                             $this->ViewPublication($idPublic, "Error: Las fechas ingresadas no entran en el rango de establecidas por el Keeper");
