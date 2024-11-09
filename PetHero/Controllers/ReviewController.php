@@ -16,7 +16,24 @@ use \Controllers\PublicationController as PublicationController;
             $this->publicationController = new PublicationController();
         }
 
-        //FUNCION PARA AGREGAR UNA NUEVA REVIEW//
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
+//¬                             AGREGAR REVIEW
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
+/*
+* D: Controller que procesa la entrada de datos necesarios para el registro
+*    de una nueva reseña. 
+
+?      💠 NewReview
+¬          ► Registra una nueva REVIEW, obteniendo un mensaje de la op.
+?      💠 ViewPublication
+¬          ► Redireccionamos a PublicInd, remitiendo un mensaje a mostrar.
+
+* A: $idPublic: id de la PUBLICATION.
+*    $stars: puntuacion por el servicio.
+*    $commentary: comentarios sobre el servicio recibido.
+
+* R: No Posee.
+🐘 */ 
         public function Add($idPublic,$stars,$commentary){
             $public = new Publication();
                 $public->setId($idPublic);

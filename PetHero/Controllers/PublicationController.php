@@ -110,10 +110,10 @@ use \Controllers\PetController as PetController;
         }
 
 //* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
-//¬                       DATE 
+//¬                            DATES VALIDATIONS
 //* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
 /*
-* D: Redirecciona hacia la vista de una PUBLICATION individual.
+* D: Valida fechas para posteriormente proceder al formulario de reserva.
 
 ?      💠 isLogged
 ¬          ► Verifica si un usuario ha iniciado sesión en una aplicación.
@@ -132,7 +132,6 @@ use \Controllers\PetController as PetController;
 
 * R: No Posee.
 🐘 */ 
-        //FUNCION PARA VALIDAR DIFERENTES REQUISITOS DE FECHAS//
         public function ValidateDateFP($idPublic, $startD, $finishD){
             $this->homeController->isLogged();
                 if($startD<$finishD){    //* QUE LA FECHA DE INICIO SEA ANTES QUE LA DE FINALIZACION      

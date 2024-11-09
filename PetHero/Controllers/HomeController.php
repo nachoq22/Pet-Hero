@@ -29,27 +29,35 @@ use \Model\Chat as Chat;
             $this->messageChatDAO = new MessageChatDAO();
         }
 
-        //METODO QUE LLEVA AL HOME, SE MUESTRAN TODAS LAS PUBLICACIONES//
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
+//¬                  HOME VIEW CON TODAS LAS PUBLICATION
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
         public function Index($message = ""){  
             $publicList = $this->publicDAO->GetAll();
             $imgByPublic =  $this->imgPublicDAO->GetAccordingPublic($publicList);
             require_once(VIEWS_PATH."Home.php");
         }
 
-        //METODO PARA DESLOGEARSE DE LA PAGINA//
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
+//¬                                 LOGOUT
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
         public function Logout(){
             session_destroy();
             $this->Index("Successful: Te has deslogueado con exito");
         }
 
-        //METODO PARA BUSCAR DETERMINADAS PUBLICACIONES CON PALABRAS ESPECIFICAS//
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
+//¬                         FUNCIONALIDAD SEARCHBAR
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
         public function Search($search){
             $publicList = $this->publicDAO->Search($search);
             $imgByPublic =  $this->imgPublicDAO->GetAccordingPublic($publicList);
             require_once(VIEWS_PATH."Search.php");
         }
 
-        //METODO PARA IR AL OWNER PANEL, DONDE SE MOSTRARAN MASCOTAS Y RESERVAS//
+//? ======================================================================
+//!                          VIEW CONTROLLERS
+//? ======================================================================
         public function ViewOwnerPanel($message=""){
         $this->isLogged();
                 $this->bpDAO->UpdateAllStates();
@@ -61,10 +69,7 @@ use \Model\Chat as Chat;
             $imgList = $this->imgPublicDAO->GetByBookings($bookList);
             require_once(VIEWS_PATH."OwnerPanel.php");
         }
-
-        //======================================================================
-        // VIEWS METHODS
-        //======================================================================
+        
         public function ViewAddPet(){
             $this->isLogged();
             require_once(VIEWS_PATH."AddPet.php");
@@ -124,9 +129,9 @@ use \Model\Chat as Chat;
         }
 
 
-        //======================================================================
-        // METODOS PARA COMPROBAR SESIONES
-        //======================================================================
+//? ======================================================================
+//!                           SESSION VALIDATION
+//? ======================================================================
         public function isLogged(){
             if(!isset($_SESSION["logUser"])){
                 $this->Index("Error: No ha iniciado Session");  
