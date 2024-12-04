@@ -3,10 +3,11 @@ namespace DAO;
 
 use \DAO\Connection as Connection;
 use \DAO\QueryType as QueryType;
-use \Exception as Exception;
+
 use \DAO\IBookingDAO as IBookingDAO;
 use \DAO\PublicationDAO as PublicationDAO;
 use \DAO\UserDAO as UserDAO;
+
 use \Model\Booking as Booking;
 
     class BookingDAO implements IBookingDAO{
@@ -45,6 +46,27 @@ use \Model\Booking as Booking;
         return $bookList;
         }
 
+
+        public function GetAllByPublication($idPublic){
+            $bookList = array();    
+
+            $query = "CALL Booking_GetAllByPublication(?);";
+            $parameters["idPublic"] = $idPublic;
+            $this->connection = Connection::GetInstance();
+            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+
+            foreach($resultBD as $row){
+                $booking = new Booking();
+                $booking->__fromDBWithoutPC($row["idBook"],$row["startD"]
+                                           ,$row["finishD"],$row["bookState"]
+                                           ,$this->publicDAO->Get($row["idPublic"])
+                                           ,$this->userDAO->DGet($row["idUser"]));
+                array_push($bookList,$booking);
+            }
+        return $bookList;
+        }        
+
+
 //* TODAS LAS BOOKINGS DE UN USUARIO.
         public function GetAllByUser($idUser){
             $bookList = array();
@@ -72,7 +94,7 @@ use \Model\Booking as Booking;
 *  A: Username del Owner.
 *  R: El listado de Bookings del username proporcionado.
 🐘*/ 
-        public function GetAllBooksByUsername($username){
+        public function GetAllByUsername($username){
             $user = $this->userDAO->DGetByUsername($username);
             $bookList = $this->GetAllByUser($user->getId());
         return $bookList;
@@ -80,12 +102,13 @@ use \Model\Booking as Booking;
 
 //* TODAS LAS BOOKINGS DE UN KEEPER SEGUN USERNAME.
 /*
-* D: Recupero todos los Bookings según el username de un User(Keeper).
+* D: Recupero todos los Bookings donde el dueño de la PUBLICATION
+*    (KEEPER) coincida con el USERNAME suministrado.
 !    Requerido por GetAllBooksByKeeper de BookingPetDAO.
 * A: Username del Keeper.
 * R: El listado de Bookings del username proporcionado.
 🐘*/ 
-        public function GetAllBooksByKeeper($username){
+        public function GetAllByKeeper($username){
             $matches = array();
                 $bookings = $this->GetAll();
             foreach($bookings as $book){
@@ -152,7 +175,7 @@ use \Model\Booking as Booking;
 *     la Publicacion con la remuneracion.
 * R: Valor a abonar, el cual se suministrara al Checker.
 🐘*/
-        private function GetBookPay(Booking $book){
+        public function GetBookPay(Booking $book){
             $bookPay = 0;
 
             $query = "CALL Booking_GetBookigPay(?,?,?)";
@@ -166,12 +189,6 @@ use \Model\Booking as Booking;
                 $bookPay = $row["bookingPay"];
             }
         return $bookPay;
-        }
-
-//* OBTENGO EL TOTAL POR DIAS DE HOSPEDAJE. 
-        public function GetFPBook(Booking $book){
-            $bookPay = $this->GetBookPay($book);
-        return $bookPay;    
         }
         
 //? ======================================================================
@@ -209,7 +226,7 @@ use \Model\Booking as Booking;
                 $public = $this->publicDAO->Get($booking->getPublication()->getId());
                 $user = $this->userDAO->DGetByUsername($booking->getUser()->getUsername());
                 $booking->setPublication($public);
-                $booking->setuser($user);
+                $booking->setUser($user);
             $idNBook = $this->Add($booking);
             $booking = $this->Get($idNBook);
         return $booking;    
@@ -394,7 +411,7 @@ use \Model\Booking as Booking;
             $query = "CALL Booking_CheckRange(?,?,?)";
             $parameters["starD"] = $booking->getStartD();
             $parameters["finishD"] = $booking->getFinishD();
-            $parameters["idPublic"] = $booking->getPublication()->getid();
+            $parameters["idPublic"] = $booking->getPublication()->getId();
             $this->connection = Connection::GetInstance();
             $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
             foreach($resultBD as $row){
@@ -418,21 +435,21 @@ use \Model\Booking as Booking;
 🐘 */ 
         public function CheckBookDone($username, $idPublic){
             $canReview = 0;
-            try{
-                $dUser = $this->userDAO->DGetByUsername($username);
-                $bookingList = $this->GetAllByUser($dUser->getId());
-                foreach($bookingList as $book){
-                    if($book->getPublication()->getId()==$idPublic){
-                        if(strcmp($book->getBookState(),"Finalized")==0){
-                            $canReview = 1;
-                            return $canReview;
-                        }
+            $user = $this -> userDAO -> DGetByUsername($username);
+            $bookingList = $this -> GetAllByUser($user -> getId());
+            
+            foreach($bookingList as $book){
+                if($book -> getPublication() -> getId() == $idPublic){
+
+                    if(strcmp($book -> getBookState(), "Finalized") == 0){
+
+                        $canReview = 1;
+                        
+                    return $canReview;
                     }
                 }
-            }catch(Exception $e){
-                return $canReview;
-            }     
-            return $canReview;
+            }   
+        return $canReview;
         }
 
 //? ======================================================================
@@ -444,6 +461,23 @@ use \Model\Booking as Booking;
             $parameters["idbooking"] = $idBooking;
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
+        }
+
+
+
+
+        public function OnlineBookingsByPublication($idPublic){
+            $haveOnline = false;
+            
+
+            $booksXPublication = $this -> GetAllByPublication($idPublic);
+            if(! empty($booksXPublication)){
+                $haveOnline = array_map(function ($book){
+                                                $offlineStates = ["In Review", "Awaiting Payment", "Waiting Start", "In Progress"];
+                                                return in_array($book -> getBookState(), $offlineStates);
+                                    }, $booksXPublication);
+            }
+        return $haveOnline;
         }
     }
 ?>

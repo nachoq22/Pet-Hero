@@ -1,22 +1,24 @@
 <?php
 namespace Controllers;
+
+use Exceptions\RegisterPetException;
+
+use \Controllers\HomeController as HomeController;
+
 use \DAO\PetDAO as PetDAO;
 
 use \Model\Pet as Pet;
 use \Model\Size as Size;
 use \Model\PetType as PetType;
 
-
-use \Controllers\HomeController as HomeController;
-
-        class PetController{
-            private $petDAO;
-            private $homeController;
+    class PetController{
+        private $petDAO;
+        private $homeController;
 
         public function __construct(){
-            $this->petDAO = new PetDAO();
-            $this->homeController = new HomeController();
-        }
+            $this -> petDAO = new PetDAO();
+            $this -> homeController = new HomeController();
+        }    
 
 //? ======================================================================
 //!                          VIEW CONTROLLERS
@@ -24,29 +26,24 @@ use \Controllers\HomeController as HomeController;
 //* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
 //¬                        VISTA PESTAÑA DE MASCOTAS
 //* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
-        public function ViewPetList(){
-            $petList = $this->petDAO->GetAll();
-            require_once(VIEWS_PATH."PetList.php");
-        }
+        // public function ViewPetList(){
+        //     $petList = $this -> petDAO -> GetAll();
+        //     require_once(VIEWS_PATH."PetList.php");
+        // }
 
 //* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
 //¬                        VISTA PANEL DE MASCOTA
 //* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××        
         public function ViewPetProfile($idPet){
-            $this->homeController->isLogged();
-            $petaux = $this->petDAO->Get($idPet);
+            $this -> homeController -> isLogged();
+            $petaux = $this -> petDAO -> Get($idPet);
             require_once(VIEWS_PATH."PetProfile.php");
         }
 
-//! QUE HACE ESTE METODO???!!
+        // public function showListView(){
+        //     $petDAO=$this->petDAO->GetAll();
+        // }
 
-        public function showListView(){
-            $petDAO=$this->petDAO->GetAll();
-        }
-
-//? ======================================================================
-//!                          OPERATION CONTROLLERS
-//? ======================================================================
 //* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
 //¬                           REGISTRAR MASCOTA
 //* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
@@ -73,26 +70,43 @@ use \Controllers\HomeController as HomeController;
 🐘 */ 
         public function Add($name, $breed, $type, $size, $observation,$ImagenP,$ImagenV){
             $this->homeController->isLogged();
+
             $sizeOBJ = new Size();
-            $sizeOBJ->setName($size);
+            $sizeOBJ -> setName($size);
+
             $typeOBJ = new PetType();
-            $typeOBJ->setName($type);
+            $typeOBJ -> setName($type);
+
             $logUser = $_SESSION["logUser"];
+
             $pet = new Pet();
-            $pet->__fromRequest($name, $breed, $observation, $typeOBJ, $sizeOBJ, $logUser);   
+            $pet -> __fromRequest($name, $breed, $observation, $typeOBJ, $sizeOBJ, $logUser); 
+
             $fileNameP = $_FILES['ImagenP']['name'];
             $fileP = $_FILES['ImagenP']['tmp_name'];
             $fileNameV = $_FILES['ImagenV']['name'];
             $fileV = $_FILES['ImagenV']['tmp_name'];
-            $message = $this->petDAO->RegisterPet($pet, $fileP, $fileNameP, $fileV, $fileNameV);
-            $this->homeController->ViewOwnerPanel($message);      
+
+            $message = "Successful: Se ha registrado correctamente su mascota";
+            
+            try{
+
+                $this -> petDAO -> RegisterPet($pet, $fileP, $fileNameP, $fileV, $fileNameV);
+
+            }catch(RegisterPetException $rpe){
+                $message = $rpe -> getMessage();
+            }
+
+            setcookie('message', $message, time() + 2,'/');
+            header('Location: http://localhost/Pet-Hero/PetHero/Home/ViewOwnerPanel');
+            exit;   
         } 
 
 //* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
 //¬                   RECUPERA MASCOTAS PARA RESERVACIÓN
 //* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
 /*
-* D: Controller que obtendra las mascotas para mostrar en el apartado de
+* D: Controller que obtendrá las mascotas para mostrar en el apartado de
 *    formulario para una nueva BOOKING.
 
 ?      💠 isLogged
@@ -110,13 +124,19 @@ use \Controllers\HomeController as HomeController;
 * R: No Posee.
 🐘 */ 
         public function GetPetsByReservation($idPublic, $startD, $finishD, $message=""){
-            $this->homeController->isLogged();
+            $this -> homeController -> isLogged();
             $logUser = $_SESSION["logUser"];
-            $petList = $this->petDAO->GetAllByUsername($logUser->getUsername());
+            $petList = $this -> petDAO -> GetAllByUsername($logUser -> getUsername());
+
             if(!empty($petList)){
-            require_once(VIEWS_PATH."AddBooking.php");
+
+                require_once(VIEWS_PATH."AddBooking.php");
+
             }else{
-                $this->homeController->ViewOwnerPanel("Error: antes de hacer una reserva debe tener al menos una mascota registrada");
+
+                setcookie('message', "Error: Debe tener al menos 1 mascota registrada para proceder con la reservación", time() + 2,'/');
+                header('Location: http://localhost/Pet-Hero/PetHero/Home/ViewOwnerPanel');
+            
             }
         }
     }

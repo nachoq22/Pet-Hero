@@ -8,7 +8,7 @@ use \Model\PetType as PetType;
 
     class PetTypeDAO implements IPetTypeDAO{
         private $connection;
-        private $tableName = 'PetType';
+        //private $tableName = 'PetType';
 
 //? ======================================================================
 //!                           SELECT METHODS

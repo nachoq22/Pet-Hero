@@ -177,6 +177,7 @@ BEGIN
 END;
 $$
 
+
 DELIMITER $$
 CREATE PROCEDURE User_Add(IN username VARCHAR(50),IN password VARCHAR(30),IN email VARCHAR(50))
 BEGIN
@@ -560,6 +561,18 @@ BEGIN
 END;
 $$
 
+DELIMITER //
+CREATE PROCEDURE Publication_Update (IN idPublicIn INT,
+                                 IN openDIn DATE, IN closeDIn DATE, IN titleIn VARCHAR(50),
+                                 IN descriptionIn VARCHAR(1000), 
+                                 IN remunerationIn DEC(10,2))
+BEGIN
+UPDATE Publication p SET openD =  openDIn, closeD = closeDIn, title = titleIn
+                       , description = descriptionIn , remuneration = remunerationIn
+                    WHERE idPublic = idPublicIn;
+END // 
+DELIMITER;                                                            
+
 DELIMITER $$
 CREATE PROCEDURE Publication_Delete(IN idPublic INT)
 BEGIN
@@ -627,6 +640,14 @@ CREATE PROCEDURE Booking_GetAll()
 BEGIN
     SELECT * 
     FROM Booking;
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE Booking_GetAllByPublication(IN idPublic INT)
+BEGIN
+    SELECT * FROM Booking
+    WHERE (Booking.idPublic = idPublic);
 END;
 $$
 
@@ -993,64 +1014,64 @@ $$
                 /*********************************TEST PROCEDURES*******************************************/
 
 /*********************************TEST LOCATION*******************************************/
-CALL Location_GetAll();
+#CALL Location_GetAll();
 /*CALL Location_GetById(ID);*/
-CALL Location_GetById(2);
+#CALL Location_GetById(2);
 /*CALL Location_Add(adress,neighborhood,city,province,country);*/
-CALL Location_Add("Mi calle","Mi Barrio","Mar del plata","Buenos Aires","Argentina");
+#CALL Location_Add("Mi calle","Mi Barrio","Mar del plata","Buenos Aires","Argentina");
 /*CALL Location_Delete(ID);*/
 /*CALL Location_Delete(6);*/
 
 /*********************************TEST PERSONAL DATA*******************************************/
-CALL PersonalData_GetAll();
-CALL PersonalData_GetById(2);
+#CALL PersonalData_GetAll(); 
+#CALL PersonalData_GetById(2);
 /*CALL PersonalData_Add(name,surname,sex,dni,idLocation);*/
-Call PersonalData_Add("Bryan","Heads","M","44886655",6);
+#Call PersonalData_Add("Bryan","Heads","M","44886655",6);
 /*Call PersonalData_Delete(6);*/
 
 /*********************************TEST USER*******************************************/
-Call User_GetAll();
-Call User_GetById(2);
-Call User_GetByUsername("planetar");
+#Call User_GetAll();
+#Call User_GetById(2);
+#Call User_GetByUsername("planetar");
 /*CALL User_Add(username,password,varResp);*/
-CALL User_IsExist("planetar","achternaga@wificon.eu");
-CALL User_Login("planetar","orylOSad");
+#CALL User_IsExist("planetar","achternaga@wificon.eu");
+#CALL User_Login("planetar","orylOSad");
 
 /*CALL User_Add(username,password,email,idData);*/
-Call User_Add("Pablo","Tringuin","triguillo@gmail.com");
-Call User_Add("Pablito","Caño","triiiguillo@gmail.com");
+#Call User_Add("Pablo","Tringuin","triguillo@gmail.com");
+#Call User_Add("Pablito","Caño","triiiguillo@gmail.com");
 /*CALL User_Add(username,password,email);*/
-Call User_Register("Eduardo","Manitas","manitasDeManteca@gmail.com");
+#Call User_Register("Eduardo","Manitas","manitasDeManteca@gmail.com");
 /*Call User_Delete(6);*/
 
 /*********************************TEST USERROLE*******************************************/
-Call UR_GetAll();
-Call UR_GetById(2);
+#Call UR_GetAll();
+#Call UR_GetById(2);
 /*CALL Owner_Add(idUser,idRole);*/
 /*Call URole_Add(6,2);*/
-Call UR_IsKeeper(3);
+#Call UR_IsKeeper(3);
 #Call UR_UserToKeeper(6);
 /*Call Owner_Delete(6);*/
 
 /*********************************TEST SIZE*******************************************/
-Call Size_GetAll();
-Call Size_GetById(2);
+#Call Size_GetAll();
+#Call Size_GetById(2);
 /*CALL Size_Add(name);*/
-Call Size_Add("Big-Extra");
+#Call Size_Add("Big-Extra");
 /*Call Size_Delete(6);*/
 
 /*********************************TEST PETTYPE*******************************************/
-Call PetType_GetAll();
-Call PetType_GetById(2);
-Call PetType_GetByName("Dog");
+#Call PetType_GetAll();
+#Call PetType_GetById(2);
+#Call PetType_GetByName("Dog");
 /*CALL PetType_Add(name);*/
-Call PetType_Add("Cacatuos");
+#Call PetType_Add("Cacatuos");
 /*Call PetType_Delete(6);*/
 
 /*********************************TEST PET*******************************************/
 #Call Pet_GetAll();
 #Call Pet_GetById(2);
-Call Pet_GetByUser(2);
+#Call Pet_GetByUser(2);
 /*CALL Size_Add(name,breed,profileIMG,vaccinationPlanIMG,observation,idSize,idPetType,idUser);*/
 /*Call Pet_Add("Salchichon","Suricatta",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Salchichon",(NOW() + 0),".jpg")
 						,CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Salchichon",(NOW() + 0),".jpg")
@@ -1058,23 +1079,23 @@ Call Pet_GetByUser(2);
 /*Call Pet_Delete(6);*/
 
 /*********************************TEST PUBLICATION*******************************************/
-CALL Publication_GetAll();
+#CALL Publication_GetAll();
 #CALL Publication_GetById(1);
-CALL Publication_GetByUser(1);
-CALL Publication_Search("playa");
+#CALL Publication_GetByUser(1);
+#CALL Publication_Search("playa");
 /*CALL Publication_Add(openD,closeD,title,description,popularity,remuneration,idUser);*/
 /*CALL Publication_Add("2022-10-30","2022-11-08", "El mejor cuidador de toda Mar Del Plata","Soy un cuidador 
 de perros de 24 años que le gusta salir a correr todos los dias, por lo que su perro estará bien ejercitado", 5,4000,2);*/
 /*CALL Publication_Delete(2);*/
-CALL Publication_DateCheck("2022-10-31", "2022-11-10", 1);
+#CALL Publication_DateCheck("2022-10-31", "2022-11-10", 1);
 #CALL Publication_UpdatePopularity(1, 3);
-CALL Publication_NIDate("2022-12-15","2023-01-12" ,1);
+#CALL Publication_NIDate("2022-12-15","2023-01-12" ,1);
 
 
 /*********************************TEST IMAGES*******************************************/
-CALL ImgPublic_GetAll();
-CALL ImgPublic_GetById(1);
-CALL ImgPublic_GetByPublic(1);
+#CALL ImgPublic_GetAll();
+#CALL ImgPublic_GetById(1);
+#CALL ImgPublic_GetByPublic(1);
 /*CALL ImgPublic_Add(IN url varchar(250), IN idPublication INT)*/
 #CALL ImgPublic_Add("www.holaSoyUnaURL.com", 1);
 /*CALL ImgPublic_Delete(1);*/
@@ -1084,34 +1105,35 @@ CALL ImgPublic_GetByPublic(1);
 #CALL Booking_GetById(1);
 #CALL Booking_GetByUser(4);
 /*CREATE PROCEDURE Booking_GetBookigPay(IN startD DATE,IN finishD DATE, IN remuneration DEC(10,2))*/
-CALL Booking_GetBookigPay('2022-11-06','2022-11-10',50);
+#CALL Booking_GetBookigPay('2022-11-06','2022-11-10',50);
 /*CALL Booking_Add(IN openDate DATE, IN closeDate DATE, IN payState VARCHAR(25), IN payCode VARCHAR(10),
                          IN idPublication INT, IN idUser INT)*/
 #CALL Booking_Add("2022-10-15","2022-11-15","In Review",1, 1);
-CALL Booking_CheckRange("2022-09-17", "2022-09-22", 1); /*ARRANCA ANTES TERMINA ANTES ANDA BIEN */
-CALL Booking_CheckRange("2022-09-17", "2022-11-13", 1); #ARRANCA ANTES TERMINA EN EL MEDIO -CONTEMPLA
-CALL Booking_CheckRange("2022-08-17", "2022-12-19", 1); #ARRANCA ANTES TERMINA DESPUES -CONTEMPLA
-CALL Booking_CheckRange("2022-10-17", "2022-11-12", 1); #ARRANCA EN EL MEDIO TERMINA EN EL MEDIO -CONTEMPLA
-CALL Booking_CheckRange("2022-10-17", "2022-12-28", 1); #ARRANCA EN EL MEDIO TERMINA DESPUES -CONTEMPLA 
-CALL Booking_CheckRange("2022-11-21", "2022-12-14", 1); #ARRANCA DESPUES TERMINA DESPUES -CONTEMPLA
+#CALL Booking_CheckRange("2022-09-17", "2022-09-22", 1); /*ARRANCA ANTES TERMINA ANTES ANDA BIEN */
+#CALL Booking_CheckRange("2022-09-17", "2022-11-13", 1); #ARRANCA ANTES TERMINA EN EL MEDIO -CONTEMPLA
+#CALL Booking_CheckRange("2022-08-17", "2022-12-19", 1); #ARRANCA ANTES TERMINA DESPUES -CONTEMPLA
+#CALL Booking_CheckRange("2022-10-17", "2022-11-12", 1); #ARRANCA EN EL MEDIO TERMINA EN EL MEDIO -CONTEMPLA
+#CALL Booking_CheckRange("2022-10-17", "2022-12-28", 1); #ARRANCA EN EL MEDIO TERMINA DESPUES -CONTEMPLA 
+#CALL Booking_CheckRange("2022-11-21", "2022-12-14", 1); #ARRANCA DESPUES TERMINA DESPUES -CONTEMPLA
 /*CALL Booking_UpdateST(IN idBook DATE, IN bookState VARCHAR(25))*/
 #CALL Booking_UpdateST(2,"Awaiting Payment");
+#CALL Booking_GetAllByPublication(8);
 /*CALL Booking_Delete(2);*/
 
 /*********************************TEST BOOKING PET*******************************************/
 #CALL BP_GetAll();
 #CALL BP_GetById(1);
-CALL BP_GetByBook(4);
+#CALL BP_GetByBook(4);
 /*CALL BookingPet_Add(IN idBooking INT, IN idPet INT);*/
 /*CALL BP_GetPetPay(remuneration,idBooking);*/
-CALL BP_GetPetPay(500,2);
+#CALL BP_GetPetPay(500,2);
 #CALL BP_Add(1,1);
 /*CALL BookingPet_Delete(1);*/
 
 /*********************************TEST CHECKER*******************************************/
 #CALL Checker_GetAll();
 #CALL Checker_GetById(1);
-CALL Checker_GetByBooking(1);
+#CALL Checker_GetByBooking(1);
 /*CALL Checker_AddChecker_Add(IN emisionD DATE, IN closeD DATE, IN finalPrice INT, IN idBook INT);*/
 #CALL Checker_Add("2022-11-05", "2022-12-05", 2000, 1);
 /*CALL Checker_Delete(1);*/
@@ -1128,17 +1150,18 @@ CALL Checker_GetByBooking(1);
 
 /*********************************TEST CHAT*******************************************/
 #CALL Chat_GetAll();
-CALL Chat_GetById(1);
-CALL Chat_GetByUsers(6,1);
-CALL Chat_GetByUser(4);
-CALL Chat_Add(1,6);
+#CALL Chat_GetById(1);
+#CALL Chat_GetByUsers(6,1);
+#CALL Chat_GetByUser(4);
+#CALL Chat_Add(1,6);
 /*CALL Chat_Delete(1);*/
 
 
 /*********************************TEST MESSAGECHAT*******************************************/
 #CALL MessageChat_GetAll();
-CALL MessageChat_GetById(1);
+#CALL MessageChat_GetById(1);
 #CALL MessageChat_Add("Te agradezco por todo, un saludo enorme", "2023-12-12 23:55:40", 7, 8);
-CALL MessageChat_GetAllMsgByChat(2);
+#CALL MessageChat_GetAllMsgByChat(2);
 /*CALL MessageChat_Delete(1);*/
-CALL MessageChat_GetLastMsgByChat(7);
+#CALL MessageChat_GetLastMsgByChat(7);
+

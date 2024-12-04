@@ -1,5 +1,5 @@
 <body>
-    <?php if (!empty($message)) { ?>
+    <!-- <?php if (!empty($message)) { ?>
         <?php if (strpos($message, "Error") !== false) { ?>
             <div class="alert alert-danger" role="alert">
                 <?php echo $message; ?>
@@ -9,7 +9,17 @@
                 <?php echo $message; ?>
             </div>
         <?php } ?>
-    <?php } ?>
+    <?php } ?> -->
+
+    <?php if (isset($_COOKIE['message'])) { 
+            if(strpos($_COOKIE['message'],"Error") !== false) { ?>
+                <div class="alert alert-danger alert-dismissible fade show " role="alert">
+    <?php    }else{ ?>
+                <div class="alert alert-success alert-dismissible fade show " role="alert">    
+                    <?php } echo $_COOKIE['message']; ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>    
+                </div>
+    <?php } setcookie('message', '', time() - 3600,'/'); ?>
 
     <div class="container-fluid">
         <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">

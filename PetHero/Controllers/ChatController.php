@@ -1,12 +1,17 @@
 <?php
-    namespace Controllers;
+namespace Controllers;
 
-    use \DAO\ChatDAO as ChatDAO;
-    use \DAO\MessageChatDAO as MessageChatDAO;
-    use \Model\Chat as Chat;
-    use \Model\MessageChat as MessageChat;
-    use \Model\User as User;
-    use \Controllers\HomeController as HomeController;
+use Exceptions\RegisterChatException;
+use Exceptions\RegisterMSGException;
+
+use \Controllers\HomeController as HomeController;
+
+use \DAO\ChatDAO as ChatDAO;
+use \DAO\MessageChatDAO as MessageChatDAO;
+
+use \Model\Chat as Chat;
+use \Model\MessageChat as MessageChat;
+use \Model\User as User;
 
     class ChatController{
         private $chatDAO;
@@ -14,9 +19,9 @@
         private $homeController;
 
         public function __construct(){
-            $this->chatDAO = new ChatDAO();
-            $this->messageChatDAO = new MessageChatDAO();
-            $this->homeController = new HomeController();
+            $this -> chatDAO = new ChatDAO();
+            $this -> messageChatDAO = new MessageChatDAO();
+            $this -> homeController = new HomeController();
         }
 
 //* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
@@ -43,22 +48,59 @@
 * R: No Posee.
 🐘 */        
         public function AddChat($idKeeper){
+            $this -> homeController -> isLogged();
+
             $owner = new User();
             $owner = $_SESSION["logUser"]; //* Verifica si el user actual esta logueado.
+            
             $keeper = new User();
-            $keeper->setId($idKeeper);
+            $keeper -> setId($idKeeper);
 
             $chat = new Chat();
-            $chat->__fromRequest($owner, $keeper);
-            if($this->chatDAO->CheckChatExists($chat)==1){
-                $chat = $this->chatDAO->ChatByUsers($chat);
-                $messageList = $this->messageChatDAO->GetAllMsgByChat($chat->getIdChat());
-                $this->homeController->ViewPanelChat($chat, $messageList);
+            $chat -> __fromRequest($owner, $keeper);
+
+
+            $message = "Successful: Se ha creado el CHAT satisfactoriamente.";
+            $success = false;
+            $messageList = null;
+
+            if($this -> chatDAO -> CheckChatExists($chat) == 1){
+
+                $chat = $this -> chatDAO -> ChatByUsers($chat);
+                $messageList = $this -> messageChatDAO -> GetAllMsgByChat($chat->getIdChat());
+                $success = true;
+
             }else{
-                $chat = $this->chatDAO->NewChat($chat);
-                $messageList = $this->messageChatDAO->GetAllMsgByChat($chat->getIdChat());
-                $this->homeController->ViewPanelChat($chat, $messageList);
+
+                try{
+
+                    $chat = $this -> chatDAO -> NewChat($chat);
+                    //$messageList = $this -> messageChatDAO -> GetAllMsgByChat($chat -> getIdChat());
+                    $success = true;
+
+                }catch(RegisterChatException $rce){
+                    $message = $rce -> getMessage();
+                }
             }
+
+            setcookie('message', $message, time() + 2,'/');
+
+            if($success){
+
+                require_once(VIEWS_PATH."ViewChat.php");
+                //$this->homeController->ViewPanelChat($chat, $messageList);
+                exit;
+
+            }else{
+
+                header('Location: http://localhost/Pet-Hero/PetHero/');
+                exit;
+
+            }    
+
+            //header('Location: http://localhost/Pet-Hero/PetHero/Home/ViewPanelChat');
+
+            //$this->homeController->ViewPanelChat($chat, $messageList);
         }
 
 //* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
@@ -85,20 +127,36 @@
 * R: No Posee.
 🐘 */   
         public function AddMessage($message, $chatId, $previewPage){
+            $this -> homeController -> isLogged();
+
             $messageChat = new MessageChat();
             $user = new User();
             $user = $_SESSION["logUser"];
             
             $chat = new Chat();
-            $chat =$this->chatDAO->GetById($chatId);
+            $chat = $this -> chatDAO -> GetById($chatId);
             date_default_timezone_set('America/Argentina/Buenos_Aires');
-            $messageChat->__fromRequest($message, Date("Y-m-d H:i:s"), $chat, $user);
-            $this->messageChatDAO->NewMsg($messageChat);
-            $messageList = $this->messageChatDAO->GetAllMsgByChat($chat->getIdChat());
-            if(strcmp($previewPage,"chatV")==0){
+
+            $messageChat -> __fromRequest($message, Date("Y-m-d H:i:s"), $chat, $user);
+            $message = "Successful: Se ha enviado correctamente el MSG";
+
+            try{
+
+                $this -> messageChatDAO -> NewMsg($messageChat);
+
+            }catch(RegisterMSGException $rme){
+                $message = $rme -> getMessage();
+            }
+
+            $messageList = $this -> messageChatDAO -> GetAllMsgByChat($chat -> getIdChat());
+            
+
+            if(strcmp($previewPage,"chatV") == 0){
                 require_once(VIEWS_PATH."ViewChat.php");
+                exit;
             }else{
-                $this->homeController->ViewPanelChatHome();
+                header('Location: http://localhost/Pet-Hero/PetHero/Home/ViewPanelChatHome');
+                exit;
             }
         }
     }

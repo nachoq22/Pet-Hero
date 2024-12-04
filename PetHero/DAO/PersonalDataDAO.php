@@ -5,11 +5,12 @@ use \DAO\QueryType as QueryType;
 
 use \DAO\IPersonalDataDAO as IPersonalDataDAO;
 use \DAO\LocationDAO as LocationDAO;
+
 use \Model\PersonalData as PersonalData;
 
     class PersonalDataDAO implements IPersonalDataDAO{
         private $connection;
-        private $tableName = 'PersonalData';
+        //private $tableName = 'PersonalData';
 
         private $locationDAO;
 
@@ -87,6 +88,7 @@ use \Model\PersonalData as PersonalData;
                 $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
 
+        
         public function AddRet(PersonalData $data){
             $this->Add($data);
             $dataN = $this->GetbyDni($data->getDni());

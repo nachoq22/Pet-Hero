@@ -6,7 +6,9 @@ use \DAO\QueryType as QueryType;
 use \DAO\IReviewDAO as IReviewDAO;
 use \DAO\PublicationDAO as PublicationDAO;
 use \DAO\UserDAO as UserDAO;
+
 use \Model\Review as Review;
+use PDOException;
 use PHPMailer\PHPMailer\Exception;
 
     class ReviewDAO implements IReviewDAO{
@@ -17,13 +19,16 @@ use PHPMailer\PHPMailer\Exception;
         private $publicDAO;
 
 //? ======================================================================
-//!                           SELECT METHODS
+//!                           DAOs INJECTION
 //? ======================================================================
         public function __construct(){
             $this->userDAO = new UserDAO();
             $this->publicDAO = new PublicationDAO();
         }
-        
+
+//? ======================================================================
+//!                           SELECT METHODS
+//? ======================================================================        
         public function GetAll(){
             $reviewList = array();    
 
@@ -42,6 +47,12 @@ use PHPMailer\PHPMailer\Exception;
         return $reviewList;
         }
 
+/*
+*  D: Método que retorna todas las reviews segun un publicacion
+!     Se utiliza en la funcion CalculateScore()
+*  A: un id de una publicacion
+*  R: Retorna una lista de reviews con el id de la publicacion ingresada
+🐘*/ 
         public function GetAllByPublic($idPublic){
             $reviewList = array();
 
@@ -97,19 +108,21 @@ use PHPMailer\PHPMailer\Exception;
 //* ×××××××××××××××××××××××××××××××××××××××××××××××××
 //¬         MÉTODO PARA REGISTRAR UNA RESEÑA
 //* ×××××××××××××××××××××××××××××××××××××××××××××××××
+/*
+*  D: Método que recibe una review, la asigna a la publicacion correspondiente y
+*     llama al metodo para actualizar el puntaje de la publicacion
+!     Se utiliza en la funcion CalculateScore()
+*  A: Un objeto REVIEW.
+*  R: No posee.
+🐘*/
         public function NewReview(Review $review){
-            $message = "Successful: Su review se ha creado con exito,estamos para mejorar.";
-            try{
-                $public = $this->publicDAO->Get($review->getPublication()->getId());
-                $review->setPublication($public);
-                $user = $this->userDAO->DGetByUsername($review->getUser()->getUsername());
-                $review->setUser($user);
-            $this->Add($review);
-            $this->UpdatePopularity($public, $this->CalculateScore($public));
-            }catch(Exception $e){
-                $message = "Error: No se ha podido crear su review,reintente mas tarde.";
-            }
-        return $message;
+            $public = $this -> publicDAO -> Get($review -> getPublication() -> getId());
+            $review -> setPublication($public);
+            $user = $this -> userDAO -> DGetByUsername($review -> getUser() -> getUsername());
+            $review -> setUser($user);
+
+            $this -> Add($review);
+            $this -> UpdatePopularity($public, $this -> CalculateScore($public));
         }
 
 //? ======================================================================
@@ -123,6 +136,12 @@ use PHPMailer\PHPMailer\Exception;
             $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
         }
 
+/*
+*  D: Metodo que actualiza el puntaje de una publicacion, sumandole una nueva valoracion
+!     Metodo utilizado en NewReview() debido a que esta modificará el puntaje de la publicacion ya establecido
+*  A: Una publicacion y un numero de puntaje
+*  R: No posee.
+🐘*/        
         public function UpdatePopularity($public, $score){
             $query = "CALL Publication_UpdatePopularity(?,?)";
             $parameters["idPublic"] = $public->getid();
@@ -132,15 +151,20 @@ use PHPMailer\PHPMailer\Exception;
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
 
+/*
+*  D: Método que calculará el puntaje de una publicación, sumando todas las "estrellas" y dividiéndola por el total.
+*  A: La publicación de la cual se realizará el calculo.
+*  R: El puntaje calculado.
+🐘*/  
         public function CalculateScore($public){
-            $reviewList = $this->GetAllByPublic($public->getid());
+            $reviewList = $this -> GetAllByPublic($public->getid());
             $score = 0;
             $total = 0;
             foreach($reviewList as $review){
-                $score += $review->getStars();
+                $score += $review -> getStars();
                 $total += 1;
             }
-            return round(($score/$total), 2);
+        return round(($score / $total), 2);
         }
     }
 ?>

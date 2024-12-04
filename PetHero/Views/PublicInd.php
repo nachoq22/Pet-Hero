@@ -1,11 +1,11 @@
 <!-- MENSAJE DEL SISTEMA -->
 <body>
 <?php if (!empty($message)){?>
-    <div class="alert alert-danger" role="alert">
+    <div class="alert alert-danger alert-dismissible fade show " role="alert">
       <?php echo $message; ?>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 <?php } ?>
-
 
 
   <div class="row"> <!-- TITULO Y VALORACION -->

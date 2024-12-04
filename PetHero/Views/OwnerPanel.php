@@ -1,6 +1,6 @@
 <body>
 
-<?php if (!empty($message)){ 
+<!-- <?php if (!empty($message)){ 
     if(strpos($message, "Error") !== false){?>
     <div class="alert alert-danger" role="alert">
       <?php echo $message; ?>
@@ -10,7 +10,17 @@
       <?php echo $message; ?>
     </div>
 <?php } ?>
-<?php } ?>
+<?php } ?> -->
+
+<?php if (isset($_COOKIE['message'])) { 
+            if(strpos($_COOKIE['message'],"Error") !== false) { ?>
+                <div class="alert alert-danger alert-dismissible fade show " role="alert">
+    <?php    }else{ ?>
+                <div class="alert alert-success alert-dismissible fade show " role="alert">    
+                    <?php } echo $_COOKIE['message']; ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>    
+                </div>
+    <?php } setcookie('message', '', time() - 3600,'/'); ?>
 
 
 <div class="container-fluid">
@@ -162,7 +172,7 @@
                                 <td>
                                     <div class="row">
                                         <?php foreach ($bPetsList as $pet) { ?>   
-                                            <?php if ($pet->getBooking()->getId() == $book->getid()) { ?>           
+                                            <?php if ($pet->getBooking()->getId() == $book->getId()) { ?>           
                                             <div class="col-2">
                                                     <img src="<?php echo $pet->getPet()->getProfileIMG()?>" class="rounded-circle" alt="" 
                                                     style="width: 45px; height: 45px;"/>
@@ -193,7 +203,8 @@
                                 </td>
                                 <td>
                                 <?php if(STRCMP($book->getBookState(),"Awaiting Payment") == 0){?>   
-                                    <form action="<?php echo FRONT_ROOT."/Checker/PayCheck" ?>" method="post" name="sendPayC">
+                                    <!-- <form action="<?php echo FRONT_ROOT."/Checker/PayCheck" ?>" method="post" name="sendPayC"> -->
+                                    <form action="<?php echo FRONT_ROOT."/Booking/PayBooking" ?>" method="post" name="sendPayC">
                                         <div class="form-floating mb-3">   
                                             <input type="hidden" name="idBook" value=<?php echo $book->getId() ?>>  
                                             <input type="number" class="form-control" id="payCode" 

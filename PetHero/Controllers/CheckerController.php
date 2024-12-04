@@ -1,14 +1,19 @@
 <?php
 namespace Controllers;
 
-use \DAO\CheckerDAO as CheckerDAO;
+use Exceptions\UpdateCheckerException;
+// use Exceptions\RegisterBookingException;
+// use Exceptions\RegisterCheckerException;
+
 use \Controllers\HomeController as HomeController;
-use \Model\Checker as Checker;
+
+use \DAO\CheckerDAO as CheckerDAO;
+
 use \Model\Booking as Booking;
+use \Model\Checker as Checker;
 
     class CheckerController{
         private $checkDAO;
-
         private $homeC;
 
         public function __construct(){
@@ -35,15 +40,49 @@ use \Model\Booking as Booking;
 
 * R: No Posee.
 🐘 */
-        public function ToResponse($idBook,$rta){
-        $this->homeC->isLogged();    
-                $book = new Booking();
-                $book->setId($idBook);
-                $check = new Checker();    
-                $check->setBooking($book);
-            $message = $this->checkDAO->NewChecker($check,$rta);
-            $this->homeC->ViewKeeperPanel($message);
-        }
+        // public function ToResponse($idBook,$rta){
+        //     $this->homeC->isLogged();    
+
+        //     $book = new Booking();
+        //     $book->setId($idBook);
+
+        //     $check = new Checker();    
+        //     $check->setBooking($book);
+
+        //     $message = $this->checkDAO->NewChecker($check,$rta);
+            
+        //     $this->homeC->ViewKeeperPanel($message);
+        // }
+
+        // public function ToResponse($idBook,$rta){
+        //     $this->homeC->isLogged();    
+
+        //     $book = new Booking();
+        //     $book->setId($idBook);
+
+        //     $check = new Checker();    
+        //     $check->setBooking($book);
+
+        //     $message = ($rta == 1) ? "Successful: Se ha creado el checker y actualizado la reserva."
+        //                            : "Successful: la reserva se ha cancelado con exito";     
+            
+        //     try{
+
+        //         $this->checkDAO->NewChecker($check,$rta);
+
+        //     }catch(RegisterBookingException $rce){
+        //         $message = $rce -> getMessage();
+        //     }catch(RegisterCheckerException $rce){
+        //         $message = $rce -> getMessage();
+        //     }
+
+
+
+        //     setcookie('message', $message, time() + 2,'/');
+        //     header('Location: http://localhost/Pet-Hero/PetHero/Home/ViewKeeperPanel');
+        // }
+
+
 
 //* ×××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
 //¬                        ACTUALIZACIÓN PAGO CHECKER
@@ -64,24 +103,35 @@ use \Model\Booking as Booking;
 
 * R: No Posee.
 🐘 */        
-        public function PayCheck($idBook,$payCode){
-        $this->homeC->isLogged();    
-            $book = new Booking();
-            $book->setId($idBook);
-            $book->setPayCode($payCode);
-            $check = new Checker();    
-            $check->setBooking($book);
-            $message = $this->checkDAO->PayCheck($check);
-        $this->homeC->ViewOwnerPanel($message);
-        }
+        // public function PayCheck($idBook,$payCode){
+        //     $this->homeC->isLogged();   
+
+        //     $book = new Booking();
+        //     $book->setId($idBook);
+        //     $book->setPayCode($payCode);
+
+        //     $check = new Checker();    
+        //     $check->setBooking($book);
+
+        //     $message = "Successful: Su comprobante ha sido aceptado";    
+
+        //     try{
+        //         //$this->checkDAO->PayCheck($check);
+        //     }catch(UpdateCheckerException $uce){
+        //         $message = $uce -> getMessage();
+        //     }
+
+        //     setcookie('message', $message, time() + 2,'/');
+        //     header('Location: http://localhost/Pet-Hero/PetHero/Home/ViewOwnerPanel');
+        // }
 
 //* ×××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
 //¬                         VISTA PREVIA CHECKER PDF
 //* ×××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
         public function ViewChecker($idBook){
-        $this->homeC->isLogged();
-            $checker = $this->checkDAO->GetByBook($idBook);
-            require_once(VIEWS_PATH."ViewChecker.php");
+        $this -> homeC -> isLogged();
+        $checker = $this -> checkDAO -> GetByBook($idBook);
+        require_once(VIEWS_PATH."ViewChecker.php");
         }
     }
 ?>

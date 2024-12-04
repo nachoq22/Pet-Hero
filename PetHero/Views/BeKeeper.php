@@ -1,10 +1,20 @@
 <!-- MENSAJE DEL SISTEMA -->
 <body>
-<?php if (!empty($message)){?>
+<!-- <?php if (!empty($message)){?>
   <div class="alert alert-light" role="alert">
     <?php echo $message; ?>
   </div>
-<?php }?>
+<?php }?> -->
+
+<?php if (isset($_COOKIE['message'])) { 
+            if(strpos($_COOKIE['message'],"Error") !== false) { ?>
+                <div class="alert alert-danger alert-dismissible fade show " role="alert">
+    <?php    }else{ ?>
+                <div class="alert alert-success alert-dismissible fade show " role="alert">    
+                    <?php } echo $_COOKIE['message']; ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>    
+                </div>
+    <?php } setcookie('message', '', time() - 3600,'/'); ?>
 
 <!-- FORMULARIO -->
 <form action="<?php echo FRONT_ROOT."/User/BeKeeper" ?>" method="post" enctype="multipart/form-data" class="was-validated">
@@ -14,11 +24,11 @@
             <div class="row g-3">
                 <div class="col">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="adress" 
-                               placeholder="San Francisco 1578" name="adress" required>
-                        <label for="adress">Adress</label>
+                        <input type="text" class="form-control" id="address" 
+                               placeholder="San Francisco 1578" name="address" required>
+                        <label for="address">Address</label>
                             <div class="invalid-feedback">
-                                Please enter a Adress.
+                                Please enter a Address.
                             </div>
                     </div>
                 </div>

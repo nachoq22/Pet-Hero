@@ -1,11 +1,17 @@
 <?php
 namespace DAO;
-use \DAO\Connection as Connection;
+use Exception;
 use \DAO\QueryType as QueryType;
+use \DAO\Connection as Connection;
 
 use \DAO\IImgPublicDAO as IImgPublicDAO;
 use \DAO\PublicationDAO as PublicationDAO;
+use Exceptions\RegisterBookingException;
+use Exceptions\RegisterPublicationException;
+
 use \Model\ImgPublic as ImgPublic;
+use Model\Publication;
+use PDOException;
 
     class ImgPublicDAO implements IImgPublicDAO{
         private $connection;
@@ -22,9 +28,9 @@ use \Model\ImgPublic as ImgPublic;
 //? ======================================================================
 //!                             TOOL METHOD
 //? ======================================================================
-        private function imgPuProcess($tmp_name){
+        private function imgPubProcess($tmp_name){
             $idR = random_int(1,100000000);
-            $path= "Views\Img\IMGPublic\\".$idR."-IMGPublic".date("YmdHis").".jpg"; 
+            $path = "Views\Img\IMGPublic\\".$idR."-IMGPublic".date("YmdHis").".jpg"; 
             $path = str_replace(' ', '-', $path); 
             $pathDB = $path; 
             move_uploaded_file($tmp_name,$path);
@@ -139,27 +145,66 @@ use \Model\ImgPublic as ImgPublic;
 //* ×××××××××××××××××××××××××××××××××××××××××××××××××
 //¬      METODO  QUE REGISTRA UNA PUBLICACION.
 //* ×××××××××××××××××××××××××××××××××××××××××××××××××  
-        public function NewPublication(ImgPublic $public,$images){
-# SE GUARDA LA PUBLICACION Y SE ACTUALIZA POR NUEVA CON ID PARA ASIGNAR A LAS IMG
-            $message = "Sucessful: se ha guardado correctamente";
-            if(strlen($public->getPublication()->getTitle())<50){ 
-            $publicN = $this->publicDAO->NewPublication($public->getPublication());
-                $public->setPublication($publicN);
-# PARA OBTENER LOS VALORES DE TMP_NAME                
-            foreach($images as $k1=> $v1){
-                foreach($v1 as $k2 => $v2){
-                    if(strcmp($k1,"tmp_name") == 0){
-                        $path = $this->imgPuProcess($images[$k1][$k2]);
-                            $public->setUrl($path);
-                        $this->Add($public);
-                    }
-                }
-            }
-        }else{
-            $message = "Error: Datos ingresados invalidos, reintente nuevamente";
-        }
-        return $message;
+//         public function NewPublication(ImgPublic $public,$images){
+// # SE GUARDA LA PUBLICACION Y SE ACTUALIZA POR NUEVA CON ID PARA ASIGNAR A LAS IMG
+//             $message = "Sucessful: se ha guardado correctamente";
+//             if(strlen($public->getPublication()->getTitle())<50){ 
+//             $publicN = $this->publicDAO->NewPublication($public->getPublication());
+//                 $public->setPublication($publicN);
+// # PARA OBTENER LOS VALORES DE TMP_NAME                
+//             foreach($images as $k1=> $v1){
+//                 foreach($v1 as $k2 => $v2){
+//                     if(strcmp($k1,"tmp_name") == 0){
+//                         $path = $this->imgPuProcess($images[$k1][$k2]);
+//                             $public->setUrl($path);
+//                         $this->Add($public);
+//                     }
+//                 }
+//             }
+//         }else{
+//             $message = "Error: Datos ingresados invalidos, reintente nuevamente";
+//         }
+//         return $message;
+//     }
 
+    public function NewPublication(ImgPublic $public,$images){
+        if($public -> getPublication() -> getCloseDate() > DATE("Y-m-d") && 
+           $public -> getPublication() -> getOpenDate() > DATE("Y-m-d") && 
+           $public -> getPublication() -> getCloseDate() > $public -> getPublication() -> getOpenDate()){
+
+            if($this -> publicDAO -> ValidateDAllPublications($public -> getPublication()) == 0){
+                
+                try{
+                    $publicN = $this -> publicDAO -> NewPublication($public -> getPublication());
+                }catch(PDOException $pdoe){
+                    throw new RegisterPublicationException("Error: No se ha podido registrar su PUBLICATION, reintente.".$pdoe -> getMessage());
+                }
+
+                $public->setPublication($publicN);
+                
+                foreach($images as $k1 => $v1){
+
+                    foreach($v1 as $k2 => $v2){
+                        
+                        if(strcmp($k1,"tmp_name") == 0){
+
+                            $path = $this -> imgPubProcess($images[$k1][$k2]);
+                            $public -> setUrl($path);
+                            $this -> Add($public);
+
+                        }
+
+                    }
+
+                }
+
+            }else{
+                throw new RegisterPublicationException("Error: No hay disponibilidad para las fechas establecidas");
+            }
+            
+        }else{
+            throw new RegisterPublicationException("Error: Las fechas establecidas deben ser posteriores a la fecha actual.");
+        }
     }
 
 //? ======================================================================
@@ -185,6 +230,53 @@ use \Model\ImgPublic as ImgPublic;
 
         public function ValidateDAllPublications($openD, $closeD, $user){
             return $this->publicDAO->ValidateDAllPublications($openD, $closeD, $user);
+        }
+
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
+//¬   VERIFICACIÓN PRE FORMULARIO BOOKING
+//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
+        public function ValidatePreBooking($startD, $finishD, $idPublic){
+            $success = false;
+
+            if($startD < $finishD){    //* QUE LA FECHA DE INICIO SEA ANTES QUE LA DE FINALIZACION  
+
+                if($this->publicDAO->ValidateOnWeek($startD)==1){    
+                
+                    if($this->publicDAO->ValidateDP($startD, $finishD, $idPublic) == 1){
+                        $success = true;
+                    }else{
+                        throw new RegisterBookingException("Error: Las fechas ingresadas no entran en el rango de establecidas por el Keeper");
+                    }
+
+                }else{
+                    throw new RegisterBookingException("Error: Las reservas deben tener 1 semana de aniticipacion");
+                }
+
+            }else{
+                throw new RegisterBookingException("Error: La fecha de finalizacion debe ser despues de la de inicio");
+            }
+            
+        return $success;    
+        }
+
+
+        public function UpdatePublication(Publication $publication){
+            if($publication -> getCloseDate() > DATE("Y-m-d") && 
+                $publication -> getOpenDate() > DATE("Y-m-d") && 
+                $publication -> getCloseDate() > $publication -> getOpenDate()){
+ 
+                if($this -> publicDAO -> ValidateDAllPublications($publication) == 0){
+                    try{
+                        $this -> publicDAO -> UpdatePublication($publication);
+                    }catch(PDOException $pdoe){
+                        throw new RegisterPublicationException("Error: No se ha podido actualizar su PUBLICATION, reintente". $pdoe -> getMessage());
+                    }
+                }else{
+                    throw new RegisterPublicationException("Error: No hay disponibilidad para las fechas establecidas");    
+                } 
+            }else{
+                throw new RegisterPublicationException("Error: Las fechas establecidas deben ser posteriores a la fecha actual.");       
+            }
         }
     }
 ?>

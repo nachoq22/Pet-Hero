@@ -1,31 +1,37 @@
 <?php
 namespace DAO;
 
-use \DAO\Connection as Connection;
-use \DAO\QueryType as QueryType;
-
-use \DAO\ICheckerDAO as ICheckerDAO;
-use \DAO\BookingPetDAO as BookingPetDAO;
-use \Model\Checker as Checker;
-
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
-
 require 'Lib/PHPMailer/Exception.php';
 require 'Lib/PHPMailer/PHPMailer.php';
 require 'Lib/PHPMailer/SMTP.php';
 
+use PHPMailer\PHPMailer\Exception;
+use Exceptions\RegisterCheckerException;
+
+use \DAO\QueryType as QueryType;
+use \DAO\Connection as Connection;
+
+use \DAO\ICheckerDAO as ICheckerDAO;
+use \DAO\BookingDAO as BookingDAO;
+
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\PHPMailer;
+
+use Model\Booking;
+use Model\Checker;
+
+
+
+
     class CheckerDAO implements ICheckerDAO{
         private $connection;
-        private $tableName = 'Checker';
-        private $bpDAO;
+        private $bookingDAO;
 
 //? ======================================================================
 //!                           DAOs INJECTION
 //? ======================================================================
         public function __construct(){
-            $this->bpDAO = new BookingPetDAO();
+            $this -> bookingDAO = new BookingDAO();
         }
 
 //? ======================================================================
@@ -54,19 +60,19 @@ require 'Lib/PHPMailer/SMTP.php';
 
             $query = "CALL Checker_GetById(?)";
             $parameters["idChecker"] = $idChecker;
-            $this->connection = Connection::GetInstance();
-            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+            $this -> connection = Connection::GetInstance();
+            $resultBD = $this -> connection -> Execute($query,$parameters,QueryType::StoredProcedure);
 
             foreach($resultBD as $row){
                 $checker = new Checker();
                 if($row["payD"] != NULL){
-                    $checker->__fromDBP($row["idChecker"],$row["refCode"],$row["emisionD"]
-                                  ,$row["closeD"],$row["payD"] ,$row["finalPrice"]
-                                  ,$this->bpDAO->GetByBook($row["idBook"])->getBooking());
+                    $checker -> __fromDBP($row["idChecker"], $row["refCode"], $row["emisionD"]
+                                  , $row["closeD"], $row["payD"] ,$row["finalPrice"]
+                                  ,$this->bookingDAO->Get($row["idBook"]));
                 }
                 $checker->__fromDB($row["idChecker"],$row["refCode"],$row["emisionD"]
                                   ,$row["closeD"],$row["finalPrice"]
-                                  ,$this->bpDAO->GetByBook($row["idBook"])->getBooking());
+                                  ,$this->bookingDAO->Get($row["idBook"]));
             }
         return $checker;
         }
@@ -84,11 +90,11 @@ require 'Lib/PHPMailer/SMTP.php';
                 if($row["payD"] != NULL){
                     $checker->__fromDBP($row["idChecker"],$row["refCode"],$row["emisionD"]
                                   ,$row["closeD"],$row["payD"] ,$row["finalPrice"]
-                                  ,$this->bpDAO->GetByBook($row["idBook"])->getBooking());
+                                  ,$this->bookingDAO->Get($row["idBook"]));
                 }
                 $checker->__fromDB($row["idChecker"],$row["refCode"],$row["emisionD"]
                                   ,$row["closeD"],$row["finalPrice"]
-                                  ,$this->bpDAO->GetByBook($row["idBook"])->getBooking());
+                                  ,$this->bookingDAO->Get($row["idBook"]));
             }
         return $checker;
         }
@@ -106,11 +112,11 @@ require 'Lib/PHPMailer/SMTP.php';
                 if($row["payD"] != NULL){
                     $checker->__fromDBP($row["idChecker"],$row["refCode"],$row["emisionD"]
                                   ,$row["closeD"],$row["payD"] ,$row["finalPrice"]
-                                  ,$this->bpDAO->GetByBook($row["idBook"])->getBooking());
+                                  ,$this->bookingDAO->Get($row["idBook"]));
                 }
                 $checker->__fromDB($row["idChecker"],$row["refCode"],$row["emisionD"]
                                   ,$row["closeD"],$row["finalPrice"]
-                                  ,$this->bpDAO->GetByBook($row["idBook"])->getBooking());
+                                  ,$this->bookingDAO->Get($row["idBook"]));
             }
         return $checker;
         }
@@ -129,11 +135,11 @@ require 'Lib/PHPMailer/SMTP.php';
                 if($row["payD"] != NULL){
                     $checker->__fromDBP($row["idChecker"],$row["refCode"],$row["emisionD"]
                                   ,$row["closeD"],$row["payD"] ,$row["finalPrice"]
-                                  ,$this->bpDAO->GetByBook($row["idBook"])->getBooking());
+                                  ,$this->bookingDAO->Get($row["idBook"]));
                 }
                 $checker->__fromDB($row["idChecker"],$row["refCode"],$row["emisionD"]
                                   ,$row["closeD"],$row["finalPrice"]
-                                  ,$this->bpDAO->GetByBook($row["idBook"])->getBooking());
+                                  ,$this->bookingDAO->Get($row["idBook"]));
                 array_push($checkerList,$checker);
             }
         return $checkerList;    
@@ -159,7 +165,7 @@ require 'Lib/PHPMailer/SMTP.php';
             $query = "CALL Checker_Add(?,?,?,?,?)";
             $parameters["refCode"] = $checker->getRefCode();
             $parameters["emisionD"] = $checker->getEmissionDate();
-            $parameters["closeD"] = $checker->getcloseDate();
+            $parameters["closeD"] = $checker->getCloseDate();
             $parameters["finalPrice"] = $checker->getFinalPrice();
             $parameters["idBook"] = $checker->getBooking()->getId();
 
@@ -183,55 +189,133 @@ require 'Lib/PHPMailer/SMTP.php';
 
 ! REVISAR MÉTODO, DEMASIADO COMPLEJO Y ENGORROSO.
 🐘*/      
-        public function NewChecker(Checker $checker,$rta){
-            $message = "Successful: Se ha creado el checker y actualizado la reserva.";
+        // public function NewChecker(Checker $checker,$rta){
+        //     $message = "Successful: Se ha creado el checker y actualizado la reserva.";
        
-                $bp = $this->bpDAO->GetByBook($checker->getBooking()->getId()); 
+        //         $bp = $this->bpDAO->GetByBook($checker->getBooking()->getId()); 
                 
-                try{
-                    if($rta == 1){
-                        try{
-                            //¬ SE OBTIENE EL 50% DEL MONTO TOTAL A PAGAR
-                            $totally = $this->bpDAO->GetTotally($bp->getBooking());  
-                        }catch(Exception $e){
-                            $message = "Error: Ha ocurrido un error inesperado, intente mas tarde.";
-                        return $message;
-                        }
+        //         try{
+        //             if($rta == 1){
+        //                 try{
+        //                     //¬ SE OBTIENE EL 50% DEL MONTO TOTAL A PAGAR
+        //                     $totally = $this->bpDAO->GetTotally($bp->getBooking());  
+        //                 }catch(Exception $e){
+        //                     $message = "Error: Ha ocurrido un error inesperado, intente mas tarde.";
+        //                 return $message;
+        //                 }
 
-                        try{
-                            //¬ SE SETEAN LAS FECHAS, SE GENERA UN CÓDIGO ÚNICO Y SE GUARDA EL CHECKER//
-                            $openD = DATE("Y-m-d");
-                            $closeD = DATE("Y-m-d",STRTOTIME($openD."+ 3 days"));
-                            $refCode = $this->GenRefCode();
-                            $checker->__fromRequest($refCode,$openD,$closeD,$totally,$bp->getBooking());  
-                            $this->Add($checker);
-                        }catch(Exception $e){
-                            $message = "Error: No se ha podido generar el checker, intente mas tarde.";
-                        return $message;
-                        }
+        //                 try{
+        //                     //¬ SE SETEAN LAS FECHAS, SE GENERA UN CÓDIGO ÚNICO Y SE GUARDA EL CHECKER//
+        //                     $openD = DATE("Y-m-d");
+        //                     $closeD = DATE("Y-m-d",STRTOTIME($openD."+ 3 days"));
+        //                     $refCode = $this->GenRefCode();
+        //                     $checker->__fromRequest($refCode,$openD,$closeD,$totally,$bp->getBooking());  
+        //                     $this->Add($checker);
+        //                 }catch(Exception $e){
+        //                     $message = "Error: No se ha podido generar el checker, intente mas tarde.";
+        //                 return $message;
+        //                 }
 
-                        try{
-                            //¬ SI EL OWNER USA ALGUNO DE ESTOS 2 MAILS, SE ENVÍA EL CHECKER POR MAIL
-                            $message = $this->SendChecker($checker);
-                            if(strcmp($checker->getBooking()->getUser()->getEmail(),"misaelflores4190@gmail.com")==0 
-                            XOR strcmp($checker->getBooking()->getUser()->getEmail(),"ignaciorios_g@hotmail.com")==0){   
-                            }
-                        }catch(Exception $e){
-                            $message = "Error: No se ha podido enviar el checker, intente mas tarde.";
-                        return $message;
-                        } 
+        //                 try{
+        //                     //¬ SI EL OWNER USA ALGUNO DE ESTOS 2 MAILS, SE ENVÍA EL CHECKER POR MAIL
+        //                     $message = $this->SendChecker($checker);
+        //                     if(strcmp($checker->getBooking()->getUser()->getEmail(),"misaelflores4190@gmail.com")==0 
+        //                     XOR strcmp($checker->getBooking()->getUser()->getEmail(),"ignaciorios_g@hotmail.com")==0){   
+        //                         $this -> SendChecker($checker);
+        //                     }
+        //                 }catch(Exception $e){
+        //                     $message = "Error: No se ha podido enviar el checker, intente mas tarde.";
+        //                 return $message;
+        //                 } 
 
-                        //¬ SE ACTUALIZA EL ESTADO DE LA RESERVA
-                        $this->bpDAO->NewState($bp->getBooking(),$rta);                     
-                    }else{
-                        $this->bpDAO->NewState($bp->getBooking(),$rta);
-                        $message = "Successful: la reserva se ha cancelado con exito";
-                    }
-                }catch(Exception $e){
-                    $message = "Error: No se ha podido actualizar la reserva, intente mas tarde.";
-                return $message;
-                }  
-        return $message;   
+        //                 //¬ SE ACTUALIZA EL ESTADO DE LA RESERVA
+        //                 $this->bpDAO->NewState($bp->getBooking(),$rta);                     
+        //             }else{
+        //                 $this->bpDAO->NewState($bp->getBooking(),$rta);
+        //                 $message = "Successful: la reserva se ha cancelado con exito";
+        //             }
+        //         }catch(Exception $e){
+        //             $message = "Error: No se ha podido actualizar la reserva, intente mas tarde.";
+        //         return $message;
+        //         }  
+        // return $message;   
+        // }
+
+        // public function NewChecker(Checker $checker,$rta){
+        //     $bp = $this -> bpDAO -> GetByBook($checker -> getBooking() -> getId()); 
+        //     $bpetList = $this -> bpDAO -> GetPetsByBook($bp -> getBooking() -> getId());
+        //     $petsIDList = array();
+        //     foreach($bpetList AS $bpet){
+        //         array_push($petsIDList,$bpet -> getPet()->getId());
+        //     }
+
+        //     if($this -> bpDAO -> ValidateTypesOnBookings($bp -> getBooking(),$petsIDList) == 1){
+        //         if($rta == 1){
+        //             //¬ SE OBTIENE EL 50% DEL MONTO TOTAL A PAGAR
+        //             //¬ REVISAR SI TRAIGO LISTA O UNO SOLO
+        //             $totally = $this -> bpDAO -> GetTotally($bp -> getBooking());  
+    
+        //             //¬ SE SETEAN LAS FECHAS, SE GENERA UN CÓDIGO ÚNICO Y SE GUARDA EL CHECKER//
+        //             $openD = DATE("Y-m-d");
+        //             $closeD = DATE("Y-m-d",STRTOTIME($openD."+ 3 days"));
+                    
+        //             $refCode = $this->GenRefCode();
+        //             $checker -> __fromRequest($refCode,$openD,$closeD,$totally, $bp -> getBooking()); 
+                    
+        //             try{
+        //                 $this -> Add($checker);
+        //             }catch(Exception $e){
+        //                 throw new RegisterCheckerException("Error: No se ha podido generar el checker, intente mas tarde.");
+        //             }
+    
+        //             try{
+        //                 //¬ SI EL OWNER USA ALGUNO DE ESTOS 2 MAILS, SE ENVÍA EL CHECKER POR MAIL
+        //                 $message = $this -> SendChecker($checker);
+        //                 if(strcmp($checker -> getBooking() -> getUser() -> getEmail(), "misaelflores4190@gmail.com") == 0 
+        //                    XOR 
+        //                    strcmp($checker -> getBooking() -> getUser() -> getEmail(), "ignaciorios_g@hotmail.com") == 0){ 
+    
+        //                         $this -> SendChecker($checker);
+    
+        //                 }
+        //             }catch(Exception $e){
+        //                 throw new RegisterCheckerException("Error: No se ha podido enviar el checker, intente mas tarde.");
+        //             } 
+        //         }
+        //     }else{
+        //         $this->bpDAO->NewState($bp->getBooking(),0);
+        //         throw new RegisterBookingException("Error: Sus mascotas son incompatibles con las que cuidara el keeper en ese momento");
+        //     }
+
+           
+        //     //¬ SE ACTUALIZA EL ESTADO DE LA RESERVA
+        //     $this->bpDAO->NewState($bp->getBooking(),$rta);
+        // }
+
+
+        public function NewChecker(Booking $booking, $totally){
+            $refCode = $this -> GenRefCode();
+            $openD = DATE("Y-m-d");
+            $closeD = DATE("Y-m-d",STRTOTIME($openD."+ 3 days"));            
+
+            $checker = new Checker();
+            $checker -> __fromRequest($refCode, $openD, $closeD, $totally, $booking);
+
+            $this -> Add($checker);
+
+            try{
+            //¬ SI EL OWNER USA ALGUNO DE ESTOS 2 MAILS, SE ENVÍA EL CHECKER POR MAIL
+                $this -> SendChecker($checker);
+                if(strcmp($checker -> getBooking() -> getUser() -> getEmail(), "misaelflores4190@gmail.com") == 0 
+                   XOR 
+                   strcmp($checker -> getBooking() -> getUser() -> getEmail(), "ignaciorios_g@hotmail.com") == 0){ 
+                    
+                    $this -> SendChecker($checker);
+                    
+                }
+            }catch(Exception $e){
+                throw new RegisterCheckerException("Error: No se ha podido enviar el checker, intente mas tarde.");
+            }
         }
 
 //* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
@@ -243,7 +327,7 @@ require 'Lib/PHPMailer/SMTP.php';
 * A: Checker totalmente cargado.
 * R: No posee.
 🐘*/
-        private function SetPayDChecker(Checker $checker){
+        public function SetPayDChecker(Checker $checker){
             $query = "CALL Checker_SetPayD(?,?)";
             $parameters["idChecker"] = $checker->getEmissionDate(); //! ERROR?
             $parameters["payD"] = $checker->getPayDate();
@@ -259,20 +343,34 @@ require 'Lib/PHPMailer/SMTP.php';
 * A: Checker totalmente cargado.
 * R: String con mensaje afirmativo o negativo según resultado de la operación.
 🐘*/        
-        public function PayCheck(Checker $checker){
-            $message = $this->bpDAO->UpdatePayCode($checker->getBooking());
-            try{
-                if(strpos($message,"Error") !== false){
-                    $dateN = DATE("Y-m-d");
-                    $checker->setPayD($dateN);
-                    $this->SetPayDChecker($checker);
-                }
-            }catch(Exception $e){
-                $message = $message .", no se ha actualizado el checker.";
-                return $message;
-            }
-            return $message;
-        }
+        // public function PayCheck(Checker $checker){
+        //     $message = $this->bpDAO->UpdatePayCode($checker->getBooking());
+        //     try{
+        //         if(strpos($message,"Error") !== false){
+        //             $dateN = DATE("Y-m-d");
+        //             $checker->setPayD($dateN);
+        //             $this->SetPayDChecker($checker);
+        //         }
+        //     }catch(Exception $e){
+        //         $message = $message .", no se ha actualizado el checker.";
+        //         return $message;
+        //     }
+        //     return $message;
+        // }
+
+//PASAR A BOOKING
+        // public function PayCheck(Checker $checker){
+        //     try{
+        //         $this->bpDAO->UpdatePayCode($checker->getBooking());
+                
+        //         $dateN = DATE("Y-m-d");
+        //         $checker->setPayD($dateN);
+        //         $this->SetPayDChecker($checker);
+
+        //     }catch(UpdateBookingException $ube){
+        //         throw new UpdateCheckerException($ube -> getMessage() .", no se ha actualizado el checker.");
+        //     }
+        // }
 
 //* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
 //¬                     MÉTODO PARA ENVIAR UN CHECKER

@@ -47,7 +47,7 @@ use \Model\PersonalData as PersonalData;
             $this->password = $password;
         } 
     
-//GETTER & SERTTER
+//GETTER & SETTER
         public function getId(){
             return $this->idUser;
         }

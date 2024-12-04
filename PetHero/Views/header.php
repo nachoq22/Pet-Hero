@@ -29,7 +29,7 @@
       <form class="w-100 me-3" role="search" action="<?php echo FRONT_ROOT."/Home/Search" ?>" method="post" class="was-validated">
           <div class="p-1 bg-light rounded rounded-pill shadow-sm">
             <div class="input-group">
-              <input type="search" placeholder="What're you searching for?" aria-describedby="button-addon1" name="seach" class="form-control border-0 bg-light" required>
+              <input type="search" placeholder="What're you searching for?" aria-describedby="button-addon1" name="search" class="form-control border-0 bg-light" required>
               <div class="input-group-append">
                 <button id="button-addon1" type="submit" class="btn btn-link text-danger"><i class="bi bi-search"></i></button>
               </div>

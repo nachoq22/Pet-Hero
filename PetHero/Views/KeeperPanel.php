@@ -1,4 +1,4 @@
-<body>
+<!-- <body>
     <?php if (!empty($message)) {
         if (strpos($message, "Error") !== false) { ?>
     <div class="alert alert-danger" role="alert">
@@ -9,7 +9,18 @@
         <?php echo $message; ?>
     </div>
     <?php } ?>
-    <?php } ?>
+    <?php } ?> -->
+
+    <?php if (isset($_COOKIE['message'])) { 
+            if(strpos($_COOKIE['message'],"Error") !== false) { ?>
+                <div class="alert alert-danger alert-dismissible fade show " role="alert">
+    <?php    }else{ ?>
+                <div class="alert alert-success alert-dismissible fade show " role="alert">    
+                    <?php } echo $_COOKIE['message']; ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>    
+                </div>
+    <?php } setcookie('message', '', time() - 3600,'/'); ?>
+
     <div class="container-fluid">
         <div class="row">
 
@@ -120,6 +131,12 @@
                                             <h5 class="card-title">
                                                 <?php echo $public->getTitle() ?>
                                             </h5>
+<!-- Para redireccion a formulario de update -->
+                                            <form action="<?php echo FRONT_ROOT . "/Home/ViewUpdatePublication" ?>"
+                                                method="post">
+                                                <input type="hidden" class="visually-hidden" name="idPublic" value=<?php echo $public->getId() ?>>
+                                                <button class="btn btn-outline-warning" type="submit"><i class="bi bi-pencil-square"></i></button>
+                                            </form>
 
                                             <p class="card-text"><small>
                                                     <?php echo $public->getPopularity() . " ☆☆☆☆☆" ?>
@@ -135,13 +152,13 @@
                                             </small>
                                             </p>
                                             </strong>
-                                            <form action="<?php echo FRONT_ROOT . "/Publication/ViewPublication" ?>"
+                                            <!-- <form action="<?php echo FRONT_ROOT . "/Publication/ViewPublication" ?>"
                                                 method="post">
                                                 <input type="hidden" name="idPublic" value=<?php echo $public->getId()
                                                     ?>>
                                                 <button type="submit" class="stretched-link"
                                                     style="border-left-width: 0px;border-top-width: 0px;border-right-width: 0px;height: 0px;padding-right: 0px;padding-left: 0px;border-bottom-width: 0px;padding-bottom: 0px;padding-top: 0px;"></button>
-                                            </form>
+                                            </form> -->
 
                                         </div>
                                     </div>
@@ -312,7 +329,7 @@
                                     <td>
                                         <?php if ((STRCMP($book->getBookState(), "In Review") == 0)) { ?>
                                         <div class="container-fluid d-flex">
-                                            <form action="<?php echo FRONT_ROOT . "/Checker/ToResponse" ?>"
+                                            <form action="<?php echo FRONT_ROOT . "/Booking/ToResponse" ?>"
                                                 method="post">
                                                 <input type="hidden" class="visually-hidden" name="idBook" value=<?php
                                         echo $book->getId() ?>>
@@ -320,7 +337,7 @@
                                                 <button class="btn btn-outline-success" type="submit"><i
                                                         class="bi bi-check-square"></i></button>
                                             </form>
-                                            <form action="<?php echo FRONT_ROOT . "/Checker/ToResponse" ?>"
+                                            <form action="<?php echo FRONT_ROOT . "/Booking/ToResponse" ?>"
                                                 method="post">
                                                 <input type="hidden" class="visually-hidden" name="idBook" value=<?php
                                         echo $book->getId() ?>>

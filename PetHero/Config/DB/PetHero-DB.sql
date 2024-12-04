@@ -212,20 +212,20 @@ CREATE TABLE IF NOT EXISTS Publication(
 			REFERENCES User(idUser)
 );
 
-INSERT INTO Publication VALUES (0,"2022-12-02","2022-12-30","De Gran comodidad"," ¡No permitas que tu mascota se quede atrás! 
+INSERT INTO Publication VALUES (0,"2024-12-02","2024-12-30","De Gran comodidad"," ¡No permitas que tu mascota se quede atrás! 
 								Las mejores actividades para el, ¡Unas vacaciones para los miembros peludos de la familia! 
 								A tu mascota le encantará investigar un nuevo lugar, y tú te sentirás mejor sabiendo que 
 								esta haciendo algo nuevo y seguro.",0.0,3500,1);
-INSERT INTO Publication VALUES (0,"2022-12-10","2022-12-30","Calidez para tu mascota","Este verano, reserva su lugar en el sol. 
+INSERT INTO Publication VALUES (0,"2024-12-10","2024-12-30","Calidez para tu mascota","Este verano, reserva su lugar en el sol. 
 								Nosotros lo llevaremos a las mejores playas, donde podrá relajarse y divertirte. 
 								No te quedes en casa, ¡ven a disfrutar del sol con nosotros!",0.0,5000,2);
-INSERT INTO Publication VALUES (0,"2023-01-05","2023-02-20","Tranquilidad para ahora y despues","Reservar ahora 
+INSERT INTO Publication VALUES (0,"2024-11-05","2025-02-20","Tranquilidad para ahora y despues","Reservar ahora 
 								y asegurar su lugar en la lista de espera para el próximo año. Si reserva con nosotros, 
 								podrá estar tranquilo sabiendo que su lugar estará a salvo.",0.0,4200,3);
-INSERT INTO Publication VALUES (0,"2022-11-28","2023-01-20","La perfeccion es nuestra filosofia","Al hacer tu reserva, 
+INSERT INTO Publication VALUES (0,"2024-12-28","2025-01-30","La perfeccion es nuestra filosofia","Al hacer tu reserva, 
 								nos aseguramos de que tu estancia sea perfecta. Tenemos una variedad de opciones para que elijas, 
 								y todas las comodidades que necesita tu mascota.",0.0,7500,4);
-INSERT INTO Publication VALUES (0,"2022-12-22","2023-01-10","Sera como estar en casa","Haz una reserva para tu mascota y 
+INSERT INTO Publication VALUES (0,"2025-02-10","2025-03-30","Sera como estar en casa","Haz una reserva para tu mascota y 
 								asegúrate de recibir el mejor servicio. Nuestro equipo de profesionales se asegurará de que 
 								tu mascota esté segura y cómoda durante su estadía. están aquí. 
 								Estamos a tu disposición para hacer de tu estancia una experiencia inolvidable.",0.0,9300,5);
@@ -285,9 +285,9 @@ INSERT INTO Booking VALUES (0,DATE(NOW()),
 								 ,1,4);
 */
 
-INSERT INTO Booking VALUES (0,"2022-12-12","2022-12-17","Waiting Start","65667469864268",1,6);
-INSERT INTO Booking VALUES (0,"2023-01-10","2023-01-20","Waiting Start","79624905898821",2,7);
-INSERT INTO Booking VALUES (0,"2021-11-10","2021-12-12","Finalized","79624905898821",3,1);
+INSERT INTO Booking VALUES (0,"2024-12-12","2024-12-17","Waiting Start","65667469864268",1,6);
+INSERT INTO Booking VALUES (0,"2024-12-12","2024-12-28","Waiting Start","79624905898821",2,7);
+INSERT INTO Booking VALUES (0,"2024-11-10","2024-11-20","Finalized","79624905898821",3,1);
 
 
 /*********************************BOOKING PET*******************************************/
@@ -318,8 +318,9 @@ CREATE TABLE IF NOT EXISTS Checker(
                 REFERENCES Booking(idBook)
 );
 
-INSERT INTO Checker VALUES (0,"111999a17a98w2364er","2022-10-15","2022-10-18","2022-10-16",21000,1);
-INSERT INTO Checker VALUES (0,"22a8x7a21a98w1289ra","2022-10-28","2022-10-31","2022-10-29",55000,2);
+INSERT INTO Checker VALUES (0,"111999a17a98w2364er","2024-10-15","2022-10-18","2022-10-16",21000,1);
+INSERT INTO Checker VALUES (0,"22a8x7a21a98w1289ra","2024-10-28","2022-10-31","2022-10-29",55000,2);
+INSERT INTO Checker VALUES (0,"UM3SSXE7NAT8WWN5478","2024-07-28","2022-07-31","2022-07-29",55000,3);
 
 /*********************************REVIEW*******************************************/
 CREATE TABLE IF NOT EXISTS Review(
@@ -367,10 +368,10 @@ CREATE TABLE IF NOT EXISTS MessageChat(
 		REFERENCES User(idUser)
 );
 
-INSERT INTO MessageChat VALUES (1,"Buenas tardes","2022-12-12 22:55:40",4,1); 
-INSERT INTO MessageChat VALUES (2,"Buenas!!","2022-12-12 22:56:40",4,2); 
-INSERT INTO MessageChat VALUES (3,"Tengo una consulta","2022-12-12 22:57:40",4,1); 
-INSERT INTO MessageChat VALUES (4,"Si, digame","2022-12-12 22:57:48",4,2); 
-INSERT INTO MessageChat VALUES (5,"podria ir llevarle el perro a las 8:00 de la mañana?","2022-12-12 22:58:05",4,1); 
-INSERT INTO MessageChat VALUES (6,"No hay problema, a cualquier hora me viene bien","2022-12-12 22:58:25",4,2); 
-INSERT INTO MessageChat VALUES (7,"Perfecto! ya mismo hago la reserva","2022-12-12 22:58:40",4,1); 
+INSERT INTO MessageChat VALUES (1,"Buenas tardes","2024-12-12 22:55:40",4,1); 
+INSERT INTO MessageChat VALUES (2,"Buenas!!","2024-12-12 22:56:40",4,2); 
+INSERT INTO MessageChat VALUES (3,"Tengo una consulta","2024-12-12 22:57:40",4,1); 
+INSERT INTO MessageChat VALUES (4,"Si, digame","2024-12-12 22:57:48",4,2); 
+INSERT INTO MessageChat VALUES (5,"podria ir llevarle el perro a las 8:00 de la mañana?","2024-12-12 22:58:05",4,1); 
+INSERT INTO MessageChat VALUES (6,"No hay problema, a cualquier hora me viene bien","2024-12-12 22:58:25",4,2); 
+INSERT INTO MessageChat VALUES (7,"Perfecto! ya mismo hago la reserva","2024-12-12 22:58:40",4,1); 
