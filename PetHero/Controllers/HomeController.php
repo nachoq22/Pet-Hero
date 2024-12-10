@@ -61,6 +61,13 @@ use \Model\Chat as Chat;
             require_once(VIEWS_PATH."Search.php");
         }
 
+        public function SearchByDates($initD, $finishD){
+            $publicList = $this -> publicDAO -> GetAllByRangeDates($initD, $finishD);
+            $imgByPublic =  $this -> imgPublicDAO -> GetAccordingPublic($publicList);
+
+            require_once(VIEWS_PATH."Search.php");
+        }
+
 //? ======================================================================
 //!                          VIEW CONTROLLERS
 //? ======================================================================

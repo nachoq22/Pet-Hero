@@ -22,7 +22,7 @@
                 </div>
     <?php } setcookie('message', '', time() - 3600,'/'); ?>
 
-<!--
+
 <div class="container-fluid">
     <div class="row">
         
@@ -62,13 +62,17 @@
                 </ul>
             </div>
         </div>
-        -->
+        
         <div class="col-sm p-3 min-vh-100">
             <!-- content -->
-<hr>
+<!--OWNER DATA CONTENT-->
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="ownerData" role="tabpanel" aria-labelledby="ownerData-tab" tabindex="0">
+                    
+                </div>  
 
 <!--PETLIST CONTENT-->                
-                 <h2><strong>Your Pets</strong></h2>
+                <div class="tab-pane" id="petList" role="tabpanel" aria-labelledby="petList-tab" tabindex="0">   
                     <div class="container-fluid content-row">
                         <div class="row">
                             <div class="col-2 mt-3">
@@ -83,7 +87,6 @@
                                     </a>
                                 </div>
                             </div>
-                            
                     <?php foreach ($petList as $pet) { ?>
                             <div class="col-2 mt-3" >
                                 <div class="card h-100">
@@ -102,12 +105,10 @@
                     <?php } ?>
                         </div> <!-- /.card-content -->
                     </div> <!-- /.card-content -->
-                    <br>
-                    <hr>
-                
+                </div>
 
 <!--BOOKING CONTENT-->
-                <h2><strong>Your Pets's Booking</strong></h2>
+                <div class="tab-pane" id="bookings" role="tabpanel" aria-labelledby="bookings-tab" tabindex="0">
                     <table class="table align-middle mb-0 bg-white">
                         <thead class="bg-light">
                             <tr>
@@ -231,6 +232,7 @@
                             <?php } ?>
                         </tbody>
                     </table>        
+                </div>
             </div>
         </div>
     </div>
