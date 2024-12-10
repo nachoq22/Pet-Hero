@@ -1,13 +1,17 @@
 <?php
 namespace DAO;
+
+use Exceptions\RegisterPetException;
+use PDOException;
+
 use \DAO\Connection as Connection;
 use \DAO\QueryType as QueryType;
-use Exception as Exception;
 
 use \DAO\IPetDAO as IPetDAO;
 use \DAO\PetTypeDAO as PetTypeDAO;
 use \DAO\SizeDAO as SizeDAO;
 use \DAO\UserDAO as UserDAO;
+
 use \Model\Pet as Pet;
 
     class PetDAO implements IPetDAO{
@@ -18,20 +22,20 @@ use \Model\Pet as Pet;
         private $sizeDAO;
         private $userDAO;
 
-//======================================================================
-// DAOs INJECTION
-//======================================================================
+//? ======================================================================
+//!                           DAOs INJECTION
+//? ======================================================================
         public function __construct(){
-            $this->typeDAO = new PetTypeDAO();
-            $this->sizeDAO = new SizeDAO();
-            $this->userDAO = new UserDAO();
+            $this -> typeDAO = new PetTypeDAO();
+            $this -> sizeDAO = new SizeDAO();
+            $this -> userDAO = new UserDAO();
         }
 
-//======================================================================
-// METHODS TOOLS
-//======================================================================
+//? ======================================================================
+//!                             TOOL METHOD
+//? ======================================================================
         private function imgPPProcess($nameFile,$file,$petName){
-            $path= "Views\Img\IMGPet\Profile\\".$petName.date("YmdHis").".jpg"; 
+            $path = "Views\Img\IMGPet\Profile\\".$petName.date("YmdHis").".jpg"; 
             $path = str_replace(' ', '-', $path); 
             $pathDB =  "..\\".$path; 
 
@@ -40,7 +44,7 @@ use \Model\Pet as Pet;
         }    
 
         private function imgPVPProcess($nameFile,$file,$petName){
-            $path= "Views\Img\IMGPet\VaccinationPlan\\".$petName.date("YmdHis").".jpg"; 
+            $path = "Views\Img\IMGPet\VaccinationPlan\\".$petName.date("YmdHis").".jpg"; 
             $path = str_replace(' ', '-', $path); 
             $pathDB =  "..\\".$path;  
             
@@ -48,25 +52,26 @@ use \Model\Pet as Pet;
         return $pathDB;
         }       
 
-//======================================================================
-// SELECT METHODS
-//======================================================================
+//? ======================================================================
+//!                           SELECT METHODS
+//? ======================================================================
         public function GetAll(){
             $petList = array();
 
             $query = "CALL Pet_GetAll()";
-            $this->connection = Connection::GetInstance();
-            $resultBD = $this->connection->Execute($query,array(),QueryType::StoredProcedure);
+            $this -> connection = Connection::GetInstance();
+            $resultBD = $this -> connection -> Execute($query,array(),QueryType::StoredProcedure);
 
             foreach($resultBD as $row){
                 $pet = new Pet();
-                $pet->__fromDB($row["idPet"],$row["name"]
-                              ,$row["breed"],$row["profileIMG"]
-                              ,$row["vaccinationPlanIMG"],$row["observation"]
-                              ,$this->typeDAO->Get($row["idType"])
-                              ,$this->sizeDAO->Get($row["idSize"])
-                              ,$this->userDAO->dGet($row["idUser"]));
-                array_push($petList,$pet);
+                $pet -> __fromDB($row["idPet"], $row["name"]
+                               , $row["breed"], $row["profileIMG"]
+                               , $row["vaccinationPlanIMG"], $row["observation"]
+                               , $this -> typeDAO -> Get($row["idType"])
+                               , $this -> sizeDAO -> Get($row["idSize"])
+                               , $this -> userDAO -> dGet($row["idUser"]));
+
+                array_push($petList, $pet);
             }
         return $petList;
         }
@@ -81,48 +86,64 @@ use \Model\Pet as Pet;
 
             foreach($resultBD as $row){
                 $pet = new Pet();
-                $pet->__fromDB($row["idPet"],$row["name"]
-                              ,$row["breed"],$row["profileIMG"]
-                              ,$row["vaccinationPlanIMG"],$row["observation"]
-                              ,$this->typeDAO->Get($row["idType"])
-                              ,$this->sizeDAO->Get($row["idSize"])
-                              ,$this->userDAO->DGet($row["idUser"]));
+                $pet -> __fromDB($row["idPet"], $row["name"]
+                               , $row["breed"], $row["profileIMG"]
+                               , $row["vaccinationPlanIMG"], $row["observation"]
+                               , $this -> typeDAO -> Get($row["idType"])
+                               , $this -> sizeDAO -> Get($row["idSize"])
+                               , $this -> userDAO -> DGet($row["idUser"]));
+                
                 array_push($petList,$pet);
             }
         return $petList;
         }
 
         public function GetAllByUsername($username){
-            $user = $this->userDAO->DGetByUsername($username);
-            $petList = $this->GetAllByUser($user->getId());
+            $user = $this -> userDAO -> DGetByUsername($username);
+            $petList = $this -> GetAllByUser($user -> getId());
         return $petList;
         }
 
+        public function GetAllByIds($petsIDList){
+            $petList = array();
+    
+            foreach($petsIDList as $id){
+                $pet = new Pet();
+                $pet = $this -> Get($id);
+                array_push($petList, $pet);
+            }
+        return $petList;
+        }
+
+/*
+* 🐘 D: Recupera un Pet según ID.
+!     Requerido por el método GetPetsByBook de BookingPetDAO.
+* 🐘 A: ID del Pet a filtrar.
+* 🐘 R: Pet filtrado.
+*/     
         public function Get($id){
             $pet = null;
             $query = "CALL Pet_GetById(?)";
             $parameters["idPet"] = $id;
-            $this->connection = Connection::GetInstance();
-            $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
+            $this -> connection = Connection::GetInstance();
+            $resultBD = $this -> connection -> Execute($query,$parameters,QueryType::StoredProcedure);
 
             foreach($resultBD as $row){
                 $pet = new Pet();
-                $pet->__fromDB($row["idPet"],$row["name"]
-                              ,$row["breed"],$row["profileIMG"]
-                              ,$row["vaccinationPlanIMG"],$row["observation"]
-                              ,$this->typeDAO->Get($row["idType"])
-                              ,$this->sizeDAO->Get($row["idSize"])
-                              ,$this->userDAO->DGet($row["idUser"]));
+                $pet -> __fromDB($row["idPet"], $row["name"]
+                               , $row["breed"], $row["profileIMG"]
+                               , $row["vaccinationPlanIMG"], $row["observation"]
+                               , $this -> typeDAO -> Get($row["idType"])
+                               , $this -> sizeDAO -> Get($row["idSize"])
+                               , $this -> userDAO -> DGet($row["idUser"]));
             }
         return $pet;
         }
 
-//======================================================================
-// INSERT METHODS
-//======================================================================
-        private function Add(Pet $pet,$fileP,$fileNameP,$fileV,$fileNameV){
-                $pet->setProfileIMG($this->imgPPProcess($fileNameP,$fileP,$pet->getName()));
-                $pet->setVaccinationPlanIMG($this->imgPVPProcess($fileNameV,$fileV,$pet->getName()));
+//? ======================================================================
+// !                          INSERT METHODS
+//? ======================================================================
+        private function Add(Pet $pet){
             $query = "CALL Pet_Add(?,?,?,?,?,?,?,?)";
             $parameters["name"] = $pet->getName();
             $parameters["breed"] = $pet->getBreed();
@@ -136,26 +157,29 @@ use \Model\Pet as Pet;
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
 
-//-----------------------------------------------------
-// METHOD DEDICATED TO REGISTER A PET
-//-----------------------------------------------------
-        public function RegisterPet(Pet $pet,$fileP,$fileNameP,$fileV,$fileNameV){
-            $message = "Successful: Se ha registrado correctamente su mascota";
+//* ×××××××××××××××××××××××××××××××××××××××××××××××××
+//¬         MÉTODO PARA REGISTRAR UNA MASCOTA
+//* ×××××××××××××××××××××××××××××××××××××××××××××××××
+        public function RegisterPet(Pet $pet, $fileP, $fileNameP, $fileV, $fileNameV){
             try{
-                $pet->setType($this->typeDAO->GetByName($pet->getType()->getName()));
-                $pet->setSize($this->sizeDAO->GetByName($pet->getSize()->getName()));
-                $pet->setUser($this->userDAO->DGetByUsername($pet->getUser()->getUsername()));
-                $this->Add($pet,$fileP,$fileNameP,$fileV,$fileNameV);
-            }
-            catch(Exception $e){
-                $message = "Error: Se han cargado archivos invalidos, intente mas tarde";
-                return $message;
-            }
-            return $message;
-        }
 
+                $pet -> setType($this -> typeDAO -> GetByName($pet -> getType() -> getName()));
+                $pet -> setSize($this -> sizeDAO -> GetByName($pet -> getSize() -> getName()));
+                $pet -> setUser($this -> userDAO -> DGetByUsername($pet -> getUser() -> getUsername()));
+                $pet -> setProfileIMG($this -> imgPPProcess($fileNameP, $fileP, $pet -> getName()));
+                $pet -> setVaccinationPlanIMG($this -> imgPVPProcess($fileNameV, $fileV, $pet -> getName()));
+
+                $this -> Add($pet,$fileP,$fileNameP,$fileV,$fileNameV);
+
+            }
+            catch(PDOException $pdoe){
+                throw new RegisterPetException("Error:No se pudo registrar su PET".$pdoe -> getMessage());
+            }
+        }
         
-//DELETE METHODS
+//? ======================================================================
+//!                           DELETE METHODS
+//? ======================================================================
         public function Delete($id){
             $query = "CALL Pet_Delete(?)";
             $parameters["idPet"] = $id;

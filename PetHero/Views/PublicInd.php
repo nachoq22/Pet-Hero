@@ -1,17 +1,31 @@
 <!-- MENSAJE DEL SISTEMA -->
 <body>
 <?php if (!empty($message)){?>
-    <div class="alert alert-danger" role="alert">
+    <div class="alert alert-danger alert-dismissible fade show " role="alert">
       <?php echo $message; ?>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 <?php } ?>
 
+<br>
 
+  <div class="row">
+  <div class="col-2"></div>
+  <div class="col-2">
+  <?php if(!empty($logUser)){       
+            if($public->getUser()->getUsername() == $logUser->getUsername()){  ?>
+            <div class="alert alert-primary" role="alert" style="width: 55%;">
+            <i class="bi bi-person"></i> Tu Publicacion
+            </div>
+      <?php }} ?> 
+  </div>
+  </div>
 
   <div class="row"> <!-- TITULO Y VALORACION -->
     <div class="col-2">  
     </div>
     <div class="col-5">
+    
         <h1><?php echo $public->getTitle() ?></h1>
         <h5>Valoracion: <?php echo $public->getPopularity() ?> ★</h5>
         <h6>Barrio: <?php echo $public->getUser()->getData()->getLocation()->getNeighborhood() ?> </h6>
@@ -28,7 +42,18 @@
         <i class="bi bi-chat-right-text-fill"></i> Send Message</form>
         <?php }} ?>
         <!-- ENVIAR MENSAJE AL KEEPER DE LA PUBLICACION -->
-
+         <!-- DROPDOWN PARA QUE EL DUEÑO DE LA PUBLICACION PUEDA EDITAR O BORRARLA -->
+        <?php if(!empty($logUser)){       
+      if($public->getUser()->getUsername() == $logUser->getUsername()){  ?>
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="bi bi-gear"></i>
+        </button>
+        <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="#">Editar</a></li>
+        <li><a class="dropdown-item" href="#">Eliminar</a></li>
+        </ul>
+      <?php }} ?>
+      <!-- DROPDOWN PARA QUE EL DUEÑO DE LA PUBLICACION PUEDA EDITAR O BORRARLA -->
     </div>
   </div> <!-- TITULO Y VALORACION -->
 

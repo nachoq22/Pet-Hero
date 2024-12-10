@@ -1,18 +1,20 @@
 <?php
 namespace DAO;
+
 use \DAO\Connection as Connection;
 use \DAO\QueryType as QueryType;
 
 use \DAO\IRoleDAO as IRoleDAO;
+
 use \Model\Role as Role;
 
     class RoleDAO implements IRoleDAO{
         private $connection;
-        private $tableName = 'Role';
+        //private $tableName = 'Role';
 
-//======================================================================
-// SELECT METHODS
-//======================================================================
+//? ======================================================================
+//!                           SELECT METHODS
+//? ======================================================================     
         public function GetAll(){
             $roleList = array();
 
@@ -43,7 +45,7 @@ use \Model\Role as Role;
             return $role;
         }
 
-        public function GetbyName($name){
+        public function GetByName($name){
             $role = null;
 
             $query = "CALL Role_GetByName(?)";
@@ -59,9 +61,9 @@ use \Model\Role as Role;
         }
 
 
-//======================================================================
-// INSERT METHODS
-//======================================================================
+//? ======================================================================
+// !                          INSERT METHODS
+//? ======================================================================
         public function Add(Role $role){
             $query = "CALL Role_Add(?,?)";
             $parameters["name"] = $role->getName();
@@ -72,9 +74,9 @@ use \Model\Role as Role;
         }
 
 
-//======================================================================
-// DELETE METHODS
-//======================================================================
+//? ======================================================================
+//!                           DELETE METHODS
+//? ======================================================================  
         public function Delete($idRole){
             $query = "CALL Role_Delete(?)";
             $parameters["idRole"] = $idRole;

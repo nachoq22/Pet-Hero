@@ -1,5 +1,5 @@
 <div class="container">
-    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between  border-bottom">
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between" style="padding: 10px; margin-top:20px; background-color:#D3E0DC; border-style: groove;">
     <?php if(!isset($_SESSION['logUser'])){?>
     <ul class="nav col-12 col-md-auto mb-2 justify-content-start mb-md-0">
         <li> <a class="nav-link px-2 link-dark" href="<?php echo  FRONT_ROOT ?>"><h4 class="card-title"><img src="https://images.squarespace-cdn.com/content/v1/5723b737c2ea51b309ec0ca1/1522426443508-FEPA6TY38ZQVWWQ240QJ/Throw_Ball.gif%C3%A7" alt="Bootstrap" width="32" height="32" class="rounded-circle border border-white me-3"></a></li>
@@ -8,10 +8,10 @@
     if(isset($_SESSION['logUser'])){
         if(isset($_SESSION["isKeeper"])){?>
       <ul class="nav col-12 col-md-auto mb-2 justify-content-start mb-md-0">
-        <li> <a class="nav-link px-2 link-dark" href="<?php echo  FRONT_ROOT ?>"><i class="bi bi-house-door"></i></a></li>
-        <li> <a class="btn btn-outline-info" href="<?php echo FRONT_ROOT."/Home/ViewOwnerPanel"?>" type="button"><i class="bi bi-person-square"></i></a></li>
-        <li> <a class="btn btn-outline-warning" href="<?php echo FRONT_ROOT."/Home/ViewKeeperPanel"?>" type="button"><i class="bi bi-person-square"></i></a></li>
-        <li> <a class="btn btn-outline-success" href="<?php echo FRONT_ROOT."/Home/ViewPanelChatHome"?>" type="button"><i class="bi bi-chat-text"></i></a></li>
+        <li> <a class="btn btn-outline-primary" href="<?php echo  FRONT_ROOT ?>" type="button" style="margin: 2px;"><i class="bi bi-house-door"></i></a></li>
+        <li> <a class="btn btn-outline-info" href="<?php echo FRONT_ROOT."/Home/ViewOwnerPanel"?>" type="button" style="margin: 2px;"><i class="bi bi-person-square"></i> Owner panel </a></li>
+        <li> <a class="btn btn-outline-danger" href="<?php echo FRONT_ROOT."/Home/ViewKeeperPanel"?>" type="button" style="margin: 2px;"><i class="bi bi-person-square"></i> Keeper panel </a></li>
+        <li> <a class="btn btn-outline-success" href="<?php echo FRONT_ROOT."/Home/ViewPanelChatHome"?>" type="button" style="margin: 2px;"><i class="bi bi-chat-text"></i></a></li>
 
       </ul>
 <?php }else{?>
@@ -29,7 +29,7 @@
       <form class="w-100 me-3" role="search" action="<?php echo FRONT_ROOT."/Home/Search" ?>" method="post" class="was-validated">
           <div class="p-1 bg-light rounded rounded-pill shadow-sm">
             <div class="input-group">
-              <input type="search" placeholder="What're you searching for?" aria-describedby="button-addon1" name="seach" class="form-control border-0 bg-light" required>
+              <input type="search" placeholder="What're you searching for?" aria-describedby="button-addon1" name="search" class="form-control border-0 bg-light" required>
               <div class="input-group-append">
                 <button id="button-addon1" type="submit" class="btn btn-link text-danger"><i class="bi bi-search"></i></button>
               </div>
@@ -85,7 +85,7 @@
     <div class="modal-content rounded-4 shadow">
 
       <!--NAV TABS-->
-      <ul class="nav nav-pills nav-justified" id="pills-tab" role="tablist">
+      <ul class="nav nav-pills nav-justified" id="pills-tab" role="tablist" style="padding: 5px;">
         <li class="nav-item text-center">
           <a class="nav-link" id="pills-login-tab" data-bs-toggle="pill" href="#pills-login" role="tab" aria-controls="login"><h6>Login</h6></a>
         </li>
@@ -98,16 +98,16 @@
       <div class="tab-content" id="pills-tabContent">
 
         <!--SIGNUP TAB-->
-        <div class="tab-pane fade" id="pills-signUp" role="tabpanel" aria-labelledby="pills-signUp-tab">
-          <form action="<?php echo FRONT_ROOT."/User/Register" ?>" method="post" class="was-validated">
-			<div class="form-floating mb-3">
-                <input type="text" class="form-control" id="username" placeholder="Jorge" name="username" required>
-                	<label for="username">Username</label>
-                    <div class="invalid-feedback">
-                            Please enter your Username.
-                    </div>
+        <div class="tab-pane fade" id="pills-signUp" role="tabpanel" aria-labelledby="pills-signUp-tab" style="padding: 5px;">
+          <form action="<?php echo FRONT_ROOT."/User/Register" ?>" method="post" class="needs-validation" novalidate>
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="username" placeholder="Jorge" name="username" required>
+              <label for="username">Username</label>
+              <div class="invalid-feedback">
+                Please enter your Username.
+              </div>
             </div>
-			<div class="form-floating mb-3">
+			      <div class="form-floating mb-3">
                 <input type="email" class="form-control" id="email" placeholder="Jorge" name="email" required>
                 	<label for="email">Email</label>
                     <div class="invalid-feedback">
@@ -129,8 +129,8 @@
         </div>
 
         <!--LOGIN TAB-->
-        <div class="tab-pane fade" id="pills-login" role="tabpanel" aria-labelledby="pills-login-tab">
-          <form action="<?php echo FRONT_ROOT."/User/Login" ?>" method="post" class="was-validated">
+        <div class="tab-pane fade" id="pills-login" role="tabpanel" aria-labelledby="pills-login-tab" style="padding: 5px;">
+          <form action="<?php echo FRONT_ROOT."/User/Login" ?>" method="post" class="needs-validation" novalidate>
 		  <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="username" placeholder="Jorge" name="username" required>
                 	<label for="username">Username</label>
@@ -160,6 +160,21 @@
 </div>
 
 <script>
+  (() => { //Java scrip para que el formulario marque error solo al pulsar el boton de submit
+  'use strict'
+  const forms = document.querySelectorAll('.needs-validation')
+
+  Array.from(forms).forEach(form => {
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        event.preventDefault()
+        event.stopPropagation()
+      }
+
+      form.classList.add('was-validated')
+    }, false)
+  })
+})()
   const menu =  document.getElementById("menuProfile")
 
   //En caso de no estarlo mantiene los originales en el HTML de arriba y dispara MODAL --NO TOCAR

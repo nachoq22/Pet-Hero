@@ -5,24 +5,25 @@ use \DAO\QueryType as QueryType;
 
 use \DAO\IPersonalDataDAO as IPersonalDataDAO;
 use \DAO\LocationDAO as LocationDAO;
+
 use \Model\PersonalData as PersonalData;
 
     class PersonalDataDAO implements IPersonalDataDAO{
         private $connection;
-        private $tableName = 'PersonalData';
+        //private $tableName = 'PersonalData';
 
         private $locationDAO;
 
-//======================================================================
-// DAOs INJECTION
-//======================================================================
+//? ======================================================================
+//!                           DAOs INJECTION
+//? ======================================================================
         public function __construct(){
             $this->locationDAO = new LocationDAO();
         }
 
-//======================================================================
-// SELECT METHODS
-//======================================================================
+//? ======================================================================
+//!                           SELECT METHODS
+//? ======================================================================
         public function GetAll(){
             $dataList = array();
 
@@ -73,9 +74,9 @@ use \Model\PersonalData as PersonalData;
         return $data;
         }
 
-//======================================================================
-// INSERT METHODS
-//======================================================================
+//? ======================================================================
+// !                          INSERT METHODS
+//? ======================================================================
         private function Add(PersonalData $data){
                 $query = "CALL PersonalData_Add(?,?,?,?,?)";
                 $parameters["name"] = $data->getName();
@@ -87,15 +88,16 @@ use \Model\PersonalData as PersonalData;
                 $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
 
+        
         public function AddRet(PersonalData $data){
             $this->Add($data);
             $dataN = $this->GetbyDni($data->getDni());
         return $dataN; 
         }
 
-//======================================================================
-// DELETE METHODS
-//======================================================================
+//? ======================================================================
+//!                           DELETE METHODS
+//? ======================================================================
         public function Delete($id){
             $query = "CALL Location_Delete(?)";
             $parameters["id"] = $id;

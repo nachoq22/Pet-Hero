@@ -26,6 +26,18 @@
 </style>
 
 <body>
+<?php if (isset($_COOKIE['message'])) { 
+            if(strpos($_COOKIE['message'],"Error") !== false) { ?>
+                <div class="alert alert-danger alert-dismissible fade show " role="alert">
+    <?php    }else{ ?>
+                <div class="alert alert-success alert-dismissible fade show " role="alert">    
+                    <?php } echo $_COOKIE['message']; ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>    
+                </div>
+<?php } setcookie('message', '', time() - 3600,'/'); ?>
+
+
+
     <div class="container mt-4">
         <div class="card mx-auto" style="max-width:400px">
 
@@ -61,7 +73,8 @@
 
 
             <!-- POR CADA MENSAJE EN LA LISTA DARA UNA VUELTA AL FOREACH -->
-                <?php foreach($messageList as $message){ 
+                <?php if(! empty($messageList)){
+                foreach($messageList as $message){ 
                     if($chat->getKeeper()->getId()==$message->getSender()->getId()){ ?> <!-- ESTE IF CORROBORA SI EL QUE ENVIA EL MENSAJE ES EL OWNER O EL KEEPER -->
                     <div class="d-flex align-items-baseline mb-4">
                     <div class="position-relative avatar">
@@ -98,7 +111,7 @@
                 </div>
             </div>
             <?php } ?>
-            <?php } ?>
+            <?php }} ?>
             </div>
 
             <!-- FORMULARIO PARA MANDAR UN NUEVO MENSAJE -->

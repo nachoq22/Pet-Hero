@@ -1,18 +1,20 @@
 <?php
 namespace DAO;
+
 use \DAO\Connection as Connection;
 use \DAO\QueryType as QueryType;
 
 use \DAO\ISizeDAO as ISizeDAO;
+
 use \Model\Size as Size;
 
     class SizeDAO implements ISizeDAO{
         private $connection;
-        private $tableName = 'Size';
+        //private $tableName = 'Size';
 
-//======================================================================
-// SELECT METHODS
-//======================================================================
+//? ======================================================================
+//!                           SELECT METHODS
+//? ======================================================================     
         public function GetAll(){
             $sizeList = array();
 
@@ -43,7 +45,12 @@ use \Model\Size as Size;
             return $size;
         }
 
-        public function GetbyName($name){
+/*
+*  D: Método que retorna el objeto size según el nombre (little, medium, big, etc)
+*  A: String con el name que se busca
+*  R: Retorna un objeto size con el mismo name que se ingresó
+🐘*/  
+        public function GetByName($name){
             $size = null;
 
             $query = "CALL Size_GetByName(?)";
@@ -58,9 +65,9 @@ use \Model\Size as Size;
             return $size;
         }
 
-//======================================================================
-// INSERT METHODS
-//======================================================================
+//? ======================================================================
+// !                          INSERT METHODS
+//? ======================================================================
         public function Add(Size $size){
             $query = "CALL Size_Add(?)";
             $parameters["name"] = $size->getName();
@@ -69,9 +76,9 @@ use \Model\Size as Size;
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
 
-//======================================================================
-// DELETE METHODS
-//======================================================================
+//? ======================================================================
+//!                           DELETE METHODS
+//? ======================================================================   
         public function Delete($idSize){
             $query = "CALL Size_Delete(?)";
             $parameters["idSize"] = $idSize;

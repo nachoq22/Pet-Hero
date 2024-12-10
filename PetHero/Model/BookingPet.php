@@ -1,5 +1,6 @@
 <?php
 namespace Model;
+
 use \Model\Booking as Booking;
 use \Model\Pet as Pet;
 
@@ -8,6 +9,7 @@ use \Model\Pet as Pet;
         private Booking $booking;
         private Pet $pet;
 
+//? CONSTRUCTORS
         public function __construct(){
             $this->booking = new Booking();
             $this->pet = new Pet();
@@ -24,7 +26,7 @@ use \Model\Pet as Pet;
             $this->pet = $pet;
         }
 
-//SETTERS
+//? GETTERS & SETTERS
         public function setId($idBP){
             $this->idBP = $idBP;
         }
@@ -34,8 +36,7 @@ use \Model\Pet as Pet;
         public function setPet($pet){
             $this->pet = $pet;
         }
-        
-//GETTERS
+
         public function getId(){
             return $this->idBP;
         }

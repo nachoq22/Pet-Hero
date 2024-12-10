@@ -1,7 +1,7 @@
 <?php
-    namespace Model;
+namespace Model;
 
-use Model\User;
+use \Model\User;
 
     class Chat{
 
@@ -9,7 +9,7 @@ use Model\User;
         private User $owner;
         private User $keeper;
 
-        //CONSTRUCTORS
+//? CONSTRUCTORS
         public function __construct(){}
 
         public function __fromRequest(User $owner, User $keeper){
@@ -23,7 +23,7 @@ use Model\User;
             $this->keeper = $keeper;
         }
 
-        //GETTERS & SETTERS
+//? GETTERS & SETTERS
         public function getIdChat(){
             return $this->idChat;
         }
@@ -47,6 +47,5 @@ use Model\User;
         public function setKeeper($keeper){
             $this->keeper = $keeper;
         }
-        
     }
 ?>

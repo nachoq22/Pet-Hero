@@ -8,11 +8,11 @@ use \Model\PetType as PetType;
 
     class PetTypeDAO implements IPetTypeDAO{
         private $connection;
-        private $tableName = 'PetType';
+        //private $tableName = 'PetType';
 
-//======================================================================
-// SELECT METHODS
-//======================================================================
+//? ======================================================================
+//!                           SELECT METHODS
+//? ======================================================================
         public function GetAll(){
             $typeList = array();
 
@@ -58,9 +58,9 @@ use \Model\PetType as PetType;
             return $type;
         }
 
-//======================================================================
-// INSERT METHODS
-//======================================================================
+//? ======================================================================
+// !                          INSERT METHODS
+//? ======================================================================
         public function Add(PetType $type){
             $query = "CALL PetType_Add(?)";
             $parameters["name"] = $type->getName();
@@ -69,9 +69,9 @@ use \Model\PetType as PetType;
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
 
-//======================================================================
-// DELETE METHODS
-//======================================================================  
+//? ======================================================================
+//!                           DELETE METHODS
+//? ======================================================================
         public function Delete($idType){
             $query = "CALL PetType_Delete(?)";
             $parameters["idType"] = $idType;

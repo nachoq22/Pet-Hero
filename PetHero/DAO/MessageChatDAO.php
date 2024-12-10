@@ -1,54 +1,57 @@
 <?php
-    namespace DAO;
-    use \Model\MessageChat as MessageChat;
-    use \DAO\IMessageChatDAO as IMessageChatDAO;
-    use \DAO\UserDAO as UserDAO;
-    use \DAO\ChatDAO as ChatDAO;
-    use Exception as Exception;
+namespace DAO;
+
+use Exceptions\RegisterMSGException;
+
+use \DAO\IMessageChatDAO as IMessageChatDAO;
+use \DAO\UserDAO as UserDAO;
+use \DAO\ChatDAO as ChatDAO;
+
+use \Model\MessageChat as MessageChat;
+use PDOException;
 
     class MessageChatDAO implements IMessageChatDAO{
         private $connection;
-        private $tableName = 'MessageChat';
+        //private $tableName = 'MessageChat';
 
         private $userDAO;
         private $chatDAO;
 
-//======================================================================
-// DAOs INJECTION
-//======================================================================
-        public function __construct()
-        {
-            $this->userDAO = new UserDAO();
-            $this->chatDAO = new ChatDAO();
+//? ======================================================================
+//!                           DAOs INJECTION
+//? ======================================================================
+        public function __construct(){
+            $this -> userDAO = new UserDAO();
+            $this -> chatDAO = new ChatDAO();
         }
 
-//======================================================================
-// ADDS
-//======================================================================
+//? ======================================================================
+// !                          INSERT METHODS
+//? ======================================================================
         public function AddMsg(MessageChat $messagechat){
             $query = "CALL MessageChat_Add(?,?,?,?)";
-            $parameters["message"] = $messagechat->getMessage();
-            $parameters["dateTime"] = $messagechat->getDateTime();
-            $parameters["idChat"] = $messagechat->getChat()->getIdChat();
-            $parameters["idSender"] = $messagechat->getSender()->getId();
+            $parameters["message"] = $messagechat -> getMessage();
+            $parameters["dateTime"] = $messagechat -> getDateTime();
+            $parameters["idChat"] = $messagechat -> getChat() -> getIdChat();
+            $parameters["idSender"] = $messagechat -> getSender() -> getId();
 
-            $this->connection = Connection::GetInstance();
-            $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
+            $this -> connection = Connection::GetInstance();
+            $this -> connection -> ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
 
         public function NewMsg(MessageChat $messagechat){
             try{
-                $sender = $this->userDAO->DGetByUsername($messagechat->getSender()->getUsername());               
-            $messagechat->setSender($sender);
-            $this->AddMsg($messagechat);
-            }catch(Exception $e){
-                return "Error: No se pudo enviar el mensaje";
+                $sender = $this -> userDAO -> DGetByUsername($messagechat -> getSender() -> getUsername());               
+                $messagechat -> setSender($sender);
+                $this -> AddMsg($messagechat);
+            }catch(PDOException $pdoe){
+                throw new RegisterMSGException("Error: No se pudo enviar el mensaje." .$pdoe -> getMessage());
             }
         }
 
-//======================================================================
-// SELECT METHODS
-//======================================================================
+//? ======================================================================
+//!                           SELECT METHODS
+//? ======================================================================
         public function GetAll()
         {
             $messageChatList = array();    
@@ -133,10 +136,5 @@
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
         }
-        ///////////////////////////////
-
-        
-
-
     }
 ?>

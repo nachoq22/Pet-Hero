@@ -36,9 +36,9 @@ use \Model\User as User;
             $this->user = $user;
         }
 
-        //GETTER & SERTTER
+        //GETTER & SETTER
 
-        public function getid() {
+        public function getId() {
             return $this->idPublic;
         }
         public function getOpenDate() {
@@ -65,7 +65,7 @@ use \Model\User as User;
         }
 
         //SETTERS
-        public function setid($idPublic) {
+        public function setId($idPublic) {
             $this->idPublic = $idPublic;
         }
         public function setOpenDate($openDate) {

@@ -1,6 +1,6 @@
 <body>
 
-<?php if (!empty($message)){ 
+<!-- <?php if (!empty($message)){ 
     if(strpos($message, "Error") !== false){?>
     <div class="alert alert-danger" role="alert">
       <?php echo $message; ?>
@@ -10,17 +10,30 @@
       <?php echo $message; ?>
     </div>
 <?php } ?>
-<?php } ?>
+<?php } ?> -->
 
+<?php if (isset($_COOKIE['message'])) { 
+            if(strpos($_COOKIE['message'],"Error") !== false) { ?>
+                <div class="alert alert-danger alert-dismissible fade show " role="alert">
+    <?php    }else{ ?>
+                <div class="alert alert-success alert-dismissible fade show " role="alert">    
+                    <?php } echo $_COOKIE['message']; ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>    
+                </div>
+    <?php } setcookie('message', '', time() - 3600,'/'); ?>
 
+<!--
 <div class="container-fluid">
     <div class="row">
         
         <div class="col-sm-auto bg-light sticky-top">
             <div class="d-flex flex-sm-column flex-row flex-nowrap bg-light align-items-center sticky-top">
-                <a class="d-block p-3 link-dark text-decoration-none" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Icon-only">
-                    <i class="bi-bootstrap fs-1"></i>
-                </a>
+            <a class="d-block p-3 link-dark text-decoration-none" title="" data-bs-toggle="tooltip"
+                        data-bs-placement="right" data-bs-original-title="Icon-only">
+                        <img class="img-fluid" style="height: 90px; width: fit-content;"
+                            src="https://images.squarespace-cdn.com/content/v1/5723b737c2ea51b309ec0ca1/1522426438102-68EK89NNSIVWSHHSFT73/Pug_walking.gif?format=500w"
+                            alt="">
+                    </a>
                 
                 <ul class="nav nav-pills nav-flush flex-sm-column flex-row flex-nowrap mb-auto mx-auto text-center align-items-center" 
                         role="tablist" id="pills-tab" aria-orientation="vertical">
@@ -49,17 +62,13 @@
                 </ul>
             </div>
         </div>
-        
+        -->
         <div class="col-sm p-3 min-vh-100">
             <!-- content -->
-<!--OWNER DATA CONTENT-->
-            <div class="tab-content" id="pills-tabContent">
-                <div class="tab-pane fade show active" id="ownerData" role="tabpanel" aria-labelledby="ownerData-tab" tabindex="0">
-                    
-                </div>  
+<hr>
 
 <!--PETLIST CONTENT-->                
-                <div class="tab-pane" id="petList" role="tabpanel" aria-labelledby="petList-tab" tabindex="0">   
+                 <h2><strong>Your Pets</strong></h2>
                     <div class="container-fluid content-row">
                         <div class="row">
                             <div class="col-2 mt-3">
@@ -74,6 +83,7 @@
                                     </a>
                                 </div>
                             </div>
+                            
                     <?php foreach ($petList as $pet) { ?>
                             <div class="col-2 mt-3" >
                                 <div class="card h-100">
@@ -92,10 +102,12 @@
                     <?php } ?>
                         </div> <!-- /.card-content -->
                     </div> <!-- /.card-content -->
-                </div>
+                    <br>
+                    <hr>
+                
 
 <!--BOOKING CONTENT-->
-                <div class="tab-pane" id="bookings" role="tabpanel" aria-labelledby="bookings-tab" tabindex="0">
+                <h2><strong>Your Pets's Booking</strong></h2>
                     <table class="table align-middle mb-0 bg-white">
                         <thead class="bg-light">
                             <tr>
@@ -114,7 +126,7 @@
                                         <div class="col-2">
                                         <?php foreach ($imgList as $img) { ?> 
                                             <?php if ($img->getPublication()->getId() == $book->getPublication()->getId()) { ?> 
-                                            <img src="<?php echo "../".$img->getUrl()?>" class="rounded-circle" alt="" 
+                                            <img src="<?php echo '../'.$img->getUrl()?>" class="rounded-circle" alt="" 
                                             style="width: 45px; height: 45px"/>
                                             <?php } ?>
                                         <?php } ?>
@@ -159,7 +171,7 @@
                                 <td>
                                     <div class="row">
                                         <?php foreach ($bPetsList as $pet) { ?>   
-                                            <?php if ($pet->getBooking()->getId() == $book->getid()) { ?>           
+                                            <?php if ($pet->getBooking()->getId() == $book->getId()) { ?>           
                                             <div class="col-2">
                                                     <img src="<?php echo $pet->getPet()->getProfileIMG()?>" class="rounded-circle" alt="" 
                                                     style="width: 45px; height: 45px;"/>
@@ -190,7 +202,8 @@
                                 </td>
                                 <td>
                                 <?php if(STRCMP($book->getBookState(),"Awaiting Payment") == 0){?>   
-                                    <form action="<?php echo FRONT_ROOT."/Checker/PayCheck" ?>" method="post" name="sendPayC">
+                                    <!-- <form action="<?php echo FRONT_ROOT."/Checker/PayCheck" ?>" method="post" name="sendPayC"> -->
+                                    <form action="<?php echo FRONT_ROOT."/Booking/PayBooking" ?>" method="post" name="sendPayC">
                                         <div class="form-floating mb-3">   
                                             <input type="hidden" name="idBook" value=<?php echo $book->getId() ?>>  
                                             <input type="number" class="form-control" id="payCode" 
@@ -218,7 +231,6 @@
                             <?php } ?>
                         </tbody>
                     </table>        
-                </div>
             </div>
         </div>
     </div>
