@@ -207,6 +207,7 @@ CREATE TABLE IF NOT EXISTS Publication(
 	description VARCHAR(500) NOT NULL,
 	popularity DEC(2,1) CHECK (popularity >= 0 AND popularity <=5),
 	remuneration DEC(10,2) NOT NULL,
+	active INTEGER NOT NULL,
 		idUser INT NOT NULL,
 		CONSTRAINT fk_publicUser FOREIGN KEY(idUser)
 			REFERENCES User(idUser)
@@ -215,20 +216,20 @@ CREATE TABLE IF NOT EXISTS Publication(
 INSERT INTO Publication VALUES (0,"2024-12-02","2024-12-30","De Gran comodidad"," ¡No permitas que tu mascota se quede atrás! 
 								Las mejores actividades para el, ¡Unas vacaciones para los miembros peludos de la familia! 
 								A tu mascota le encantará investigar un nuevo lugar, y tú te sentirás mejor sabiendo que 
-								esta haciendo algo nuevo y seguro.",0.0,3500,1);
+								esta haciendo algo nuevo y seguro.",0.0,3500,1,1);
 INSERT INTO Publication VALUES (0,"2024-12-10","2024-12-30","Calidez para tu mascota","Este verano, reserva su lugar en el sol. 
 								Nosotros lo llevaremos a las mejores playas, donde podrá relajarse y divertirte. 
-								No te quedes en casa, ¡ven a disfrutar del sol con nosotros!",0.0,5000,2);
+								No te quedes en casa, ¡ven a disfrutar del sol con nosotros!",0.0,5000,1,2);
 INSERT INTO Publication VALUES (0,"2024-11-05","2025-02-20","Tranquilidad para ahora y despues","Reservar ahora 
 								y asegurar su lugar en la lista de espera para el próximo año. Si reserva con nosotros, 
-								podrá estar tranquilo sabiendo que su lugar estará a salvo.",0.0,4200,3);
+								podrá estar tranquilo sabiendo que su lugar estará a salvo.",0.0,4200,1,3);
 INSERT INTO Publication VALUES (0,"2024-12-28","2025-01-30","La perfeccion es nuestra filosofia","Al hacer tu reserva, 
 								nos aseguramos de que tu estancia sea perfecta. Tenemos una variedad de opciones para que elijas, 
-								y todas las comodidades que necesita tu mascota.",0.0,7500,4);
+								y todas las comodidades que necesita tu mascota.",0.0,7500,1,4);
 INSERT INTO Publication VALUES (0,"2025-02-10","2025-03-30","Sera como estar en casa","Haz una reserva para tu mascota y 
 								asegúrate de recibir el mejor servicio. Nuestro equipo de profesionales se asegurará de que 
 								tu mascota esté segura y cómoda durante su estadía. están aquí. 
-								Estamos a tu disposición para hacer de tu estancia una experiencia inolvidable.",0.0,9300,5);
+								Estamos a tu disposición para hacer de tu estancia una experiencia inolvidable.",0.0,9300,1,5);
 
 
 /*********************************PUBLICATION IMAGES*******************************************/

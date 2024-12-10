@@ -217,6 +217,10 @@ use PDOException;
             $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
         }  
 
+        public function DeletePublication($idPublic){
+            $this -> publicDAO -> Delete($idPublic);
+        }
+
 //? ======================================================================
 //!                          VALIDATION METHODS
 //? ======================================================================

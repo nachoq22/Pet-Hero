@@ -464,20 +464,51 @@ use \Model\Booking as Booking;
         }
 
 
-
-
         public function OnlineBookingsByPublication($idPublic){
             $haveOnline = false;
-            
 
             $booksXPublication = $this -> GetAllByPublication($idPublic);
-            if(! empty($booksXPublication)){
-                $haveOnline = array_map(function ($book){
-                                                $offlineStates = ["In Review", "Awaiting Payment", "Waiting Start", "In Progress"];
-                                                return in_array($book -> getBookState(), $offlineStates);
-                                    }, $booksXPublication);
+
+            return !empty(array_filter($booksXPublication, function ($book){
+                $onlineState = ["In Review", "Awaiting Payment", "Waiting Start", "In Progress"];
+                return in_array($book -> getBookState(), $onlineState); 
+            }));
+        }
+
+        public function GetKeeperStats($username){
+            $bookingList = $this -> GetAllByKeeper($username);
+            $alias = null;
+            $finalizadas = 0;
+            $canceladas = 0;
+            $expiradas = 0;
+
+            foreach ($bookingList as $booking) {
+                if ($booking -> getBookState() === 'Finalized') {
+                    $finalizadas++;
+                } elseif ($booking -> getBookState() === 'Canceled') {
+                    $canceladas++;
+                } elseif ($booking -> getBookState() === 'Expired') {
+                    $expiradas++;
+                }
             }
-        return $haveOnline;
+
+            $total_reservas = count($bookingList);
+            $tasa_finalizacion = ($finalizadas / $total_reservas) * 100;
+            $tasa_cancelacion = ($canceladas / $total_reservas) * 100;
+            $tasa_expiracion = ($expiradas / $total_reservas) * 100;
+
+            // Lógica para asignar el alias basado en las tasas calculadas
+            if ($tasa_finalizacion > 80 && $tasa_cancelacion < 10 && $tasa_expiracion < 5) {
+                $alias = "Superestrella";
+            } else if ($tasa_finalizacion > 60 && $tasa_cancelacion < 20 && $tasa_expiracion < 10) {
+                $alias = "Confiado";
+            } else if ($tasa_finalizacion > 40 && $tasa_cancelacion < 30 && $tasa_expiracion < 15) {
+                $alias = "Constante";
+            } else {
+                $alias = "En desarrollo";
+            }
+
+            return $alias;
         }
     }
 ?>

@@ -39,6 +39,7 @@ use \Model\Publication as Publication;
                                   , $row["closeD"],$row["title"]
                                   , $row["description"],$row["popularity"]
                                   , $row["remuneration"]
+                                  , $row["active"]
                                   , $this -> userDAO -> DGet($row["idUser"]));
                 array_push($publicList,$public);
             }
@@ -65,6 +66,29 @@ use \Model\Publication as Publication;
                                   , $row["closeD"], $row["title"]
                                   , $row["description"], $row["popularity"]
                                   , $row["remuneration"]
+                                  , $row["active"]
+                                  , $this -> userDAO -> DGet($row["idUser"]));
+                array_push($publicList,$public);                        
+            }
+        return $publicList;
+        }
+
+        public function GetAllByRangeDates($initD, $finishD){
+            $publicList = array();
+
+            $query = "CALL Publication_GetAllByRangeDates(?,?)";
+            $parameters["initD"] = $initD;
+            $parameters["finishD"] = $finishD;
+            $this -> connection = Connection::GetInstance();
+            $resultBD = $this -> connection -> Execute($query,$parameters,QueryType::StoredProcedure);
+
+            foreach($resultBD as $row){
+                $public = new Publication();
+                $public -> __fromDB($row["idPublic"], $row["openD"]
+                                  , $row["closeD"], $row["title"]
+                                  , $row["description"], $row["popularity"]
+                                  , $row["remuneration"]
+                                  , $row["active"]
                                   , $this -> userDAO -> DGet($row["idUser"]));
                 array_push($publicList,$public);                        
             }
@@ -97,6 +121,7 @@ use \Model\Publication as Publication;
                                   , $row["closeD"], $row["title"]
                                   , $row["description"], $row["popularity"]
                                   , $row["remuneration"]
+                                  , $row["active"]
                                   , $this -> userDAO -> DGet($row["idUser"]));
             }
         return $public;
@@ -116,6 +141,7 @@ use \Model\Publication as Publication;
                                   , $row["closeD"], $row["title"]
                                   , $row["description"], $row["popularity"]
                                   , $row["remuneration"]
+                                  , $row["active"]
                                   , $this -> userDAO -> DGet($row["idUser"]));
             }
         return $public;
@@ -215,6 +241,7 @@ use \Model\Publication as Publication;
                                   , $row["closeD"], $row["title"]
                                   , $row["description"], $row["popularity"]
                                   , $row["remuneration"]
+                                  , $row["active"]
                                   , $this -> userDAO -> DGet($row["idUser"]));
                 array_push($publicList,$public);
             }

@@ -491,6 +491,15 @@ BEGIN
 END;
 $$
 
+DELIMITER $$
+CREATE PROCEDURE Publication_GetAllByRangeDates(IN initD DATE, IN finishD DATE)
+BEGIN
+    SELECT *
+    FROM Publication
+    WHERE Publication.openD <= initD AND Publication.closeD >= finishD;
+END;
+$$
+
 DELIMITER $$ 
 CREATE PROCEDURE Publication_GetById(IN idPublication INT)
 BEGIN
@@ -509,14 +518,48 @@ BEGIN
 END;
 $$
 
+-- DELIMITER $$
+-- CREATE PROCEDURE Publication_Search(IN phrase VARCHAR(50))
+-- BEGIN
+--      SELECT *
+--      FROM publication
+--      WHERE publication.title LIKE CONCAT('%',phrase,'%') OR publication.description like CONCAT('%',phrase,'%');
+-- END;
+-- $$
+
 DELIMITER $$
 CREATE PROCEDURE Publication_Search(IN phrase VARCHAR(50))
 BEGIN
-     SELECT *
-     FROM publication
-     WHERE publication.title LIKE CONCAT('%',phrase,'%') or publication.description like CONCAT('%',phrase,'%');
+     SELECT DISTINCT p.idPublic, p.openD, p.closeD, p.title, p.description, p.popularity, p.remuneration, p.active, p.idUser
+     FROM publication AS P
+     LEFT JOIN User ON P.idUser = User.idUser
+     LEFT JOIN PersonalData ON PersonalData.idData = PersonalData.idData
+     LEFT JOIN Location ON Location.idLocation = PersonalData.idLocation
+     WHERE P.title LIKE CONCAT('%',phrase,'%') 
+        OR P.description like CONCAT('%',phrase,'%')
+        OR User.username LIKE CONCAT('%',phrase,'%')
+        OR PersonalData.name LIKE CONCAT('%',phrase,'%')
+        OR PersonalData.surname LIKE CONCAT('%',phrase,'%')
+        OR Location.city LIKE CONCAT('%',phrase,'%')
+        OR Location.province LIKE CONCAT('%',phrase,'%')
+        OR Location.country LIKE CONCAT('%',phrase,'%')
+        AND P.active = 1;
 END;
 $$
+
+--CALL `Publication_Search`("Santa fe");
+
+-- SELECT DISTINCT * FROM Publication WHERE Publication.title LIKE ('%Papitas%') OR
+--                                          Publication.description LIKE ('%Papitas%') OR
+--                                          Publication.idUser IN (
+--                                             SELECT idUser FROM User WHERE username LIKE ('%planetar%'))
+--                                          AND Publication.active = 1;
+
+-- SELECT DISTINCT *  FROM Publication LEFT JOIN User ON Publication.idUser = User.idUser
+--     WHERE Publication.title LIKE '%Papitas%' 
+--        OR Publication.description LIKE '%Papitas%' 
+--        OR User.username LIKE '%planetar%' 
+--        AND Publication.active = 1; 
 
 DELIMITER $$
 CREATE PROCEDURE Publication_DateCheck(IN openD DATE, IN closeD DATE, IN idPublic INT)
@@ -530,23 +573,27 @@ $$
 DELIMITER $$
 CREATE PROCEDURE Publication_NIDate(IN openD DATE, IN closeD DATE, IN idUser int)
 BEGIN
-	SELECT COUNT(idPublic) as rta
-    FROM publication
-    WHERE (publication.idUser = idUser) AND ((publication.openD > openD AND publication.openD < closeD) OR 
-											(publication.openD < openD AND publication.closeD > openD));
+    SELECT COUNT(*) > 0 AS rta FROM publication
+        WHERE publication.idUser = idUser
+        AND (
+            (publication.openD BETWEEN openD AND closeD) 
+            OR 
+            (publication.closeD BETWEEN openD AND closeD) 
+            OR 
+            (publication.openD <= openD AND publication.closeD >= closeD));
 END;
 $$
-    
+CALL `Publication_NIDate`("2024-12-15","2024-12-25",3);    
 DELIMITER $$
 CREATE PROCEDURE Publication_Add(IN openD DATE, IN closeD DATE, IN title VARCHAR(50),
                          IN description VARCHAR(1000), IN popularity DEC(2,1), IN remuneration DEC(10,2),
 	                     IN idUser INT)
 BEGIN
     INSERT INTO Publication
-        (Publication.openD,Publication.closeD,Publication.title,Publication.description,Publication.popularity,Publication.remuneration
-        ,Publication.idUser)
+        (Publication.openD,Publication.closeD,Publication.title,Publication.description,Publication.popularity
+        ,Publication.remuneration,Publication.active,Publication.idUser)
     VALUES
-        (openD,closeD,title,description,popularity,remuneration,idUser);
+        (openD,closeD,title,description,popularity,remuneration,1,idUser);
 
 	SELECT LAST_INSERT_ID() as LastID;
 END;
@@ -576,9 +623,7 @@ DELIMITER;
 DELIMITER $$
 CREATE PROCEDURE Publication_Delete(IN idPublic INT)
 BEGIN
-    DELETE 
-    FROM Publication
-    WHERE (Publication.idPublic = idPublic);
+    UPDATE Publication SET active = 0 WHERE Publication.`idPublic` = idPublic;
 END;
 $$
 
@@ -1084,9 +1129,9 @@ $$
 #CALL Publication_GetByUser(1);
 #CALL Publication_Search("playa");
 /*CALL Publication_Add(openD,closeD,title,description,popularity,remuneration,idUser);*/
-/*CALL Publication_Add("2022-10-30","2022-11-08", "El mejor cuidador de toda Mar Del Plata","Soy un cuidador 
-de perros de 24 años que le gusta salir a correr todos los dias, por lo que su perro estará bien ejercitado", 5,4000,2);*/
-/*CALL Publication_Delete(2);*/
+-- CALL Publication_Add("2022-10-30","2022-11-08", "El mejor cuidador de toda Mar Del Plata",
+--                      "Mascota correr, mascota feliz", 0,4000,2);
+-- CALL Publication_Delete(6);
 #CALL Publication_DateCheck("2022-10-31", "2022-11-10", 1);
 #CALL Publication_UpdatePopularity(1, 3);
 #CALL Publication_NIDate("2022-12-15","2023-01-12" ,1);

@@ -139,6 +139,9 @@ class PublicationController{
 
             $public = $this -> publicDAO -> GetPublication($imgPublic);
             $reviewList = $this -> reviewDAO -> GetAllByPublic($public -> getId()); 
+
+            $alias = $this -> bookingDAO -> GetKeeperStats($public -> getUser() -> getUsername());
+
             $canReview = 0;
                 
             if(isset($_SESSION["logUser"])){
@@ -277,15 +280,35 @@ class PublicationController{
             
             $logUser = $_SESSION["logUser"];
             $public = new Publication();
-            $public -> __fromDB($idPublic,$openD, $closeD, $title, $description, 0, $remuneration, $logUser);
+            $public -> __fromDB($idPublic,$openD, $closeD, $title, $description, 0, $remuneration, 1,$logUser);
 
-            $message = "Successful: Su PUBLICATION se ha actualizado correctamente";
+            $message = "Error: Su PUBLICATION aun posee BOOKINGS online";
 
             try{
                 if(! $this -> bookingDAO -> OnlineBookingsByPublication($idPublic)){
                     $this -> publicDAO -> UpdatePublication($public);
+                    $message = "Successful: Su PUBLICATION se ha actualizado correctamente";
                 }
             }catch(RegisterPublicationException $rpe){
+                $message = $rpe -> getMessage();
+            }
+            
+            setcookie('message', $message, time() + 2,'/');
+             header('Location: http://localhost/Pet-Hero/PetHero/Home/ViewKeeperPanel');
+        }
+
+
+        public function Delete($idPublic){
+            $this -> homeController -> isLogged();
+            $this -> homeController -> isKeeper();
+
+            $message = "Successful: Su PUBLICATION se ha borrado correctamente";
+
+            try{
+                if(! $this -> bookingDAO -> OnlineBookingsByPublication($idPublic)){
+                    $this -> publicDAO -> Delete($idPublic);
+                }
+            }catch(PDOException $rpe){
                 $message = $rpe -> getMessage();
             }
             

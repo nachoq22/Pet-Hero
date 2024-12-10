@@ -10,12 +10,13 @@ use \Model\User as User;
         private $description;
         private $popularity;
         private $remuneration;
+        private $active;
         private User $user;
 
         //CONSTRUCTORS
         public function __construct() {}
 
-        public function __fromRequest($openD, $closeD, $title, $description, $popularity, $remuneration,User $user) {
+        public function __fromRequest($openD, $closeD, $title, $description, $popularity, $remuneration, User $user) {
             $this->openD = $openD;
             $this->closeD = $closeD;
             $this->title = $title;
@@ -25,7 +26,7 @@ use \Model\User as User;
             $this->user = $user;
         }
 
-        public function __fromDB($idPublic,$openD, $closeD, $title, $description, $popularity, $remuneration,User $user){
+        public function __fromDB($idPublic,$openD, $closeD, $title, $description, $popularity, $remuneration,$active, User $user){
             $this->idPublic = $idPublic;
             $this->openD = $openD;
             $this->closeD = $closeD;
@@ -33,6 +34,7 @@ use \Model\User as User;
             $this->description = $description;
             $this->popularity = $popularity;
             $this->remuneration = $remuneration;
+            $this->active = $active;
             $this->user = $user;
         }
 
@@ -58,6 +60,9 @@ use \Model\User as User;
         }
         public function getRemuneration():float{
             return $this->remuneration;
+        }
+        public function getActive(){
+            return $this->active;
         }
 
         public function getUser(): User{
@@ -85,6 +90,9 @@ use \Model\User as User;
         }
         public function setRemuneration($remuneration) {
             $this->remuneration = $remuneration;
+        }
+        public function setActive($active) {
+            $this->active = $active;
         }
         public function setUser(User $user){
                 $this->user = $user;
