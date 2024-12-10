@@ -631,5 +631,66 @@ public function NewBooking(Booking $booking,$petsID){
                 throw new UpdateCheckerException("El checker no ha sido actualizado," . $pdoe -> getMessage());
             }
         }
+
+        public function GetKeeperStats($username){
+            return $this -> bookDAO -> GetKeeperStats($username);
+        }
+
+        public function CheckBookDone($username, $idPublic){
+            return $this -> bookDAO -> CheckBookDone($username, $idPublic);
+        }
+
+        public function OnlineBookingsByPublication($idPublic){
+            return $this -> bookDAO -> OnlineBookingsByPublication($idPublic);
+        }
+
+        public function GetVarietyPetStats($username){
+            $bookList = $this -> GetAllBooksByKeeper($username);
+            $markedTypes = array();
+
+            foreach($bookList as $book){
+                if(strcmp($book -> getBookState(), "Finalized") == 0){
+                    $type = $this -> GetByBook($book -> getId()) -> getPet() -> getType() -> getName();
+
+                    if(! in_array($type,$markedTypes)){
+                        array_push($markedTypes,$type);
+                    }
+                }
+            }
+
+            $varietyPts = count($markedTypes) * 10;
+
+            // Asignamos un alias según el puntaje
+            $alias = match(true) {
+                $varietyPts === 10 => "Zoonogamo", // Ajusta según tu lógica
+                $varietyPts === 20 => "Dúo zoonamico",
+                $varietyPts >= 30 && $varietyPts <= 50 => "Arca de Noé",
+                $varietyPts > 50 => "Zookeeper aficionado",
+                default => "Invernando",
+            };
+        
+        return $alias;
+        }
+
+        public function GetBestPetStats($username){
+            $bookList = $this -> GetAllBooksByKeeper($username);
+            $petCounts = [];
+
+            foreach($bookList as $book){
+                if($book -> getBookState() === "Finalized"){
+                    $type = $this -> GetByBook($book -> getId()) -> getPet() -> getType() -> getName();
+
+                    if (!isset($petCounts[$type])) {
+                        $petCounts[$type] = 1;
+                    } else {
+                        $petCounts[$type]++;
+                    }
+                }
+            }
+
+            // Encontrar el tipo de mascota con el mayor conteo
+            arsort($petCounts);
+        return key($petCounts);
+        }
     }
 ?>

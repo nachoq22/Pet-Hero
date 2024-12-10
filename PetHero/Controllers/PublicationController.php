@@ -10,7 +10,7 @@ use \Controllers\PetController as PetController;
 
 use \DAO\ImgPublicDAO as ImgPublicDAO;
 use \DAO\ReviewDAO as ReviewDAO;
-use \DAO\BookingDAO as BookingDAO;
+use \DAO\BookingPetDAO as BookingPetDAO;
 
 use \Model\ImgPublic as ImgPublic;
 use \Model\Publication as Publication;
@@ -18,7 +18,7 @@ use \Model\Publication as Publication;
 class PublicationController{
         private $publicDAO;
         private $reviewDAO;
-        private $bookingDAO;
+        private $bpDAO;
 
         private $homeController;
         private $petController;
@@ -26,7 +26,7 @@ class PublicationController{
         public function __construct(){
             $this -> publicDAO = new ImgPublicDAO();
             $this -> reviewDAO = new ReviewDAO();
-            $this -> bookingDAO = new BookingDAO();
+            $this -> bpDAO = new BookingPetDAO();
             $this -> homeController = new HomeController();
             $this -> petController = new PetController();
         }
@@ -140,14 +140,16 @@ class PublicationController{
             $public = $this -> publicDAO -> GetPublication($imgPublic);
             $reviewList = $this -> reviewDAO -> GetAllByPublic($public -> getId()); 
 
-            $alias = $this -> bookingDAO -> GetKeeperStats($public -> getUser() -> getUsername());
+            $badgeStats = $this -> bpDAO -> GetKeeperStats($public -> getUser() -> getUsername());
+            $badgeVarietyTPets = $this -> bpDAO -> GetVarietyPetStats($public -> getUser() -> getUsername());
+            $badgeBestTPet = $this -> bpDAO -> GetBestPetStats($public -> getUser() -> getUsername());
 
             $canReview = 0;
                 
             if(isset($_SESSION["logUser"])){
                 $logUser = $_SESSION["logUser"];
 
-                $canReview = $this -> bookingDAO -> CheckBookDone($logUser -> getUsername(), $idPublic);
+                $canReview = $this -> bpDAO -> CheckBookDone($logUser -> getUsername(), $idPublic);
             }
 
             require_once(VIEWS_PATH."PublicInd.php");
@@ -285,7 +287,7 @@ class PublicationController{
             $message = "Error: Su PUBLICATION aun posee BOOKINGS online";
 
             try{
-                if(! $this -> bookingDAO -> OnlineBookingsByPublication($idPublic)){
+                if(! $this -> bpDAO -> OnlineBookingsByPublication($idPublic)){
                     $this -> publicDAO -> UpdatePublication($public);
                     $message = "Successful: Su PUBLICATION se ha actualizado correctamente";
                 }
@@ -305,7 +307,7 @@ class PublicationController{
             $message = "Successful: Su PUBLICATION se ha borrado correctamente";
 
             try{
-                if(! $this -> bookingDAO -> OnlineBookingsByPublication($idPublic)){
+                if(! $this -> bpDAO -> OnlineBookingsByPublication($idPublic)){
                     $this -> publicDAO -> Delete($idPublic);
                 }
             }catch(PDOException $rpe){
