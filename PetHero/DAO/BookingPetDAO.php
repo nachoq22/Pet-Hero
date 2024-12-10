@@ -265,6 +265,9 @@ use \Model\Checker;
             $subtotalPet = $this -> TotalPetPay($book);
             
             $total = ($subtotalBook + $subtotalPet);
+            if ($this -> aplicarDescuentoFechasEspeciales()){
+                $total = $total - ($total * 0.25);
+            }
 
             $checkerAmount = $total / 2;
 
@@ -630,6 +633,89 @@ public function NewBooking(Booking $booking,$petsID){
             }catch (PDOException $pdoe) {
                 throw new UpdateCheckerException("El checker no ha sido actualizado," . $pdoe -> getMessage());
             }
+        }
+
+        public function GetKeeperStats($username){
+            return $this -> bookDAO -> GetKeeperStats($username);
+        }
+
+        public function CheckBookDone($username, $idPublic){
+            return $this -> bookDAO -> CheckBookDone($username, $idPublic);
+        }
+
+        public function OnlineBookingsByPublication($idPublic){
+            return $this -> bookDAO -> OnlineBookingsByPublication($idPublic);
+        }
+
+        public function GetVarietyPetStats($username){
+            $bookList = $this -> GetAllBooksByKeeper($username);
+            $markedTypes = array();
+
+            foreach($bookList as $book){
+                if(strcmp($book -> getBookState(), "Finalized") == 0){
+                    $type = $this -> GetByBook($book -> getId()) -> getPet() -> getType() -> getName();
+
+                    if(! in_array($type,$markedTypes)){
+                        array_push($markedTypes,$type);
+                    }
+                }
+            }
+
+            $varietyPts = count($markedTypes) * 10;
+
+            // Asignamos un alias según el puntaje
+            $alias = match(true) {
+                $varietyPts === 10 => "Zoonogamo", // Ajusta según tu lógica
+                $varietyPts === 20 => "Dúo zoonamico",
+                $varietyPts >= 30 && $varietyPts <= 50 => "Arca de Noé",
+                $varietyPts > 50 => "Zookeeper aficionado",
+                default => "Invernando",
+            };
+        
+        return $alias;
+        }
+
+        public function GetBestPetStats($username){
+            $bookList = $this -> GetAllBooksByKeeper($username);
+            $petCounts = [];
+
+            foreach($bookList as $book){
+                if($book -> getBookState() === "Finalized"){
+                    $type = $this -> GetByBook($book -> getId()) -> getPet() -> getType() -> getName();
+
+                    if (!isset($petCounts[$type])) {
+                        $petCounts[$type] = 1;
+                    } else {
+                        $petCounts[$type]++;
+                    }
+                }
+            }
+
+            // Encontrar el tipo de mascota con el mayor conteo
+            arsort($petCounts);
+        return key($petCounts);
+        }
+        
+        public function aplicarDescuentoFechasEspeciales(){
+            // Fechas especiales (ajusta meses y días según sea necesario)
+            $anioActual = date('Y');
+            $fechasEspeciales = [
+                'Navidad' => [$anioActual . '-12-24', $anioActual . '-12-25', $anioActual . '-12-26'],
+                'AñoNuevo' => [$anioActual . '-12-29', ($anioActual + 1) . '-12-30', ($anioActual + 1) . '-12-31'],
+                'Reyes' => [$anioActual . '-01-04', ($anioActual + 1) . '-01-05', ($anioActual + 1) . '-01-06'], // Ajustado al 6 de enero
+                'BlackFriday' => [$anioActual . '-11-22', ($anioActual + 1) . '-11-23', ($anioActual + 1) . '-11-24']
+            ];
+
+            // Obtener el día actual
+            $diaActual = date('Y-m-d');
+
+            foreach ($fechasEspeciales as $evento => $fechas) {
+                if (in_array($diaActual, $fechas)) {
+                    return true; // Se aplica el descuento
+                }
+            }
+
+        return false; // No se aplica el descuento
         }
     }
 ?>
