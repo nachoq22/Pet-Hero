@@ -265,6 +265,9 @@ use \Model\Checker;
             $subtotalPet = $this -> TotalPetPay($book);
             
             $total = ($subtotalBook + $subtotalPet);
+            if ($this -> aplicarDescuentoFechasEspeciales()){
+                $total = $total - ($total * 0.25);
+            }
 
             $checkerAmount = $total / 2;
 
@@ -691,6 +694,28 @@ public function NewBooking(Booking $booking,$petsID){
             // Encontrar el tipo de mascota con el mayor conteo
             arsort($petCounts);
         return key($petCounts);
+        }
+        
+        public function aplicarDescuentoFechasEspeciales(){
+            // Fechas especiales (ajusta meses y días según sea necesario)
+            $anioActual = date('Y');
+            $fechasEspeciales = [
+                'Navidad' => [$anioActual . '-12-24', $anioActual . '-12-25', $anioActual . '-12-26'],
+                'AñoNuevo' => [$anioActual . '-12-29', ($anioActual + 1) . '-12-30', ($anioActual + 1) . '-12-31'],
+                'Reyes' => [$anioActual . '-01-04', ($anioActual + 1) . '-01-05', ($anioActual + 1) . '-01-06'], // Ajustado al 6 de enero
+                'BlackFriday' => [$anioActual . '-11-22', ($anioActual + 1) . '-11-23', ($anioActual + 1) . '-11-24']
+            ];
+
+            // Obtener el día actual
+            $diaActual = date('Y-m-d');
+
+            foreach ($fechasEspeciales as $evento => $fechas) {
+                if (in_array($diaActual, $fechas)) {
+                    return true; // Se aplica el descuento
+                }
+            }
+
+        return false; // No se aplica el descuento
         }
     }
 ?>
