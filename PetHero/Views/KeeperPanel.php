@@ -23,7 +23,7 @@
 
     <div class="container-fluid">
         <div class="row">
-
+            <!--
             <div class="col-sm-auto bg-light sticky-top">
                 <div class="d-flex flex-sm-column flex-row flex-nowrap bg-light align-items-center sticky-top">
                     <a class="d-block p-3 link-dark text-decoration-none" title="" data-bs-toggle="tooltip"
@@ -60,7 +60,7 @@
                     </ul>
                 </div>
             </div>
-
+-->
 
 
             <div class="col-sm p-3 min-vh-100">
@@ -95,9 +95,9 @@
                         <div class="col-4 mt-3"></div>
                         </div>
                     </div>
-
+                    <hr>
                     <!--PUBLICLIST CONTENT-->
-                    <div class="tab-pane" id="publicList" role="tabpanel" aria-labelledby="publicList-tab" tabindex="0">
+                    <h2><strong>Your Publications</strong></h2>
                         <div class="container-fluid content-row">
                             <div class="row">
                                 <div class="col-2 mt-3">
@@ -128,16 +128,29 @@
                                         <?php } ?>
                                         <?php } ?>
                                         <div class="card-img-overlay" style="background-color: rgba(211,211,211,0.37);">
-                                            <h5 class="card-title">
-                                                <?php echo $public->getTitle() ?>
-                                            </h5>
-<!-- Para redireccion a formulario de update -->
+
+                                            <div style="display: flex; gap: 10px;">
+                                                <form action="<?php echo FRONT_ROOT . "/Publication/ViewPublication" ?>"
+                                                method="post">
+                                                <input type="hidden" name="idPublic" value=<?php echo $public->getId()
+                                                    ?>>
+                                                <button class="boton-Publicacion" title="Eliminar publicación" style="background-color:aquamarine;"> <i class="bi bi-box-arrow-in-right"></i></button>
+                                            </form>
+                                            <!-- Para redireccion a formulario de update -->
                                             <form action="<?php echo FRONT_ROOT . "/Home/ViewUpdatePublication" ?>"
                                                 method="post">
                                                 <input type="hidden" class="visually-hidden" name="idPublic" value=<?php echo $public->getId() ?>>
-                                                <button class="btn btn-outline-warning" type="submit"><i class="bi bi-pencil-square"></i></button>
+                                                <button class="boton-Editar" title="Eliminar publicación" style="background-color:cornflowerblue;"> <i class="bi bi-pencil-square"></i></button>
                                             </form>
+                                            <button class="boton-eliminar" title="Eliminar publicación" style="background-color:firebrick; color:aliceblue; width: 16;">&times;</button>
+                                            </div>
+                                            <!-- Para ir a la publicacion -->
+                                            <br>
 
+                                            <div style="color: white; text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.7);">
+                                            <h5 class="card-title" style="color: white; font-size: 24px; text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.7);">
+                                                <?php echo $public->getTitle() ?> 
+                                            </h5>    
                                             <p class="card-text"><small>
                                                     <?php echo $public->getPopularity() . " ☆☆☆☆☆" ?>
                                                     <br>
@@ -151,14 +164,8 @@
                                                 </strong>
                                             </small>
                                             </p>
-                                            </strong>
-                                            <!-- <form action="<?php echo FRONT_ROOT . "/Publication/ViewPublication" ?>"
-                                                method="post">
-                                                <input type="hidden" name="idPublic" value=<?php echo $public->getId()
-                                                    ?>>
-                                                <button type="submit" class="stretched-link"
-                                                    style="border-left-width: 0px;border-top-width: 0px;border-right-width: 0px;height: 0px;padding-right: 0px;padding-left: 0px;border-bottom-width: 0px;padding-bottom: 0px;padding-top: 0px;"></button>
-                                            </form> -->
+                                        </div>
+                                             
 
                                         </div>
                                     </div>
@@ -166,10 +173,9 @@
                                 <?php } ?>
                             </div> <!-- /.card-content -->
                         </div> <!-- /.card-content -->
-                    </div>
-
+                    <hr>
                     <!--BOOKING CONTENT-->
-                    <div class="tab-pane" id="bookings" role="tabpanel" aria-labelledby="bookings-tab" tabindex="0">
+                    <h2><strong>Your Bookings</strong></h2>
                         <table class="table align-middle mb-0 bg-white">
                             <thead class="bg-light">
                                 <tr>
@@ -391,7 +397,7 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
+                
             </div>
         </div>
     </div>

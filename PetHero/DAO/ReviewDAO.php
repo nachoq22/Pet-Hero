@@ -98,9 +98,8 @@ use PHPMailer\PHPMailer\Exception;
             $parameters["createD"] = $review->getCreateD();
             $parameters["commentary"] = $review->getCommentary();
             $parameters["stars"] = $review->getStars();
-            $parameters["idPublic"] = $review->getPublication()->getId();
             $parameters["idUser"] = $review->getUser()->getId();
-
+            $parameters["idPublic"] = $review->getPublication()->getId();
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query,$parameters,QueryType::StoredProcedure);
         }
@@ -160,11 +159,16 @@ use PHPMailer\PHPMailer\Exception;
             $reviewList = $this -> GetAllByPublic($public->getid());
             $score = 0;
             $total = 0;
+            $avgScore = 0;
             foreach($reviewList as $review){
                 $score += $review -> getStars();
                 $total += 1;
             }
-        return round(($score / $total), 2);
+
+            if($total != 0){
+                $avgScore = round($score / $total,2);
+            }
+        return $avgScore;
         }
     }
 ?>

@@ -1,5 +1,5 @@
 <div class="container">
-    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between" style="padding: 10px; margin-top:20px; background-color:#D3E0DC; border-style: groove;">
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between" style="padding: 10px; margin-top:20px; margin-bottom:20px; background-color:#D3E0DC; border-style: groove;">
     <?php if(!isset($_SESSION['logUser'])){?>
     <ul class="nav col-12 col-md-auto mb-2 justify-content-start mb-md-0">
         <li> <a class="nav-link px-2 link-dark" href="<?php echo  FRONT_ROOT ?>"><h4 class="card-title"><img src="https://images.squarespace-cdn.com/content/v1/5723b737c2ea51b309ec0ca1/1522426443508-FEPA6TY38ZQVWWQ240QJ/Throw_Ball.gif%C3%A7" alt="Bootstrap" width="32" height="32" class="rounded-circle border border-white me-3"></a></li>
@@ -12,7 +12,6 @@
         <li> <a class="btn btn-outline-info" href="<?php echo FRONT_ROOT."/Home/ViewOwnerPanel"?>" type="button" style="margin: 2px;"><i class="bi bi-person-square"></i> Owner panel </a></li>
         <li> <a class="btn btn-outline-danger" href="<?php echo FRONT_ROOT."/Home/ViewKeeperPanel"?>" type="button" style="margin: 2px;"><i class="bi bi-person-square"></i> Keeper panel </a></li>
         <li> <a class="btn btn-outline-success" href="<?php echo FRONT_ROOT."/Home/ViewPanelChatHome"?>" type="button" style="margin: 2px;"><i class="bi bi-chat-text"></i></a></li>
-
       </ul>
 <?php }else{?>
       <ul class="nav col-12 col-md-auto mb-2 justify-content-start mb-md-0">
@@ -50,29 +49,16 @@
           </ul> 
       </div>
       <?php }else{
-        if(isset($_SESSION['logUser'])){
-          if(isset($_SESSION["isKeeper"])){?>
+        if(isset($_SESSION['logUser'])){ ?>
             <div class="flex-shrink-0 dropdown">
                   <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="bi bi-person-circle"></i>
                   </a>
-                <ul class="dropdown-menu text-small shadow" id="menuProfile">
-                    <li><a class="dropdown-item" href="<?php echo FRONT_ROOT."/Home/ViewOwnerPanel"?>">Owner Panel</a></li>    
-                    <li><a class="dropdown-item" href="<?php echo FRONT_ROOT."/Home/ViewKeeperPanel"?>">Keeper Panel</a></li>     
+                <ul class="dropdown-menu text-small shadow" id="menuProfile">    
                     <li><a class="dropdown-item" href="<?php echo FRONT_ROOT."/Home/Logout"?>">Logout</a></li>
                 </ul>
             </div>
-          <?php }else{?>
-            <div class="flex-shrink-0 dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-person-circle"></i>
-                  </a>
-                <ul class="dropdown-menu text-small shadow" id="menuProfile">
-                    <li><a class="dropdown-item" href="<?php echo FRONT_ROOT."/Home/ViewOwnerPanel"?>">Owner Panel</a></li>      
-                    <li><a class="dropdown-item" href="<?php echo FRONT_ROOT."/Home/Logout"?>">Logout</a></li>
-                </ul>
-            </div>
-            <?php }
+          <?php
             }
         }?>
     </header>

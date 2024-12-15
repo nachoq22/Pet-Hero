@@ -21,17 +21,17 @@
                 </div>
     <?php } setcookie('message', '', time() - 3600,'/'); ?>
 
-    <div class="container-fluid">
+    <div class="container-fluid" style="width:80%; padding-top: 20px;">
         <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active" data-bs-interval="10000">
-                    <img src="https://www.hogarmania.com/archivos/201907/pasear-perro-XxXx80.jpg" class="d-block w-100" style="width: 100%; height: 40vw; object-fit: cover;" alt="...">
+                    <img src="https://www.hogarmania.com/archivos/201907/pasear-perro-XxXx80.jpg" class="d-block w-100" style="width: 100%; height: 30vw; object-fit: cover;" alt="...">
                 </div>
                 <div class="carousel-item" data-bs-interval="2000">
-                    <img src="https://cdn.wamiz.fr/cdn-cgi/image/format=auto,quality=80,width=1200,height=900,fit=cover/article/main-picture/61fbe5bedab81812941910.png" class="d-block w-100" style="width: 100%; height: 40vw; object-fit: cover;" alt="...">
+                    <img src="https://cdn.wamiz.fr/cdn-cgi/image/format=auto,quality=80,width=1200,height=900,fit=cover/article/main-picture/61fbe5bedab81812941910.png" class="d-block w-100" style="width: 100%; height: 30vw; object-fit: cover;" alt="...">
                 </div>
                 <div class="carousel-item" data-bs-interval="2000">
-                    <img src="https://images.ctfassets.net/gxwgulxyxxy1/4gwMDV1dxGvZRwguxSUBfS/4868ea3358b99376cde22e23debba570/southeast-petfriendly-beach-holidays.jpg" class="d-block w-100" style="width: 100%; height: 40vw; object-fit: cover;" alt="...">
+                    <img src="https://images.ctfassets.net/gxwgulxyxxy1/4gwMDV1dxGvZRwguxSUBfS/4868ea3358b99376cde22e23debba570/southeast-petfriendly-beach-holidays.jpg" class="d-block w-100" style="width: 100%; height: 30vw; object-fit: cover;" alt="...">
                 </div>
 
 
@@ -61,7 +61,7 @@
                                 <img src="<?php echo $imgP->getUrl(); ?>" class="card-img" alt="..." style="width: 100%; height: 28vw; object-fit: cover;">
                         <?php }
                         } ?>
-                        <div class="card-img-overlay" style="background-color: rgba(211,211,211,0.37);">
+                        <div class="card-img-overlay" style="background-color: rgba(0,0,0,0.4); text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);">
                             <h5 class="card-title"><?php echo $public->getTitle() ?></h5>
 
                             <p class="card-text"><small><?php echo $public->getPopularity() . " ☆☆☆☆☆" ?>

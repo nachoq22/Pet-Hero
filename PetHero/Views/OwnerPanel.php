@@ -22,7 +22,7 @@
                 </div>
     <?php } setcookie('message', '', time() - 3600,'/'); ?>
 
-
+<!--
 <div class="container-fluid">
     <div class="row">
         
@@ -62,17 +62,13 @@
                 </ul>
             </div>
         </div>
-        
+        -->
         <div class="col-sm p-3 min-vh-100">
             <!-- content -->
-<!--OWNER DATA CONTENT-->
-            <div class="tab-content" id="pills-tabContent">
-                <div class="tab-pane fade show active" id="ownerData" role="tabpanel" aria-labelledby="ownerData-tab" tabindex="0">
-                    
-                </div>  
+<hr>
 
 <!--PETLIST CONTENT-->                
-                <div class="tab-pane" id="petList" role="tabpanel" aria-labelledby="petList-tab" tabindex="0">   
+                 <h2><strong>Your Pets</strong></h2>
                     <div class="container-fluid content-row">
                         <div class="row">
                             <div class="col-2 mt-3">
@@ -87,6 +83,7 @@
                                     </a>
                                 </div>
                             </div>
+                            
                     <?php foreach ($petList as $pet) { ?>
                             <div class="col-2 mt-3" >
                                 <div class="card h-100">
@@ -105,10 +102,12 @@
                     <?php } ?>
                         </div> <!-- /.card-content -->
                     </div> <!-- /.card-content -->
-                </div>
+                    <br>
+                    <hr>
+                
 
 <!--BOOKING CONTENT-->
-                <div class="tab-pane" id="bookings" role="tabpanel" aria-labelledby="bookings-tab" tabindex="0">
+                <h2><strong>Your Pets's Booking</strong></h2>
                     <table class="table align-middle mb-0 bg-white">
                         <thead class="bg-light">
                             <tr>
@@ -204,17 +203,66 @@
                                 <td>
                                 <?php if(STRCMP($book->getBookState(),"Awaiting Payment") == 0){?>   
                                     <!-- <form action="<?php echo FRONT_ROOT."/Checker/PayCheck" ?>" method="post" name="sendPayC"> -->
-                                    <form action="<?php echo FRONT_ROOT."/Booking/PayBooking" ?>" method="post" name="sendPayC">
-                                        <div class="form-floating mb-3">   
-                                            <input type="hidden" name="idBook" value=<?php echo $book->getId() ?>>  
-                                            <input type="number" class="form-control" id="payCode" 
-                                                    placeholder="San Antonio" name="payCode" onkeypress="if (event.keyCode == 13) Send()" required>
-                                            <label for="payCode">PayCode</label>
-                                                <div class="invalid-feedback">
-                                                    Please enter a PayCode.
+                                    <div>
+                                        <form action="<?php echo FRONT_ROOT."/Booking/PayBooking" ?>" method="post" name="sendPayC">
+                                            <div class="form-floating mb-3">   
+                                                <input type="hidden" name="idBook" value=<?php echo $book->getId() ?>>  
+                                                <input type="number" class="form-control" id="payCode" 
+                                                        placeholder="San Antonio" name="payCode" onkeypress="if (event.keyCode == 13) Send()" style="width: 60%" required>
+                                                <label for="payCode">PayCode</label>
+                                                    <div class="invalid-feedback">
+                                                        Please enter a PayCode.
+                                                    </div>
                                                 </div>
+                                        </form>
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#CardPayment">
+                                        <i class="bi bi-credit-card"></i>
+                                        </button>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="CardPayment" tabindex="-1" role="dialog" aria-labelledby="CardPaymentTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLongTitle">Card Payment</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                                </button>
                                             </div>
-                                    </form>
+                                            <div class="modal-body">
+                                                <form action="" method="post" class="needs-validation" novalidate>
+                                                
+                                                <label for="cardType">Select your card:</label>
+                                                    <select name="cardType" id="cardType" class="form-control">
+                                                        <option value="visa">Visa</option>
+                                                        <option value="masterCard">MasterCard</option>
+                                                    </select>
+                                                    <br>
+                                                <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <label for="cardNumber">Card Number</label>
+                                                    <input type="number" class="form-control" id="cardNumber" placeholder="1234 4567 8910 1112">
+                                                </div>
+                                                <div class="form-group col-md-4">
+                                                    <label for="securitycode">Security code</label>
+                                                    <input type="password" class="form-control" id="securitycode" placeholder="cvv" style="width: 44%;">
+                                                </div>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                <button type="submit" class="btn btn-primary">Pay</button>
+                                            </div>
+                                            </form>
+                                            </div>
+                                        </div>
+                                        </div>
+
+                                    </div>
+
+                                    
+
                                 <?php } if(STRCMP($book->getBookState(),"Waiting Start") == 0){?>
                                         <form action="<?php echo FRONT_ROOT."/Booking/CancelBook"?>" method="post" onsubmit="return Confirm()">
                                         <input type="hidden" name="idBook" value=<?php echo $book->getId() ?>>
@@ -232,7 +280,6 @@
                             <?php } ?>
                         </tbody>
                     </table>        
-                </div>
             </div>
         </div>
     </div>
@@ -243,5 +290,17 @@
     function Confirm(){
         return confirm("Do you want to cancel the booking?");
     }
+
+    const signUpItem = document.getElementById("CardPayment")
+    signUpItem.addEventListener('click', (e) => {
+    document.getElementById("pills-signUp-tab").click()
+  })
+  
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+        crossorigin="anonymous"></script>
 </body>

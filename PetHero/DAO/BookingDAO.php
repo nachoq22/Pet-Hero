@@ -477,7 +477,7 @@ use \Model\Booking as Booking;
 
         public function GetKeeperStats($username){
             $bookingList = $this -> GetAllByKeeper($username);
-            $alias = null;
+            $alias =  "Existiendo";
             $finalizadas = 0;
             $canceladas = 0;
             $expiradas = 0;
@@ -493,9 +493,12 @@ use \Model\Booking as Booking;
             }
 
             $total_reservas = count($bookingList);
-            $tasa_finalizacion = ($finalizadas / $total_reservas) * 100;
-            $tasa_cancelacion = ($canceladas / $total_reservas) * 100;
-            $tasa_expiracion = ($expiradas / $total_reservas) * 100;
+
+            if ($total_reservas > 0) {
+                $tasa_finalizacion = ($finalizadas / $total_reservas) * 100;
+                $tasa_cancelacion = ($canceladas / $total_reservas) * 100;
+                $tasa_expiracion = ($expiradas / $total_reservas) * 100;
+
 
             // Lógica para asignar el alias basado en las tasas calculadas
             if ($tasa_finalizacion > 80 && $tasa_cancelacion < 10 && $tasa_expiracion < 5) {
@@ -507,7 +510,7 @@ use \Model\Booking as Booking;
             } else {
                 $alias = "En desarrollo";
             }
-
+        }
             return $alias;
         }
     }

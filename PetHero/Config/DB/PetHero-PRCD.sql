@@ -46,24 +46,21 @@ DROP PROCEDURE IF EXISTS `Pet_Delete`;
 
 USE petHero;
 /*********************************PROCEDURES LOCATION*******************************************/
-DELIMITER $$
+
 CREATE PROCEDURE Location_GetAll()
 BEGIN
     SELECT * 
     FROM Location;
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE Location_GetById(IN idLocation INT)
 BEGIN
     SELECT * 
     FROM Location
     WHERE (Location.idLocation = idLocation);
 END;
-$$
 
-DELIMITER $$
+
 CREATE PROCEDURE Location_GetByAll(IN adress VARCHAR(50),IN neighborhood VARCHAR(50),IN city VARCHAR(50),
                               IN province VARCHAR(50),IN country VARCHAR(50))
 BEGIN
@@ -72,9 +69,7 @@ BEGIN
     WHERE (Location.adress = adress AND Location.neighborhood = neighborhood AND Location.city = city 
 		   AND Location.province = province AND Location.country = country);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE Location_Add(IN adress VARCHAR(50),IN neighborhood VARCHAR(50),IN city VARCHAR(50),
                               IN province VARCHAR(50),IN country VARCHAR(50))
 BEGIN
@@ -83,45 +78,37 @@ BEGIN
     VALUES
         (adress,neighborhood,city,province,country);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE Location_Delete(IN idLocation INT)
 BEGIN
     DELETE 
     FROM Location
     WHERE (Location.idLocation = idLocation);
 END;
-$$
+
 
 /*********************************PROCEDURES PERSONAL DATA*******************************************/
-DELIMITER $$
+
 CREATE PROCEDURE PersonalData_GetAll()
 BEGIN
     SELECT * 
     FROM PersonalData;
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE PersonalData_GetById(IN idData INT)
 BEGIN
     SELECT * 
     FROM PersonalData
     WHERE (PersonalData.idData = idData);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE PersonalData_GetByDni(IN dni VARCHAR(8))
 BEGIN
     SELECT * 
     FROM PersonalData
     WHERE (PersonalData.dni = dni);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE PersonalData_Add(IN name VARCHAR(50),IN surname VARCHAR(50),IN sex VARCHAR(1),
                                     IN dni VARCHAR(8),IN idLocation INT)
 BEGIN
@@ -130,55 +117,44 @@ BEGIN
     VALUES
         (name,surname,sex,dni,idLocation);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE PersonalData_Delete(IN idData INT)
 BEGIN
     DELETE 
     FROM PersonalData
     WHERE (PersonalData.idData = idData);
 END;
-$$
+
 
 /*********************************PROCEDURES USER*******************************************/
-DELIMITER $$
+
 CREATE PROCEDURE User_GetAll()
 BEGIN
     SELECT * 
     FROM User;
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE User_GetById(IN idUser INT)
 BEGIN
     SELECT * 
     FROM User
     WHERE (User.idUser = idUser);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE User_GetByUsername(IN username VARCHAR(50))
 BEGIN
     SELECT * 
     FROM User
     WHERE (User.username = username);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE User_IsExist(IN username VARCHAR(50), IN email VARCHAR(50))
 BEGIN
     SELECT COUNT(idUser) as rta
     FROM User
     WHERE (User.username = username) OR (User.email = email);
 END;
-$$
 
-
-DELIMITER $$
 CREATE PROCEDURE User_Add(IN username VARCHAR(50),IN password VARCHAR(30),IN email VARCHAR(50))
 BEGIN
     INSERT INTO User
@@ -186,18 +162,14 @@ BEGIN
     VALUES
         (username,password,email);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE User_HookData(IN idUser INT,IN idData INT)
 BEGIN
     UPDATE User
 	SET User.idData = idData
 	WHERE User.idUser = idUser;
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE User_Register(IN username VARCHAR(50),IN password VARCHAR(30),IN email VARCHAR(50))
 BEGIN
     INSERT INTO User
@@ -205,53 +177,43 @@ BEGIN
     VALUES
         (username,password,email);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE User_Login(IN username VARCHAR(20),IN password VARCHAR(20))
 BEGIN
     SELECT COUNT(idUser) as rta
     FROM User
     WHERE User.username = username AND User.password = password;
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE User_Delete(IN idUser INT)
 BEGIN
     DELETE 
     FROM User
     WHERE (User.idUser = idUser);
 END;
-$$
+
 /*********************************PROCEDURE ROLE*******************************************/
-DELIMITER $$
+
 CREATE PROCEDURE Role_GetAll()
 BEGIN
     SELECT * 
     FROM Role;
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE Role_GetById(IN idRole INT)
 BEGIN
     SELECT * 
     FROM Role
     WHERE (Role.idRole = idRole);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE Role_GetByName(IN name VARCHAR(30))
 BEGIN
     SELECT * 
     FROM Role
     WHERE (Role.name = name);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE Role_Add(name VARCHAR(30),description VARCHAR(250))
 BEGIN
     INSERT INTO Role
@@ -259,47 +221,36 @@ BEGIN
     VALUES
         (name,description);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE Role_Delete(IN idRole INT)
 BEGIN
     DELETE 
     FROM Role
     WHERE (Role.idRole = idRole);
 END;
-$$
+
 
 /*********************************PROCEDURE USERROLE*******************************************/
-DELIMITER $$
 CREATE PROCEDURE UR_GetAll()
 BEGIN
     SELECT * 
     FROM UserRole;
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE UR_GetById(IN idUR INT)
 BEGIN
     SELECT * 
     FROM UserRole
     WHERE (UserRole.idUR = idUR);
 END;
-$$
 
-
-
-DELIMITER $$
 CREATE PROCEDURE UR_IsKeeper(IN idUser INT)
 BEGIN
     SELECT COUNT(idUser) as rta 
     FROM UserRole
     WHERE (UserRole.idUser = idUser) AND (UserRole.idRole = 2);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE UR_Add(IN idUser INT,IN idRole INT)
 BEGIN
     INSERT INTO UserRole
@@ -307,9 +258,7 @@ BEGIN
     VALUES
         (idUser,idRole);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE UR_UserToOwner(IN idUser INT)
 BEGIN
     INSERT INTO UserRole
@@ -317,9 +266,7 @@ BEGIN
     VALUES
         (idUser,1);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE UR_UserToKeeper(IN idUser INT)
 BEGIN
     INSERT INTO UserRole
@@ -327,45 +274,36 @@ BEGIN
     VALUES
         (idUser,2);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE UR_Delete(IN idUR INT)
 BEGIN
     DELETE 
     FROM UserRole
     WHERE (UserRole.idUR = idUR);
 END;
-$$
+
 
 /*********************************PROCEDURES SIZE*******************************************/
-DELIMITER $$
 CREATE PROCEDURE Size_GetAll()
 BEGIN
     SELECT * 
     FROM Size;
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE Size_GetById(IN idSize INT)
 BEGIN
     SELECT * 
     FROM Size
     WHERE (Size.idSize = idSize);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE Size_GetByName(IN name VARCHAR(30))
 BEGIN
     SELECT * 
     FROM Size
     WHERE (Size.name = name);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE Size_Add(IN name VARCHAR(30))
 BEGIN
     INSERT INTO Size
@@ -373,45 +311,36 @@ BEGIN
     VALUES
         (name);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE Size_Delete(IN idSize INT)
 BEGIN
     DELETE 
     FROM Size
     WHERE (Size.idSize = idSize);
 END;
-$$
+
 
 /*********************************PROCEDURES PETTYPE*******************************************/
-DELIMITER $$
 CREATE PROCEDURE PetType_GetAll()
 BEGIN
     SELECT * 
     FROM PetType;
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE PetType_GetById(IN idType INT)
 BEGIN
     SELECT * 
     FROM PetType
     WHERE (PetType.idType = idType);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE PetType_GetByName(IN name VARCHAR(30))
 BEGIN
     SELECT * 
     FROM PetType
     WHERE (PetType.name = name);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE PetType_Add(IN name VARCHAR(30))
 BEGIN
     INSERT INTO PetType
@@ -419,46 +348,37 @@ BEGIN
     VALUES
         (name);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE PetType_Delete(IN idType INT)
 BEGIN
     DELETE 
     FROM PetType
     WHERE (PetType.idType = idType);
 END;
-$$
+
 
 /*********************************PROCEDURES PET*******************************************/
-DELIMITER $$
+
 CREATE PROCEDURE Pet_GetAll()
 BEGIN
     SELECT * 
     FROM Pet;
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE Pet_GetById(IN idPet INT)
 BEGIN
     SELECT * 
     FROM Pet
     WHERE (Pet.idPet = idPet);
 END;
-$$
 
-
-DELIMITER $$
 CREATE PROCEDURE Pet_GetByUser(IN idUser INT)
 BEGIN
     SELECT * 
     FROM Pet
     WHERE (Pet.idUser = idUser);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE Pet_Add(IN name VARCHAR(50), IN breed VARCHAR(50), IN profileIMG VARCHAR(250),
                          IN vaccinationPlanIMG VARCHAR(250), IN observation VARCHAR(200), IN idSize INT,
 	                     IN idType INT, IN idUser INT)
@@ -469,54 +389,46 @@ BEGIN
     VALUES
         (name,breed,profileIMG,vaccinationPlanIMG,observation,idSize,idType,idUser);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE Pet_Delete(IN idPet INT)
 BEGIN
     DELETE 
     FROM Pet
     WHERE (Pet.idPet = idPet);
 END;
-$$
+
 
 /*********************************PROCEDURES SECOND PART*******************************************/
 /*********************************PROCEDURES PUBLICATION*******************************************/
 
-DELIMITER $$
 CREATE PROCEDURE Publication_GetAll()
 BEGIN
     SELECT *
     FROM Publication;
 END;
-$$
 
-DELIMITER $$
+
 CREATE PROCEDURE Publication_GetAllByRangeDates(IN initD DATE, IN finishD DATE)
 BEGIN
     SELECT *
     FROM Publication
     WHERE Publication.openD <= initD AND Publication.closeD >= finishD;
 END;
-$$
 
-DELIMITER $$ 
 CREATE PROCEDURE Publication_GetById(IN idPublication INT)
 BEGIN
     SELECT * 
     FROM Publication
     WHERE (Publication.idPublic = idPublication);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE Publication_GetByUser(IN idUser INT)
 BEGIN
     SELECT * 
     FROM publication
     WHERE (publication.idUser = idUser);
 END;
-$$
+
 
 -- DELIMITER $$
 -- CREATE PROCEDURE Publication_Search(IN phrase VARCHAR(50))
@@ -527,7 +439,7 @@ $$
 -- END;
 -- $$
 
-DELIMITER $$
+
 CREATE PROCEDURE Publication_Search(IN phrase VARCHAR(50))
 BEGIN
      SELECT DISTINCT p.idPublic, p.openD, p.closeD, p.title, p.description, p.popularity, p.remuneration, p.active, p.idUser
@@ -545,32 +457,14 @@ BEGIN
         OR Location.country LIKE CONCAT('%',phrase,'%')
         AND P.active = 1;
 END;
-$$
 
---CALL `Publication_Search`("Santa fe");
-
--- SELECT DISTINCT * FROM Publication WHERE Publication.title LIKE ('%Papitas%') OR
---                                          Publication.description LIKE ('%Papitas%') OR
---                                          Publication.idUser IN (
---                                             SELECT idUser FROM User WHERE username LIKE ('%planetar%'))
---                                          AND Publication.active = 1;
-
--- SELECT DISTINCT *  FROM Publication LEFT JOIN User ON Publication.idUser = User.idUser
---     WHERE Publication.title LIKE '%Papitas%' 
---        OR Publication.description LIKE '%Papitas%' 
---        OR User.username LIKE '%planetar%' 
---        AND Publication.active = 1; 
-
-DELIMITER $$
 CREATE PROCEDURE Publication_DateCheck(IN openD DATE, IN closeD DATE, IN idPublic INT)
 BEGIN
     SELECT COUNT(idPublic) as rta 
     FROM publication
     WHERE (publication.idPublic = idPublic) AND (publication.openD < openD) AND (publication.closeD >= closeD);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE Publication_NIDate(IN openD DATE, IN closeD DATE, IN idUser int)
 BEGIN
     SELECT COUNT(*) > 0 AS rta FROM publication
@@ -582,9 +476,9 @@ BEGIN
             OR 
             (publication.openD <= openD AND publication.closeD >= closeD));
 END;
-$$
+
 CALL `Publication_NIDate`("2024-12-15","2024-12-25",3);    
-DELIMITER $$
+
 CREATE PROCEDURE Publication_Add(IN openD DATE, IN closeD DATE, IN title VARCHAR(50),
                          IN description VARCHAR(1000), IN popularity DEC(2,1), IN remuneration DEC(10,2),
 	                     IN idUser INT)
@@ -597,18 +491,17 @@ BEGIN
 
 	SELECT LAST_INSERT_ID() as LastID;
 END;
-$$ 
 
-DELIMITER $$
+
+
 CREATE PROCEDURE Publication_UpdatePopularity(IN idPublic INT, IN score DEC(2,1))
 BEGIN
     UPDATE publication
         SET publication.popularity = score
     WHERE publication.idPublic = idPublic;
 END;
-$$
 
-DELIMITER //
+
 CREATE PROCEDURE Publication_Update (IN idPublicIn INT,
                                  IN openDIn DATE, IN closeDIn DATE, IN titleIn VARCHAR(50),
                                  IN descriptionIn VARCHAR(1000), 
@@ -617,19 +510,16 @@ BEGIN
 UPDATE Publication p SET openD =  openDIn, closeD = closeDIn, title = titleIn
                        , description = descriptionIn , remuneration = remunerationIn
                     WHERE idPublic = idPublicIn;
-END // 
-DELIMITER;                                                            
+END;                                                            
 
-DELIMITER $$
+
 CREATE PROCEDURE Publication_Delete(IN idPublic INT)
 BEGIN
     UPDATE Publication SET active = 0 WHERE Publication.`idPublic` = idPublic;
 END;
-$$
+
 
 /*********************************PROCEDURES IMAGES*******************************************/
-
-DELIMITER $$
 
 CREATE PROCEDURE ImgPublic_GetAll()
 BEGIN
@@ -637,27 +527,21 @@ BEGIN
     FROM ImgPublic;
 END;
 
-$$
 
-DELIMITER $$ 
 CREATE PROCEDURE ImgPublic_GetById(IN idImg INT)
 BEGIN
     SELECT * 
     FROM ImgPublic
     WHERE (ImgPublic.idImg = idImg);
 END;
-$$
 
-DELIMITER $$ 
 CREATE PROCEDURE ImgPublic_GetByPublic(IN idPublic INT)
 BEGIN
     SELECT * 
     FROM ImgPublic
     WHERE (ImgPublic.idPublic = idPublic);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE ImgPublic_Add(IN uri varchar(250), IN idPublic INT)
 BEGIN
     INSERT INTO ImgPublic
@@ -665,63 +549,48 @@ BEGIN
     VALUES
         (uri,idPublic);
 END;
-$$
 
-
-DELIMITER $$
 CREATE PROCEDURE ImgPublic_Delete(IN idImg INT)
 BEGIN
     DELETE 
     FROM ImgPublic
     WHERE (ImgPublic.idImg = idImg);
 END;
-$$
+
 
 
 /*********************************PROCEDURES BOOKING*******************************************/
-
-DELIMITER $$
 CREATE PROCEDURE Booking_GetAll()
 BEGIN
     SELECT * 
     FROM Booking;
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE Booking_GetAllByPublication(IN idPublic INT)
 BEGIN
     SELECT * FROM Booking
     WHERE (Booking.idPublic = idPublic);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE Booking_GetById(IN idBook INT)
 BEGIN
     SELECT * 
     FROM Booking
     WHERE (Booking.idBook = idBook);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE Booking_GetByUser(IN idUser INT)
 BEGIN
     SELECT * 
     FROM booking
     WHERE (booking.idUser = idUser);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE Booking_GetBookigPay(IN startD DATE,IN finishD DATE, IN remuneration DEC(10,2))
 BEGIN
 	SELECT (TIMESTAMPDIFF(DAY, startD, finishD)*remuneration) AS bookingPay;
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE Booking_CheckRange(IN startD DATE, IN finishD DATE, IN idPublic INT)
 BEGIN
     SELECT *
@@ -729,9 +598,7 @@ BEGIN
      WHERE (booking.idPublic=idPublic) AND (booking.bookState ="Waiting Start" OR booking.bookState="In Progress" ) AND ((booking.startD > startD AND booking.startD < finishD) 
             OR (booking.startD < startD AND booking.finishD > startD));
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE Booking_Add(IN startD DATE, IN finishD DATE, IN bookState VARCHAR(25),
                          IN idPublic INT, IN idUser INT)
 BEGIN
@@ -741,74 +608,59 @@ BEGIN
         (startD, finishD, bookState, idPublic, idUser);
 	SELECT LAST_INSERT_ID() as LastID;
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE Booking_UpdateST(IN idBook INT, IN bookState VARCHAR(50))
 BEGIN
     UPDATE Booking
         SET Booking.bookState = bookState
     WHERE Booking.idBook = idBook;
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE Booking_UpdateCode(IN idBook INT, IN payCode VARCHAR(14))
 BEGIN
     UPDATE Booking
         SET Booking.payCode = payCode
     WHERE Booking.idBook = idBook;
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE Booking_Delete(IN idBook INT)
 BEGIN
     DELETE 
     FROM Booking
     WHERE (Booking.idBook = idBook);
 END;
-$$
 
 
 /*********************************PROCEDURES BOOKING PET*******************************************/
 
-DELIMITER $$
+
 CREATE PROCEDURE BP_GetAll()
 BEGIN
     SELECT * 
     FROM BookingPet;
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE BP_GetById(IN idBP INT)
 BEGIN
     SELECT * 
     FROM BookingPet
     WHERE (BookingPet.idBP = idBP);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE BP_GetByBook(IN idBook INT)
 BEGIN
     SELECT * 
     FROM BookingPet
     WHERE (BookingPet.idBook = idBook);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE BP_GetPetPay(IN remuneration DEC(10,2),IN idBook INT)
 BEGIN
     SELECT (COUNT(idPet) * remuneration) AS petPay
     FROM BookingPet
     WHERE (BookingPet.idBook = idBook);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE BP_Add(IN idBook INT, IN idPet INT)
 BEGIN
     INSERT INTO BookingPet
@@ -816,55 +668,43 @@ BEGIN
     VALUES
         (idBook, idPet);
 END;
-$$
-
-DELIMITER $$
 CREATE PROCEDURE BP_Delete(IN idBP INT)
 BEGIN
     DELETE 
     FROM BookingPet
     WHERE (BookingPet.idBP = idBP);
 END;
-$$
 
 /*********************************PROCEDURES CHECKER*******************************************/
 
-DELIMITER $$
+
 CREATE PROCEDURE Checker_GetAll()
 BEGIN
     SELECT * 
     FROM Checker;
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE Checker_GetById(IN idChecker INT)
 BEGIN
     SELECT * 
     FROM Checker
     WHERE (Checker.idChecker= idChecker);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE Checker_GetByBooking(IN idBook INT)
 BEGIN
     SELECT * 
     FROM Checker
     WHERE (Checker.idBook = idBook);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE Checker_GetByRef(IN refCode VARCHAR(20))
 BEGIN
     SELECT * 
     FROM Checker
     WHERE (Checker.refCode = refCode);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE Checker_Add(IN refCode VARCHAR(20),IN emisionD DATE, IN closeD DATE, IN finalPrice INT, IN idBook INT)
 BEGIN
     INSERT INTO Checker
@@ -872,54 +712,43 @@ BEGIN
     VALUES
         (refCode,emisionD, closeD, finalPrice, idBook);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE Checker_SetPayD(IN idChecker INT, IN payD DATE)
 BEGIN
 	UPDATE Checker
     SET Checker.payD = payD
     WHERE Checker.idChecker = idChecker;
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE Checker_Delete(IN idChecker INT)
 BEGIN
     DELETE 
     FROM Checker
     WHERE (Checker.idChecker = idChecker);
 END;
-$$
+
 
 /*********************************PROCEDURES REVIEW*******************************************/
-DELIMITER $$
 CREATE PROCEDURE Review_GetAll()
 BEGIN
     SELECT * 
     FROM Review;
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE Review_GetById(IN idReview INT)
 BEGIN
     SELECT * 
     FROM Review
     WHERE (Review.idReview = idReview);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE Review_GetByPublic(IN idPublic INT)
 BEGIN
     SELECT * 
     FROM Review
     WHERE (Review.idPublic = idPublic);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE Review_Add(IN createD DATE, IN commentary VARCHAR(500), IN stars INT,
                             IN idUser INT, IN idPublic INT)
 BEGIN
@@ -928,54 +757,44 @@ BEGIN
     VALUES
         (createD, commentary, stars, idUser, idPublic);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE Review_Delete(IN idReview INT)
 BEGIN
     DELETE 
     FROM Review
     WHERE (Review.idReview = idReview);
 END;
-$$
+
 
 /*********************************PROCEDURES CHAT*******************************************/
-DELIMITER $$
+
 CREATE PROCEDURE Chat_GetAll()
 BEGIN
     SELECT * 
     FROM Chat;
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE Chat_GetById(IN idChat INT)
 BEGIN
     SELECT * 
     FROM Chat
     WHERE (Chat.idChat = idChat);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE Chat_GetByUsers(IN idUser1 INT, IN idUser2 INT)
 BEGIN
 	SELECT * 
     FROM Chat
     WHERE (Chat.idOwner = idUser1 AND Chat.idKeeper = idUser2) OR (Chat.idOwner = idUser2 AND chat.idKeeper = idUser1);
 END;
-$$
 
-DELIMITER $$ 
 CREATE PROCEDURE Chat_GetByUser(IN idUser INT)
 BEGIN
 	SELECT * 
     FROM Chat
 	WHERE (Chat.idOwner = idUser XOR Chat.idKeeper=idUser);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE Chat_Add(IN idOwner INT, IN idKeeper INT)
 BEGIN
     INSERT INTO Chat
@@ -984,39 +803,32 @@ BEGIN
         (idOwner, idKeeper);
 	SELECT LAST_INSERT_ID() as LastID;
 END;
-$$
 
-
-DELIMITER $$
 CREATE PROCEDURE Chat_Delete(IN idChat INT)
 BEGIN
     DELETE 
     FROM Chat
     WHERE (Chat.idReview = idReview);
 END;
-$$
+
 
 
 /*********************************PROCEDURES MESSAGECHAT*******************************************/
 
-DELIMITER $$
+
 CREATE PROCEDURE MessageChat_GetAll()
 BEGIN
     SELECT * 
     FROM MessageChat;
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE MessageChat_GetById(IN idMessageChat INT)
 BEGIN
     SELECT * 
     FROM MessageChat
     WHERE (MessageChat.idMessageChat = idMessageChat);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE MessageChat_Add(IN message VARCHAR(500), IN dateTime DATETIME, IN idChat INT, IN idSender INT)
 BEGIN
     INSERT INTO MessageChat
@@ -1024,34 +836,27 @@ BEGIN
     VALUES
         (message, dateTime, idChat, idSender);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE MessageChat_GetAllMsgByChat(IN idChat INT)
 BEGIN
 	SELECT *
     FROM MessageChat
     WHERE (MessageChat.idChat = idChat);
 END;
-$$
 
-DELIMITER $$
 CREATE PROCEDURE MessageChat_GetLastMsgByChat(IN idChat INT)
 BEGIN
 	SELECT * 
     FROM MessageChat
     WHERE MessageChat.idChat = idChat ORDER BY MessageChat.dateTime DESC LIMIT 1;
 END; 
-$$
 
-DELIMITER $$
 CREATE PROCEDURE MessageChat_Delete(IN idMessageChat INT)
 BEGIN
     DELETE 
     FROM MessageChat
     WHERE (MessageChat.idMessageChat = idMessageChat);
 END;
-$$
 
 
 

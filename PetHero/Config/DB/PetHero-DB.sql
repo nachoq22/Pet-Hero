@@ -63,11 +63,11 @@ CREATE TABLE IF NOT EXISTS User(
 			REFERENCES PersonalData(idData)
 );
 /*Keepers*/
-INSERT INTO User VALUES (0,"planetar","orylOSad","achternaga@wificon.eu",1);
-INSERT INTO User VALUES (0,"marsexpress","eIrCHips","djlucadj@lifestyleunrated.com",2);
-INSERT INTO User VALUES (0,"venus","MuncENsu","medennikovadasha@boranora.com",3);
-INSERT INTO User VALUES (0,"sculpordwarf","cIShAphe","saschre@hs-gilching.de",4);
-INSERT INTO User VALUES (0,"toystory","nShaREDO","ovnoya@emvil.com",5);
+INSERT INTO User VALUES (0,"planetar","123456","achternaga@wificon.eu",1);
+INSERT INTO User VALUES (0,"marsexpress","123456","djlucadj@lifestyleunrated.com",2);
+INSERT INTO User VALUES (0,"venus","123456","medennikovadasha@boranora.com",3);
+INSERT INTO User VALUES (0,"sculpordwarf","123456","saschre@hs-gilching.de",4);
+INSERT INTO User VALUES (0,"toystory","123456","ovnoya@emvil.com",5);
 
 /*Owners*/
 INSERT INTO User (idUser,username,password,email) VALUES (0,"bluckiz","12345678","bluckiz@gmail.com");
@@ -184,6 +184,7 @@ INSERT INTO Pet VALUES (0,"Coco","Mestizo",CONCAT("..\\Views\\Img\\IMGPet\\Profi
 INSERT INTO Pet VALUES (0,"Thor","Lykoi",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Thor","202211151843",".jpg")
 						,CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Thor","202211151843",".jpg")
 						,"Rompe todo",2,2,2);
+
 INSERT INTO Pet VALUES (0,"Faraon","Pigmeo africano",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Faraon","202211151843",".jpg")
 						,CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Faraon","202211151843",".jpg")
 						,"Come mucho",3,3,3);
@@ -193,6 +194,10 @@ INSERT INTO Pet VALUES (0,"Laila","Ariray",CONCAT("..\\Views\\Img\\IMGPet\\Profi
 INSERT INTO Pet VALUES (0,"Willow","Suricatta",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Willow","202211151843",".jpg")
 						,CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Willow","202211151843",".jpg")
 						,"Se escapa constantemente",5,5,7);
+INSERT INTO Pet VALUES (0,"Viena","Salchicha",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Viena","20241215144157",".jpg")
+,CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Viena","20241215144157",".jpg")
+,"Es una experta en alegrar a cualquiera con su colita siempre en movimiento y su espíritu juguetón. Además, su tamaño compacto la hace perfecta para acurrucarse en tu regazo después de un largo día."
+,2,1,2);
 
 
 /*SEGUNDA PARTE, ADMINISTRACION DE PUBLICACIONES, RESERVAS Y RESENIAS*/
@@ -230,6 +235,7 @@ INSERT INTO Publication VALUES (0,"2025-02-10","2025-03-30","Sera como estar en 
 								asegúrate de recibir el mejor servicio. Nuestro equipo de profesionales se asegurará de que 
 								tu mascota esté segura y cómoda durante su estadía. están aquí. 
 								Estamos a tu disposición para hacer de tu estancia una experiencia inolvidable.",0.0,9300,1,5);
+								
 
 
 /*********************************PUBLICATION IMAGES*******************************************/
@@ -289,7 +295,11 @@ INSERT INTO Booking VALUES (0,DATE(NOW()),
 INSERT INTO Booking VALUES (0,"2024-12-12","2024-12-17","Waiting Start","65667469864268",1,6);
 INSERT INTO Booking VALUES (0,"2024-12-12","2024-12-28","Waiting Start","79624905898821",2,7);
 INSERT INTO Booking VALUES (0,"2024-11-10","2024-11-20","Finalized","79624905898821",3,1);
-
+INSERT INTO Booking VALUES (0,"2023-07-12","2023-07-17","Finalized","65667469864268",3,2);
+INSERT INTO Booking VALUES (0,"2023-08-12","2023-08-17","Finalized","65667469864268",3,2);
+INSERT INTO Booking VALUES (0,"2023-09-12","2023-09-17","Finalized","65667469864268",3,2);
+INSERT INTO Booking VALUES (0,"2023-10-12","2023-10-17","Finalized","65667469864268",3,2);
+INSERT INTO Booking VALUES (0,"2023-12-12","2023-12-17","Finalized","65667469864268",3,2);
 
 /*********************************BOOKING PET*******************************************/
 CREATE TABLE IF NOT EXISTS BookingPet(
@@ -305,6 +315,11 @@ CREATE TABLE IF NOT EXISTS BookingPet(
 INSERT INTO BookingPet VALUES (0,1,4); 
 INSERT INTO BookingPet VALUES (0,2,5); 
 INSERT INTO BookingPet VALUES (0,3,5); 
+INSERT INTO BookingPet VALUES (0,4,6); 
+INSERT INTO BookingPet VALUES (0,5,6); 
+INSERT INTO BookingPet VALUES (0,6,6); 
+INSERT INTO BookingPet VALUES (0,7,6); 
+INSERT INTO BookingPet VALUES (0,8,6); 
 
 /*********************************CHECKER*******************************************/
 CREATE TABLE IF NOT EXISTS Checker(
@@ -337,6 +352,10 @@ CREATE TABLE IF NOT EXISTS Review(
 				REFERENCES User(idUser)
 );
 
+INSERT INTO Review VALUES (0, "2023-08-12", "¡Increíble experiencia! Mi perro Max no quería volver a casa. El cuidador le daba paseos diarios y hasta le enseñó algunos trucos nuevos. Definitivamente volveré a confiar en este servicio.",
+5, 1, 4);
+INSERT INTO Review VALUES (0, "2023-08-19", "Maravilloso servicio. Mi perra Luna disfrutó mucho, y el cuidador incluso le dio un baño antes de que la recogiera. Muy profesional y confiable.",
+5, 1, 5);
 
 /*********************************CHAT*******************************************/
 CREATE TABLE IF NOT EXISTS Chat(

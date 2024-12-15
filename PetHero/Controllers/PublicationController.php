@@ -129,7 +129,7 @@ class PublicationController{
 
 * R: No Posee.
 🐘 */         
-        public function ViewPublication($idPublic, $message=""){     
+        public function ViewPublication($idPublic, $message=""){
             $public = new Publication();
             $public -> setId($idPublic);
 
@@ -143,9 +143,11 @@ class PublicationController{
             $badgeStats = $this -> bpDAO -> GetKeeperStats($public -> getUser() -> getUsername());
             $badgeVarietyTPets = $this -> bpDAO -> GetVarietyPetStats($public -> getUser() -> getUsername());
             $badgeBestTPet = $this -> bpDAO -> GetBestPetStats($public -> getUser() -> getUsername());
+            $badges = array();
+            array_push($badges,$badgeStats, $badgeVarietyTPets, $badgeBestTPet);
 
             $canReview = 0;
-                
+
             if(isset($_SESSION["logUser"])){
                 $logUser = $_SESSION["logUser"];
 
