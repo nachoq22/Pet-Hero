@@ -130,19 +130,26 @@
                                         <div class="card-img-overlay" style="background-color: rgba(211,211,211,0.37);">
 
                                             <div style="display: flex; gap: 10px;">
+                                                <!-- Para ir a la Publicacion -->
                                                 <form action="<?php echo FRONT_ROOT . "/Publication/ViewPublication" ?>"
                                                 method="post">
                                                 <input type="hidden" name="idPublic" value=<?php echo $public->getId()
                                                     ?>>
                                                 <button class="boton-Publicacion" title="Eliminar publicación" style="background-color:aquamarine;"> <i class="bi bi-box-arrow-in-right"></i></button>
-                                            </form>
-                                            <!-- Para redireccion a formulario de update -->
-                                            <form action="<?php echo FRONT_ROOT . "/Home/ViewUpdatePublication" ?>"
-                                                method="post">
-                                                <input type="hidden" class="visually-hidden" name="idPublic" value=<?php echo $public->getId() ?>>
-                                                <button class="boton-Editar" title="Eliminar publicación" style="background-color:cornflowerblue;"> <i class="bi bi-pencil-square"></i></button>
-                                            </form>
-                                            <button class="boton-eliminar" title="Eliminar publicación" style="background-color:firebrick; color:aliceblue; width: 16;">&times;</button>
+                                                </form>
+                                                <!-- Para redireccion a formulario de update -->
+                                                <form action="<?php echo FRONT_ROOT . "/Home/ViewUpdatePublication" ?>"
+                                                    method="post">
+                                                    <input type="hidden" class="visually-hidden" name="idPublic" value=<?php echo $public->getId() ?>>
+                                                    <button class="boton-Editar" title="Eliminar publicación" style="background-color:cornflowerblue;"> <i class="bi bi-pencil-square"></i></button>
+                                                </form>
+                                                <!-- Para eliminar la publi -->
+                                                <form action="<?php echo FRONT_ROOT . "/Publication/Delete" ?>"
+                                                    method="post">
+                                                    <input type="hidden" class="visually-hidden" name="idPublic" value=<?php echo $public->getId() ?>>
+                                                    <button class="boton-eliminar" title="Eliminar publicación" style="background-color:firebrick; color:aliceblue; width: 16;">&times;</button>
+                                                </form>
+                                            
                                             </div>
                                             <!-- Para ir a la publicacion -->
                                             <br>

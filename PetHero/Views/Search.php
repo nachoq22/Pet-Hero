@@ -1,4 +1,13 @@
 <body>
+<?php if (isset($_COOKIE['message'])) { 
+            if(strpos($_COOKIE['message'],"Error") !== false) { ?>
+                <div class="alert alert-danger alert-dismissible fade show " role="alert">
+    <?php    }else{ ?>
+                <div class="alert alert-success alert-dismissible fade show " role="alert">
+                    <?php } echo $_COOKIE['message']; ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+    <?php } setcookie('message', '', time() - 3600,'/'); ?>
 <div class="container px-4 py-5" id="custom-cards">
     <h2 class="pb-2 border-bottom">Publicaciones encontradas</h2>
 	

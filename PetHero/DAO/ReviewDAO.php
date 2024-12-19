@@ -170,5 +170,11 @@ use PHPMailer\PHPMailer\Exception;
             }
         return $avgScore;
         }
-    }
+
+        public function isReviewDone($reviewList, $usernameLogUser){
+            return count(array_filter($reviewList, 
+                        fn($review) => strcmp($review -> getUser() -> getUsername(), $usernameLogUser) == 0)
+                        ) > 0;
+        }
+    }    
 ?>

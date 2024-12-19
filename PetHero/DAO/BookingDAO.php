@@ -469,10 +469,14 @@ use \Model\Booking as Booking;
 
             $booksXPublication = $this -> GetAllByPublication($idPublic);
 
-            return !empty(array_filter($booksXPublication, function ($book){
-                $onlineState = ["In Review", "Awaiting Payment", "Waiting Start", "In Progress"];
-                return in_array($book -> getBookState(), $onlineState); 
-            }));
+            if(! empty($booksXPublication)){
+                $haveOnline = !empty(array_filter($booksXPublication, function ($book){
+                    $onlineState = ["In Review", "Awaiting Payment", "Waiting Start", "In Progress"];
+                    return in_array($book -> getBookState(), $onlineState); 
+                }));
+            }
+
+        return $haveOnline;
         }
 
         public function GetKeeperStats($username){

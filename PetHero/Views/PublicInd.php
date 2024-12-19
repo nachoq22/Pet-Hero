@@ -179,7 +179,7 @@
                           <div class="container-fluid">
                           <div class="card w-100">
                           <div class="card-body">
-                          <p class="card-text"><?php echo $public->getDescription() ?><?php echo $public->getDescription() ?><?php echo $public->getDescription() ?><?php echo $public->getDescription() ?></p>
+                          <p class="card-text"><?php echo $public->getDescription() ?></p>
                           </div>
                           </div>
                           </div>
@@ -219,8 +219,15 @@
       <div class="col-4"><h3 style="margin-left: 20px;">Reviews</h3></div>
     </div>
     <div class="row mt-3">   <!-- ESCRIBIR REVIEW -->
-      <div class="col-2">  
-        <?php if($canReview == 1){ ?>  
+      <div class="col-2">
+        <?php if(isset($_SESSION["logUser"])){
+                $logUser = $_SESSION["logUser"];
+
+                $canReview = $this -> bpDAO -> CheckBookDone($logUser -> getUsername(), $idPublic);
+                $isReviewDone = $this -> reviewDAO -> isReviewDone($reviewList,$logUser -> getUsername());
+                
+            } ?>  
+        <?php if(($canReview == 1) && ($isReviewDone==!1)) { ?>  
       </div>
       <div class="col-4">
         <div class="card" style="margin: 20px;">

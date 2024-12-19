@@ -230,7 +230,7 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                <form action="" method="post" class="needs-validation" novalidate>
+                                                <form action="<?php echo FRONT_ROOT."/Booking/PayBookingCC" ?>" method="post" class="needs-validation" novalidate>
                                                 
                                                 <label for="cardType">Select your card:</label>
                                                     <select name="cardType" id="cardType" class="form-control">
@@ -241,11 +241,11 @@
                                                 <div class="row">
                                                 <div class="form-group col-md-6">
                                                     <label for="cardNumber">Card Number</label>
-                                                    <input type="number" class="form-control" id="cardNumber" placeholder="1234 4567 8910 1112">
+                                                    <input type="number" class="form-control" id="cardNumber" name="carNum" placeholder="1234 4567 8910 1112">
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label for="securitycode">Security code</label>
-                                                    <input type="password" class="form-control" id="securitycode" placeholder="cvv" style="width: 44%;">
+                                                    <input type="password" class="form-control" id="securitycode" name="ccv" placeholder="cvv" style="width: 44%;">
                                                 </div>
                                                 </div>
                                                 

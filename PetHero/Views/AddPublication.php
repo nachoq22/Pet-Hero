@@ -37,8 +37,8 @@
                 <div class="form-floating">
                     <textarea class="form-control" id="description" 
                     placeholder="<?php if($public != NULL){echo $public -> getDescription(); } ?>"
-                    value="<?php if($public != NULL){echo $public -> getDescription(); } ?>" 
-                    name="description" style="height: 140px" required></textarea>
+                    value="" 
+                    name="description" style="height: 140px" required><?php if($public != NULL){echo $public -> getDescription(); } ?></textarea>
                     <label for="description">Description</label>
                         <div class="invalid-feedback">
                             Please enter a Description.

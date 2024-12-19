@@ -228,5 +228,36 @@ use \Model\Publication as Publication;
             setcookie('message', $message, time() + 2,'/');
             header('Location: http://localhost/Pet-Hero/PetHero/Home/ViewOwnerPanel');
         }
+
+        public function PayBookingCC($idBook, $name, $surname, $dni, $carNum, $ccv, $expDate){
+            $this -> homeController -> isLogged();
+
+            $book = new Booking();
+            $book -> setId($idBook);
+            $cc = array(
+                'name' => $name,
+                'surname' => $surname,
+                'dni' => $carNum,
+                'carNum' => $dni,
+                'ccv' => $ccv,
+                'expDate' => $expDate,
+            );
+
+            $message = "Successful: Su pago ha sido aceptado, reserva abonada.";
+
+            try{
+
+                $this -> bpDAO -> PayBookingCC($book, $cc);
+
+            }catch(UpdateBookingException $ube){
+                $message = $ube -> getMessage();
+
+            }catch(UpdateCheckerException $uce){
+                $message = $uce -> getMessage();
+            }
+
+            setcookie('message', $message, time() + 2,'/');
+            header('Location: http://localhost/Pet-Hero/PetHero/Home/ViewOwnerPanel');
+        }
     }
 ?>

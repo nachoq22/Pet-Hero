@@ -635,6 +635,48 @@ public function NewBooking(Booking $booking,$petsID){
             }
         }
 
+        public function PayBookingCC(Booking $booking, $cc){
+            $checker = new Checker();
+            $checker -> setBooking($booking);
+            $checker -> setPayD(DATE("Y-m-d"));
+
+            if($this -> validateCC($cc)){
+                try{
+                    $this -> checkDAO -> SetPayDChecker($checker);
+                    $this -> UpdatePayCode($booking);
+                }catch (PDOException $pdoe) {
+                    throw new UpdateCheckerException("El checker no ha sido actualizado," . $pdoe -> getMessage());
+                }
+            }else{
+                throw new UpdateCheckerException("Pago Rechazado, reintente");
+            }
+        }
+
+        private function validateCC($creditCard){
+            $response = false;
+            $curl = curl_init();
+
+            curl_setopt_array($curl, [
+                CURLOPT_URL => "https://random-fake-credit-card-details-and-validator.p.rapidapi.com/?ccvalidate=". $creditCard['carNum'],
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_HTTPHEADER => [
+                    "x-rapidapi-host: random-fake-credit-card-details-and-validator.p.rapidapi.com",
+                    "x-rapidapi-key: 3461aac04fmsh4c595f383655f5fp170ef8jsnb5b197c8a5f0"
+                ],
+            ]);
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+        return $response;
+        }
+
         public function GetKeeperStats($username){
             return $this -> bookDAO -> GetKeeperStats($username);
         }

@@ -45,6 +45,15 @@ use \Model\Publication as Publication;
             }
         return $publicList;
         }
+
+        public function GetAllOrdered(){
+            $publicList = $this -> GetAll();
+            //? Ordenar el array de publicaciones por popularidad (de mayor a menor)
+            usort($publicList, function($a, $b) {
+                return $b->getPopularity() <=> $a->getPopularity(); 
+            });
+            return $publicList;
+        }
     
 /*
 *  D: Método que busca todas las publicaciones por medio del ID de un usuario
@@ -302,10 +311,11 @@ use \Model\Publication as Publication;
 
     public function ValidateDAllPublications(Publication $public){
         $rta = NULL;
-        $query = "Call Publication_NIDate(?,?,?)";
+        $query = "Call Publication_NIDate(?,?,?,?)";
         $parameters["openD"] = $public -> getOpenDate();
         $parameters["closeD"] = $public -> getCloseDate();
         $parameters["idUser"] = $this->userDAO->DGetByUsername($public->getUser()->getUsername())->getId();
+        $parameters["idPublicIN"] = $public -> getId();
         $this->connection = Connection::GetInstance();
         $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
 

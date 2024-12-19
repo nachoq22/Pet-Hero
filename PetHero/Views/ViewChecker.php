@@ -311,7 +311,7 @@ $plantilla = '
         padding: 20px;
         border-radius: 8px;
         }
-        h1, h2 {
+        h1, h2, h3 {
         text-align: center;
         color: #444;
         }
@@ -377,8 +377,8 @@ $plantilla = '
                 <tbody>
                     <tr>
                         <td>'.$checker->getRefCode().'</td>
-                        <td>'.$checker->getEmissionDate().'</td>
-                        <td>'.$checker->getCloseDate().'</td>
+                        <td>'.$checker->getBooking()->getStartD().'</td>
+                        <td>'.$checker->getBooking()->getFinishD().'</td>
                         <td>$'.$checker->getBooking()->getPublication()->getRemuneration().'</td>
                         <td>$'.$checker->getFinalPrice().'</td>
                     </tr>
@@ -390,9 +390,8 @@ $plantilla = '
                     </tr>
                 </tfoot>
             </table>
-            <h3></h3>
             <h2><strong>Booking Status: '.$checker->getBooking()->getBookState().'</strong></h2>
-
+            <h3><strong>Tiene tiempo hasta '.$checker->getCloseDate().' para pagar</strong></h3>
             <div class="footer">
             <p>Gracias por confiar en Pet Hero</p>
         </div>

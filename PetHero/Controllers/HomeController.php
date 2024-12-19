@@ -11,7 +11,7 @@ use \DAO\ImgPublicDAO as ImgPublicDAO;
 
 use \Model\User as User;
 use \Model\Chat as Chat;
-
+use PDOException;
     class HomeController{
         private $userDAO;
         private $petDAO;
@@ -34,12 +34,13 @@ use \Model\Chat as Chat;
 //* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
 //¬                  HOME VIEW CON TODAS LAS PUBLICATION
 //* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
-        public function Index($message = ""){  
-            $publicList = $this -> publicDAO -> GetAll();
-            $imgByPublic =  $this -> imgPublicDAO -> GetAccordingPublic($publicList);
+public function Index($message = ""){
+    $publicList = $this -> publicDAO -> GetAllOrdered();
 
-            require_once(VIEWS_PATH."Home.php");
-        }
+    $imgByPublic =  $this -> imgPublicDAO -> GetAccordingPublic($publicList);
+
+    require_once(VIEWS_PATH."Home.php");
+}
 
 //* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
 //¬                                 LOGOUT
@@ -55,15 +56,23 @@ use \Model\Chat as Chat;
 //¬                         FUNCIONALIDAD SEARCHBAR
 //* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
         public function Search($search){
-            $publicList = $this -> publicDAO -> Search($search);
-            $imgByPublic =  $this -> imgPublicDAO -> GetAccordingPublic($publicList);
+            try{
+                $publicList = $this -> publicDAO -> Search($search);
+                $imgByPublic =  $this -> imgPublicDAO -> GetAccordingPublic($publicList);
+            }catch(PDOException $pdoe){
+                $message = "Error: No se ha encontrado ninguna PUBLICATION.";
+            }
 
             require_once(VIEWS_PATH."Search.php");
         }
 
         public function SearchByDates($initD, $finishD){
-            $publicList = $this -> publicDAO -> GetAllByRangeDates($initD, $finishD);
-            $imgByPublic =  $this -> imgPublicDAO -> GetAccordingPublic($publicList);
+            try{
+                $publicList = $this -> publicDAO -> GetAllByRangeDates($initD, $finishD);
+                $imgByPublic =  $this -> imgPublicDAO -> GetAccordingPublic($publicList);
+            }catch(PDOException $pdoe){
+                $message = "Error: No se ha encontrado ninguna PUBLICATION.";
+            }
 
             require_once(VIEWS_PATH."Search.php");
         }
@@ -127,14 +136,19 @@ use \Model\Chat as Chat;
             require_once(VIEWS_PATH."AddPublication.php");
         } 
 
-//! CORTAR REDIRECCION Y VOLVER CON UN MENSAJE SI ES QUE POSEE BOOKINGS ACTIVOS ANTES DE SIQUIERA LLEGAR AL FORMULARIO?        
-        public function ViewUpdatePublication($idPublic){
-            $this -> isLogged();
-            $this -> isKeeper();
-            $public = $this -> publicDAO -> Get($idPublic);
+public function ViewUpdatePublication($idPublic){
+    $this -> isLogged();
+    $this -> isKeeper();
+    $public = $this -> publicDAO -> Get($idPublic);
 
-            require_once(VIEWS_PATH."AddPublication.php");
-        } 
+    if(! $this -> bpDAO -> OnlineBookingsByPublication($idPublic)){
+        require_once(VIEWS_PATH."AddPublication.php");
+    }else{
+        $message = "Error: Su PUBLICATION aun posee BOOKINGS online";
+        setcookie('message', $message, time() + 2,'/');
+        header('Location: http://localhost/Pet-Hero/PetHero/Home/ViewKeeperPanel');
+    } 
+}
 
         // public function ViewAddReview(){
         //     $this -> isLogged();

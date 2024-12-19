@@ -85,6 +85,7 @@ class PublicationController{
             $logUser = $_SESSION["logUser"];
             $public = new Publication();
             $public -> __fromRequest($openD, $closeD, $title, $description, 0, $remuneration, $logUser); 
+            $public -> setId(0); 
 
             $imgPublic = new ImgPublic();
             $imgPublic -> setPublication($public);
@@ -306,16 +307,17 @@ class PublicationController{
             $this -> homeController -> isLogged();
             $this -> homeController -> isKeeper();
 
-            $message = "Successful: Su PUBLICATION se ha borrado correctamente";
+            $message = "Error: Su PUBLICATION no ha podido ser eliminada.";
 
             try{
                 if(! $this -> bpDAO -> OnlineBookingsByPublication($idPublic)){
-                    $this -> publicDAO -> Delete($idPublic);
+                    $this -> publicDAO -> DeletePublication($idPublic);
+                    $message = "Successful: Su PUBLICATION se ha borrado correctamente";
                 }
             }catch(PDOException $rpe){
                 $message = $rpe -> getMessage();
             }
-            
+
             setcookie('message', $message, time() + 2,'/');
             header('Location: http://localhost/Pet-Hero/PetHero/Home/ViewKeeperPanel');
         }

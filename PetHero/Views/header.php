@@ -15,10 +15,10 @@
       </ul>
 <?php }else{?>
       <ul class="nav col-12 col-md-auto mb-2 justify-content-start mb-md-0">
-        <li> <a class="nav-link px-2 link-dark" href="<?php echo  FRONT_ROOT ?>"><i class="bi bi-house-door"></i></a></li>
-        <li><a href="<?php echo FRONT_ROOT."/Home/ViewBeKeeper"?>" class="nav-link px-2 link-success">Be Keeper</a></li>
-        <li> <a class="btn btn-outline-success" href="<?php echo FRONT_ROOT."/Home/ViewOwnerPanel"?>" type="button"><i class="bi bi-person-square"></i></a></li>
-        <li> <a class="btn btn-outline-success" href="<?php echo FRONT_ROOT."/Home/ViewPanelChatHome"?>" type="button"><i class="bi bi-chat-text"></i></a></li>
+      <li> <a class="btn btn-outline-primary" href="<?php echo  FRONT_ROOT ?>" type="button" style="margin: 2px;"><i class="bi bi-house-door"></i></a></li>
+        <li><a href="<?php echo FRONT_ROOT."/Home/ViewBeKeeper"?>" class="btn btn-outline-success" style="margin: 2px;">Be Keeper</a></li>
+        <li> <a class="btn btn-outline-success" href="<?php echo FRONT_ROOT."/Home/ViewOwnerPanel"?>" type="button" style="margin: 2px;"><i class="bi bi-person-square"></i> Owner panel </a></li>
+        <li> <a class="btn btn-outline-success" href="<?php echo FRONT_ROOT."/Home/ViewPanelChatHome"?>" type="button" style="margin: 2px;"><i class="bi bi-chat-text"></i></a></li>
       </ul>
       <?php }
           }
@@ -36,6 +36,14 @@
           </div>
         </form>
       </ul>
+
+      <form action="<?php echo FRONT_ROOT."/Home/SearchByDates" ?>" method="post" class="was-validated">
+      <label for="start-date" class="date-label">Inicio:</label>
+      <input type="date" id="start-date" name="initD" required >
+      <label for="end-date" class="date-label">Finalizacion:</label>
+      <input type="date" id="end-date" name="finishD" required >
+      <button type="submit" class="btn btn-primary">Buscar</button>
+      </form>
 
       <?php if(!isset($_SESSION['logUser'])){?>
       <div class="flex-shrink-0 dropdown">

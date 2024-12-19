@@ -404,7 +404,7 @@ END;
 CREATE PROCEDURE Publication_GetAll()
 BEGIN
     SELECT *
-    FROM Publication;
+    FROM Publication WHERE Publication.active = 1;
 END;
 
 
@@ -412,41 +412,30 @@ CREATE PROCEDURE Publication_GetAllByRangeDates(IN initD DATE, IN finishD DATE)
 BEGIN
     SELECT *
     FROM Publication
-    WHERE Publication.openD <= initD AND Publication.closeD >= finishD;
+    WHERE Publication.openD <= initD AND Publication.closeD >= finishD AND Publication.active = 1;
 END;
 
 CREATE PROCEDURE Publication_GetById(IN idPublication INT)
 BEGIN
     SELECT * 
     FROM Publication
-    WHERE (Publication.idPublic = idPublication);
+    WHERE (Publication.idPublic = idPublication) AND Publication.active = 1;
 END;
 
 CREATE PROCEDURE Publication_GetByUser(IN idUser INT)
 BEGIN
     SELECT * 
     FROM publication
-    WHERE (publication.idUser = idUser);
+    WHERE (publication.idUser = idUser) AND Publication.active = 1;
 END;
-
-
--- DELIMITER $$
--- CREATE PROCEDURE Publication_Search(IN phrase VARCHAR(50))
--- BEGIN
---      SELECT *
---      FROM publication
---      WHERE publication.title LIKE CONCAT('%',phrase,'%') OR publication.description like CONCAT('%',phrase,'%');
--- END;
--- $$
-
 
 CREATE PROCEDURE Publication_Search(IN phrase VARCHAR(50))
 BEGIN
      SELECT DISTINCT p.idPublic, p.openD, p.closeD, p.title, p.description, p.popularity, p.remuneration, p.active, p.idUser
      FROM publication AS P
-     LEFT JOIN User ON P.idUser = User.idUser
-     LEFT JOIN PersonalData ON PersonalData.idData = PersonalData.idData
-     LEFT JOIN Location ON Location.idLocation = PersonalData.idLocation
+     INNER JOIN User ON P.idUser = User.idUser
+     INNER JOIN PersonalData ON PersonalData.idData = User.idData
+     INNER JOIN Location ON Location.idLocation = PersonalData.idLocation
      WHERE P.title LIKE CONCAT('%',phrase,'%') 
         OR P.description like CONCAT('%',phrase,'%')
         OR User.username LIKE CONCAT('%',phrase,'%')
@@ -462,13 +451,15 @@ CREATE PROCEDURE Publication_DateCheck(IN openD DATE, IN closeD DATE, IN idPubli
 BEGIN
     SELECT COUNT(idPublic) as rta 
     FROM publication
-    WHERE (publication.idPublic = idPublic) AND (publication.openD < openD) AND (publication.closeD >= closeD);
+    WHERE (publication.idPublic = idPublic) AND (publication.openD < openD) AND (publication.closeD >= closeD) AND Publication.active = 1;
 END;
 
-CREATE PROCEDURE Publication_NIDate(IN openD DATE, IN closeD DATE, IN idUser int)
+CREATE PROCEDURE Publication_NIDate(IN openD DATE, IN closeD DATE, IN idUser int, IN idPublicIN int)
 BEGIN
     SELECT COUNT(*) > 0 AS rta FROM publication
         WHERE publication.idUser = idUser
+        AND publication.active = 1
+        AND publication.idPublic != idPublicIN
         AND (
             (publication.openD BETWEEN openD AND closeD) 
             OR 
@@ -476,8 +467,7 @@ BEGIN
             OR 
             (publication.openD <= openD AND publication.closeD >= closeD));
 END;
-
-CALL `Publication_NIDate`("2024-12-15","2024-12-25",3);    
+   
 
 CREATE PROCEDURE Publication_Add(IN openD DATE, IN closeD DATE, IN title VARCHAR(50),
                          IN description VARCHAR(1000), IN popularity DEC(2,1), IN remuneration DEC(10,2),
@@ -509,7 +499,7 @@ CREATE PROCEDURE Publication_Update (IN idPublicIn INT,
 BEGIN
 UPDATE Publication p SET openD =  openDIn, closeD = closeDIn, title = titleIn
                        , description = descriptionIn , remuneration = remunerationIn
-                    WHERE idPublic = idPublicIn;
+                    WHERE idPublic = idPublicIn AND p.active = 1;
 END;                                                            
 
 
