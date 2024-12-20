@@ -219,7 +219,7 @@
                                             <div class="form-floating mb-3">   
                                                 <input type="hidden" name="idBook" value=<?php echo $book->getId() ?>>  
                                                 <input type="number" class="form-control" id="payCode" 
-                                                        placeholder="San Antonio" name="carNum" onkeypress="if (event.keyCode == 13) Send()" style="width: 60%" required>
+                                                        placeholder="San Antonio" name="cardNum" onkeypress="if (event.keyCode == 13) Send()" style="width: 60%" required>
                                                 <label for="payCode">PayCode</label>
                                                     <div class="invalid-feedback">
                                                         Please enter your card number

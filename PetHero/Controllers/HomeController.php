@@ -1,6 +1,9 @@
 <?php
 namespace Controllers;
 
+use PDOException;
+
+
 use \DAO\UserDAO as UserDAO;
 use \DAO\PetDAO as PetDAO;
 use \DAO\ChatDAO as ChatDAO;
@@ -11,7 +14,7 @@ use \DAO\ImgPublicDAO as ImgPublicDAO;
 
 use \Model\User as User;
 use \Model\Chat as Chat;
-use PDOException;
+
     class HomeController{
         private $userDAO;
         private $petDAO;
@@ -34,13 +37,13 @@ use PDOException;
 //* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
 //¬                  HOME VIEW CON TODAS LAS PUBLICATION
 //* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
-public function Index($message = ""){
-    $publicList = $this -> publicDAO -> GetAllOrdered();
+    public function Index($message = ""){
+        $publicList = $this -> publicDAO -> GetAllOrdered();
 
-    $imgByPublic =  $this -> imgPublicDAO -> GetAccordingPublic($publicList);
+        $imgByPublic =  $this -> imgPublicDAO -> GetAccordingPublic($publicList);
 
-    require_once(VIEWS_PATH."Home.php");
-}
+        require_once(VIEWS_PATH."Home.php");
+    }
 
 //* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
 //¬                                 LOGOUT
@@ -149,15 +152,7 @@ public function ViewUpdatePublication($idPublic){
         header('Location: http://localhost/Pet-Hero/PetHero/Home/ViewKeeperPanel');
     } 
 }
-
-        // public function ViewAddReview(){
-        //     $this -> isLogged();
-        //     $public = $this -> publicDAO -> Get(1);
-
-        //     require_once(VIEWS_PATH."AddReview.php");
-        // }
-
-//! ERRORES AL ENVIAR MENSAJE POR PRIMERA VEZ, HEADER SE CUELGA. CREO QUE SERIA MEJOR BORRR EL INTERMEDIO E IR AL PANEL GRAL.        
+        
         public function ViewPanelChat(Chat $chat, $messageList){
             $this -> isLogged();
             $user = new User();

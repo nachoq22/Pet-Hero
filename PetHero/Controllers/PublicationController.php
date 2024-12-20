@@ -58,26 +58,6 @@ class PublicationController{
 
 * R: No Posee.
 🐘 */ 
-        // public function Add($title,$description,$openD,$closeD,$remuneration,$images){
-        //     $this->homeController->isLogged();
-        //     $this->homeController->isKeeper();
-
-        //         $public = new Publication();
-        //         $logUser = $_SESSION["logUser"];
-
-        // if(($this->publicDAO->ValidateDAllPublications($openD, $closeD, $logUser))==0 && 
-        //         ($closeD>DATE("Y-m-d") && $openD>DATE("Y-m-d") && $closeD>$openD)){                       //* VALIDA QUE LAS FECHAS SEAN DESPUES DE LA FECHA ACTUAL Y VALIDA QUE LA FECHA   
-        //         $public->__fromRequest($openD, $closeD, $title, $description,0, $remuneration,$logUser);  //* DE FINALIZACION SEA DESPUES QUE LA DE INICIO//
-        //         $imgPublic = new ImgPublic();
-        //         $imgPublic->setPublication($public);
-
-        //     $message = $this->publicDAO->NewPublication($imgPublic,$images);
-        //     $this->homeController->ViewKeeperPanel($message);
-        // }else{
-        //     $this->homeController->ViewAddPublication("Error: Las fechas ingresadas coinciden con otra publicacion suya o son invalidas");
-        // }
-        // }
-
         public function Add($title, $description, $openD, $closeD, $remuneration, $images){
             $this -> homeController -> isLogged();
             $this -> homeController -> isKeeper();
@@ -166,10 +146,6 @@ class PublicationController{
 
 ?      💠 isLogged
 ¬          ► Verifica si un usuario ha iniciado sesión en una aplicación.
-?      💠 ValidateOnWeek
-¬          ► Verifica que la fecha de inicio tenga 1 semana de anticipacion.
-?      💠 ValidateDP
-¬          ► Verifica que el rango de fechas esten dentro del PUBLICATION.
 ?      💠 ValidatePreBooking
 ¬          ► Realiza las validaciones dispuestas en las fechas para asentar
 ¬          un BOOKING, contrastando con lo establecido en PUBLICATION.
@@ -184,61 +160,6 @@ class PublicationController{
 
 * R: No Posee.
 🐘 */ 
-        // public function ValidateDateFP($idPublic, $startD, $finishD){
-        //     $this -> homeController -> isLogged();
-        //     $message = null;
-
-        //     if($startD < $finishD){    //* QUE LA FECHA DE INICIO SEA ANTES QUE LA DE FINALIZACION  
-                    
-        //         if($this->publicDAO->ValidateOnWeek($startD)==1){    
-                       
-        //             if($this->publicDAO->ValidateDP($startD, $finishD, $idPublic) == 1){
-        //                 $this->petController->GetPetsByReservation($idPublic, $startD, $finishD);
-        //             }else{
-        //                  $this->ViewPublication($idPublic, "Error: Las fechas ingresadas no entran en el rango de establecidas por el Keeper");
-        //             }
-                    
-        //         }else{
-        //             $this->ViewPublication($idPublic, "Error: Las reservas deben tener 1 semana de aniticipacion");
-        //         }
-                
-        //     }else{
-        //         $this->ViewPublication($idPublic, "Error: La fecha de finalizacion debe ser despues de la de inicio");
-        //     }
-        // }
-//? REVISAR URGENTE FLUJO, VALIDACION PARA BOOKING NO DEBERIA CAER EN PUBLICATIONCONTROLLER.
-//? REVISAR URGENTE, LAS DIREVACIONES Y EXCEPECIONES DEBEN LLEGAR DE ADENTRO.
-//? LAS VALIDACIONES DEBERIAN MOVERSE ADEMAS HACIA EL BOOKING, SALTANDOSE ESTA REVUELTADA.
-        // public function ValidateDateFP($idPublic, $startD, $finishD){
-        //     $this -> homeController -> isLogged();
-        //     $message = null;
-        //     $success = false;
-
-        //     if($startD < $finishD){    //* QUE LA FECHA DE INICIO SEA ANTES QUE LA DE FINALIZACION  
-                    
-        //         if($this->publicDAO->ValidateOnWeek($startD)==1){    
-                       
-        //             if($this->publicDAO->ValidateDP($startD, $finishD, $idPublic) == 1){
-        //                 $success = true;
-        //             }else{
-        //                 $message = "Error: Las fechas ingresadas no entran en el rango de establecidas por el Keeper";
-        //             }
-                    
-        //         }else{
-        //             $message = "Error: Las reservas deben tener 1 semana de aniticipacion";
-        //         }
-                
-        //     }else{
-        //         $message = "Error: La fecha de finalizacion debe ser despues de la de inicio";
-        //     }
-
-        //     if($success){
-        //         $this->petController->GetPetsByReservation($idPublic, $startD, $finishD);
-        //     }else {
-        //         $this -> ViewPublication($idPublic, $message);
-        //     }
-        // }
-
         public function ValidateDateFP($idPublic, $startD, $finishD){
             $this -> homeController -> isLogged();
             $message = null;

@@ -24,14 +24,6 @@ use \Model\PetType as PetType;
 //!                          VIEW CONTROLLERS
 //? ======================================================================
 //* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
-//¬                        VISTA PESTAÑA DE MASCOTAS
-//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
-        // public function ViewPetList(){
-        //     $petList = $this -> petDAO -> GetAll();
-        //     require_once(VIEWS_PATH."PetList.php");
-        // }
-
-//* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
 //¬                        VISTA PANEL DE MASCOTA
 //* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××        
         public function ViewPetProfile($idPet){
@@ -39,10 +31,6 @@ use \Model\PetType as PetType;
             $petaux = $this -> petDAO -> Get($idPet);
             require_once(VIEWS_PATH."PetProfile.php");
         }
-
-        // public function showListView(){
-        //     $petDAO=$this->petDAO->GetAll();
-        // }
 
 //* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
 //¬                           REGISTRAR MASCOTA

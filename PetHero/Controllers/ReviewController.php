@@ -53,8 +53,7 @@ use \Model\Publication as Publication;
             }catch(PDOException $pdoe){
                 $message = "Error: " . $pdoe -> getMessage();
             }
-            
-            //! CAMBIAR POR HEADER CUANDO TODOS LOS MENSAJES SEAN POR COOKIE.   
+
             $this->publicationController->ViewPublication($idPublic, $message);
         }
     }

@@ -50,25 +50,6 @@ use \Model\Publication as Publication;
 
 * R: No Posee.
 🐘 */
-        // public function Add($startD,$finishD,$idPublic,$petsId){
-        //     $this->homeController->isLogged();
-        //     if($this->bpDAO->ValidateTypes($petsId)==1){
-        //         $publication = new Publication();
-        //         $publication->setid($idPublic);
-        //         $logUser = $_SESSION["logUser"];
-        //         $book = new Booking();
-        //         $book->__fromRequest($startD,$finishD,"In Review",$publication,$logUser);
-        //         if($this->bpDAO->ValidateTypesOnBookings($book, $petsId)==1){
-        //             $message = $this->bpDAO->NewBooking($book,$petsId);
-        //             $this->homeController->ViewOwnerPanel($message);
-        //         }else{
-        //             $this->petController->GetPetsByReservation($idPublic, $startD, $finishD, "Error: Sus mascotas son incompatibles con las que cuidara el keeper en ese momento");
-        //         }
-        //     }else{
-        //         $this->petController->GetPetsByReservation($idPublic, $startD, $finishD, "Error: Todas sus mascotas deben ser del mismo tipo");
-        //     }
-        // }
-
         public function Add($startD,$finishD,$idPublic,$petsId){
             $this -> homeController -> isLogged();
 
@@ -147,20 +128,6 @@ use \Model\Publication as Publication;
 
 * R: No Posee.
 🐘 */
-        // public function ToResponse($idBook,$rta){
-        //     $this->homeC->isLogged();    
-
-        //     $book = new Booking();
-        //     $book->setId($idBook);
-
-        //     $check = new Checker();    
-        //     $check->setBooking($book);
-
-        //     $message = $this->checkDAO->NewChecker($check,$rta);
-            
-        //     $this->homeC->ViewKeeperPanel($message);
-        // }
-
         public function ToResponse($idBook,$rta){
             $this -> homeController -> isLogged();    
 
@@ -191,7 +158,7 @@ use \Model\Publication as Publication;
 //* ×××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
 /*
 * D: Controller que procesa la entrada de datos necesarios para comprobar
-* D: el pago del CHECKER, actualizar la BOOKING y confirmarla.
+*    el pago del CHECKER, actualizar la BOOKING y confirmarla.
 
 ?      💠 isLogged
 ¬          ► Verifica si un usuario ha iniciado sesión en una aplicación.
@@ -229,25 +196,35 @@ use \Model\Publication as Publication;
             header('Location: http://localhost/Pet-Hero/PetHero/Home/ViewOwnerPanel');
         }
 
-        public function PayBookingCC($idBook, $carNum){
+/*
+* D: Controller que procesa la entrada de datos necesarios para comprobar
+*    el pago del CHECKER a traves del numero de tarjeta de credico, 
+*    actualizar la BOOKING y confirmarla.
+
+?      💠 isLogged
+¬          ► Verifica si un usuario ha iniciado sesión en una aplicación.
+?      💠 PayBookingCC
+¬          ► Procesa el num de tarjeta, establece el Paycode en el BOOKING 
+¬          y la Fecha del Pago su CHECKER.
+?      💠 ViewOwnerPanel
+¬          ► Invocación de HomeController para redireccion a "Owner Panel".
+
+* A: $idBook: id de BOOKING con CHECKER emitido.
+*    $cardNum: Numero de la tarjeta de credito.
+
+* R: No Posee.
+🐘 */  
+        public function PayBookingCC($idBook, $cardNum){
             $this -> homeController -> isLogged();
 
             $book = new Booking();
             $book -> setId($idBook);
-            /*$cc = array(
-                'name' => $name,
-                'surname' => $surname,
-                'dni' => $carNum,
-                'carNum' => $dni,
-                'ccv' => $ccv,
-                'expDate' => $expDate,
-            );*/
 
             $message = "Successful: Su pago ha sido aceptado, reserva abonada.";
 
             try{
 
-                $this -> bpDAO -> PayBookingCC($book, $carNum);
+                $this -> bpDAO -> PayBookingCC($book, $cardNum);
 
             }catch(UpdateBookingException $ube){
                 $message = $ube -> getMessage();

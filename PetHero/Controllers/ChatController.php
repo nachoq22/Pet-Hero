@@ -88,7 +88,6 @@ use \Model\User as User;
             if($success){
 
                 require_once(VIEWS_PATH."ViewChat.php");
-                //$this->homeController->ViewPanelChat($chat, $messageList);
                 exit;
 
             }else{
@@ -97,10 +96,6 @@ use \Model\User as User;
                 exit;
 
             }    
-
-            //header('Location: http://localhost/Pet-Hero/PetHero/Home/ViewPanelChat');
-
-            //$this->homeController->ViewPanelChat($chat, $messageList);
         }
 
 //* ××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××
