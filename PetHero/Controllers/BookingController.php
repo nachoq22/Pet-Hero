@@ -229,25 +229,25 @@ use \Model\Publication as Publication;
             header('Location: http://localhost/Pet-Hero/PetHero/Home/ViewOwnerPanel');
         }
 
-        public function PayBookingCC($idBook, $name, $surname, $dni, $carNum, $ccv, $expDate){
+        public function PayBookingCC($idBook, $carNum){
             $this -> homeController -> isLogged();
 
             $book = new Booking();
             $book -> setId($idBook);
-            $cc = array(
+            /*$cc = array(
                 'name' => $name,
                 'surname' => $surname,
                 'dni' => $carNum,
                 'carNum' => $dni,
                 'ccv' => $ccv,
                 'expDate' => $expDate,
-            );
+            );*/
 
             $message = "Successful: Su pago ha sido aceptado, reserva abonada.";
 
             try{
 
-                $this -> bpDAO -> PayBookingCC($book, $cc);
+                $this -> bpDAO -> PayBookingCC($book, $carNum);
 
             }catch(UpdateBookingException $ube){
                 $message = $ube -> getMessage();

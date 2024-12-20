@@ -20,7 +20,6 @@ use \Model\BookingPet as BookingPet;
 use \Model\Booking as Booking;
 use \Model\Checker;
 
-
     class BookingPetDAO implements IBookingPetDAO{
         private $connection;
         //private $tableName = 'BookingPet';
@@ -260,16 +259,15 @@ use \Model\Checker;
         public function GetTotally(Booking $book){
             $book = $this -> bookDAO -> Get($book -> getId());
 
-            $subtotalBook = $this -> bookDAO -> GetBookPay($book);
-
+            $subtotalBook = $this -> bookDAO -> GetBookDayDiff($book);
+            $subtotalBook = $subtotalBook+1;
             $subtotalPet = $this -> TotalPetPay($book);
             
-            $total = ($subtotalBook + $subtotalPet);
+            $total = ($subtotalBook * $subtotalPet);
             if ($this -> aplicarDescuentoFechasEspeciales()){
                 $total = $total - ($total * 0.25);
             }
-
-            $checkerAmount = $total / 2;
+            $checkerAmount = $total/2;
 
         return $checkerAmount;
         }
@@ -630,8 +628,12 @@ public function NewBooking(Booking $booking,$petsID){
 
             try{
                 $this -> checkDAO -> SetPayDChecker($checker);
+                $booking = $this -> bookDAO -> Get ($booking -> getId());
+                $this -> bookDAO -> SendVoucher($booking);
             }catch (PDOException $pdoe) {
                 throw new UpdateCheckerException("El checker no ha sido actualizado," . $pdoe -> getMessage());
+            }catch (Exception $phpME) {
+                throw new UpdateCheckerException("No se ha podido enviar comprobante del pago" . $phpME -> getMessage());
             }
         }
 
@@ -642,10 +644,19 @@ public function NewBooking(Booking $booking,$petsID){
 
             if($this -> validateCC($cc)){
                 try{
+                    $payCodeList = $this -> GenPayCodes();
+                    $randomIndex = array_rand($payCodeList);
+                    $randomPayCode = $payCodeList[$randomIndex];
+
+                    $booking -> setPayCode($randomPayCode);
                     $this -> checkDAO -> SetPayDChecker($checker);
                     $this -> UpdatePayCode($booking);
+                    $booking = $this -> bookDAO -> Get ($booking -> getId());
+                    $this -> bookDAO -> SendVoucher($booking);
                 }catch (PDOException $pdoe) {
                     throw new UpdateCheckerException("El checker no ha sido actualizado," . $pdoe -> getMessage());
+                }catch (Exception $phpME) {
+                    throw new UpdateCheckerException("No se ha podido enviar comprobante del pago" . $phpME -> getMessage());
                 }
             }else{
                 throw new UpdateCheckerException("Pago Rechazado, reintente");
@@ -657,7 +668,8 @@ public function NewBooking(Booking $booking,$petsID){
             $curl = curl_init();
 
             curl_setopt_array($curl, [
-                CURLOPT_URL => "https://random-fake-credit-card-details-and-validator.p.rapidapi.com/?ccvalidate=". $creditCard['carNum'],
+                //CURLOPT_URL => "https://random-fake-credit-card-details-and-validator.p.rapidapi.com/?ccvalidate=". $creditCard['carNum'],
+                CURLOPT_URL => "https://random-fake-credit-card-details-and-validator.p.rapidapi.com/?ccvalidate=". $creditCard,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
                 CURLOPT_MAXREDIRS => 10,
@@ -759,5 +771,7 @@ public function NewBooking(Booking $booking,$petsID){
 
         return false; // No se aplica el descuento
         }
+
+        
     }
 ?>

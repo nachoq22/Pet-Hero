@@ -576,10 +576,13 @@ BEGIN
     WHERE (booking.idUser = idUser);
 END;
 
-CREATE PROCEDURE Booking_GetBookigPay(IN startD DATE,IN finishD DATE, IN remuneration DEC(10,2))
+CREATE PROCEDURE Booking_GetBookigDayDiff(IN startD DATE, IN finishD DATE)
 BEGIN
-	SELECT (TIMESTAMPDIFF(DAY, startD, finishD)*remuneration) AS bookingPay;
+    SELECT TIMESTAMPDIFF(DAY, startD, finishD) AS bookingDayDiff;
 END;
+
+CALL Booking_GetBookigDayDiff("2024-12-28","2024-12-30");
+CALL Booking_GetBookigDayDiff("2024-12-1","2024-12-5");
 
 CREATE PROCEDURE Booking_CheckRange(IN startD DATE, IN finishD DATE, IN idPublic INT)
 BEGIN
@@ -650,6 +653,10 @@ BEGIN
     FROM BookingPet
     WHERE (BookingPet.idBook = idBook);
 END;
+
+CALL BP_GetPetPay(5000.00,11)
+
+CALL BP_GetPetPay(7500.00,10)
 
 CREATE PROCEDURE BP_Add(IN idBook INT, IN idPet INT)
 BEGIN

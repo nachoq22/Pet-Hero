@@ -1,6 +1,8 @@
 <?php
 namespace DAO;
 
+use PHPMailer\PHPMailer\Exception;
+
 use \DAO\Connection as Connection;
 use \DAO\QueryType as QueryType;
 
@@ -8,7 +10,11 @@ use \DAO\IBookingDAO as IBookingDAO;
 use \DAO\PublicationDAO as PublicationDAO;
 use \DAO\UserDAO as UserDAO;
 
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\PHPMailer;
+
 use \Model\Booking as Booking;
+use \Checker\Booking as Checker;
 
     class BookingDAO implements IBookingDAO{
         private $connection;
@@ -175,20 +181,19 @@ use \Model\Booking as Booking;
 *     la Publicacion con la remuneracion.
 * R: Valor a abonar, el cual se suministrara al Checker.
 🐘*/
-        public function GetBookPay(Booking $book){
-            $bookPay = 0;
+        public function GetBookDayDiff(Booking $book){
+            $bookingDayDiff = 0;
 
-            $query = "CALL Booking_GetBookigPay(?,?,?)";
+            $query = "CALL Booking_GetBookigDayDiff(?,?)";
             $parameters["starD"] = $book->getStartD();
             $parameters["finishD"] = $book->getFinishD();
-            $parameters["remuneration"] = $book->getPublication()->getRemuneration();
             $this->connection = Connection::GetInstance();
             $resultBD = $this->connection->Execute($query,$parameters,QueryType::StoredProcedure);
 
             foreach($resultBD as $row){
-                $bookPay = $row["bookingPay"];
+                $bookingDayDiff = $row["bookingDayDiff"];
             }
-        return $bookPay;
+        return $bookingDayDiff;
         }
         
 //? ======================================================================
@@ -516,6 +521,93 @@ use \Model\Booking as Booking;
             }
         }
             return $alias;
+        }
+
+        public function SendVoucher(Booking $booking){
+            $mail = new PHPMailer(true);
+                //Server settings
+                //$mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
+                $mail->SMTPDebug = SMTP::DEBUG_OFF;                      //Enable verbose debug output
+                $mail->isSMTP();                                            //Send using SMTP
+                $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
+                $mail->SMTPAuth   = true;    
+                $email = 'petHero25112022@gmail.com';                        //Enable SMTP authentication
+                $mail->Username   = $email;                     //SMTP username
+                $mail->Password   = 'cwomuwndpbenfvlw';                               //SMTP password
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+                $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+                //Recipients
+                $mail->setFrom($email, 'Pet Hero');
+                $mail->addAddress($booking->getUser()->getEmail());     //Add a recipient
+                //Attachments
+                //$mail->addAttachment('/var/tmp/file.tar.gz');         //Add attachments
+                //$mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
+
+                //Content
+                //$mail->isHTML(true);  
+                
+                $plantilla = '
+                <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprobante de Pago</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        .receipt-container {
+            max-width: 800px;
+            margin: 0 auto;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #444;
+        }
+        .header-info {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        .header-info p {
+            margin: 5px 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="receipt-container">
+        <h1>Pet Hero</h1>
+        <h2>Comprobante de Pago</h2>
+
+        <div class="header-info">
+            <p><strong>Nombre de Usuario (Owner):</strong>'. $booking->getUser()->getUsername() .'</p>
+            <p><strong>Fecha del Pago:</strong>'. date("Y-m-d") .'</p>
+        </div>
+
+        <div class="footer">
+            <p><strong>Su reserva ya esta confirmada y abonada, la fecha de inicio es '. $booking->getStartD() .'</strong></p>
+            <p><strong>y la fecha de finalizacion es '. $booking->getFinishD() .'</strong></p>
+            <p>Gracias por confiar en Pet Hero.</p>
+        </div>
+    </div>
+</body>
+</html>';           
+                $mail->CharSet = 'UTF-8';                                //Set email format to HTML
+                $mail->Subject = 'Checker Disponible Pet Hero';
+                $mail->isHTML(true);
+                $mail->Body    = $plantilla;
+                $mail->AltBody = 'Checker correspondiente a su reserva';
+                $mail->send();
         }
     }
 ?>

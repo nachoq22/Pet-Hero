@@ -1,11 +1,14 @@
 <!-- MENSAJE DEL SISTEMA -->
 <body>
-<?php if (!empty($message)){?>
-    <div class="alert alert-danger alert-dismissible fade show " role="alert">
-      <?php echo $message; ?>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-<?php } ?>
+<?php if (!empty($message)){
+        if(strpos($message,"Error") !== false) { ?>
+              <div class="alert alert-danger alert-dismissible fade show " role="alert">
+<?php   }else{ ?>
+              <div class="alert alert-success alert-dismissible fade show " role="alert">
+                <?php } echo $message; ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+<?php }?>
 
 <br>
 

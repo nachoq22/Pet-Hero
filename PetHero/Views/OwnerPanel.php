@@ -215,11 +215,27 @@
                                                     </div>
                                                 </div>
                                         </form>
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#CardPayment">
-                                        <i class="bi bi-credit-card"></i>
-                                        </button>
+                                        <form action="<?php echo FRONT_ROOT."/Booking/PayBookingCC" ?>" method="post" name="sendPayC">
+                                            <div class="form-floating mb-3">   
+                                                <input type="hidden" name="idBook" value=<?php echo $book->getId() ?>>  
+                                                <input type="number" class="form-control" id="payCode" 
+                                                        placeholder="San Antonio" name="carNum" onkeypress="if (event.keyCode == 13) Send()" style="width: 60%" required>
+                                                <label for="payCode">PayCode</label>
+                                                    <div class="invalid-feedback">
+                                                        Please enter your card number
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary">
+                                                <i class="bi bi-credit-card"></i>
+                                                </button>
+                                                </div>
+                                        </form>
+                                        <!--
+                                        <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#CardPayment">
+                                                <i class="bi bi-credit-card"></i>
+                                                </button>
+                                        
 
-                                        <!-- Modal -->
+                                         Modal 
                                         <div class="modal fade" id="CardPayment" tabindex="-1" role="dialog" aria-labelledby="CardPaymentTitle" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content">
@@ -257,7 +273,7 @@
                                             </form>
                                             </div>
                                         </div>
-                                        </div>
+                                        </div>-->
 
                                     </div>
 
