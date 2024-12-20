@@ -69,9 +69,10 @@ INSERT INTO User VALUES (0,"venus","123456","medennikovadasha@boranora.com",3);
 INSERT INTO User VALUES (0,"sculpordwarf","123456","saschre@hs-gilching.de",4);
 INSERT INTO User VALUES (0,"toystory","123456","ovnoya@emvil.com",5);
 
+
 /*Owners*/
 INSERT INTO User (idUser,username,password,email) VALUES (0,"bluckiz","12345678","bluckiz@gmail.com");
-INSERT INTO User (idUser,username,password,email) VALUES (0,"nacho","12345678","nacho@gmail.com");
+INSERT INTO User (idUser,username,password,email) VALUES (0,"nachoq44","123456","lasmaravillas_ignacio123@hotmail.com");
 INSERT INTO User (idUser,username,password,email) VALUES (0,"misa","12345678","misa@gmail.com");
 INSERT INTO User (idUser,username,password,email) VALUES (0,"ignacio","12345678","ignacio@gmail.com");
 
@@ -198,7 +199,14 @@ INSERT INTO Pet VALUES (0,"Viena","Salchicha",CONCAT("..\\Views\\Img\\IMGPet\\Pr
 ,CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Viena","20241215144157",".jpg")
 ,"Es una experta en alegrar a cualquiera con su colita siempre en movimiento y su espíritu juguetón. Además, su tamaño compacto la hace perfecta para acurrucarse en tu regazo después de un largo día."
 ,2,1,2);
-
+INSERT INTO Pet VALUES (0,"Viena","Salchicha",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Viena","20241220130437",".jpg"),
+CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Viena","20241220130437",".jpg")
+,"Es una experta en alegrar a cualquiera con su colita siempre en movimiento y su espíritu juguetón. Precaucion: roba tus medias"
+,2,1,7);
+INSERT INTO Pet VALUES (0,"Pixel","Cornish rex",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Pixel","20241220130832",".jpg"),
+CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Pixel","20241220130832",".jpg")
+,"Le gusta jugar y corretear por todos lados, cuidado con los cables"
+,2,2,7);
 
 /*SEGUNDA PARTE, ADMINISTRACION DE PUBLICACIONES, RESERVAS Y RESENIAS*/
 
@@ -221,16 +229,16 @@ CREATE TABLE IF NOT EXISTS Publication(
 INSERT INTO Publication VALUES (0,"2024-12-02","2024-12-30","De Gran comodidad"," ¡No permitas que tu mascota se quede atrás! 
 								Las mejores actividades para el, ¡Unas vacaciones para los miembros peludos de la familia! 
 								A tu mascota le encantará investigar un nuevo lugar, y tú te sentirás mejor sabiendo que 
-								esta haciendo algo nuevo y seguro.",0.0,3500,1,1);
+								esta haciendo algo nuevo y seguro.",5.0,3500,1,1);
 INSERT INTO Publication VALUES (0,"2024-12-10","2024-12-30","Calidez para tu mascota","Este verano, reserva su lugar en el sol. 
 								Nosotros lo llevaremos a las mejores playas, donde podrá relajarse y divertirte. 
-								No te quedes en casa, ¡ven a disfrutar del sol con nosotros!",0.0,5000,1,2);
+								No te quedes en casa, ¡ven a disfrutar del sol con nosotros!",4.5,5000,1,2);
 INSERT INTO Publication VALUES (0,"2024-11-05","2025-02-20","Tranquilidad para ahora y despues","Reservar ahora 
 								y asegurar su lugar en la lista de espera para el próximo año. Si reserva con nosotros, 
-								podrá estar tranquilo sabiendo que su lugar estará a salvo.",0.0,4200,1,3);
+								podrá estar tranquilo sabiendo que su lugar estará a salvo.",5.0,4200,1,3);
 INSERT INTO Publication VALUES (0,"2024-12-28","2025-01-30","La perfeccion es nuestra filosofia","Al hacer tu reserva, 
 								nos aseguramos de que tu estancia sea perfecta. Tenemos una variedad de opciones para que elijas, 
-								y todas las comodidades que necesita tu mascota.",0.0,7500,1,4);
+								y todas las comodidades que necesita tu mascota.",4.0,7500,1,4);
 INSERT INTO Publication VALUES (0,"2025-02-10","2025-03-30","Sera como estar en casa","Haz una reserva para tu mascota y 
 								asegúrate de recibir el mejor servicio. Nuestro equipo de profesionales se asegurará de que 
 								tu mascota esté segura y cómoda durante su estadía. están aquí. 
@@ -356,7 +364,14 @@ INSERT INTO Review VALUES (0, "2023-08-12", "¡Increíble experiencia! Mi perro 
 5, 1, 4);
 INSERT INTO Review VALUES (0, "2023-08-19", "Maravilloso servicio. Mi perra Luna disfrutó mucho, y el cuidador incluso le dio un baño antes de que la recogiera. Muy profesional y confiable.",
 5, 1, 5);
-
+INSERT INTO Review VALUES (0, "2024-07-23", "Excelente muy recomendado",
+5, 3, 6);
+INSERT INTO Review VALUES (0, "2024-10-08", "Muy bueno, lo volveria a usar",
+4, 4, 3);
+INSERT INTO Review VALUES (0, "2024-10-08", "El lujar es un lujo y mi mascota la paso excelente",
+5, 2, 1);
+INSERT INTO Review VALUES (0, "2024-10-08", "En general muy bueno todo, me preocupa que el lugar no tenga rejas",
+4, 2, 3);
 /*********************************CHAT*******************************************/
 CREATE TABLE IF NOT EXISTS Chat(
 	idChat INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,

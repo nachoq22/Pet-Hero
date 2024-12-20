@@ -196,7 +196,7 @@
                         <?php if(!empty($logUser)){ 
                         if($public->getUser()->getUsername() != $logUser->getUsername()){ ?>
                         <div class="card border-success mb-3" style="max-width: 24rem;">
-                        <div class="card-header bg-transparent border-success"><strong>$<?php echo $public->getRemuneration() ?> por noche</strong></div>
+                        <div class="card-header bg-transparent border-success"><strong>$<?php echo $public->getRemuneration() ?> por noche y por mascota</strong></div>
                         <div class="card-body text-success">
                         <form action="<?php echo FRONT_ROOT."/Publication/ValidateDateFP" ?>" method="post">
                         <input type="hidden" name="idPublic" value=<?php echo $public->getid() ?>>
