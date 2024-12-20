@@ -588,8 +588,8 @@ CREATE PROCEDURE Booking_CheckRange(IN startD DATE, IN finishD DATE, IN idPublic
 BEGIN
     SELECT *
     FROM booking
-     WHERE (booking.idPublic=idPublic) AND (booking.bookState ="Waiting Start" OR booking.bookState="In Progress" ) AND ((booking.startD > startD AND booking.startD < finishD) 
-            OR (booking.startD < startD AND booking.finishD > startD));
+     WHERE (booking.idPublic=idPublic) AND (booking.bookState ="Waiting Start" OR booking.bookState="In Progress" OR booking.bookState="Awaiting Payment") AND ((booking.startD >= startD AND booking.startD <= finishD) 
+            OR (booking.startD <= startD AND booking.finishD >= startD));
 END;
 
 CREATE PROCEDURE Booking_Add(IN startD DATE, IN finishD DATE, IN bookState VARCHAR(25),
