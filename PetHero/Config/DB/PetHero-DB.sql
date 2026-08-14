@@ -23,16 +23,16 @@ CREATE TABLE IF NOT EXISTS Location(
     country VARCHAR(50) NOT NULL
 );
 
-INSERT INTO Location VALUES (0,"Rondeau 616","Piedras del sol","Cordoba","Cordoba","Argentina");
-INSERT INTO Location VALUES (0,"Av. 3 de Abril 827","Mariano","Corrientes","Corrientes","Argentina");
-INSERT INTO Location VALUES (0,"Av San Martín 1143","Arbolito","Ciudad de Mendoza","Mendoza","Argentina");
-INSERT INTO Location VALUES (0,"Rondeau 616","Mitre","San Fernando","Buenos Aires","Argentina");
-INSERT INTO Location VALUES (0,"San Martín 2365","Termas Saladas","Santa Fe","Santa Fe","Argentina");
-INSERT INTO Location VALUES (0,"Pedro Morán 4441","Moron","Ciudad Autonoma de Buenos Aires","Buenos Aires","Argentina");
-INSERT INTO Location VALUES (0,"Cerrito 20","Alba Azul","Rosario","Santa Fe","Argentina");
-INSERT INTO Location VALUES (0,"12 De Octubre 3179","Puerto Feo","Mar del Plata","Buenos Aires","Argentina");
-INSERT INTO Location VALUES (0,"Pio Xii 366","El Floral","Santa Rosa","La Pampa","Argentina");
-INSERT INTO Location VALUES (0,"Pigue 1996","Pompeya","Mar del Plata","Buenos Aires","Argentina");
+INSERT INTO Location VALUES (NULL,"Rondeau 616","Piedras del sol","Cordoba","Cordoba","Argentina");
+INSERT INTO Location VALUES (NULL,"Av. 3 de Abril 827","Mariano","Corrientes","Corrientes","Argentina");
+INSERT INTO Location VALUES (NULL,"Av San Martín 1143","Arbolito","Ciudad de Mendoza","Mendoza","Argentina");
+INSERT INTO Location VALUES (NULL,"Rondeau 616","Mitre","San Fernando","Buenos Aires","Argentina");
+INSERT INTO Location VALUES (NULL,"San Martín 2365","Termas Saladas","Santa Fe","Santa Fe","Argentina");
+INSERT INTO Location VALUES (NULL,"Pedro Morán 4441","Moron","Ciudad Autonoma de Buenos Aires","Buenos Aires","Argentina");
+INSERT INTO Location VALUES (NULL,"Cerrito 20","Alba Azul","Rosario","Santa Fe","Argentina");
+INSERT INTO Location VALUES (NULL,"12 De Octubre 3179","Puerto Feo","Mar del Plata","Buenos Aires","Argentina");
+INSERT INTO Location VALUES (NULL,"Pio Xii 366","El Floral","Santa Rosa","La Pampa","Argentina");
+INSERT INTO Location VALUES (NULL,"Pigue 1996","Pompeya","Mar del Plata","Buenos Aires","Argentina");
 
 /*********************************PERSONAL DATA*******************************************/
 CREATE TABLE IF NOT EXISTS PersonalData(
@@ -46,11 +46,11 @@ CREATE TABLE IF NOT EXISTS PersonalData(
 			REFERENCES Location(idLocation)
 );
 
-INSERT INTO PersonalData VALUES (0,"Santino","Escobedo","M","28418700",1);
-INSERT INTO PersonalData VALUES (0,"Maximiliano","Sanz","M","41844906",2);
-INSERT INTO PersonalData VALUES (0,"Josefina","Herrera","F","67154484",3);
-INSERT INTO PersonalData VALUES (0,"Ashley","Benitez","F","88403165",4);
-INSERT INTO PersonalData VALUES (0,"Alan","Rojas","M","40737343",5);
+INSERT INTO PersonalData VALUES (NULL,"Santino","Escobedo","M","28418700",1);
+INSERT INTO PersonalData VALUES (NULL,"Maximiliano","Sanz","M","41844906",2);
+INSERT INTO PersonalData VALUES (NULL,"Josefina","Herrera","F","67154484",3);
+INSERT INTO PersonalData VALUES (NULL,"Ashley","Benitez","F","88403165",4);
+INSERT INTO PersonalData VALUES (NULL,"Alan","Rojas","M","40737343",5);
 
 /*********************************USER*******************************************/
 CREATE TABLE IF NOT EXISTS User(
@@ -63,18 +63,18 @@ CREATE TABLE IF NOT EXISTS User(
 			REFERENCES PersonalData(idData)
 );
 /*Keepers*/
-INSERT INTO User VALUES (0,"planetar","123456","achternaga@wificon.eu",1);
-INSERT INTO User VALUES (0,"marsexpress","123456","djlucadj@lifestyleunrated.com",2);
-INSERT INTO User VALUES (0,"venus","123456","medennikovadasha@boranora.com",3);
-INSERT INTO User VALUES (0,"sculpordwarf","123456","saschre@hs-gilching.de",4);
-INSERT INTO User VALUES (0,"toystory","123456","ovnoya@emvil.com",5);
+INSERT INTO User VALUES (NULL,"planetar","123456","achternaga@wificon.eu",1);
+INSERT INTO User VALUES (NULL,"marsexpress","123456","djlucadj@lifestyleunrated.com",2);
+INSERT INTO User VALUES (NULL,"venus","123456","medennikovadasha@boranora.com",3);
+INSERT INTO User VALUES (NULL,"sculpordwarf","123456","saschre@hs-gilching.de",4);
+INSERT INTO User VALUES (NULL,"toystory","123456","ovnoya@emvil.com",5);
 
 
 /*Owners*/
-INSERT INTO User (idUser,username,password,email) VALUES (0,"bluckiz","12345678","bluckiz@gmail.com");
-INSERT INTO User (idUser,username,password,email) VALUES (0,"nachoq44","123456","lasmaravillas_ignacio123@hotmail.com");
-INSERT INTO User (idUser,username,password,email) VALUES (0,"misa","12345678","misa@gmail.com");
-INSERT INTO User (idUser,username,password,email) VALUES (0,"ignacio","12345678","ignacio@gmail.com");
+INSERT INTO User (idUser,username,password,email) VALUES (NULL,"bluckiz","12345678","bluckiz@gmail.com");
+INSERT INTO User (idUser,username,password,email) VALUES (NULL,"nachoq44","123456","lasmaravillas_ignacio123@hotmail.com");
+INSERT INTO User (idUser,username,password,email) VALUES (NULL,"misa","12345678","misa@gmail.com");
+INSERT INTO User (idUser,username,password,email) VALUES (NULL,"ignacio","12345678","ignacio@gmail.com");
 
 /*********************************ROLE*******************************************/
 CREATE TABLE IF NOT EXISTS Role(
@@ -83,11 +83,11 @@ CREATE TABLE IF NOT EXISTS Role(
 	description VARCHAR(300)
 );
 
-INSERT INTO Role VALUES (0,"Owner","The owner has permissions to add their corresponding pets, 
+INSERT INTO Role VALUES (NULL,"Owner","The owner has permissions to add their corresponding pets, 
 									as well as to edit their profile and delete their account. 
 									To finish, there is the functionality of making a reservation 
 									and loading the corresponding payment receipt.");
-INSERT INTO Role VALUES (0,"Keeper","The keeper has permissions to add publications with which the owner 
+INSERT INTO Role VALUES (NULL,"Keeper","The keeper has permissions to add publications with which the owner 
 									can interact. Along with this, the possibility of responding to 
 									reservations, consulting them, etc.");
 
@@ -125,11 +125,11 @@ CREATE TABLE IF NOT EXISTS Size(
     name VARCHAR(30) NOT NULL UNIQUE
 );
 
-INSERT INTO Size VALUES (0,"Little");
-INSERT INTO Size VALUES (0,"Little-Medium");
-INSERT INTO Size VALUES (0,"Medium");
-INSERT INTO Size VALUES (0,"Medium-Big");
-INSERT INTO Size VALUES (0,"Big");
+INSERT INTO Size VALUES (NULL,"Little");
+INSERT INTO Size VALUES (NULL,"Little-Medium");
+INSERT INTO Size VALUES (NULL,"Medium");
+INSERT INTO Size VALUES (NULL,"Medium-Big");
+INSERT INTO Size VALUES (NULL,"Big");
 
 /*********************************PET TYPE*******************************************/
 CREATE TABLE IF NOT EXISTS PetType(
@@ -137,11 +137,11 @@ CREATE TABLE IF NOT EXISTS PetType(
     name VARCHAR(50) NOT NULL UNIQUE
 );
 
-INSERT INTO PetType VALUES (0,"Dog");
-INSERT INTO PetType VALUES (0,"Cat");
-INSERT INTO PetType VALUES (0,"Hedgehog");
-INSERT INTO PetType VALUES (0,"Groundhog");
-INSERT INTO PetType VALUES (0,"Meerkat");
+INSERT INTO PetType VALUES (NULL,"Dog");
+INSERT INTO PetType VALUES (NULL,"Cat");
+INSERT INTO PetType VALUES (NULL,"Hedgehog");
+INSERT INTO PetType VALUES (NULL,"Groundhog");
+INSERT INTO PetType VALUES (NULL,"Meerkat");
 
 /*********************************PET*******************************************/
 CREATE TABLE IF NOT EXISTS Pet(
@@ -163,47 +163,47 @@ CREATE TABLE IF NOT EXISTS Pet(
 );
 
 /* INSERTS PARA GENERAR DE LA MISMA FORMA EN QUE LO HACE PHP, SIN HARDCODEO
-INSERT INTO Pet VALUES (0,"Coco","Mestizo",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Coco",(NOW() + 0),".jpg")
+INSERT INTO Pet VALUES (NULL,"Coco","Mestizo",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Coco",(NOW() + 0),".jpg")
 						,CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Coco",(NOW() + 0),".jpg")
 						,"Esta re duro",1,1,1);
-INSERT INTO Pet VALUES (0,"Thor","Lykoi",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Thor",(NOW() + 0),".jpg")
+INSERT INTO Pet VALUES (NULL,"Thor","Lykoi",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Thor",(NOW() + 0),".jpg")
 						,CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Thor",(NOW() + 0),".jpg")
 						,"Rompe todo",2,2,2);
-INSERT INTO Pet VALUES (0,"Faraon","Pigmeo africano",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Faraon",(NOW() + 0),".jpg")
+INSERT INTO Pet VALUES (NULL,"Faraon","Pigmeo africano",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Faraon",(NOW() + 0),".jpg")
 						,CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Faraon",(NOW() + 0),".jpg")
 						,"Come mucho",3,3,3);
-INSERT INTO Pet VALUES (0,"Laila","Ariray",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Laila",(NOW() + 0),".jpg")
+INSERT INTO Pet VALUES (NULL,"Laila","Ariray",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Laila",(NOW() + 0),".jpg")
 						,CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Laila",(NOW() + 0),".jpg")
 						,"No tiene baño propio",4,4,4);
-INSERT INTO Pet VALUES (0,"Willow","Suricatta",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Willow",(NOW() + 0),".jpg")
+INSERT INTO Pet VALUES (NULL,"Willow","Suricatta",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Willow",(NOW() + 0),".jpg")
 						,CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Willow",(NOW() + 0),".jpg")
 						,"Se escapa constantemente",5,5,5);
 */
-INSERT INTO Pet VALUES (0,"Coco","Mestizo",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Coco","202211151843",".jpg")
+INSERT INTO Pet VALUES (NULL,"Coco","Mestizo",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Coco","202211151843",".jpg")
 						,CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Coco","202211151843",".jpg")
 						,"Esta re duro",1,1,1);
-INSERT INTO Pet VALUES (0,"Thor","Lykoi",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Thor","202211151843",".jpg")
+INSERT INTO Pet VALUES (NULL,"Thor","Lykoi",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Thor","202211151843",".jpg")
 						,CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Thor","202211151843",".jpg")
 						,"Rompe todo",2,2,2);
 
-INSERT INTO Pet VALUES (0,"Faraon","Pigmeo africano",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Faraon","202211151843",".jpg")
+INSERT INTO Pet VALUES (NULL,"Faraon","Pigmeo africano",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Faraon","202211151843",".jpg")
 						,CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Faraon","202211151843",".jpg")
 						,"Come mucho",3,3,3);
-INSERT INTO Pet VALUES (0,"Laila","Ariray",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Laila","202211151843",".jpg")
+INSERT INTO Pet VALUES (NULL,"Laila","Ariray",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Laila","202211151843",".jpg")
 						,CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Laila","202211151843",".jpg")
 						,"No tiene baño propio",4,4,6);
-INSERT INTO Pet VALUES (0,"Willow","Suricatta",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Willow","202211151843",".jpg")
+INSERT INTO Pet VALUES (NULL,"Willow","Suricatta",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Willow","202211151843",".jpg")
 						,CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Willow","202211151843",".jpg")
 						,"Se escapa constantemente",5,5,7);
-INSERT INTO Pet VALUES (0,"Viena","Salchicha",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Viena","20241215144157",".jpg")
+INSERT INTO Pet VALUES (NULL,"Viena","Salchicha",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Viena","20241215144157",".jpg")
 ,CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Viena","20241215144157",".jpg")
 ,"Es una experta en alegrar a cualquiera con su colita siempre en movimiento y su espíritu juguetón. Además, su tamaño compacto la hace perfecta para acurrucarse en tu regazo después de un largo día."
 ,2,1,2);
-INSERT INTO Pet VALUES (0,"Viena","Salchicha",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Viena","20241220130437",".jpg"),
+INSERT INTO Pet VALUES (NULL,"Viena","Salchicha",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Viena","20241220130437",".jpg"),
 CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Viena","20241220130437",".jpg")
 ,"Es una experta en alegrar a cualquiera con su colita siempre en movimiento y su espíritu juguetón. Precaucion: roba tus medias"
 ,2,1,7);
-INSERT INTO Pet VALUES (0,"Pixel","Cornish rex",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Pixel","20241220130832",".jpg"),
+INSERT INTO Pet VALUES (NULL,"Pixel","Cornish rex",CONCAT("..\\Views\\Img\\IMGPet\\Profile\\Pixel","20241220130832",".jpg"),
 CONCAT("..\\Views\\Img\\IMGPet\\VaccinationPlan\\Pixel","20241220130832",".jpg")
 ,"Le gusta jugar y corretear por todos lados, cuidado con los cables"
 ,2,2,7);
@@ -226,20 +226,20 @@ CREATE TABLE IF NOT EXISTS Publication(
 			REFERENCES User(idUser)
 );
 
-INSERT INTO Publication VALUES (0,"2024-12-02","2024-12-30","De Gran comodidad"," ¡No permitas que tu mascota se quede atrás! 
+INSERT INTO Publication VALUES (NULL,"2024-12-02","2024-12-30","De Gran comodidad"," ¡No permitas que tu mascota se quede atrás! 
 								Las mejores actividades para el, ¡Unas vacaciones para los miembros peludos de la familia! 
 								A tu mascota le encantará investigar un nuevo lugar, y tú te sentirás mejor sabiendo que 
 								esta haciendo algo nuevo y seguro.",5.0,3500,1,1);
-INSERT INTO Publication VALUES (0,"2024-12-10","2024-12-30","Calidez para tu mascota","Este verano, reserva su lugar en el sol. 
+INSERT INTO Publication VALUES (NULL,"2024-12-10","2024-12-30","Calidez para tu mascota","Este verano, reserva su lugar en el sol. 
 								Nosotros lo llevaremos a las mejores playas, donde podrá relajarse y divertirte. 
 								No te quedes en casa, ¡ven a disfrutar del sol con nosotros!",4.5,5000,1,2);
-INSERT INTO Publication VALUES (0,"2024-11-05","2025-02-20","Tranquilidad para ahora y despues","Reservar ahora 
+INSERT INTO Publication VALUES (NULL,"2024-11-05","2025-02-20","Tranquilidad para ahora y despues","Reservar ahora 
 								y asegurar su lugar en la lista de espera para el próximo año. Si reserva con nosotros, 
 								podrá estar tranquilo sabiendo que su lugar estará a salvo.",5.0,4200,1,3);
-INSERT INTO Publication VALUES (0,"2024-12-28","2025-01-30","La perfeccion es nuestra filosofia","Al hacer tu reserva, 
+INSERT INTO Publication VALUES (NULL,"2024-12-28","2025-01-30","La perfeccion es nuestra filosofia","Al hacer tu reserva, 
 								nos aseguramos de que tu estancia sea perfecta. Tenemos una variedad de opciones para que elijas, 
 								y todas las comodidades que necesita tu mascota.",4.0,7500,1,4);
-INSERT INTO Publication VALUES (0,"2025-02-10","2025-03-30","Sera como estar en casa","Haz una reserva para tu mascota y 
+INSERT INTO Publication VALUES (NULL,"2025-02-10","2025-03-30","Sera como estar en casa","Haz una reserva para tu mascota y 
 								asegúrate de recibir el mejor servicio. Nuestro equipo de profesionales se asegurará de que 
 								tu mascota esté segura y cómoda durante su estadía. están aquí. 
 								Estamos a tu disposición para hacer de tu estancia una experiencia inolvidable.",0.0,9300,1,5);
@@ -255,25 +255,25 @@ CREATE TABLE IF NOT EXISTS ImgPublic(
 			REFERENCES Publication(idPublic)
 );
 
-INSERT INTO ImgPublic VALUES (0,"Views\\Img\\IMGPublic\\11223344-IMGPublic20221115213311.jpg",1);
-INSERT INTO ImgPublic VALUES (0,"Views\\Img\\IMGPublic\\55667788-IMGPublic20221115213311.jpg",1);
-INSERT INTO ImgPublic VALUES (0,"Views\\Img\\IMGPublic\\11447788-IMGPublic20221115213311.jpg",1);
+INSERT INTO ImgPublic VALUES (NULL,"Views\\Img\\IMGPublic\\11223344-IMGPublic20221115213311.jpg",1);
+INSERT INTO ImgPublic VALUES (NULL,"Views\\Img\\IMGPublic\\55667788-IMGPublic20221115213311.jpg",1);
+INSERT INTO ImgPublic VALUES (NULL,"Views\\Img\\IMGPublic\\11447788-IMGPublic20221115213311.jpg",1);
 
-INSERT INTO ImgPublic VALUES (0,"Views\\Img\\IMGPublic\\44776633-IMGPublic20221115213322.jpg",2);
-INSERT INTO ImgPublic VALUES (0,"Views\\Img\\IMGPublic\\11774499-IMGPublic20221115213322.jpg",2);
-INSERT INTO ImgPublic VALUES (0,"Views\\Img\\IMGPublic\\33556688-IMGPublic20221115213322.jpg",2);
+INSERT INTO ImgPublic VALUES (NULL,"Views\\Img\\IMGPublic\\44776633-IMGPublic20221115213322.jpg",2);
+INSERT INTO ImgPublic VALUES (NULL,"Views\\Img\\IMGPublic\\11774499-IMGPublic20221115213322.jpg",2);
+INSERT INTO ImgPublic VALUES (NULL,"Views\\Img\\IMGPublic\\33556688-IMGPublic20221115213322.jpg",2);
 
-INSERT INTO ImgPublic VALUES (0,"Views\\Img\\IMGPublic\\2321547139-IMGPublic202211152133.jpg",3);
-INSERT INTO ImgPublic VALUES (0,"Views\\Img\\IMGPublic\\8189340865-IMGPublic202211152133.jpg",3);
-INSERT INTO ImgPublic VALUES (0,"Views\\Img\\IMGPublic\\6327715270-IMGPublic202211152133.jpg",3);
+INSERT INTO ImgPublic VALUES (NULL,"Views\\Img\\IMGPublic\\2321547139-IMGPublic202211152133.jpg",3);
+INSERT INTO ImgPublic VALUES (NULL,"Views\\Img\\IMGPublic\\8189340865-IMGPublic202211152133.jpg",3);
+INSERT INTO ImgPublic VALUES (NULL,"Views\\Img\\IMGPublic\\6327715270-IMGPublic202211152133.jpg",3);
 
-INSERT INTO ImgPublic VALUES (0,"Views\\Img\\IMGPublic\\6745476559-IMGPublic202211152144.jpg",4);
-INSERT INTO ImgPublic VALUES (0,"Views\\Img\\IMGPublic\\5300927809-IMGPublic202211152144.jpg",4);
-INSERT INTO ImgPublic VALUES (0,"Views\\Img\\IMGPublic\\9858419706-IMGPublic202211152144.jpg",4);
+INSERT INTO ImgPublic VALUES (NULL,"Views\\Img\\IMGPublic\\6745476559-IMGPublic202211152144.jpg",4);
+INSERT INTO ImgPublic VALUES (NULL,"Views\\Img\\IMGPublic\\5300927809-IMGPublic202211152144.jpg",4);
+INSERT INTO ImgPublic VALUES (NULL,"Views\\Img\\IMGPublic\\9858419706-IMGPublic202211152144.jpg",4);
 
-INSERT INTO ImgPublic VALUES (0,"Views\\Img\\IMGPublic\\2284550973-IMGPublic202211152155.jpg",5);
-INSERT INTO ImgPublic VALUES (0,"Views\\Img\\IMGPublic\\3551448123-IMGPublic202211152155.jpg",5);
-INSERT INTO ImgPublic VALUES (0,"Views\\Img\\IMGPublic\\3256367687-IMGPublic202211152155.jpg",5);
+INSERT INTO ImgPublic VALUES (NULL,"Views\\Img\\IMGPublic\\2284550973-IMGPublic202211152155.jpg",5);
+INSERT INTO ImgPublic VALUES (NULL,"Views\\Img\\IMGPublic\\3551448123-IMGPublic202211152155.jpg",5);
+INSERT INTO ImgPublic VALUES (NULL,"Views\\Img\\IMGPublic\\3256367687-IMGPublic202211152155.jpg",5);
 
 
 
@@ -293,21 +293,21 @@ CREATE TABLE IF NOT EXISTS Booking(
 );
 
 /* INSERT CON FECHA ACTUAL CADA VEZ QUE SE LEVANTA LA BDD
-INSERT INTO Booking VALUES (0,DATE(NOW()),
+INSERT INTO Booking VALUES (NULL,DATE(NOW()),
 								  DATE_ADD(DATE(NOW()),INTERVAL 15 DAY)
 							     ,"Finalized"
 								 ,"AT1048235672BY"
 								 ,1,4);
 */
 
-INSERT INTO Booking VALUES (0,"2024-12-12","2024-12-17","Waiting Start","65667469864268",1,6);
-INSERT INTO Booking VALUES (0,"2024-12-12","2024-12-28","Waiting Start","79624905898821",2,7);
-INSERT INTO Booking VALUES (0,"2024-11-10","2024-11-20","Finalized","79624905898821",3,1);
-INSERT INTO Booking VALUES (0,"2023-07-12","2023-07-17","Finalized","65667469864268",3,2);
-INSERT INTO Booking VALUES (0,"2023-08-12","2023-08-17","Finalized","65667469864268",3,2);
-INSERT INTO Booking VALUES (0,"2023-09-12","2023-09-17","Finalized","65667469864268",3,2);
-INSERT INTO Booking VALUES (0,"2023-10-12","2023-10-17","Finalized","65667469864268",3,2);
-INSERT INTO Booking VALUES (0,"2023-12-12","2023-12-17","Finalized","65667469864268",3,2);
+INSERT INTO Booking VALUES (NULL,"2024-12-12","2024-12-17","Waiting Start","65667469864268",1,6);
+INSERT INTO Booking VALUES (NULL,"2024-12-12","2024-12-28","Waiting Start","79624905898821",2,7);
+INSERT INTO Booking VALUES (NULL,"2024-11-10","2024-11-20","Finalized","79624905898821",3,1);
+INSERT INTO Booking VALUES (NULL,"2023-07-12","2023-07-17","Finalized","65667469864268",3,2);
+INSERT INTO Booking VALUES (NULL,"2023-08-12","2023-08-17","Finalized","65667469864268",3,2);
+INSERT INTO Booking VALUES (NULL,"2023-09-12","2023-09-17","Finalized","65667469864268",3,2);
+INSERT INTO Booking VALUES (NULL,"2023-10-12","2023-10-17","Finalized","65667469864268",3,2);
+INSERT INTO Booking VALUES (NULL,"2023-12-12","2023-12-17","Finalized","65667469864268",3,2);
 
 /*********************************BOOKING PET*******************************************/
 CREATE TABLE IF NOT EXISTS BookingPet(
@@ -320,14 +320,14 @@ CREATE TABLE IF NOT EXISTS BookingPet(
 				REFERENCES Pet(idPet)		
 );
 
-INSERT INTO BookingPet VALUES (0,1,4); 
-INSERT INTO BookingPet VALUES (0,2,5); 
-INSERT INTO BookingPet VALUES (0,3,5); 
-INSERT INTO BookingPet VALUES (0,4,6); 
-INSERT INTO BookingPet VALUES (0,5,6); 
-INSERT INTO BookingPet VALUES (0,6,6); 
-INSERT INTO BookingPet VALUES (0,7,6); 
-INSERT INTO BookingPet VALUES (0,8,6); 
+INSERT INTO BookingPet VALUES (NULL,1,4); 
+INSERT INTO BookingPet VALUES (NULL,2,5); 
+INSERT INTO BookingPet VALUES (NULL,3,5); 
+INSERT INTO BookingPet VALUES (NULL,4,6); 
+INSERT INTO BookingPet VALUES (NULL,5,6); 
+INSERT INTO BookingPet VALUES (NULL,6,6); 
+INSERT INTO BookingPet VALUES (NULL,7,6); 
+INSERT INTO BookingPet VALUES (NULL,8,6); 
 
 /*********************************CHECKER*******************************************/
 CREATE TABLE IF NOT EXISTS Checker(
@@ -342,9 +342,9 @@ CREATE TABLE IF NOT EXISTS Checker(
                 REFERENCES Booking(idBook)
 );
 
-INSERT INTO Checker VALUES (0,"111999a17a98w2364er","2024-10-15","2022-10-18","2022-10-16",21000,1);
-INSERT INTO Checker VALUES (0,"22a8x7a21a98w1289ra","2024-10-28","2022-10-31","2022-10-29",55000,2);
-INSERT INTO Checker VALUES (0,"UM3SSXE7NAT8WWN5478","2024-07-28","2022-07-31","2022-07-29",55000,3);
+INSERT INTO Checker VALUES (NULL,"111999a17a98w2364er","2024-10-15","2022-10-18","2022-10-16",21000,1);
+INSERT INTO Checker VALUES (NULL,"22a8x7a21a98w1289ra","2024-10-28","2022-10-31","2022-10-29",55000,2);
+INSERT INTO Checker VALUES (NULL,"UM3SSXE7NAT8WWN5478","2024-07-28","2022-07-31","2022-07-29",55000,3);
 
 /*********************************REVIEW*******************************************/
 CREATE TABLE IF NOT EXISTS Review(
@@ -360,17 +360,17 @@ CREATE TABLE IF NOT EXISTS Review(
 				REFERENCES User(idUser)
 );
 
-INSERT INTO Review VALUES (0, "2023-08-12", "¡Increíble experiencia! Mi perro Max no quería volver a casa. El cuidador le daba paseos diarios y hasta le enseñó algunos trucos nuevos. Definitivamente volveré a confiar en este servicio.",
+INSERT INTO Review VALUES (NULL, "2023-08-12", "¡Increíble experiencia! Mi perro Max no quería volver a casa. El cuidador le daba paseos diarios y hasta le enseñó algunos trucos nuevos. Definitivamente volveré a confiar en este servicio.",
 5, 1, 4);
-INSERT INTO Review VALUES (0, "2023-08-19", "Maravilloso servicio. Mi perra Luna disfrutó mucho, y el cuidador incluso le dio un baño antes de que la recogiera. Muy profesional y confiable.",
+INSERT INTO Review VALUES (NULL, "2023-08-19", "Maravilloso servicio. Mi perra Luna disfrutó mucho, y el cuidador incluso le dio un baño antes de que la recogiera. Muy profesional y confiable.",
 5, 1, 5);
-INSERT INTO Review VALUES (0, "2024-07-23", "Excelente muy recomendado",
+INSERT INTO Review VALUES (NULL, "2024-07-23", "Excelente muy recomendado",
 5, 3, 6);
-INSERT INTO Review VALUES (0, "2024-10-08", "Muy bueno, lo volveria a usar",
+INSERT INTO Review VALUES (NULL, "2024-10-08", "Muy bueno, lo volveria a usar",
 4, 4, 3);
-INSERT INTO Review VALUES (0, "2024-10-08", "El lujar es un lujo y mi mascota la paso excelente",
+INSERT INTO Review VALUES (NULL, "2024-10-08", "El lujar es un lujo y mi mascota la paso excelente",
 5, 2, 1);
-INSERT INTO Review VALUES (0, "2024-10-08", "En general muy bueno todo, me preocupa que el lugar no tenga rejas",
+INSERT INTO Review VALUES (NULL, "2024-10-08", "En general muy bueno todo, me preocupa que el lugar no tenga rejas",
 4, 2, 3);
 /*********************************CHAT*******************************************/
 CREATE TABLE IF NOT EXISTS Chat(
